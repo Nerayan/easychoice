@@ -1,0 +1,21 @@
+.wcus-form-group {
+  width: 100%;
+  margin-bottom: 15px;
+
+  label {
+    display: block;
+    margin-bottom: 7px;
+    font-weight: 600;
+  }
+
+  &__error {
+    font-size: 12px;
+    color: #fd397a;
+  }
+
+  &__tooltip {
+    margin-top: 5px;
+    font-size: 13px;
+    color: #5d78ff;
+  }
+}
