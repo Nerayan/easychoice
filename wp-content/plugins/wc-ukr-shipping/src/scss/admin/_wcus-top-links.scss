@@ -1,0 +1,17 @@
+.wcus-top-links {
+  margin-top: 30px;
+
+  &__link {
+    font-size: 18px;
+
+    & + & {
+      margin-left: 15px;
+    }
+
+    svg {
+      width: 18px;
+      height: 18px;
+      fill: #fff;
+    }
+  }
+}
