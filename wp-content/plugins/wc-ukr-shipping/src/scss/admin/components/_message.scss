@@ -1,0 +1,44 @@
+.wcus-message {
+  padding: 13px 26px;
+
+  svg {
+    width: 25px;
+    height: 25px;
+    margin-right: 10px;
+  }
+
+  &--error {
+    background: rgba(253, 57, 122, 0.1);
+    color: #fd397a;
+    border-left: 2px solid #fd397a;
+  }
+
+  &--info {
+    background: rgba(93, 120, 255, 0.1);
+    color: #5d78ff;
+    border-left: 2px solid #5d78ff;
+  }
+
+  &--log {
+    background: rgba(255, 184, 34, 0.1);
+    color: #de9e17;
+    border-left: 2px solid #ffb822;
+  }
+
+  &--ok {
+    background: rgba(10, 187, 135, 0.1);
+    border-left: 2px solid #0abb87;
+    color: #0abb87;
+  }
+
+  &--success {
+    display: flex;
+    align-items: center;
+    background: #0abb87;
+    color: #fff;
+
+    svg {
+      fill: #fff;
+    }
+  }
+}

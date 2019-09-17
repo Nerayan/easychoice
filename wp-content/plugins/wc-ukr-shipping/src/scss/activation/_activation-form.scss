@@ -1,0 +1,94 @@
+.activation-form {
+  max-width: 400px;
+  background: #fff;
+  border-radius: 3px;
+  box-shadow: 4px 3px 10px rgba(0, 0, 0, .1);
+
+  & * {
+    box-sizing: border-box;
+  }
+
+  &__logo-wrap {
+    width: 100%;
+  }
+
+  &__logo-inner {
+    position: relative;
+    height: 0;
+    padding-top: 37%;
+    overflow: hidden;
+  }
+
+  &__logo {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('../../image/logo.jpg') no-repeat;
+    background-size: contain;
+    background-position: 50%;
+  }
+
+  &__content {
+    padding: 30px;
+    font-size: 18px;
+    text-align: center;
+    color: #444;
+
+    h1 {
+      margin: 0;
+      font-size: 28px;
+      font-weight: 500;
+    }
+
+    p {
+      margin: 15px 0 0;
+    }
+  }
+
+  &__status {
+    font-size: 14px;
+    font-style: italic;
+    text-align: left;
+    color: #777;
+  }
+
+  &__load-wrap {
+    margin-top: 15px;
+  }
+
+  &__load-btn {
+    display: inline-flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    padding: 11px 15px;
+    background: #96588a;
+    font-size: 18px;
+    font-weight: 600;
+    text-decoration: none;
+    color: #fff;
+    border-radius: 2px;
+    outline: none;
+  }
+
+  &__loader {
+    display: inline-block;
+    width: 21px;
+    height: 21px;
+    border: 2px solid #d686ca;
+    border-left-color: #fff;
+    border-radius: 21px;
+    animation: loader-animation .6s linear infinite;
+  }
+}
+
+@keyframes loader-animation {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

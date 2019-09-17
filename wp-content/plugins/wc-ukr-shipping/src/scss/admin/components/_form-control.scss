@@ -1,0 +1,29 @@
+.wcus-form-control {
+  width: 100%;
+  padding: 9px 13px;
+  background: #fff;
+  color: #495057 !important;
+  border: 1px solid #e2e5ec !important;
+  border-radius: 4px;
+  box-sizing: border-box;
+  box-shadow: none !important;
+  transition: border .3s ease !important;
+
+  &:focus {
+    border-color: #9aabff !important;
+  }
+
+  &--invalid {
+    border-color: #fd397a !important;
+  }
+}
+
+select.wcus-form-control {
+  height: auto !important;
+  padding: 8px 13px !important;
+}
+
+input[type="number"].wcus-form-control {
+  width: 150px;
+  padding-right: 5px;
+}
