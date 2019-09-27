@@ -215,7 +215,7 @@ msgstr ""
 #: inc/widgets/class-electro-products-carousel-widget.php:178
 #: inc/widgets/class-electro-products-tabs.php:101
 #: inc/woocommerce/functions.php:477
-msgid "Top Rated Products"
+msgid "Популярные товары"
 msgstr ""
 
 #: inc/admin/electro-meta-box-functions.php:270
@@ -6295,7 +6295,7 @@ msgstr ""
 
 #: inc/woocommerce/functions.php:472
 msgid "Onsale Products"
-msgstr ""
+msgstr "Выгодные предлжения"
 
 #: inc/woocommerce/functions.php:493
 msgid "Find it Fast"
