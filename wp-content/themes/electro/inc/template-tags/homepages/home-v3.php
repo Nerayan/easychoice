@@ -46,6 +46,7 @@ if ( ! function_exists( 'electro_home_v3_ads_block' ) ) {
         }
 
         $animation = !empty( $home_v3['ad']['animation'] ) ? ' animated ' . $home_v3['ad']['animation'] : '';
+        $ad_image_attachment_size = apply_filters( 'electro_ad_image_attachment_size', 'full', 'v3' );
 
         $args = apply_filters( 'home_v3_ads_args', array(
             array(
@@ -54,6 +55,7 @@ if ( ! function_exists( 'electro_home_v3_ads_block' ) ) {
                 'action_link'   => isset( $home_v3['ad'][0]['action_link'] ) ? $home_v3['ad'][0]['action_link'] : '#',
                 'ad_image'      => isset( $home_v3['ad'][0]['ad_image'] ) ? wp_get_attachment_url( $home_v3['ad'][0]['ad_image'] ) : '',
                 'el_class'      => isset( $home_v3['ad'][0]['el_class'] ) ? $home_v3['ad'][0]['el_class'] : '',
+                'ad_image_attachment' => isset( $home_v3['ad'][0]['ad_image'] ) ? wp_get_attachment_image( $home_v3['ad'][0]['ad_image'], $ad_image_attachment_size ) : '',
             ),
             array(
                 'ad_text'       => isset( $home_v3['ad'][1]['ad_text'] ) ? $home_v3['ad'][1]['ad_text'] : wp_kses_post( __( 'Tablets, Smartphones <strong>and more</strong>', 'electro' ) ),
@@ -61,6 +63,7 @@ if ( ! function_exists( 'electro_home_v3_ads_block' ) ) {
                 'action_link'   => isset( $home_v3['ad'][1]['action_link'] ) ? $home_v3['ad'][1]['action_link'] : '#',
                 'ad_image'      => isset( $home_v3['ad'][1]['ad_image'] ) ? wp_get_attachment_url( $home_v3['ad'][1]['ad_image'] ) : '',
                 'el_class'      => isset( $home_v3['ad'][1]['el_class'] ) ? $home_v3['ad'][1]['el_class'] : '',
+                'ad_image_attachment' => isset( $home_v3['ad'][1]['ad_image'] ) ? wp_get_attachment_image( $home_v3['ad'][1]['ad_image'], $ad_image_attachment_size ) : '',
             ),
         ) );
 
@@ -71,6 +74,7 @@ if ( ! function_exists( 'electro_home_v3_ads_block' ) ) {
                 'action_link'   => isset( $home_v3['ad'][2]['action_link'] ) ? $home_v3['ad'][2]['action_link'] : '#',
                 'ad_image'      => isset( $home_v3['ad'][2]['ad_image'] ) ? wp_get_attachment_url( $home_v3['ad'][2]['ad_image'] ) : 'https://placehold.it/270x186',
                 'el_class'      => isset( $home_v3['ad'][2]['el_class'] ) ? $home_v3['ad'][2]['el_class'] : '',
+                'ad_image_attachment' => isset( $home_v3['ad'][2]['ad_image'] ) ? wp_get_attachment_image( $home_v3['ad'][2]['ad_image'], $ad_image_attachment_size ) : '',
             );
 
             $args[] = array(
@@ -79,6 +83,7 @@ if ( ! function_exists( 'electro_home_v3_ads_block' ) ) {
                 'action_link'   => isset( $home_v3['ad'][3]['action_link'] ) ? $home_v3['ad'][3]['action_link'] : '#',
                 'ad_image'      => isset( $home_v3['ad'][3]['ad_image'] ) ? wp_get_attachment_url( $home_v3['ad'][3]['ad_image'] ) : 'https://placehold.it/270x186',
                 'el_class'      => isset( $home_v3['ad'][3]['el_class'] ) ? $home_v3['ad'][3]['el_class'] : '',
+                'ad_image_attachment' => isset( $home_v3['ad'][3]['ad_image'] ) ? wp_get_attachment_image( $home_v3['ad'][3]['ad_image'], $ad_image_attachment_size ) : '',
             );
         }
 
@@ -357,7 +362,7 @@ if ( ! function_exists( 'electro_home_v3_product_cards_carousel' ) ) {
                     'autoplay'          => isset( $home_v3['pcc']['carousel_args']['autoplay'] ) ? filter_var( $home_v3['pcc']['carousel_args']['autoplay'], FILTER_VALIDATE_BOOLEAN ) : false,
                 )
             ) );
-            
+
             if ( electro_is_wide_enabled() ) {
                 $args['section_args']['columns_wide'] = $columns_wide;
                 $args['section_args']['items'] = $columns_wide;

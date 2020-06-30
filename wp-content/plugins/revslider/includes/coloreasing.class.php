@@ -109,7 +109,7 @@ if(!class_exists('RSColorEasing')) {
 		 */
 		public static function easing($n, $t, $e, $u, $ease = 'sine.easeinout') {
 			
-			$easing = ['sine, easeinout'];
+			$easing = array('sine, easeinout');
 			if(is_string($ease) && strpos($ease, '.') !== false) {
 				
 				$ease = explode('.', $ease);

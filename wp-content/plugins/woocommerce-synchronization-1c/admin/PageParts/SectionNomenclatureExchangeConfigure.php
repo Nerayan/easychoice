@@ -1,0 +1,318 @@
+<?php
+namespace Itgalaxy\Wc\Exchange1c\Admin\PageParts;
+
+class SectionNomenclatureExchangeConfigure
+{
+    public static function render()
+    {
+        $userList = [];
+
+        foreach (get_users(['role' => 'administrator']) as $user) {
+            $userList[$user->ID] = $user->user_login;
+        }
+
+        $section = [
+            'title' => esc_html__('Product catalog (nomenclature)', 'itgalaxy-woocommerce-1c'),
+            'tabs' => [
+                [
+                    'title' => esc_html__('Main', 'itgalaxy-woocommerce-1c'),
+                    'id' => 'nomenclature-main',
+                    'fields' => [
+                        'exchange_post_author' => [
+                            'type' => 'select',
+                            'title' => esc_html__('Product / Image Owner', 'itgalaxy-woocommerce-1c'),
+                            'options' => $userList
+                        ],
+                        'file_limit' => [
+                            'type' => 'number',
+                            'title' => esc_html__('File part size:', 'itgalaxy-woocommerce-1c'),
+                            'description' => esc_html__(
+                                'The maximum size of the part of the exchange files transmitted from 1C (in bytes).',
+                                'itgalaxy-woocommerce-1c'
+                            ),
+                            'default' => 1000000
+                        ],
+                        'time_limit' => [
+                            'type' => 'number',
+                            'title' => esc_html__('Script running time (second):', 'itgalaxy-woocommerce-1c'),
+                            'description' => esc_html__(
+                                'Maximum time the sync script runs (in seconds), for one step processing progress.',
+                                'itgalaxy-woocommerce-1c'
+                            ),
+                            'default' => 20
+                        ],
+                        'use_file_zip' => [
+                            'type' => 'checkbox',
+                            'title' => esc_html__('Exchange in the archive', 'itgalaxy-woocommerce-1c'),
+                            'description' => esc_html__(
+                                'If enabled, the exchange takes place through a zip archive.',
+                                'itgalaxy-woocommerce-1c'
+                            )
+                        ],
+                        'remove_missing_products' => [
+                            'type' => 'checkbox',
+                            'title' => esc_html__('Remove missing products and categories (full unload)', 'itgalaxy-woocommerce-1c'),
+                            'description' => esc_html__(
+                                'If enabled, all products and categories that are missing in the unloading will be deleted '
+                                . ' (if the product / category is created manually and is not related to the data from the upload, '
+                                . 'then they will not be affected).',
+                                'itgalaxy-woocommerce-1c'
+                            )
+                        ],
+                        'set_category_thumbnail_by_product' => [
+                            'type' => 'checkbox',
+                            'title' => esc_html__(
+                                'Set category thumbnails automatically',
+                                'itgalaxy-woocommerce-1c'
+                            ),
+                            'description' => esc_html__(
+                                'If enabled, the category will be assigned a picture for the first product with an '
+                                . 'image when processing the upload, if the product has a direct link to the category, '
+                                . 'that is, it is linked directly.',
+                                'itgalaxy-woocommerce-1c'
+                            ),
+                        ],
+                    ]
+                ],
+                [
+                    'title' => esc_html__('For products', 'itgalaxy-woocommerce-1c'),
+                    'id' => 'nomeclature-products',
+                    'fields' => [
+                        'find_product_by_sku' => [
+                            'type' => 'checkbox',
+                            'title' => esc_html__('Try to find a product by SKU', 'itgalaxy-woocommerce-1c'),
+                            'description' => esc_html__(
+                                'If enabled, then the plugin tries to find the product by SKU, if it is not '
+                                . 'found by ID from 1C. It may be useful if the site already has products and, in '
+                                . 'order not to create everything again, you can make their first link by SKU.',
+                                'itgalaxy-woocommerce-1c'
+                            )
+                        ],
+                        'product_use_full_name' => [
+                            'type' => 'checkbox',
+                            'title' => esc_html__('Use full name', 'itgalaxy-woocommerce-1c'),
+                            'description' => esc_html__(
+                                'If enabled, the title of the product will be recorded not "Name" and "Full Name" '
+                                . 'of the details of the products.',
+                                'itgalaxy-woocommerce-1c'
+                            )
+                        ],
+                        'products_stock_null_rule' => [
+                            'type' => 'select',
+                            'title' => esc_html__('Products with a stock <= 0:', 'itgalaxy-woocommerce-1c'),
+                            'options' => [
+                                '0' => esc_html__(
+                                    'Hide (not available for viewing and ordering)',
+                                    'itgalaxy-woocommerce-1c'
+                                ),
+                                '1' => esc_html__(
+                                    'Do not hide and give the opportunity to put in the basket',
+                                    'itgalaxy-woocommerce-1c'
+                                ),
+                                '2' => esc_html__(
+                                    'Do not hide, but do not give the opportunity to put in the basket',
+                                    'itgalaxy-woocommerce-1c'
+                                ),
+                                'with_negative_not_hide_and_put_basket_with_zero_hide_and_not_put_basket' => esc_html__(
+                                    'Do not hide with a negative stock and give an opportunity to put in a basket, '
+                                    . 'with a zero stock hide and do not give an opportunity to put in a basket.',
+                                    'itgalaxy-woocommerce-1c'
+                                )
+                            ],
+                            'description' => esc_html__(
+                                'Only products with a non-empty price can be opened.',
+                                'itgalaxy-woocommerce-1c'
+                            )
+                        ],
+                        'write_product_description_in_excerpt' => [
+                            'type' => 'checkbox',
+                            'title' => esc_html__(
+                                'Write the "Description" in a short description of the product.',
+                                'itgalaxy-woocommerce-1c'
+                            ),
+                            'description' => esc_html__(
+                                'If enabled, the product description will be written in a short description '
+                                . '(post_excerpt).',
+                                'itgalaxy-woocommerce-1c'
+                            )
+                        ],
+                        'use_html_description' => [
+                            'type' => 'checkbox',
+                            'title' => esc_html__(
+                                'Use for the main description "Description file for the site"',
+                                'itgalaxy-woocommerce-1c'
+                            ),
+                            'description' => esc_html__(
+                                'If it is included, then the description of the product will be recorded not in '
+                                . 'the "Description", but in the "Description in HTML format" from the details of '
+                                . 'the product, if any, while the data from the "Description" will be recorded in '
+                                . 'a excerpt description of the product.',
+                                'itgalaxy-woocommerce-1c'
+                            )
+                        ],
+                        'more_check_image_changed' => [
+                            'type' => 'checkbox',
+                            'title' => esc_html__(
+                                'Extra control over image changes',
+                                'itgalaxy-woocommerce-1c'
+                            ),
+                            'description' => esc_html__(
+                                'Turn this option on if you notice that changing the image in 1C does not lead '
+                                . 'to a change on the site. This can occur in a number of configurations in '
+                                . 'which the file name does not change when the image is changed.',
+                                'itgalaxy-woocommerce-1c'
+                            )
+                        ],
+                        'get_product_sku_from' => [
+                            'type' => 'select',
+                            'title' => esc_html__('Get product sku from:', 'itgalaxy-woocommerce-1c'),
+                            'options' => [
+                                'sku' => esc_html__(
+                                    'SKU',
+                                    'itgalaxy-woocommerce-1c'
+                                ),
+                                'requisite_code' => esc_html__(
+                                    'Requisite value "Code"',
+                                    'itgalaxy-woocommerce-1c'
+                                ),
+                                'code' => esc_html__(
+                                    'Code',
+                                    'itgalaxy-woocommerce-1c'
+                                )
+                            ],
+                            'description' => esc_html__(
+                                'Indicate from which value the article number should be written.',
+                                'itgalaxy-woocommerce-1c'
+                            )
+                        ],
+                    ]
+                ],
+                [
+                    'title' => esc_html__('Skipping / excluding data', 'itgalaxy-woocommerce-1c'),
+                    'id' => 'nomenclature-skipping-data',
+                    'fields' => [
+                        'skip_products_without_photo' => [
+                            'type' => 'checkbox',
+                            'title' => esc_html__(
+                                'Skip products without photo',
+                                'itgalaxy-woocommerce-1c'
+                            ),
+                            'description' => esc_html__(
+                                'If enabled, then products without photos will not be added to the site.',
+                                'itgalaxy-woocommerce-1c'
+                            )
+                        ],
+                        'skip_post_content_excerpt' => [
+                            'type' => 'checkbox',
+                            'title' => esc_html__(
+                                'Skip product description',
+                                'itgalaxy-woocommerce-1c'
+                            ),
+                            'description' => esc_html__(
+                                'If enabled, description and except will not be writed or modified.',
+                                'itgalaxy-woocommerce-1c'
+                            )
+                        ],
+                        'skip_post_title' => [
+                            'type' => 'checkbox',
+                            'title' => esc_html__(
+                                'Do not update product title',
+                                'itgalaxy-woocommerce-1c'
+                            ),
+                            'description' => esc_html__(
+                                'If enabled, the product title will be writed when the product is created and '
+                                . 'will no longer be changed according to the upload data.',
+                                'itgalaxy-woocommerce-1c'
+                            )
+                        ],
+                        'skip_product_weight' => [
+                            'type' => 'checkbox',
+                            'title' => esc_html__(
+                                'Skip product weight',
+                                'itgalaxy-woocommerce-1c'
+                            ),
+                            'description' => esc_html__(
+                                'If enabled, weight will not be writed or modified.',
+                                'itgalaxy-woocommerce-1c'
+                            )
+                        ],
+                        'skip_product_sizes' => [
+                            'type' => 'checkbox',
+                            'title' => esc_html__(
+                                'Skip product sizes (length, width and height)',
+                                'itgalaxy-woocommerce-1c'
+                            ),
+                            'description' => esc_html__(
+                                'If enabled, sizes will not be writed or modified.',
+                                'itgalaxy-woocommerce-1c'
+                            )
+                        ],
+                        'skip_post_images' => [
+                            'type' => 'checkbox',
+                            'title' => esc_html__(
+                                'Do not update product images',
+                                'itgalaxy-woocommerce-1c'
+                            ),
+                            'description' => esc_html__(
+                                'If enabled, the product images will be writed when the product is created '
+                                . '(if there is) and will no longer be changed according to the upload data.',
+                                'itgalaxy-woocommerce-1c'
+                            )
+                        ],
+                        'skip_post_attributes' => [
+                            'type' => 'checkbox',
+                            'title' => esc_html__(
+                                'Do not update product attributes',
+                                'itgalaxy-woocommerce-1c'
+                            ),
+                            'description' => esc_html__(
+                                'If enabled, the product attributes will be writed when the product is created and '
+                                . 'will no longer be changed according to the upload data.',
+                                'itgalaxy-woocommerce-1c'
+                            )
+                        ],
+                        'skip_update_set_attribute_for_variations' => [
+                            'type' => 'checkbox',
+                            'title' => esc_html__(
+                                'Do not change product attribute set for variations',
+                                'itgalaxy-woocommerce-1c'
+                            ),
+                            'description' => esc_html__(
+                                'If enabled, then the set of attributes that are used for the variations will be writed when '
+                                . 'the product is created and will no longer be changed according to the upload data.',
+                                'itgalaxy-woocommerce-1c'
+                            )
+                        ],
+                        'skip_product_cat_name' => [
+                            'type' => 'checkbox',
+                            'title' => esc_html__(
+                                'Do not update category name',
+                                'itgalaxy-woocommerce-1c'
+                            ),
+                            'description' => esc_html__(
+                                'If enabled, the category name will be writed when the category is created and '
+                                . 'will no longer be changed according to the upload data.',
+                                'itgalaxy-woocommerce-1c'
+                            )
+                        ],
+                        'skip_categories' => [
+                            'type' => 'checkbox',
+                            'title' => esc_html__(
+                                'Do not process groups',
+                                'itgalaxy-woocommerce-1c'
+                            ),
+                            'description' => esc_html__(
+                                'If enabled, then categories on the site will not be created / updated based on '
+                                . 'data about groups from 1C, and the category will not be assigned / changed to '
+                                . 'products.',
+                                'itgalaxy-woocommerce-1c'
+                            )
+                        ],
+                    ]
+                ]
+            ]
+        ];
+
+        Section::render($section);
+    }
+}

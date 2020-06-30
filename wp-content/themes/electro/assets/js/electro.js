@@ -339,7 +339,8 @@
 		// Check the value of that cookie and show/hide the notice accordingly
 
 		if ( typeof Cookies != 'undefined' ) {
-			if ( 'hidden' === Cookies.get( 'store_notice' ) ) {
+			var matchedCookieNames = Object.keys( Cookies.getJSON() ).filter( function ( name ) { return name.indexOf("store_notice") === 0 } );
+			if( matchedCookieNames.length > 0 && 'hidden' === Cookies.get( matchedCookieNames[0] ) ) {
 				$('body').addClass( 'woocommerce-store-notice-dismissed' );
 			} else {
 				$('body').removeClass( 'woocommerce-store-notice-dismissed' );
@@ -1128,5 +1129,19 @@
 			}
 		});
 	});
+
+	/*===================================================================================*/
+    /*  Dokan add class
+    /*===================================================================================*/
+
+    if ($(".dokan-store #vendor-biography").length > 0) {
+        $(".dokan-store-tabs ul li.vendor_biography").addClass('active');
+    } else if ($(".dokan-store #store-toc-wrapper").length > 0) {
+        $(".dokan-store-tabs ul li.terms_and_conditions").addClass('active');
+    } else if ($(".dokan-store #reviews").length > 0) {
+        $(".dokan-store-tabs ul li.reviews").addClass('active');
+    } else if ($(".dokan-store #dokan-content").hasClass("store-page-wrap")) {
+        $(".dokan-store-tabs ul li.products").addClass('active');
+    }
 
 })(jQuery);

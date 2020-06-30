@@ -37,7 +37,10 @@ class NovaPoshtaShipping extends WC_Shipping_Method
       $this->init_settings();
       $this->init_form_fields();
 
-	    $this->title = get_option('wc_ukr_shipping_np_method_title', 'Новая Почта');
+      $translator = \kirillbdev\WCUkrShipping\Classes\WCUkrShipping::instance()->singleton('translate_service');
+      $translates = $translator->getTranslates();
+
+	    $this->title = $translates['method_title'];
 
       // Save settings in admin if you have any defined
       add_action('woocommerce_update_options_shipping_' . $this->id, array($this, 'process_admin_options'));

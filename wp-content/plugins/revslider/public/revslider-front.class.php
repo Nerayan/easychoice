@@ -47,21 +47,22 @@ class RevSliderFront extends RevSliderFunctions {
 	public static function add_actions(){
 		global $wp_version, $revslider_is_preview_mode;
 
-		$func		= new RevSliderFunctions();
-		$css		= new RevSliderCssParser();
-		$rs_ver		= apply_filters('revslider_remove_version', RS_REVISION);
-		$global		= $func->get_global_settings();
+		$func	 = new RevSliderFunctions();
+		$css	 = new RevSliderCssParser();
+		$rs_ver	 = apply_filters('revslider_remove_version', RS_REVISION);
+		$global	 = $func->get_global_settings();
 		$inc_global = $func->_truefalse($func->get_val($global, 'allinclude', true));
-		$inc_footer = $func->_truefalse($func->get_val($global, array('script', 'footer'), false));
-		$waitfor	= array('jquery');
-		$widget		= is_active_widget(false, false, 'rev-slider-widget', true);
 		
-		$load		= false;
-		$load		= apply_filters('revslider_include_libraries', $load);
-		$load		= ($revslider_is_preview_mode === true) ? true : $load;
-		$load		= ($inc_global === true) ? true : $load;
-		$load		= (self::has_shortcode('rev_slider') === true) ? true : $load;
-		$load		= ($widget !== false) ? true : $load;
+		$inc_footer = $func->_truefalse($func->get_val($global, array('script', 'footer'), false));
+		$waitfor = array('jquery');
+		$widget	 = is_active_widget(false, false, 'rev-slider-widget', true);
+		
+		$load = false;
+		$load = apply_filters('revslider_include_libraries', $load);
+		$load = ($revslider_is_preview_mode === true) ? true : $load;
+		$load = ($inc_global === true) ? true : $load;
+		$load = (self::has_shortcode('rev_slider') === true) ? true : $load;
+		$load = ($widget !== false) ? true : $load;
 		
 		if($inc_global === false){
 			$output = new RevSliderOutput();
@@ -81,23 +82,11 @@ class RevSliderFront extends RevSliderFunctions {
 		$style_post = ($wp_version < 3.7) ? '</style>' : '';
 		$custom_css = $func->get_static_css();
 		$custom_css = $css->compress_css($custom_css);
-
-		if(trim($custom_css) == ''){
-			$custom_css = '#rs-demo-id {}';
-		}
+		$custom_css = (trim($custom_css) == '') ? '#rs-demo-id {}' : $custom_css;
 
 		wp_add_inline_style('rs-plugin-settings', $style_pre . $custom_css . $style_post);
-
 		wp_enqueue_script(array('jquery'));
-
-		/**
-		 * removed in 6.0
-		 * if($func->get_val($global, 'enable_logs', 'off') == 'on'){
-		 * 	wp_enqueue_script('enable-logs', RS_PLUGIN_URL . 'public/assets/js/jquery.themepunch.enablelog.js', $waitfor, $rs_ver);
-		 * 	$waitfor[] = 'enable-logs';
-		 * }
-		 **/
-		 
+		
 		/**
 		 * dequeue tp-tools to make sure that always the latest is loaded
 		 **/
@@ -107,7 +96,7 @@ class RevSliderFront extends RevSliderFunctions {
 			wp_dequeue_script('tp-tools');
 		}
 		
-		wp_enqueue_script('tp-tools', RS_PLUGIN_URL . 'public/assets/js/revolution.tools.min.js', $waitfor, RS_TP_TOOLS, $inc_footer);
+		wp_enqueue_script('tp-tools', RS_PLUGIN_URL . 'public/assets/js/rbtools.min.js', $waitfor, RS_TP_TOOLS, $inc_footer);
 		
 		if(!file_exists(RS_PLUGIN_PATH.'public/assets/js/rs6.min.js')){
 			wp_enqueue_script('revmin', RS_PLUGIN_URL . 'public/assets/js/dev/rs6.main.js', 'tp-tools', $rs_ver, $inc_footer);
@@ -158,13 +147,8 @@ class RevSliderFront extends RevSliderFunctions {
 		$global	= $func->get_global_settings();
 		$ignore_fa = $func->_truefalse($func->get_val($global, 'fontawesomedisable', false));
 		
-		if($ignore_fa === false && ($fa_icon_var == true || $fa_var == true)){
-			echo "<link rel='stylesheet' property='stylesheet' id='rs-icon-set-fa-icon-css' href='" . RS_PLUGIN_URL . "public/assets/fonts/font-awesome/css/font-awesome.css' type='text/css' media='all' />\n";
-		}
-
-		if($pe_7s_var){
-			echo "<link rel='stylesheet' property='stylesheet' id='rs-icon-set-pe-7s-css' href='" . RS_PLUGIN_URL . "public/assets/fonts/pe-icon-7-stroke/css/pe-icon-7-stroke.css' type='text/css' media='all' />\n";
-		}
+		echo ($ignore_fa === false && ($fa_icon_var == true || $fa_var == true)) ? '<link rel="stylesheet" property="stylesheet" id="rs-icon-set-fa-icon-css" href="' . RS_PLUGIN_URL . 'public/assets/fonts/font-awesome/css/font-awesome.css" type="text/css" media="all" />'."\n" : '';
+		echo ($pe_7s_var) ? '<link rel="stylesheet" property="stylesheet" id="rs-icon-set-pe-7s-css" href="' . RS_PLUGIN_URL . 'public/assets/fonts/pe-icon-7-stroke/css/pe-icon-7-stroke.css" type="text/css" media="all" />'."\n" : '';
 	}
 	
 	
@@ -266,9 +250,9 @@ class RevSliderFront extends RevSliderFunctions {
 	 * @since: 5.0
 	 */
 	public static function add_defer_forscript($url){
-		if(strpos($url, 'rs6.min.js') === false && strpos($url, 'revolution.tools.min.js') === false){
+		if(strpos($url, 'rs6.min.js') === false && strpos($url, 'rbtools.min.js') === false){
 			return $url;
-		} elseif(is_admin()){
+		}elseif(is_admin()){
 			return $url;
 		}else{
 			return $url . "' defer='defer";
@@ -276,7 +260,7 @@ class RevSliderFront extends RevSliderFunctions {
 	}
 	
 	/**
-	 * Add functionality to gutenberg, elementar, visual composer and so on
+	 * Add functionality to gutenberg, elementor, visual composer and so on
 	 **/
 	public static function add_post_editor(){
 		/**
@@ -295,13 +279,21 @@ class RevSliderFront extends RevSliderFunctions {
 			require_once(RS_PLUGIN_PATH . 'admin/includes/shortcode_generator/shortcode_generator.class.php');
 			
 			//Shortcode Wizard Includes
-			add_action('vc_before_init', array('RevSliderShortcodeWizard', 'visual_composer_include')); //VC functionality
+			//WPB Functionality
+			require_once(RS_PLUGIN_PATH . 'admin/includes/shortcode_generator/wpbakery/wpbakery.class.php');
+			add_action('vc_before_init', array('RevSliderWpbakeryShortcode', 'visual_composer_include')); //VC functionality
 			add_action('admin_enqueue_scripts', array('RevSliderShortcodeWizard', 'enqueue_scripts'));
+			add_action('admin_footer', array('RevSliderShortcodeWizard', 'enqueue_files'));
+			//add_action('wp_footer', array('RevSliderShortcodeWizard', 'enqueue_files'));
+			add_action('vc_before_init', array('RevSliderShortcodeWizard', 'add_styles')); //VC functionality
 		}
 		
+		
+
 		//Elementor Functionality
 		require_once(RS_PLUGIN_PATH . 'admin/includes/shortcode_generator/elementor/elementor.class.php');
 		add_action('init', array('RevSliderElementor', 'init'));
+		add_action('elementor/editor/before_enqueue_scripts', array('RevSliderShortcodeWizard', 'enqueue_files'));
 	}
 
 	/**
@@ -320,9 +312,9 @@ class RevSliderFront extends RevSliderFunctions {
 				e.thumbh = e.thumbh===undefined ? 0 : parseInt(e.thumbh);
 				e.tabhide = e.tabhide===undefined ? 0 : parseInt(e.tabhide);
 				e.thumbhide = e.thumbhide===undefined ? 0 : parseInt(e.thumbhide);
-				e.mh = e.mh===undefined || e.mh=="" ? 0 : e.mh;								
-				if(e.layout==="fullscreen" || e.l==="fullscreen")						
-					newh = Math.max(e.mh,window.innerHeight);
+				e.mh = e.mh===undefined || e.mh=="" || e.mh==="auto" ? 0 : parseInt(e.mh,0);		
+				if(e.layout==="fullscreen" || e.l==="fullscreen") 						
+					newh = Math.max(e.mh,window.innerHeight);					
 				else{					
 					e.gw = Array.isArray(e.gw) ? e.gw : [e.gw];
 					for (var i in e.rl) if (e.gw[i]===undefined || e.gw[i]===0) e.gw[i] = e.gw[i-1];					
@@ -349,11 +341,53 @@ class RevSliderFront extends RevSliderFunctions {
 			} catch(e){
 				console.log("Failure at Presize of Slider:" + e)
 			}					   
-		  }
+		  };
 	 */
 	public static function js_set_start_size(){
 		$script = '<script type="text/javascript">';		
-		$script .= 'function setREVStartSize(a){try{var b,c=document.getElementById(a.c).parentNode.offsetWidth;if(c=0===c||isNaN(c)?window.innerWidth:c,a.tabw=void 0===a.tabw?0:parseInt(a.tabw),a.thumbw=void 0===a.thumbw?0:parseInt(a.thumbw),a.tabh=void 0===a.tabh?0:parseInt(a.tabh),a.thumbh=void 0===a.thumbh?0:parseInt(a.thumbh),a.tabhide=void 0===a.tabhide?0:parseInt(a.tabhide),a.thumbhide=void 0===a.thumbhide?0:parseInt(a.thumbhide),a.mh=void 0===a.mh||""==a.mh?0:a.mh,"fullscreen"===a.layout||"fullscreen"===a.l)b=Math.max(a.mh,window.innerHeight);else{for(var d in a.gw=Array.isArray(a.gw)?a.gw:[a.gw],a.rl)(void 0===a.gw[d]||0===a.gw[d])&&(a.gw[d]=a.gw[d-1]);for(var d in a.gh=void 0===a.el||""===a.el||Array.isArray(a.el)&&0==a.el.length?a.gh:a.el,a.gh=Array.isArray(a.gh)?a.gh:[a.gh],a.rl)(void 0===a.gh[d]||0===a.gh[d])&&(a.gh[d]=a.gh[d-1]);var e,f=Array(a.rl.length),g=0;for(var d in a.tabw=a.tabhide>=c?0:a.tabw,a.thumbw=a.thumbhide>=c?0:a.thumbw,a.tabh=a.tabhide>=c?0:a.tabh,a.thumbh=a.thumbhide>=c?0:a.thumbh,a.rl)f[d]=a.rl[d]<window.innerWidth?0:a.rl[d];for(var d in e=f[0],f)e>f[d]&&0<f[d]&&(e=f[d],g=d);var h=c>a.gw[g]+a.tabw+a.thumbw?1:(c-(a.tabw+a.thumbw))/a.gw[g];b=a.gh[g]*h+(a.tabh+a.thumbh)}void 0===window.rs_init_css&&(window.rs_init_css=document.head.appendChild(document.createElement("style"))),document.getElementById(a.c).height=b,window.rs_init_css.innerHTML+="#"+a.c+"_wrapper { height: "+b+"px }"}catch(a){console.log("Failure at Presize of Slider:"+a)}};';
+		$script .= 'function setREVStartSize(e){			
+			try {								
+				var pw = document.getElementById(e.c).parentNode.offsetWidth,
+					newh;
+				pw = pw===0 || isNaN(pw) ? window.innerWidth : pw;
+				e.tabw = e.tabw===undefined ? 0 : parseInt(e.tabw);
+				e.thumbw = e.thumbw===undefined ? 0 : parseInt(e.thumbw);
+				e.tabh = e.tabh===undefined ? 0 : parseInt(e.tabh);
+				e.thumbh = e.thumbh===undefined ? 0 : parseInt(e.thumbh);
+				e.tabhide = e.tabhide===undefined ? 0 : parseInt(e.tabhide);
+				e.thumbhide = e.thumbhide===undefined ? 0 : parseInt(e.thumbhide);
+				e.mh = e.mh===undefined || e.mh=="" || e.mh==="auto" ? 0 : parseInt(e.mh,0);		
+				if(e.layout==="fullscreen" || e.l==="fullscreen") 						
+					newh = Math.max(e.mh,window.innerHeight);				
+				else{					
+					e.gw = Array.isArray(e.gw) ? e.gw : [e.gw];
+					for (var i in e.rl) if (e.gw[i]===undefined || e.gw[i]===0) e.gw[i] = e.gw[i-1];					
+					e.gh = e.el===undefined || e.el==="" || (Array.isArray(e.el) && e.el.length==0)? e.gh : e.el;
+					e.gh = Array.isArray(e.gh) ? e.gh : [e.gh];
+					for (var i in e.rl) if (e.gh[i]===undefined || e.gh[i]===0) e.gh[i] = e.gh[i-1];
+										
+					var nl = new Array(e.rl.length),
+						ix = 0,						
+						sl;					
+					e.tabw = e.tabhide>=pw ? 0 : e.tabw;
+					e.thumbw = e.thumbhide>=pw ? 0 : e.thumbw;
+					e.tabh = e.tabhide>=pw ? 0 : e.tabh;
+					e.thumbh = e.thumbhide>=pw ? 0 : e.thumbh;					
+					for (var i in e.rl) nl[i] = e.rl[i]<window.innerWidth ? 0 : e.rl[i];
+					sl = nl[0];									
+					for (var i in nl) if (sl>nl[i] && nl[i]>0) { sl = nl[i]; ix=i;}															
+					var m = pw>(e.gw[ix]+e.tabw+e.thumbw) ? 1 : (pw-(e.tabw+e.thumbw)) / (e.gw[ix]);					
+
+					newh =  (e.type==="carousel" && e.justify==="true" ? e.gh[ix] : (e.gh[ix] * m)) + (e.tabh + e.thumbh);
+				}			
+				
+				if(window.rs_init_css===undefined) window.rs_init_css = document.head.appendChild(document.createElement("style"));					
+				document.getElementById(e.c).height = newh;
+				window.rs_init_css.innerHTML += "#"+e.c+"_wrapper { height: "+newh+"px }";				
+			} catch(e){
+				console.log("Failure at Presize of Slider:" + e)
+			}					   
+		  };';
 		$script .= '</script>' . "\n";
 		echo apply_filters('revslider_add_setREVStartSize', $script);
 	}

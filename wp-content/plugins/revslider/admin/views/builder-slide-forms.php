@@ -48,15 +48,15 @@ if ($wpml->wpml_exists()) {
 				<div class="form_inner_header"><i class="material-icons">link</i><?php _e('Source', 'revslider');?></div>
 				<!--<div class="form_intoaccordion" data-trigger="#sl_fbg_l1_1"><i class="material-icons">arrow_drop_down</i></div>-->
 				<div class="collapsable">
-					<label_a><?php _e('Type', 'revslider');?></label_a><div class="input_with_buttonextenstion"><select id="slide_bg_type" data-available=".sss_for_*val*" data-unavailable=".sss_notfor_*val*" data-updatetext="#selected_slide_source" data-triggerinp="#slide_bg_*val*_alt,#slide_bg_*val*_title" data-evt="updateslidebasic" data-evtparam="kenburnupdate" data-show=".slidebg_*val*_settings" data-hide=".slide_bg_settings" class="slideinput tos2 nosearchbox easyinit "  data-r="bg.type"><option value="image"><?php _e('Image', 'revslider');?></option><option value="external"><?php _e('External Image', 'revslider');?></option><option value="trans"><?php _e('Transparent', 'revslider');?></option><option value="solid"><?php _e('Colored', 'revslider');?></option><option value="youtube"><?php _e('YouTube Video', 'revslider');?></option><option value="vimeo"><?php _e('Vimeo Video', 'revslider');?></option><option value="html5"><?php _e('HML5 Video', 'revslider');?></option></select>
+					<label_a><?php _e('Type', 'revslider');?></label_a><div class="input_with_buttonextenstion"><select id="slide_bg_type" data-available=".sss_for_*val*" data-unavailable=".sss_notfor_*val*" data-updatetext="#selected_slide_source" data-triggerinp="#slide_bg_*val*_alt,#slide_bg_*val*_title" data-evt="updateslidebasic" data-evtparam="kenburnupdate" data-show=".slidebg_*val*_settings" data-hide=".slide_bg_settings" class="slideinput tos2 nosearchbox easyinit "  data-r="bg.type"><option value="image"><?php _e('Image', 'revslider');?></option><option value="external"><?php _e('External Image', 'revslider');?></option><option value="trans"><?php _e('Transparent', 'revslider');?></option><option value="solid"><?php _e('Colored', 'revslider');?></option><option value="youtube"><?php _e('YouTube Video', 'revslider');?></option><option value="vimeo"><?php _e('Vimeo Video', 'revslider');?></option><option value="html5"><?php _e('HTML5 Video', 'revslider');?></option></select>
 						<div class="buttonextenstion slidebg_image_settings slidebg_external_settings slide_bg_settings slidebg_youtube_settings slidebg_html5_settings slidebg_vimeo_settings">
 							<input class="dontseeme" id="slide_bg_image_path" />
 							<div class="basic_action_button copyclipboard onlyicon dark_action_button" data-clipboard-action="copy" data-clipboard-target="#slide_bg_image_path"><i class="material-icons">link</i></div>
 						</div>
 					</div><!--
 					--><div class="slidebg_image_settings slide_bg_settings">
-						<label_a></label_a><div id="slide_bg_image_btn" data-evt="updateslidebasic" data-evtparam="kenburnupdate" data-r="#slide#.slide.bg.image" data-rid="#slide#.slide.bg.imageId" class="getImageFromMediaLibrary basic_action_button longbutton callEventButton"><i class="material-icons">style</i><?php _e('Media Library', 'revslider');?></div>
-						<label_a></label_a><div id="slide_object_library_btn" data-evt="updateslidebasic" data-evtparam="double" data-r="#slide#.slide.bg.image" data-rid="#slide#.slide.bg.imageId" class="getImageFromObjectLibrary basic_action_button longbutton callEventButton"><i class="material-icons">camera_enhance</i><?php _e('Object Library', 'revslider');?></div>
+						<label_a></label_a><div id="slide_bg_image_btn" data-evt="updateslidebasic" data-evtparam="kenburnupdate" data-r="#slide#.slide.bg.image" data-rid="#slide#.slide.bg.imageId" data-lib="#slide#.slide.bg.imageLib" data-sty="#slide#.slide.bg.imageSourceType" class="getImageFromMediaLibrary basic_action_button longbutton callEventButton"><i class="material-icons">style</i><?php _e('Media Library', 'revslider');?></div>
+						<label_a></label_a><div id="slide_object_library_btn" data-evt="updateslidebasic" data-evtparam="double" data-r="#slide#.slide.bg.image" data-rid="#slide#.slide.bg.imageId" data-lib="#slide#.slide.bg.imageLib" data-sty="#slide#.slide.bg.imageSourceType" class="getImageFromObjectLibrary basic_action_button longbutton callEventButton"><i class="material-icons">camera_enhance</i><?php _e('Object Library', 'revslider');?></div>
 					</div><!--
 					--><div class="slidebg_external_settings slide_bg_settings">
 						<label_a><?php _e('Source', 'revslider');?></label_a><input id="s_ext_src" data-evt="updateslidebasic" data-evtparam="kenburnupdate" class="slideinput easyinit" type="text" data-r="bg.externalSrc" placeholder="<?php _e('Enter Image URL', 'revslider');?>">
@@ -66,19 +66,22 @@ if ($wpml->wpml_exists()) {
 						<label_a><?php _e('BG Color', 'revslider');?></label_a><input type="text" data-evt="updateslidebasic" data-editing="<?php _e('Background Color', 'revslider');?>" name="slide_bg_color" id="s_bg_color" data-visible="true" class="my-color-field slideinput easyinit" data-r="bg.color" value="#fff">
 						<div class="div500"></div>												
 					</div><!--
+					--><div class="slidebg_trans_settings slide_bg_settings">						
+						<div class="div500"></div>												
+					</div><!--
 					--><div class="slidebg_youtube_settings slide_bg_settings">
 						<label_a><?php _e('YouTube ID', 'revslider');?></label_a><input id="s_bg_youtube_src" data-evt="updateslidebasic" class="slideinput easyinit" type="text" data-r="bg.youtube" placeholder="<?php _e('Enter YouTube ID', 'revslider');?>">
 						<div class="div25"></div>
-						<label_a><?php _e('Poster Image', 'revslider');?></label_a><div data-r="#slide#.slide.bg.image" data-f="#slide#.slide.bg.youtube" data-evtparam="double" data-evt="updateslidebasic" class="getImageFromYouTube basic_action_button longbutton "><i class="material-icons">style</i><?php _e('YouTube Poster', 'revslider');?></div>
+						<label_a><?php _e('Poster Image', 'revslider');?></label_a><div data-r="#slide#.slide.bg.image" data-f="#slide#.slide.bg.youtube" data-evtparam="double" data-evt="updateslidebasic" data-lib="#slide#.slide.bg.imageLib" data-sty="#slide#.slide.bg.imageSourceType"  class="getImageFromYouTube basic_action_button longbutton "><i class="material-icons">style</i><?php _e('YouTube Poster', 'revslider');?></div>
 						<label_a></label_a><div data-evt="updateslidebasic" data-r="#slide#.slide.bg.image" data-rid="#slide#.slide.bg.imageId" class="getImageFromMediaLibrary basic_action_button longbutton"><i class="material-icons">style</i><?php _e('Media Library', 'revslider');?></div>
-						<!--<label_a></label_a><div data-evt="updateslidebasic" class="basic_action_button longbutton"><i class="material-icons">camera_enhance</i><?php _e('Object Library', 'revslider');?></div>-->
+						<label_a></label_a><div data-evt="updateslidebasic" data-evtparam="double" data-r="#slide#.slide.bg.image" data-rid="#slide#.slide.bg.imageId" data-lib="#slide#.slide.bg.imageLib" data-sty="#slide#.slide.bg.imageSourceType" class="getImageFromObjectLibrary basic_action_button longbutton callEventButton"><i class="material-icons">camera_enhance</i><?php _e('Object Library', 'revslider');?></div>
 						<label_a></label_a><div data-evt="updateslidebasic" data-r="#slide#.slide.bg.image" data-rid="#slide#.slide.bg.imageId" class="removePosterImage basic_action_button longbutton"><i class="material-icons">delete</i><?php _e('Remove', 'revslider');?></div><span class="linebreak"></span>
 					</div><!--
 					--><div class="slidebg_vimeo_settings slide_bg_settings">
 						<label_a><?php _e('Vimeo ID', 'revslider');?></label_a><input id="s_bg_vimeo_src" data-evt="updateslidebasic" class="slideinput easyinit" type="text" data-r="bg.vimeo" placeholder="<?php _e('Enter Vimeo ID', 'revslider');?>">
 						<div class="div25"></div>
-						<label_a><?php _e('Poster Image', 'revslider');?></label_a><div data-evt="updateslidebasic" data-evtparam="double" data-r="#slide#.slide.bg.image" data-rid="#slide#.slide.bg.imageId" class="getImageFromMediaLibrary basic_action_button  longbutton"><i class="material-icons">style</i><?php _e('Media Library', 'revslider');?></div>
-						<!--<label_a></label_a><div data-evt="updateslidebasic" class="basic_action_button longbutton "><i class="material-icons">camera_enhance</i><?php _e('Object Library', 'revslider');?></div><span class="linebreak"></span>-->
+						<label_a><?php _e('Poster Image', 'revslider');?></label_a><div data-evt="updateslidebasic" data-evtparam="double" data-r="#slide#.slide.bg.image" data-rid="#slide#.slide.bg.imageId" data-lib="#slide#.slide.bg.imageLib" data-sty="#slide#.slide.bg.imageSourceType"  class="getImageFromMediaLibrary basic_action_button  longbutton"><i class="material-icons">style</i><?php _e('Media Library', 'revslider');?></div>
+						<label_a></label_a><div data-evt="updateslidebasic" data-evtparam="double" data-r="#slide#.slide.bg.image" data-rid="#slide#.slide.bg.imageId" data-lib="#slide#.slide.bg.imageLib" data-sty="#slide#.slide.bg.imageSourceType" class="getImageFromObjectLibrary basic_action_button longbutton callEventButton"><i class="material-icons">camera_enhance</i><?php _e('Object Library', 'revslider');?></div>						
 						<label_a></label_a><div data-evt="updateslidebasic" data-r="#slide#.slide.bg.image" data-rid="#slide#.slide.bg.imageId" class="removePosterImage basic_action_button longbutton"><i class="material-icons">delete</i><?php _e('Remove', 'revslider');?></div><span class="linebreak"></span>
 					</div><!--
 					--><div class="slidebg_html5_settings slide_bg_settings">
@@ -88,9 +91,15 @@ if ($wpml->wpml_exists()) {
 						<!--<label_a><?php _e('WEBM', 'revslider');?></label_a><div class="input_with_buttonextenstion"><input id="s_bg_webm_src" data-evt="updateslidebasic" class="slideinput easyinit nmarg" type="text" data-r="bg.mpeg" placeholder="<?php _e('Optional WEBM Source', 'revslider');?>"><div data-evt="updateslidebasic" data-target="#s_bg_webm_src" class="getVideoFromMediaLibrary basic_action_button onlyicon dark_action_button callEventButton"><i class="material-icons">style</i></div></div>-->
 						<!--<label_a><?php _e('OGV', 'revslider');?></label_a><div class="input_with_buttonextenstion"><input id="s_bg_ogv_src" data-evt="updateslidebasic" class="slideinput easyinit nmarg" type="text" data-r="bg.ogv" placeholder="<?php _e('Optional OGV Source', 'revslider');?>"><div data-evt="updateslidebasic" data-target="#s_bg_ogv_src" class="getVideoFromMediaLibrary basic_action_button  onlyicon dark_action_button callEventButton"><i class="material-icons">style</i></div></div>-->
 						<div class="div25"></div>
-						<label_a><?php _e('Poster Image', 'revslider');?></label_a><div data-evt="updateslidebasic" data-evtparam="double" data-r="#slide#.slide.bg.image" data-rid="#slide#.slide.bg.imageId" class="getImageFromMediaLibrary basic_action_button longbutton "><i class="material-icons">style</i><?php _e('Media Library', 'revslider');?></div>
+						<label_a><?php _e('Poster Image', 'revslider');?></label_a><div data-evt="updateslidebasic" data-evtparam="double" data-r="#slide#.slide.bg.image" data-rid="#slide#.slide.bg.imageId" data-lib="#slide#.slide.bg.imageLib" data-sty="#slide#.slide.bg.imageSourceType" class="getImageFromMediaLibrary basic_action_button longbutton "><i class="material-icons">style</i><?php _e('Media Library', 'revslider');?></div>
+						<label_a></label_a><div  data-evt="updateslidebasic" data-evtparam="double" data-r="#slide#.slide.bg.image" data-rid="#slide#.slide.bg.imageId" data-lib="#slide#.slide.bg.imageLib" data-sty="#slide#.slide.bg.imageSourceType" class="getImageFromObjectLibrary basic_action_button longbutton callEventButton"><i class="material-icons">camera_enhance</i><?php _e('Object Library', 'revslider');?></div>
 						<!--<label_a></label_a><div data-evt="updateslidebasic" class="basic_action_button longbutton "><i class="material-icons">camera_enhance</i><?php _e('Object Library', 'revslider');?></div>-->
-						<label_a></label_a><div data-evt="updateslidebasic" data-r="#slide#.slide.bg.image" data-rid="#slide#.slide.bg.imageId" class="removePosterImage basic_action_button longbutton"><i class="material-icons">delete</i><?php _e('Remove', 'revslider');?></div><span class="linebreak"></span>
+						<label_a></label_a><div data-evt="updateslidebasic" data-r="#slide#.slide.bg.image" data-rid="#slide#.slide.bg.imageId" data-lib="#slide#.slide.bg.imageLib" data-sty="#slide#.slide.bg.imageSourceType" class="removePosterImage basic_action_button longbutton"><i class="material-icons">delete</i><?php _e('Remove', 'revslider');?></div><span class="linebreak"></span>
+					</div><!--					
+					--><div class="slidebg_image_settings slidebg_vimeo_settings slidebg_html5_settings slidebg_youtube_settings slide_bg_settings">
+						<div style="display:none"><label_a class="singlerow"><?php _e('Used Library', 'revslider');?></label_a><select class="slideinput easyinit" data-r="bg.imageLib" data-show="#slidebg_srctype_*val*" data-hide=".slidebg_srctype_all" data-showprio="show"><option value="">Nothing</option><option value="objectlibrary">Objectlibrary</option><option value="medialibrary">MediaLibrary</option></select></div>
+						<div id="slidebg_srctype_objectlibrary" class="slidebg_srctype_all"><label_a class="singlerow"><?php _e('Source Type', 'revslider');?></label_a><select data-theme="dark" id="slide_bg_img_ssize_a" class="slideinput tos2 nosearchbox easyinit" data-evt="getNewImageSize" data-evtparam="slidebg.object" data-r="bg.imageSourceType"><option value="100" selected="selected"><?php _e("Original", 'revslider');?></option><option value="75" selected="selected"><?php _e("Large", 'revslider');?></option><option value="50" selected="selected"><?php _e("Medium", 'revslider');?></option><option value="25" selected="selected"><?php _e("Small", 'revslider');?></option><option value="10" selected="selected"><?php _e("Extra Small", 'revslider');?></option></select></div>
+						<div id="slidebg_srctype_medialibrary" class="slidebg_srctype_all"><label_a class="singlerow"><?php _e('Source Type', 'revslider');?></label_a><select data-theme="dark" id="slide_bg_img_ssize_b" class="slideinput tos2 nosearchbox easyinit" data-evt="getNewImageSize" data-evtparam="slidebg.media"  data-r="bg.imageSourceType"><option value="auto" selected="selected"><?php _e("Default Setting", 'revslider');?></option><?php foreach ($img_sizes as $imghandle => $imgSize) { echo '<option value="' . $imghandle . '">' . $imgSize . '</option>';}?></select></div>
 					</div><!--
 					--><div class="slidebg_html5_settings slide_bg_settings slidebg_vimeo_settings slidebg_youtube_settings slidebg_image_settings slidebg_external_settings"><!--
 						--><div class="div25"></div><!--
@@ -107,15 +116,6 @@ if ($wpml->wpml_exists()) {
 				<div class="form_inner_header"><i class="material-icons">chrome_reader_mode</i><span id="selected_slide_source"></span><?php _e('Settings', 'revslider');?></div>
 				<!--<div class="form_intoaccordion" data-trigger="#sl_fbg_l1_2"><i class="material-icons">arrow_drop_down</i></div>-->
 				<div class="collapsable">
-
-					<!-- BG IMAGE SIZE -->
-					<div class="slidebg_image_settings slide_bg_settings">
-						<label_a><?php _e('Source Size', 'revslider');?></label_a><select data-theme="dark" id="slide_bg_img_ssize"  class="slideinput tos2 searchbox easyinit "  data-r="bg.imageSourceType">
-						<?php
-foreach ($img_sizes as $imghandle => $imgSize) {
-	echo '<option value="' . $imghandle . '">' . $imgSize . '</option>';
-}?></select><span class="linebreak"></span>
-					</div>
 
 					<!-- BACKGROUND / COVER IMAGE SETTINGS -->
 					<div class="slidebg_image_settings slidebg_external_settings slide_bg_settings">
@@ -336,7 +336,7 @@ foreach ($img_sizes as $imghandle => $imgSize) {
 				<div class="form_inner_header"><i class="material-icons">blur_on</i><?php _e('Filters', 'revslider');?></div>
 				<!--<div class="form_intoaccordion" data-trigger="#sl_fbg_l1_3"><i class="material-icons">arrow_drop_down</i></div>-->
 				<div class="collapsable">
-					<label_a><?php _e('BG Filter', 'revslider');?></label_a><select data-theme="dark" id="slide_bg_filter" class="slideinput tos2 nosearchbox easyinit" data-evtparam="double" data-evt="updateslidebasic" data-unselect=".filter_selector" data-select="#filter_*val*"  data-r="bg.mediaFilter">
+					<label_a><?php _e('BG Filter', 'revslider');?></label_a><select data-theme="dark" id="slide_bg_filter" class="slideinput tos2 nosearchbox easyinit" data-evtparam="double" data-show=".*val*_warning" data-hide=".filter_warning" data-evt="updateslidebasic" data-unselect=".filter_selector" data-select="#filter_*val*"  data-r="bg.mediaFilter">
 								<option value="none">No Filter</option>
 									<option value="_1977">1977</option>
 									<option value="aden">Aden</option>
@@ -384,6 +384,12 @@ foreach ($img_sizes as $imghandle => $imgSize) {
 						--><div id="filter_willow" data-val="willow" data-hoverevtparam="willow" data-leaveevtparam="double" data-leaveevt="updateslidebasic" data-select="#slide_bg_filter" data-hoverevt="showSlideFilter" class="filter_selector callhoverevt triggerselect filter_willow inst-filter-griditem " data-name="Willow"><div class="inst-filter-griditem-img willow"></div></div><!--
 						--><div id="filter_xpro2" data-val="xpro2" data-hoverevtparam="xpro2" data-leaveevtparam="double" data-leaveevt="updateslidebasic" data-select="#slide_bg_filter" data-hoverevt="showSlideFilter" class="filter_selector callhoverevt triggerselect filter_xpro2 inst-filter-griditem " data-name="X-pro"><div class="inst-filter-griditem-img xpro2"></div></div>
 					</div>
+					<div class="div25"></div>					
+					<row class="direktrow filter_warning earlybird_warning, lark_warning moon_warning toaster_warning willow_warning xpro2_warning">
+						<labelhalf><i class="material-icons vmi">sms_failed</i></labelhalf>
+						<contenthalf><div class="function_info"><?php _e('The Filter may not work with HTML5 Videos in Internet Explorer and Edge Browsers', 'revslider');?></div></contenthalf>
+					</row>
+					
 				</div><!-- END OF COLLAPSABLE -->
 			</div><!-- END OF FILTER SETTINGS -->
 		</div>
@@ -470,7 +476,7 @@ foreach ($img_sizes as $imghandle => $imgSize) {
 							<oneshort><label_icon class="ui_blur_end"></label_icon><input data-allowed="px" data-numeric="true" data-evt="updateKenBurnSettings" data-evtparam="end" id="sl_pz_blure" class="slideinput easyinit verysmallinput valueduekeyboard" data-min="0" data-max="100" type="text" data-r="panzoom.blurEnd"></oneshort>
 						</row>
 
-						<label_a><?php _e('Easing', 'revslider')?></label_a><select data-evt="updateKenBurnSettings" id="sl_pz_ease" class="slideinput tos2 nosearchbox easyinit" data-theme="dark" data-r="panzoom.ease"><option value="Linear.easeNone">Linear.easeNone</option><option value="Power0.easeIn">Power0.easeIn</option><option value="Power0.easeInOut">Power0.easeInOut</option><option value="Power0.easeOut">Power0.easeOut</option><option value="Power1.easeIn">Power1.easeIn</option><option value="Power1.easeInOut">Power1.easeInOut</option><option value="Power1.easeOut">Power1.easeOut</option><option value="Power2.easeIn">Power2.easeIn</option><option value="Power2.easeInOut">Power2.easeInOut</option><option value="Power2.easeOut">Power2.easeOut</option><option value="Power3.easeIn">Power3.easeIn</option><option value="Power3.easeInOut">Power3.easeInOut</option><option value="Power3.easeOut">Power3.easeOut</option><option value="Power4.easeIn">Power4.easeIn</option><option value="Power4.easeInOut">Power4.easeInOut</option><option value="Power4.easeOut">Power4.easeOut</option><option value="Back.easeIn">Back.easeIn</option><option value="Back.easeInOut">Back.easeInOut</option><option value="Back.easeOut">Back.easeOut</option><option value="Bounce.easeIn">Bounce.easeIn</option><option value="Bounce.easeInOut">Bounce.easeInOut</option><option value="Bounce.easeOut">Bounce.easeOut</option><option value="Circ.easeIn">Circ.easeIn</option><option value="Circ.easeInOut">Circ.easeInOut</option><option value="Circ.easeOut">Circ.easeOut</option><option value="Elastic.easeIn">Elastic.easeIn</option><option value="Elastic.easeInOut">Elastic.easeInOut</option><option value="Elastic.easeOut">Elastic.easeOut</option><option value="Expo.easeIn">Expo.easeIn</option><option value="Expo.easeInOut">Expo.easeInOut</option><option value="Expo.easeOut">Expo.easeOut</option><option value="Sine.easeIn">Sine.easeIn</option><option value="Sine.easeInOut">Sine.easeInOut</option><option value="Sine.easeOut">Sine.easeOut</option><option value="SlowMo.ease">SlowMo.ease</option></select><span class="linebreak"></span>
+						<label_a><?php _e('Easing', 'revslider')?></label_a><select data-evt="updateKenBurnSettings" id="sl_pz_ease" class="slideinput tos2 nosearchbox easyinit" data-theme="dark" data-r="panzoom.ease"><option value="none">none</option><option value="power0.in">power0.in</option><option value="power0.inOut">power0.inOut</option><option value="power0.out">power0.out</option><option value="power1.in">power1.in</option><option value="power1.inOut">power1.inOut</option><option value="power1.out">power1.out</option><option value="power2.in">power2.in</option><option value="power2.inOut">power2.inOut</option><option value="power2.out">power2.out</option><option value="power3.in">power3.in</option><option value="power3.inOut">power3.inOut</option><option value="power3.out">power3.out</option><option value="power4.in">power4.in</option><option value="power4.inOut">power4.inOut</option><option value="power4.out">power4.out</option><option value="back.in">back.in</option><option value="back.inOut">back.inOut</option><option value="back.out">back.out</option><option value="bounce.in">bounce.in</option><option value="bounce.inOut">bounce.inOut</option><option value="bounce.out">bounce.out</option><option value="circ.in">circ.in</option><option value="circ.inOut">circ.inOut</option><option value="circ.out">circ.out</option><option value="elastic.in">elastic.in</option><option value="elastic.inOut">elastic.inOut</option><option value="elastic.out">elastic.out</option><option value="expo.in">expo.in</option><option value="expo.inOut">expo.inOut</option><option value="expo.out">expo.out</option><option value="sine.in">sine.in</option><option value="sine.inOut">sine.inOut</option><option value="sine.out">sine.out</option><option value="slow">slow</option></select><span class="linebreak"></span>
 						<label_a><?php _e('Duration', 'revslider');?></label_a><input data-allowed="ms" data-numeric="true" data-evt="updateKenBurnSettings" id="sl_pz_dur" class="slideinput easyinit valueduekeyboard withsuffix" data-suffix="ms" data-min="0" data-max="1000000" type="text" data-r="panzoom.duration">
 						<div id="kenburn_timeline"><div class="pz_timedone"></div><div class="pz_pin"></div></div>
 						<div id="kenburn_simulator" data-states="play,stop" data-start_state="play" data-stop="previewKenBurn" data-stop_state="" data-stop_icon="stop" data-play="previewStopKenBurn"  data-play_state="" data-play_icon="play_arrow" class="basic_action_button onlyicon switch_button"><i class="switch_button_icon material-icons"></i><span class="switch_button_state"></span></div>
@@ -541,12 +547,18 @@ foreach ($img_sizes as $imghandle => $imgSize) {
 						</select><span class="linebreak"></span>
 						<div class="slidelink_seo_subs" id="slidelink_regular_seo">
 							<label_a><?php _e('URL', 'revslider');?></label_a><input placeholder="Enter URL to link to" id="slide_ls_link" class="slideinput easyinit" type="text" data-r="seo.link"><span class="linebreak"></span>
+							<label_a><?php _e('URL Help', 'revslider');?></label_a><select data-theme="dark" id="slide_ls_url_help" class="slideinput tos2 nosearchbox easyinit"  data-r="seo.linkHelp">
+								<option value="http"><?php _e('http://', 'revslider');?></option>
+								<option value="https"><?php _e('https://', 'revslider');?></option>
+								<option value="auto"><?php _e('Auto http / https', 'revslider');?></option>
+								<option value="keep"><?php _e('Keep as it is', 'revslider');?></option>	
+							</select>
 							<label_a><?php _e('Target', 'revslider');?></label_a><select data-theme="dark" id="slide_ls_link_target" class="slideinput tos2 nosearchbox easyinit"  data-r="seo.target">
-							<option value="_self"><?php _e('_self', 'revslider');?></option>
-							<option value="_blank"><?php _e('_blank', 'revslider');?></option>
-							<option value="_top"><?php _e('_top', 'revslider');?></option>
-							<option value="_parent"><?php _e('_parent', 'revslider');?></option>														
-						</select>							
+								<option value="_self"><?php _e('_self', 'revslider');?></option>
+								<option value="_blank"><?php _e('_blank', 'revslider');?></option>
+								<option value="_top"><?php _e('_top', 'revslider');?></option>
+								<option value="_parent"><?php _e('_parent', 'revslider');?></option>														
+							</select>							
 						</div>
 						<div class="slidelink_seo_subs" id="slidelink_slide_seo">
 							<label_a><?php _e('Link to Slide', 'revslider');?></label_a><select data-theme="dark" id="slide_seo_linktoslide" class="slideinput tos2 nosearchbox easyinit"  data-r="seo.slideLink"></select><span class="linebreak"></span>

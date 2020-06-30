@@ -45,7 +45,6 @@ class RevSliderWpml extends RevSliderFunctions {
 	 * get languages array
 	 */
 	public function getArrLanguages($get_all = true){
-		
 		$this->validateWpmlExists();
 		
 		$langs		= apply_filters('wpml_active_languages', array());
@@ -170,8 +169,6 @@ class RevSliderWpml extends RevSliderFunctions {
 			$this->cur_lang = apply_filters('wpml_current_language', null);
 			do_action('wpml_switch_language', $lang);
 		}
-		
-		
 	}
 	
 	

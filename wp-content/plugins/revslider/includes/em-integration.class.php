@@ -27,7 +27,6 @@ class RevSliderEventsManager extends RevSliderFunctions {
 	 * @before: RevSliderEventsManager::getArrFilterTypes()
 	 */
 	public static function get_filter_types(){
-		
 		return array(
 			'none'		=> __('All Events', 'revslider'),
 			'today'		=> __('Today', 'revslider'),
@@ -114,40 +113,37 @@ class RevSliderEventsManager extends RevSliderFunctions {
 	 * @before: RevSliderEventsManager::getEventPostData()
 	 */
 	public static function get_event_post_data($postID){
-		if(self::isEventsExists() == false)
-			return array();
+		if(self::isEventsExists() == false) return array();
 		
 		$postType = get_post_type($postID);
 		
-		if($postType != EM_POST_TYPE_EVENT){
-			$response = array();
-		}else{
-			$f			 = new RevSliderFunctions();
-			$event		 = new EM_Event($postID, 'post_id');
-			$location	 = $event->get_location();
-			$ev			 = $event->to_array();
-			$loc		 = $location->to_array();
-			$date_format = get_option('date_format');
-			$time_format = get_option('time_format');
-			
-			$response = array(
-				'id'				 => $f->get_val($ev, 'event_id'),
-				'start_date'		 => date_format(date_create_from_format('Y-m-d', $f->get_val($ev, 'event_start_date')), $date_format),
-				'end_date'			 => date_format(date_create_from_format('Y-m-d', $f->get_val($ev, 'event_end_date')), $date_format),
-				'start_time'		 => date_format(date_create_from_format('H:i:s', $f->get_val($ev, 'event_start_time')), $time_format),
-				'end_time'			 => date_format(date_create_from_format('H:i:s', $f->get_val($ev, 'event_end_time')), $time_format),
-				'location_name'		 => $f->get_val($loc, 'location_name'),
-				'location_address'	 => $f->get_val($loc, 'location_address'),
-				'location_slug'		 => $f->get_val($loc, 'location_slug'),
-				'location_town'		 => $f->get_val($loc, 'location_town'),
-				'location_state'	 => $f->get_val($loc, 'location_state'),
-				'location_postcode'	 => $f->get_val($loc, 'location_postcode'),
-				'location_region'	 => $f->get_val($loc, 'location_region'),
-				'location_country'	 => $f->get_val($loc, 'location_country'),
-				'location_latitude'	 => $f->get_val($loc, 'location_latitude'),
-				'location_longitude' => $f->get_val($loc, 'location_longitude')
-			);
-		}
+		if($postType != EM_POST_TYPE_EVENT) return array();
+	
+		$f			 = new RevSliderFunctions();
+		$event		 = new EM_Event($postID, 'post_id');
+		$location	 = $event->get_location();
+		$ev			 = $event->to_array();
+		$loc		 = $location->to_array();
+		$date_format = get_option('date_format');
+		$time_format = get_option('time_format');
+		
+		$response = array(
+			'id'				 => $f->get_val($ev, 'event_id'),
+			'start_date'		 => date_format(date_create_from_format('Y-m-d', $f->get_val($ev, 'event_start_date')), $date_format),
+			'end_date'			 => date_format(date_create_from_format('Y-m-d', $f->get_val($ev, 'event_end_date')), $date_format),
+			'start_time'		 => date_format(date_create_from_format('H:i:s', $f->get_val($ev, 'event_start_time')), $time_format),
+			'end_time'			 => date_format(date_create_from_format('H:i:s', $f->get_val($ev, 'event_end_time')), $time_format),
+			'location_name'		 => $f->get_val($loc, 'location_name'),
+			'location_address'	 => $f->get_val($loc, 'location_address'),
+			'location_slug'		 => $f->get_val($loc, 'location_slug'),
+			'location_town'		 => $f->get_val($loc, 'location_town'),
+			'location_state'	 => $f->get_val($loc, 'location_state'),
+			'location_postcode'	 => $f->get_val($loc, 'location_postcode'),
+			'location_region'	 => $f->get_val($loc, 'location_region'),
+			'location_country'	 => $f->get_val($loc, 'location_country'),
+			'location_latitude'	 => $f->get_val($loc, 'location_latitude'),
+			'location_longitude' => $f->get_val($loc, 'location_longitude')
+		);
 		
 		return $response;
 	}
@@ -177,5 +173,5 @@ class RevSliderEventsManager extends RevSliderFunctions {
 	
 }
 
-$rs_em = new RevSliderEventsManager();
+//$rs_em = new RevSliderEventsManager();
 ?>

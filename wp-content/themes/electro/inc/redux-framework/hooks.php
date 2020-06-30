@@ -39,6 +39,14 @@ add_filter( 'electro_register_benefits',                       'redux_apply_myac
 add_filter( 'electro_register_benefits_title',                 'redux_apply_myaccount_register_benefits_title', 10 );
 add_filter( 'electro_enable_single_product_timer',             'redux_toggle_single_product_timer',             10 );
 
+add_filter( 'electro_is_dokan_electro_store_list_version',     'redux_apply_dokan_electro_store_list_version',  10 );
+add_filter( 'electro_is_dokan_store_list_sidebar_enable',      'redux_toggle_dokan_store_list_sidebar',         10 );
+add_filter( 'electro_is_dokan_electro_store_style',            'redux_toggle_dokan_electro_store_style',        10 );
+add_filter( 'electro_dokan_store_version',                     'redux_apply_dokan_store_version',               10 );
+add_filter( 'electro_is_dokan_store_sidebar_enable',           'redux_toggle_dokan_store_sidebar',              10 );
+add_filter( 'electro_is_dokan_store_owner_info_enable',        'redux_toggle_dokan_store_owner_info',           10 );
+add_filter( 'electro_dokan_store_top_jumbotron_id',            'redux_apply_dokan_store_top_jumbotron_id',      10 );
+
 // Header Filters
 add_filter( 'electro_off_canvas_cart',                         'redux_toggle_off_canvas_cart',                  10 );
 add_filter( 'electro_enable_wc_template_loop_sale',            'redux_toggle_wc_template_loop_sale',            10 );
@@ -73,6 +81,7 @@ add_filter( 'electro_user_account_nav_menu_ID',                'redux_apply_head
 
 // Footer Filters
 add_filter( 'electro_footer_brands_carousel',                  'redux_toggle_footer_brands_carousel',           10 );
+add_filter( 'ec_footer_bc_carousel_args',                      'redux_toggle_bc_touch_drag' );
 add_filter( 'electro_footer_brands_number',                    'redux_apply_footer_brands_number',              10 );
 add_filter( 'electro_footer_widgets',                          'redux_toggle_footer_widgets',                   10 );
 add_filter( 'electro_footer_widgets_v2',                       'redux_toggle_footer_widgets',                   10 );

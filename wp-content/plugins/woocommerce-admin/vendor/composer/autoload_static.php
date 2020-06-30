@@ -4,14 +4,8 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInite5f66320fab45af20add5b7df2d8d114
+class ComposerStaticInit1ccca1e821a7152301956431e196834e
 {
-    public static $files = array (
-        'fd9f5df955e5151499fd2f642091d0a0' => __DIR__ . '/../..' . '/includes/core-functions.php',
-        'b907791bfd099af1d822ca201c3f03f0' => __DIR__ . '/../..' . '/includes/feature-config.php',
-        'c440206b9a4cb2ee803d8c41ad1f292a' => __DIR__ . '/../..' . '/includes/page-controller-functions.php',
-    );
-
     public static $prefixLengthsPsr4 = array (
         'C' => 
         array (
@@ -20,6 +14,7 @@ class ComposerStaticInite5f66320fab45af20add5b7df2d8d114
         'A' => 
         array (
             'Automattic\\WooCommerce\\Admin\\' => 29,
+            'Automattic\\Jetpack\\Autoloader\\' => 30,
         ),
     );
 
@@ -32,13 +27,17 @@ class ComposerStaticInite5f66320fab45af20add5b7df2d8d114
         array (
             0 => __DIR__ . '/../..' . '/src',
         ),
+        'Automattic\\Jetpack\\Autoloader\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/automattic/jetpack-autoloader/src',
+        ),
     );
 
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInite5f66320fab45af20add5b7df2d8d114::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInite5f66320fab45af20add5b7df2d8d114::$prefixDirsPsr4;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit1ccca1e821a7152301956431e196834e::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit1ccca1e821a7152301956431e196834e::$prefixDirsPsr4;
 
         }, null, ClassLoader::class);
     }

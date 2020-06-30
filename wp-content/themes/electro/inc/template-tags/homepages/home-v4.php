@@ -18,6 +18,7 @@ if ( ! function_exists( 'electro_home_v4_slider_with_ads_block' ) ) {
         }
 
         $animation = isset( $home_v4['swa']['animation'] ) ? $home_v4['swa']['animation'] : '';
+        $ad_image_attachment_size = apply_filters( 'electro_ad_image_attachment_size', 'full', 'v4' );
 
         $args = apply_filters( 'electro_home_v4_slider_with_ads_block_args', array(
             'section_class'     => '',
@@ -30,6 +31,7 @@ if ( ! function_exists( 'electro_home_v4_slider_with_ads_block' ) ) {
                     'action_link'   => isset( $home_v4['swa']['ads_args'][0]['action_link'] ) ? $home_v4['swa']['ads_args'][0]['action_link'] : '#',
                     'ad_image'      => isset( $home_v4['swa']['ads_args'][0]['ad_image'] ) ? wp_get_attachment_url( $home_v4['swa']['ads_args'][0]['ad_image'] ) : '',
                     'el_class'      => isset( $home_v4['swa']['ads_args'][0]['el_class'] ) ? $home_v4['swa']['ads_args'][0]['el_class'] : '',
+                    'ad_image_attachment' => isset( $home_v4['swa']['ads_args'][0]['ad_image'] ) ? wp_get_attachment_image( $home_v4['swa']['ads_args'][0]['ad_image'], $ad_image_attachment_size ) : '',
                 ),
                 array(
                     'ad_text'       => isset( $home_v4['swa']['ads_args'][1]['ad_text'] ) ? $home_v4['swa']['ads_args'][1]['ad_text'] : wp_kses_post( __( 'Shop the<br><strong>Hottest</strong><br>Products', 'electro' ) ),
@@ -37,6 +39,7 @@ if ( ! function_exists( 'electro_home_v4_slider_with_ads_block' ) ) {
                     'action_link'   => isset( $home_v4['swa']['ads_args'][1]['action_link'] ) ? $home_v4['swa']['ads_args'][1]['action_link'] : '#',
                     'ad_image'      => isset( $home_v4['swa']['ads_args'][1]['ad_image'] ) ? wp_get_attachment_url( $home_v4['swa']['ads_args'][1]['ad_image'] ) : '',
                     'el_class'      => isset( $home_v4['swa']['ads_args'][1]['el_class'] ) ? $home_v4['swa']['ads_args'][1]['el_class'] : '',
+                    'ad_image_attachment' => isset( $home_v4['swa']['ads_args'][1]['ad_image'] ) ? wp_get_attachment_image( $home_v4['swa']['ads_args'][1]['ad_image'], $ad_image_attachment_size ) : '',
                 ),
                 array(
                     'ad_text'       => isset( $home_v4['swa']['ads_args'][2]['ad_text'] ) ? $home_v4['swa']['ads_args'][2]['ad_text'] : wp_kses_post( __( 'Tablets,<br> Smartphones <br><strong>and more</strong>', 'electro' ) ),
@@ -44,6 +47,7 @@ if ( ! function_exists( 'electro_home_v4_slider_with_ads_block' ) ) {
                     'action_link'   => isset( $home_v4['swa']['ads_args'][2]['action_link'] ) ? $home_v4['swa']['ads_args'][2]['action_link'] : '#',
                     'ad_image'      => isset( $home_v4['swa']['ads_args'][2]['ad_image'] ) ? wp_get_attachment_url( $home_v4['swa']['ads_args'][2]['ad_image'] ) : '',
                     'el_class'      => isset( $home_v4['swa']['ads_args'][2]['el_class'] ) ? $home_v4['swa']['ads_args'][2]['el_class'] : '',
+                    'ad_image_attachment' => isset( $home_v4['swa']['ads_args'][2]['ad_image'] ) ? wp_get_attachment_image( $home_v4['swa']['ads_args'][2]['ad_image'], $ad_image_attachment_size ) : '',
                 ),
             )
         ) );

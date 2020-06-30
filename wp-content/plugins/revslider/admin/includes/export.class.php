@@ -71,7 +71,7 @@ class RevSliderSliderExport extends RevSliderSlider {
 		}
 		
 		//check if an update is needed
-		if(version_compare($this->get_param(array('settings', 'version')), get_option('revslider_update_revision', '6.0.0'), '<')){
+		if(version_compare($this->get_param(array('settings', 'version')), get_option('revslider_update_version', '6.0.0'), '<')){
 			$upd = new RevSliderPluginUpdate();
 			$upd->upgrade_slider_to_latest($this);
 			$this->init_by_id($id);
@@ -87,6 +87,7 @@ class RevSliderSliderExport extends RevSliderSlider {
 		//$this->add_used_animations();
 		$this->add_used_navigations();
 		$this->add_used_svg();
+		
 		$this->modify_used_data();
 		
 		$this->serialize_export_data();
@@ -150,6 +151,9 @@ class RevSliderSliderExport extends RevSliderSlider {
 				if($this->get_val($this->export_slides[$k], array('params', 'thumb', 'customAdminThumbSrcId'), false) !== false){
 					unset($this->export_slides[$k]['params']['thumb']['customAdminThumbSrcId']);
 				}
+				if($this->get_val($this->export_slides[$k], array('params', 'bg', 'lastLoadedImage'), false) !== false){
+					unset($this->export_slides[$k]['params']['bg']['lastLoadedImage']);
+				}
 			}
 		}
 		
@@ -166,6 +170,9 @@ class RevSliderSliderExport extends RevSliderSlider {
 				}
 				if($this->get_val($this->static_slide[$k], array('params', 'thumb', 'customAdminThumbSrcId'), false) !== false){
 					unset($this->static_slide[$k]['params']['thumb']['customAdminThumbSrcId']);
+				}
+				if($this->get_val($this->static_slide[$k], array('params', 'bg', 'lastLoadedImage'), false) !== false){
+					unset($this->static_slide[$k]['params']['bg']['lastLoadedImage']);
 				}
 			}
 		}
@@ -238,6 +245,12 @@ class RevSliderSliderExport extends RevSliderSlider {
 							$medium		= $this->get_val($layer, array('media', 'thumbs', 'medium'));
 							$small		= $this->get_val($layer, array('media', 'thumbs', 'small'));
 							
+							$very_big	= (is_array($very_big) && isset($very_big['url'])) ? $very_big['url'] : $very_big;
+							$big		= (is_array($big) && isset($big['url'])) ? $big['url'] : $big;
+							$large		= (is_array($large) && isset($large['url'])) ? $large['url'] : $large;
+							$medium		= (is_array($medium) && isset($medium['url'])) ? $medium['url'] : $medium;
+							$small		= (is_array($small) && isset($small['url'])) ? $small['url'] : $small;
+							
 							if($very_big != '') $this->used_images[$very_big] = true;
 							if($big != '')		$this->used_images[$big] = true;
 							if($large != '')	$this->used_images[$large] = true;
@@ -259,15 +272,22 @@ class RevSliderSliderExport extends RevSliderSlider {
 			foreach($this->all_slides as $k => $slide){
 				$params = $this->get_val($slide, 'params', array());
 				$layers = $this->get_val($slide, 'layers', array());
+				$static = $this->get_val($params, array('static', 'isstatic'), false);
 				//html5 video
 				if($this->get_val($params, array('bg', 'type')) == 'html5'){
 					if($this->get_val($params, array('bg', 'mpeg')) != '')	$this->used_videos[$this->get_val($params, array('bg', 'mpeg'))] = true;
 					if($this->get_val($params, array('bg', 'webm')) != '')	$this->used_videos[$this->get_val($params, array('bg', 'webm'))] = true;
 					if($this->get_val($params, array('bg', 'ogv')) != '')	$this->used_videos[$this->get_val($params, array('bg', 'ogv'))] = true;
 				}else{
-					if($this->get_val($params, array('bg', 'mpeg')) != '')	$this->set_val($this->export_slides, array($k, 'params', 'bg', 'mpeg'), '');
-					if($this->get_val($params, array('bg', 'webm')) != '')	$this->set_val($this->export_slides, array($k, 'params', 'bg', 'webm'), '');
-					if($this->get_val($params, array('bg', 'ogv')) != '')	$this->set_val($this->export_slides, array($k, 'params', 'bg', 'ogv'), '');
+					if($static){
+						if($this->get_val($params, array('bg', 'mpeg')) != '')	$this->set_val($this->static_slide, array(0, 'params', 'bg', 'mpeg'), '');
+						if($this->get_val($params, array('bg', 'webm')) != '')	$this->set_val($this->static_slide, array(0, 'params', 'bg', 'webm'), '');
+						if($this->get_val($params, array('bg', 'ogv')) != '')	$this->set_val($this->static_slide, array(0, 'params', 'bg', 'ogv'), '');
+					}else{
+						if($this->get_val($params, array('bg', 'mpeg')) != '')	$this->set_val($this->export_slides, array($k, 'params', 'bg', 'mpeg'), '');
+						if($this->get_val($params, array('bg', 'webm')) != '')	$this->set_val($this->export_slides, array($k, 'params', 'bg', 'webm'), '');
+						if($this->get_val($params, array('bg', 'ogv')) != '')	$this->set_val($this->export_slides, array($k, 'params', 'bg', 'ogv'), '');
+					}
 				}
 				
 				//image thumbnail
@@ -279,7 +299,6 @@ class RevSliderSliderExport extends RevSliderSlider {
 								if($this->get_val($layer, array('media', 'mp4Url'), '') != '')	$this->used_videos[$this->get_val($layer, array('media', 'mp4Url'), '')] = true;
 								if($this->get_val($layer, array('media', 'webmUrl'), '') != '')	$this->used_videos[$this->get_val($layer, array('media', 'webmUrl'), '')] = true;
 								if($this->get_val($layer, array('media', 'ogvUrl'), '') != '')	$this->used_videos[$this->get_val($layer, array('media', 'ogvUrl'), '')] = true;
-								
 							}elseif(!in_array($this->get_val($layer, array('media', 'mediaType')), array('html5', 'audio'))){ //video cover image
 								if($this->get_val($layer, array('media', 'audioUrl')) != '') $this->used_videos[$this->get_val($layer, array('media', 'audioUrl'))] = true;
 							}
@@ -290,10 +309,12 @@ class RevSliderSliderExport extends RevSliderSlider {
 								$this->set_val($layer, array('media', 'ogvUrl'), '');
 							}
 							
-							$this->export_slides[$k]['layers'][$lk] = $layer;
+							if($static){
+								$this->static_slide[0]['layers'][$lk] = $layer;
+							}else{
+								$this->export_slides[$k]['layers'][$lk] = $layer;
+							}
 						}
-						
-						
 					}
 				}
 			}
@@ -515,20 +536,23 @@ class RevSliderSliderExport extends RevSliderSlider {
 	 **/
 	public function add_svg_to_zip(){
 		if(!empty($this->used_svg)){
-			$content_url	= content_url();
-			$content_path	= ABSPATH . 'wp-content';
-			$ud				= wp_upload_dir();
-			$up_dir			= $this->get_val($ud, 'baseurl');
+			$c_url	= content_url();
+			$c_path	= ABSPATH . 'wp-content';
+			$ud		= wp_upload_dir();
+			$up_dir	= $this->get_val($ud, 'baseurl');
+			
 			foreach($this->used_svg as $file => $val){
 				if(strpos($file, 'http') !== false){ //remove all up to wp-content folder
-					$checkpath = str_replace($content_url, '', $file);
-
+					$checkpath = str_replace($c_url, '', $file);
 					$checkpath2 = str_replace($up_dir, '', $file);
 					if($checkpath2 === $file){ //we have an SVG like whiteboard, fallback to older export
 						$checkpath2 = $checkpath;
 					}
-					if(is_file($content_path.$checkpath)){
-						$this->export_data = str_replace($file, str_replace('/revslider/assets/svg', '', $checkpath2), $this->export_data);
+					
+					$file = str_replace('/', '\/', $file);
+					$checkpath2 = str_replace('/', '\/', str_replace('/revslider/assets/svg', '', $checkpath2));
+					if(is_file($c_path.$checkpath)){
+						$this->export_data = str_replace($file, $checkpath2, $this->export_data);
 					}
 				}
 			}

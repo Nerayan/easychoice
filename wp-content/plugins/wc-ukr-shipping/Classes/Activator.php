@@ -17,21 +17,17 @@ class Activator
   {
     global $wpdb;
 
-    $wpdb->query("DROP TABLE IF EXISTS wc_ukr_shipping_np_areas");
-    $wpdb->query("DROP TABLE IF EXISTS wc_ukr_shipping_np_cities");
-    $wpdb->query("DROP TABLE IF EXISTS wc_ukr_shipping_np_warehouses");
-
     $collate = $wpdb->get_charset_collate();
 
     $wpdb->query("
-      CREATE TABLE wc_ukr_shipping_np_areas (
+      CREATE TABLE IF NOT EXISTS wc_ukr_shipping_np_areas (
         ref VARCHAR(36) NOT NULL,
         description VARCHAR(255) NOT NULL
       ) $collate
     ");
 
     $wpdb->query("
-      CREATE TABLE wc_ukr_shipping_np_cities (
+      CREATE TABLE IF NOT EXISTS wc_ukr_shipping_np_cities (
         ref VARCHAR(36) NOT NULL,
         description VARCHAR(255) NOT NULL,
         description_ru VARCHAR(255) NOT NULL,
@@ -40,7 +36,7 @@ class Activator
     ");
 
     $wpdb->query("
-      CREATE TABLE wc_ukr_shipping_np_warehouses (
+      CREATE TABLE IF NOT EXISTS wc_ukr_shipping_np_warehouses (
         ref VARCHAR(36) NOT NULL,
         description VARCHAR(255) NOT NULL,
         description_ru VARCHAR(255) NOT NULL,

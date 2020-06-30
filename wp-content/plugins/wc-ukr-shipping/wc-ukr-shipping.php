@@ -3,10 +3,10 @@
  * Plugin Name: WC Ukr Shipping
  * Plugin URI: https://kirillbdev.pro/plugins/wc-ukr-shipping/?ref=repository
  * Description: Плагин доставки Украинской службой Нова Пошта для WooCommerce
- * Version: 1.4.2
+ * Version: 1.6.3
  * Author: kirillbdev
  * License URI: license.txt
- * Tested up to: 5.2.2
+ * Tested up to: 5.4
 */
 
 if ( ! defined('ABSPATH')) {
@@ -19,8 +19,12 @@ define('WC_UKR_SHIPPING_PLUGIN_URL', plugin_dir_url(__FILE__));
 define('WC_UKR_SHIPPING_PLUGIN_ENTRY', __FILE__);
 define('WC_UKR_SHIPPING_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('WC_UKR_SHIPPING_MIGRATION_VERSION', '1.1');
+define('WCUS_TRANSLATE_DOMAIN', 'wc-ukr-shipping-l10n');
 
-\kirillbdev\WCUkrShipping\Classes\WCUkrShipping::instance();
+define('WCUS_TRANSLATE_TYPE_PLUGIN', 0);
+define('WCUS_TRANSLATE_TYPE_MO_FILE', 1);
+
+\kirillbdev\WCUkrShipping\Classes\WCUkrShipping::instance()->init();
 
 if ( ! function_exists('wc_ukr_shipping')) {
 
@@ -36,6 +40,24 @@ if ( ! function_exists('wc_ukr_shipping_import_svg')) {
   function wc_ukr_shipping_import_svg($image)
   {
     return file_get_contents(WC_UKR_SHIPPING_PLUGIN_DIR . '/image/' . $image);
+  }
+
+}
+
+if ( ! function_exists('wc_ukr_shipping_get_option')) {
+
+  function wc_ukr_shipping_get_option($key)
+  {
+    return \kirillbdev\WCUkrShipping\DB\OptionsRepository::getOption($key);
+  }
+
+}
+
+if ( ! function_exists('wc_ukr_shipping_is_checkout')) {
+
+  function wc_ukr_shipping_is_checkout()
+  {
+    return function_exists('is_checkout') && is_checkout();
   }
 
 }

@@ -26,7 +26,9 @@ if ( ! function_exists( 'electro_ads_block' ) ) {
 			<div class="da">
 				<div class="da-inner">
 					<a class="da-media" href="<?php echo esc_url( $arg['action_link'] ); ?>">
-						<?php if ( ! empty( $arg['ad_image'] ) ) : ?>
+						<?php if ( ! empty( $arg['ad_image_attachment'] ) ) : ?>
+						<div class="da-media-left"><?php echo wp_kses_post( $arg['ad_image_attachment'] ); ?></div>
+						<?php elseif ( ! empty( $arg['ad_image'] ) ) : ?>
 						<div class="da-media-left"><img src="<?php echo esc_url( $arg['ad_image'] ); ?>" alt="" /></div>
 						<?php endif; ?>
 						<div class="da-media-body">
@@ -853,12 +855,12 @@ if ( ! function_exists( 'electro_products_6_1_block' ) ) {
 
 			$categories = get_terms( 'product_cat',  $cat_args );
 
-			$sec_args = array( 
-				'categories'    => $categories, 
-				'products'      => $args['products'], 
-				'section_title' => $args['section_title'], 
-				'section_class' => $args['section_class'], 
-				'animation'     => $args['animation'] 
+			$sec_args = array(
+				'categories'    => $categories,
+				'products'      => $args['products'],
+				'section_title' => $args['section_title'],
+				'section_class' => $args['section_class'],
+				'animation'     => $args['animation']
 			);
 
 			if ( electro_is_wide_enabled() ) {

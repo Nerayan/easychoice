@@ -12,7 +12,7 @@
  *
  * @see     https://docs.woocommerce.com/document/template-structure/
  * @package WooCommerce/Templates
- * @version 3.6.0
+ * @version 4.0.0
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -32,6 +32,7 @@ if ( $max_value && $min_value === $max_value ) {
 	$labelledby = ! empty( $args['product_name'] ) ? sprintf( __( '%s quantity', 'electro' ), wp_strip_all_tags( $args['product_name'] ) ) : '';
 	?>
 	<div class="quantity">
+		<?php do_action( 'woocommerce_before_quantity_input_field' ); ?>
 		<label for="<?php echo esc_attr( $input_id ); ?>"><?php esc_html_e( 'Quantity', 'electro' ); ?></label>
 		<input
 			type="number"
@@ -48,6 +49,7 @@ if ( $max_value && $min_value === $max_value ) {
 			<?php if ( ! empty( $labelledby ) ) { ?>
 			aria-labelledby="<?php echo esc_attr( $labelledby ); ?>" />
 			<?php } ?>
+		<?php do_action( 'woocommerce_after_quantity_input_field' ); ?>
 	</div>
 	<?php
 }

@@ -26,22 +26,21 @@ class AssetsLoader
       [],
       filemtime(WC_UKR_SHIPPING_PLUGIN_DIR . 'assets/css/admin.min.css')
     );
+
+    wp_enqueue_script(
+      'wc_ukr_shipping_tabs_js',
+      WC_UKR_SHIPPING_PLUGIN_URL . 'assets/js/tabs.js',
+      [],
+      filemtime(WC_UKR_SHIPPING_PLUGIN_DIR . 'assets/js/tabs.js')
+    );
   }
 
   public function injectGlobals()
   {
-    $requestHandler = get_transient('wc_ukr_shipping_request_handler');
+    $translator = WCUkrShipping::instance()->singleton('translate_service');
+    $translates = $translator->getTranslates();
 
-    if ($requestHandler === false) {
-      $requestHandler = 'rest';
-    }
-
-    if ($requestHandler === 'rest') {
-      $routerScript = 'assets/js/rest-router.js';
-    }
-    else {
-      $routerScript = 'assets/js/ajax-router.js';
-    }
+    $routerScript = 'assets/js/ajax-router.js';
 
     wp_enqueue_script(
       'wc_ukr_shipping_router_js',
@@ -54,10 +53,17 @@ class AssetsLoader
     wp_localize_script('wc_ukr_shipping_router_js', 'wc_ukr_shipping_globals', [
       'ajaxUrl'                     => admin_url('admin-ajax.php'),
       'homeUrl'                     => home_url(),
-      'lang'                        => get_option('wc_ukr_shipping_np_lang', 'ru'),
+      'lang'                        => $translator->getCurrentLanguage(),
+      'nonce'                       => wp_create_nonce('wc-ukr-shipping'),
       'disableDefaultBillingFields' => apply_filters('wc_ukr_shipping_prevent_disable_default_fields', false) === false ?
         'true' :
-        'false'
+        'false',
+      'i10n' => [
+        'placeholder_area' => $translates['placeholder_area'],
+        'placeholder_city' => $translates['placeholder_city'],
+        'placeholder_warehouse' => $translates['placeholder_warehouse'],
+        'not_found' => $translates['not_found']
+      ]
     ]);
   }
 }

@@ -18,6 +18,9 @@
 </head>
 
 <body <?php body_class(); ?>>
+	<?php
+	wp_body_open();
+	?>
 <div class="off-canvas-wrapper">
 <div id="page" class="hfeed site">
 	<div class="full-color-background">
@@ -41,13 +44,13 @@
 				do_action( 'electro_header_v4' ); ?>
 
 			</div>
-			
+
 			<?php
 			/**
 			 * @hooked electro_handheld_header - 10
 			 */
 			do_action( 'electro_after_header' ); ?>
-		
+
 		</header><!-- #masthead -->
 	</div>
 	<?php

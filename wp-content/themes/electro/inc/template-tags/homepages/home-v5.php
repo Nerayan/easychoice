@@ -30,7 +30,7 @@ if ( ! function_exists( 'electro_home_v5_nav_menu' ) ) {
             'title'     => isset( $nav['title'] ) ? $nav['title'] : esc_html__( 'Electro Best Selling:', 'electro' ),
             'menu'      => isset( $nav['menu'] ) ? $nav['menu'] : ''
         ) );
-        
+
         electro_secondary_nav_v6( $args );
     }
 }
@@ -211,6 +211,7 @@ if ( ! function_exists( 'electro_home_v5_ads_block' ) ) {
         }
 
         $animation = !empty( $home_v5['ad']['animation'] ) ? ' animated ' . $home_v5['ad']['animation'] : '';
+        $ad_image_attachment_size = apply_filters( 'electro_ad_image_attachment_size', 'full', 'v5' );
 
         $args = apply_filters( 'electro_home_v5_ads_args', array(
             array(
@@ -219,6 +220,7 @@ if ( ! function_exists( 'electro_home_v5_ads_block' ) ) {
                 'action_link'   => isset( $home_v5['ad'][0]['action_link'] ) ? $home_v5['ad'][0]['action_link'] : '#',
                 'ad_image'      => isset( $home_v5['ad'][0]['ad_image'] ) ? wp_get_attachment_url( $home_v5['ad'][0]['ad_image'] ) : '',
                 'el_class'      => isset( $home_v5['ad'][0]['el_class'] ) ? $home_v5['ad'][0]['el_class'] : '',
+                'ad_image_attachment' => isset( $home_v5['ad'][0]['ad_image'] ) ? wp_get_attachment_image( $home_v5['ad'][0]['ad_image'], $ad_image_attachment_size ) : '',
             ),
             array(
                 'ad_text'       => isset( $home_v5['ad'][1]['ad_text'] ) ? $home_v5['ad'][1]['ad_text'] : wp_kses_post( __( 'Tablets,<br> Smartphones <br><strong>and more</strong>', 'electro' ) ),
@@ -226,6 +228,7 @@ if ( ! function_exists( 'electro_home_v5_ads_block' ) ) {
                 'action_link'   => isset( $home_v5['ad'][1]['action_link'] ) ? $home_v5['ad'][1]['action_link'] : '#',
                 'ad_image'      => isset( $home_v5['ad'][1]['ad_image'] ) ? wp_get_attachment_url( $home_v5['ad'][1]['ad_image'] ) : '',
                 'el_class'      => isset( $home_v5['ad'][1]['el_class'] ) ? $home_v5['ad'][1]['el_class'] : '',
+                'ad_image_attachment' => isset( $home_v5['ad'][1]['ad_image'] ) ? wp_get_attachment_image( $home_v5['ad'][1]['ad_image'], $ad_image_attachment_size ) : '',
             ),
         ) );
 

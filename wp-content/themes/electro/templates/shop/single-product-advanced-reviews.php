@@ -6,7 +6,7 @@
 global $product;
 
 $review_count 		= $product->get_review_count();
-$avg_rating_number 	= number_format( $product->get_average_rating(), 1 );
+$avg_rating_number 	= number_format( (float) $product->get_average_rating(), 1 );
 $rating_counts 		= Electro_WC_Helper::get_ratings_counts( $product );
 
 if ( ! defined( 'ABSPATH' ) ) {

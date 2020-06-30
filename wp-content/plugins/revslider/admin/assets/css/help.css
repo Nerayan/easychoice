@@ -625,3 +625,20 @@
 .toolbar_btn.help-hover-staticlayers #newslide:after {display: none}
 .add_frame_after.help-input-focus {display: block}
 
+
+
+/*************** RTL MODE SETTINGS ********************/
+body.rtl #help_mode_title {
+	left: auto;
+	right: 7px;
+}
+
+body.rtl .help-mode-section i {
+	left: auto;
+	right: -5px;
+}
+
+body.rtl #help_input_clear {
+	right: auto;
+	left: -10px;
+}

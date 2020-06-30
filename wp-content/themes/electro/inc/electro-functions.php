@@ -19,3 +19,13 @@ if ( ! function_exists( 'electro_desktop_header_responsive_class' ) ) {
         return apply_filters( 'electro_desktop_header_responsive_class', 'hidden-lg-down' );
     }
 }
+
+if ( ! function_exists( 'wp_body_open' ) ) {
+
+	/**
+	 * Shim for wp_body_open, ensuring backwards compatibility with versions of WordPress older than 5.2.
+	 */
+	function wp_body_open() {
+		do_action( 'wp_body_open' );
+	}
+}

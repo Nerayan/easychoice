@@ -36,8 +36,8 @@ class RevSliderCssParser extends RevSliderFunctions {
 		
 		//trim from bottom
 		if(!empty($end_text)){
-			$pos_end	= strpos($content, $end_text);
-			$content	= ($pos_end !== false) ? substr($content, 0, $pos_end) : $content;
+			$pos_end = strpos($content, $end_text);
+			$content = ($pos_end !== false) ? substr($content, 0, $pos_end) : $content;
 		}
 		
 		//get styles
@@ -45,7 +45,7 @@ class RevSliderCssParser extends RevSliderFunctions {
 		
 		foreach($lines as $key => $line){
 			$line = trim($line);
-			if(strpos($line, '{') === false || strpos($line, ".caption a") || strpos($line, ".tp-caption a") !== false)
+			if(strpos($line, '{') === false || strpos($line, '.caption a') || strpos($line, '.tp-caption a') !== false)
 				continue;
 			
 			//get style out of the line
@@ -144,13 +144,13 @@ class RevSliderCssParser extends RevSliderFunctions {
 		);
 		
 		foreach($css_array as $id => $attr){
-			$stripped			= (strpos($attr['handle'], '.tp-caption') !== false) ? trim(str_replace('.tp-caption', '', $attr['handle'])) : '';
-			$attr['advanced']	= json_decode($attr['advanced'], true);
-			$styles				= json_decode(str_replace("'", '"', $attr['params']), true);
-			$styles_adv			= $attr['advanced']['idle'];
-			$css				.= $attr['handle'];
-			$css				.= (!empty($stripped)) ? ', '.$stripped : '';
-			$css				.= ' {'.$nl;
+			$stripped	= (strpos($attr['handle'], '.tp-caption') !== false) ? trim(str_replace('.tp-caption', '', $attr['handle'])) : '';
+			$attr['advanced'] = json_decode($attr['advanced'], true);
+			$styles		= json_decode(str_replace("'", '"', $attr['params']), true);
+			$styles_adv	= $attr['advanced']['idle'];
+			$css		.= $attr['handle'];
+			$css		.= (!empty($stripped)) ? ', '.$stripped : '';
+			$css		.= ' {'.$nl;
 			
 			if(is_array($styles) || is_array($styles_adv)){
 				if(is_array($styles)){
@@ -722,19 +722,6 @@ class RevSliderCssParser extends RevSliderFunctions {
 	
 	
 	/**
-	 * get contents of the static css file
-	 * @before: RevSliderOperations::updateStaticCss();
-	 */
-	public function update_static_css($css){
-		$css = str_replace(array("\'", '\"', '\\\\'),array("'", '"', '\\'), trim($css));
-		$c	 = get_option('revslider-static-css', '');
-		$c	 = update_option('revslider-static-css', $css);
-
-		return $css;
-	}
-	
-	
-	/**
 	 * get the css raw from the database
 	 */
 	public function get_raw_css(){
@@ -804,6 +791,36 @@ class RevSliderCssParser extends RevSliderFunctions {
 		
 		return $obj;
 	}
+	
+	
+	/**
+	 * change hex to rgba
+	 */
+    public function hex2rgba($hex, $transparency = false, $raw = false, $do_rgb = false){
+        if($transparency !== false){
+			$transparency = ($transparency > 0) ? number_format(($transparency / 100), 2, '.', '') : 0;
+        }else{
+            $transparency = 1;
+        }
+
+        $hex = str_replace('#', '', $hex);
+		
+        if(strlen($hex) == 3){
+            $r = hexdec(substr($hex,0,1).substr($hex,0,1));
+            $g = hexdec(substr($hex,1,1).substr($hex,1,1));
+            $b = hexdec(substr($hex,2,1).substr($hex,2,1));
+        }elseif($this->is_rgb($hex)){
+			return $hex;
+		}else{
+            $r = hexdec(substr($hex,0,2));
+            $g = hexdec(substr($hex,2,2));
+            $b = hexdec(substr($hex,4,2));
+        }
+		
+		$ret = ($do_rgb) ? $r.', '.$g.', '.$b : $r.', '.$g.', '.$b.', '.$transparency;
+		
+		return ($raw) ? $ret : 'rgba('.$ret.')';
+    }
 }
 
 ?>

@@ -16,6 +16,7 @@ $general_options 	= apply_filters( 'electro_general_options_args', array(
 			'off'		=> esc_html__('Disabled', 'electro'),
 			'default'	=> 0,
 		),
+		
 		array(
 			'title'		=> esc_html__( 'Scroll To Top', 'electro' ),
 			'id'		=> 'scrollup',

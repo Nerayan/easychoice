@@ -45,6 +45,7 @@ if ( ! function_exists( 'electro_home_v2_ads_block' ) ) {
         }
 
         $animation = !empty( $home_v2['ad']['animation'] ) ? ' animated ' . $home_v2['ad']['animation'] : '';
+        $ad_image_attachment_size = apply_filters( 'electro_ad_image_attachment_size', 'full', 'v2' );
 
         $args = apply_filters( 'electro_home_v2_ads_args', array(
             array(
@@ -53,6 +54,7 @@ if ( ! function_exists( 'electro_home_v2_ads_block' ) ) {
                 'action_link'   => isset( $home_v2['ad'][0]['action_link'] ) ? $home_v2['ad'][0]['action_link'] : '#',
                 'ad_image'      => isset( $home_v2['ad'][0]['ad_image'] ) ? wp_get_attachment_url( $home_v2['ad'][0]['ad_image'] ) : '',
                 'el_class'      => isset( $home_v2['ad'][0]['el_class'] ) ? $home_v2['ad'][0]['el_class'] : '',
+                'ad_image_attachment' => isset( $home_v2['ad'][0]['ad_image'] ) ? wp_get_attachment_image( $home_v2['ad'][0]['ad_image'], $ad_image_attachment_size ) : '',
             ),
             array(
                 'ad_text'       => isset( $home_v2['ad'][1]['ad_text'] ) ? $home_v2['ad'][1]['ad_text'] : wp_kses_post( __( 'Tablets, Smartphones <strong>and more</strong>', 'electro' ) ),
@@ -60,6 +62,7 @@ if ( ! function_exists( 'electro_home_v2_ads_block' ) ) {
                 'action_link'   => isset( $home_v2['ad'][1]['action_link'] ) ? $home_v2['ad'][1]['action_link'] : '#',
                 'ad_image'      => isset( $home_v2['ad'][1]['ad_image'] ) ? wp_get_attachment_url( $home_v2['ad'][1]['ad_image'] ) : '',
                 'el_class'      => isset( $home_v2['ad'][1]['el_class'] ) ? $home_v2['ad'][1]['el_class'] : '',
+                'ad_image_attachment' => isset( $home_v2['ad'][1]['ad_image'] ) ? wp_get_attachment_image( $home_v2['ad'][1]['ad_image'], $ad_image_attachment_size ) : '',
             ),
         ) );
 
@@ -70,6 +73,7 @@ if ( ! function_exists( 'electro_home_v2_ads_block' ) ) {
                 'action_link'   => isset( $home_v2['ad'][2]['action_link'] ) ? $home_v2['ad'][2]['action_link'] : '#',
                 'ad_image'      => isset( $home_v2['ad'][2]['ad_image'] ) ? wp_get_attachment_url( $home_v2['ad'][2]['ad_image'] ) : '',
                 'el_class'      => isset( $home_v2['ad'][2]['el_class'] ) ? $home_v2['ad'][2]['el_class'] : '',
+                'ad_image_attachment' => isset( $home_v2['ad'][2]['ad_image'] ) ? wp_get_attachment_image( $home_v2['ad'][2]['ad_image'], $ad_image_attachment_size ) : '',
             );
         }
 

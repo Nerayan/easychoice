@@ -304,14 +304,18 @@ class TimeInterval {
 	 * @return DateTime
 	 */
 	public static function next_day_start( $datetime, $reversed = false ) {
-		$day_increment      = $reversed ? 0 : 1;
-		$timestamp          = (int) $datetime->format( 'U' );
-		$seconds_into_day   = (int) $datetime->format( 'H' ) * HOUR_IN_SECONDS + (int) $datetime->format( 'i' ) * MINUTE_IN_SECONDS + (int) $datetime->format( 's' );
-		$next_day_timestamp = $timestamp + ( $day_increment * DAY_IN_SECONDS - $seconds_into_day );
+		$seconds_into_day = (int) $datetime->format( 'H' ) * HOUR_IN_SECONDS + (int) $datetime->format( 'i' ) * MINUTE_IN_SECONDS + (int) $datetime->format( 's' );
 
 		// The day boundary is actually next midnight when going in reverse, so set it to day -1 at 23:59:59.
 		if ( $reversed ) {
-			$next_day_timestamp --;
+			$timestamp          = (int) $datetime->format( 'U' );
+			$next_day_timestamp = $timestamp - ( $seconds_into_day + 1 );
+		} else {
+			$day_increment = new \DateInterval( 'P1D' ); // Plus 1 Day.
+			$next_datetime = clone $datetime;
+			$next_datetime->add( $day_increment );
+			$timestamp          = (int) $next_datetime->format( 'U' );
+			$next_day_timestamp = $timestamp - $seconds_into_day;
 		}
 
 		$next_day = new \DateTime();
@@ -510,35 +514,21 @@ class TimeInterval {
 	 * @return bool
 	 */
 	public static function intervals_missing( $expected_interval_count, $db_records, $items_per_page, $page_no, $order, $order_by, $intervals_count ) {
-		if ( $expected_interval_count > $db_records ) {
-			if ( 'date' === $order_by ) {
-				$expected_intervals_on_page = self::expected_intervals_on_page( $expected_interval_count, $items_per_page, $page_no );
-				if ( $intervals_count < $expected_intervals_on_page ) {
-					return true;
-				} else {
-					return false;
-				}
-			} else {
-				if ( 'desc' === $order ) {
-					if ( $page_no > floor( $db_records / $items_per_page ) ) {
-						return true;
-					} else {
-						return false;
-					}
-				} elseif ( 'asc' === $order ) {
-					if ( $page_no <= ceil( ( $expected_interval_count - $db_records ) / $items_per_page ) ) {
-						return true;
-					} else {
-						return false;
-					}
-				} else {
-					// Invalid ordering.
-					return false;
-				}
-			}
-		} else {
+		if ( $expected_interval_count <= $db_records ) {
 			return false;
 		}
+		if ( 'date' === $order_by ) {
+			$expected_intervals_on_page = self::expected_intervals_on_page( $expected_interval_count, $items_per_page, $page_no );
+			return $intervals_count < $expected_intervals_on_page;
+		}
+		if ( 'desc' === $order ) {
+			return $page_no > floor( $db_records / $items_per_page );
+		}
+		if ( 'asc' === $order ) {
+			return $page_no <= ceil( ( $expected_interval_count - $db_records ) / $items_per_page );
+		}
+		// Invalid ordering.
+		return false;
 	}
 
 	/**

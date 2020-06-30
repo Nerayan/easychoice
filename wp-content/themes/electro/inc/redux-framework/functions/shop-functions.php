@@ -349,3 +349,97 @@ if ( ! function_exists( 'redux_apply_myaccount_register_benefits' ) ) {
 		return $benefits;
 	}
 }
+
+if ( ! function_exists( 'redux_apply_dokan_electro_store_list_version' ) ) {
+	function redux_apply_dokan_electro_store_list_version( $dokan_store_list_version ) {
+		global $electro_options;
+
+		if( isset( $electro_options['dokan_store_list_version'] ) && !empty( $electro_options['dokan_store_list_version'] ) ) {
+			$dokan_store_list_version = $electro_options['dokan_store_list_version'];
+		}
+
+		return $dokan_store_list_version;
+	}
+}
+
+if( ! function_exists( 'redux_toggle_dokan_store_list_sidebar' ) ) {
+	function redux_toggle_dokan_store_list_sidebar( $dokan_store_list_sidebar ) {
+		global $electro_options;
+
+		if( isset( $electro_options['dokan_store_list_sidebar'] ) && $electro_options['dokan_store_list_sidebar'] == '1' ) {
+			$dokan_store_list_sidebar = true;
+		} else {
+			$dokan_store_list_sidebar = false;
+		}
+
+		return $dokan_store_list_sidebar;
+	}
+}
+
+if( ! function_exists( 'redux_toggle_dokan_electro_store_style' ) ) {
+	function redux_toggle_dokan_electro_store_style( $dokan_electro_store_style ) {
+		global $electro_options;
+
+		if( isset( $electro_options['dokan_electro_store_style'] ) && $electro_options['dokan_electro_store_style'] == '1' ) {
+			$dokan_electro_store_style = true;
+		} else {
+			$dokan_electro_store_style = false;
+		}
+
+		return $dokan_electro_store_style;
+	}
+}
+
+if ( ! function_exists( 'redux_apply_dokan_store_version' ) ) {
+	function redux_apply_dokan_store_version( $dokan_store_version ) {
+		global $electro_options;
+
+		if( isset( $electro_options['dokan_store_version'] ) && !empty( $electro_options['dokan_store_version'] ) ) {
+			$dokan_store_version = $electro_options['dokan_store_version'];
+		} else {
+			$dokan_store_version = 'store-v1';
+		}
+
+		return $dokan_store_version;
+	}
+}
+
+if( ! function_exists( 'redux_toggle_dokan_store_sidebar' ) ) {
+	function redux_toggle_dokan_store_sidebar( $dokan_store_sidebar ) {
+		global $electro_options;
+
+		if( isset( $electro_options['dokan_store_sidebar'] ) && $electro_options['dokan_store_sidebar'] == '1' ) {
+			$dokan_store_sidebar = true;
+		} else {
+			$dokan_store_sidebar = false;
+		}
+
+		return $dokan_store_sidebar;
+	}
+}
+
+if( ! function_exists( 'redux_toggle_dokan_store_owner_info' ) ) {
+	function redux_toggle_dokan_store_owner_info( $dokan_store_owner_info ) {
+		global $electro_options;
+
+		if( isset( $electro_options['dokan_store_owner_info'] ) && $electro_options['dokan_store_owner_info'] == '1' ) {
+			$dokan_store_owner_info = true;
+		} else {
+			$dokan_store_owner_info = false;
+		}
+
+		return $dokan_store_owner_info;
+	}
+}
+
+if ( ! function_exists( 'redux_apply_dokan_store_top_jumbotron_id' ) ) {
+	function redux_apply_dokan_store_top_jumbotron_id( $static_block_id ) {
+		global $electro_options;
+
+		if( isset( $electro_options['dokan_store_top_jumbotron_id'] ) && !empty( $electro_options['dokan_store_top_jumbotron_id'] ) ) {
+			$static_block_id = $electro_options['dokan_store_top_jumbotron_id'];
+		}
+
+		return $static_block_id;
+	}
+}

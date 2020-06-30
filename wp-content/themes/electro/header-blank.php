@@ -21,6 +21,9 @@ remove_action( 'electro_before_content', 'electro_navbar', 10 );
 </head>
 
 <body <?php body_class(); ?>>
+	<?php
+	wp_body_open();
+	?>
 <div class="off-canvas-wrapper">
 <div id="page" class="hfeed site">
 

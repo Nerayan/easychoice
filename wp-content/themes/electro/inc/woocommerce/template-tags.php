@@ -254,6 +254,7 @@ if ( ! function_exists( 'electro_wc_loop_title' ) ) {
 			</header>
 
 			<?php
+
 		endif;
 	}
 }

@@ -275,6 +275,107 @@ $shop_options 	= apply_filters( 'electro_shop_options_args', array(
 			'id'        => 'myaccount_page_end',
 			'type'      => 'section',
 			'indent'    => false
+		),
+
+		array(
+			'title'		=> esc_html__( 'Doken Store', 'electro' ),
+			'id'		=> 'dokan_store_start',
+			'type'		=> 'section',
+			'indent'	=> true
+		),
+
+		array(
+			'title'     => esc_html__('Electro Store List Version', 'electro'),
+			'subtitle'  => esc_html__('Select the view for the dokan store list version.', 'electro'),
+			'id'        => 'dokan_store_list_version',
+			'type'      => 'select',
+			'options'   => array(
+				''				=> esc_html__( 'Default', 'electro' ),
+				'style-v1'		=> esc_html__( 'Style v1', 'electro' ),
+				'style-v2'		=> esc_html__( 'Style v2', 'electro' ),
+				'style-v3'		=> esc_html__( 'Style v3', 'electro' ),
+				'style-v4'		=> esc_html__( 'Style v4', 'electro' ),
+				'style-v5'		=> esc_html__( 'Style v5', 'electro' ),
+			),
+			'default'   => '',
+		),
+
+		array(
+			'title'		=> esc_html__( 'Dokan Store List Sidebar', 'electro' ),
+			'id'		=> 'dokan_store_list_sidebar',
+			'type'		=> 'switch',
+			'on'		=> esc_html__( 'Enabled', 'electro' ),
+			'off'		=> esc_html__( 'Disabled', 'electro' ),
+			'default'	=> 1,
+			'required'	=> array(
+				array( 'dokan_store_list_version', 'equals', 'style-v5' )
+			)
+		),
+
+		array(
+			'title'		=> esc_html__( 'Electro Dokan Store Style', 'electro' ),
+			'id'		=> 'dokan_electro_store_style',
+			'type'		=> 'switch',
+			'on'		=> esc_html__('Enabled', 'electro'),
+			'off'		=> esc_html__('Disabled', 'electro'),
+			'default'	=> 0,
+		),
+
+		array(
+			'title'     => esc_html__('Electro Store Version', 'electro'),
+			'subtitle'  => esc_html__('Select the view for the dokan store version.', 'electro'),
+			'id'        => 'dokan_store_version',
+			'type'      => 'select',
+			'options'   => array(
+				'store-v1'		=> esc_html__( 'Store v1', 'electro' ),
+				'store-v2'		=> esc_html__( 'Store v2', 'electro' ),
+				'store-v3'		=> esc_html__( 'Store v3', 'electro' ),
+				'store-v4'		=> esc_html__( 'Store v4', 'electro' ),
+				'store-v5'		=> esc_html__( 'Store v5', 'electro' ),
+			),
+			'default'   => 'store-v1',
+			'required'	=> array( 'dokan_electro_store_style', 'equals', 1 ),
+		),
+
+		array(
+			'title'		=> esc_html__( 'Dokan Store Sidebar', 'electro' ),
+			'id'		=> 'dokan_store_sidebar',
+			'type'		=> 'switch',
+			'on'		=> esc_html__('Enabled', 'electro'),
+			'off'		=> esc_html__('Disabled', 'electro'),
+			'default'	=> 0,
+			'required'	=> array(
+				array( 'dokan_electro_store_style', 'equals', 1 ),
+				array( 'dokan_store_version', 'equals', 'store-v1' )
+			)
+		),
+
+		array(
+			'title'		=> esc_html__( 'Dokan Store Owner Info', 'electro' ),
+			'id'		=> 'dokan_store_owner_info',
+			'type'		=> 'switch',
+			'on'		=> esc_html__('Enabled', 'electro'),
+			'off'		=> esc_html__('Disabled', 'electro'),
+			'default'	=> 1,
+		),
+
+		array(
+			'id'		=> 'dokan_store_top_jumbotron_id',
+			'title'		=> __( 'Dokan Store  Page Jumbotron', 'electro' ),
+			'subtitle'	=> __( 'Choose a static block that will be the jumbotron element for dokan store page', 'electro' ),
+			'type'		=> 'select',
+			'data'		=> 'posts',
+			'args'		=> array(
+				'post_type'			=> 'static_block',
+				'posts_per_page'	=> -1,
+			),
+			'required'	=> array( 'dokan_electro_store_style', 'equals', 1 ),
+		),
+
+		array(
+			'id'        => 'dokan_store_end',
+			'type'      => 'section',
+			'indent'    => false
 		)
 	)
 ) );

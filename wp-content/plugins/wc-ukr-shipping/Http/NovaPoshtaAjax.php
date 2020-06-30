@@ -3,9 +3,10 @@
 namespace kirillbdev\WCUkrShipping\Http;
 
 use kirillbdev\WCUkrShipping\Api\NovaPoshtaApi;
-use kirillbdev\WCUkrShipping\Classes\NPAreaTranslator;
+use kirillbdev\WCUkrShipping\Classes\WCUkrShipping;
 use kirillbdev\WCUkrShipping\DB\NovaPoshtaRepository;
 use kirillbdev\WCUkrShipping\DB\OptionsRepository;
+use kirillbdev\WCUkrShipping\Services\StorageService;
 use kirillbdev\WCUkrShipping\Validators\OptionsValidator;
 
 class NovaPoshtaAjax
@@ -39,10 +40,6 @@ class NovaPoshtaAjax
     // Options Warehouses load to DB
     add_action('wp_ajax_wc_ukr_shipping_load_warehouses', [ $this, 'loadWarehouses' ]);
 
-    // Frontend Areas
-    add_action('wp_ajax_wc_ukr_shipping_get_areas', [ $this, 'getAreas' ]);
-    add_action('wp_ajax_nopriv_wc_ukr_shipping_get_areas', [ $this, 'getAreas' ]);
-
     // Frontend Cities
     add_action('wp_ajax_wc_ukr_shipping_get_cities', [ $this, 'getCities' ]);
     add_action('wp_ajax_nopriv_wc_ukr_shipping_get_cities', [ $this, 'getCities' ]);
@@ -73,23 +70,15 @@ class NovaPoshtaAjax
     ]);
   }
 
-  public function getAreas()
-  {
-    try {
-      $areas = $this->novaPoshtaRepository->getAreas();
-      $npAreaTranslator = new NPAreaTranslator();
-
-      Response::makeAjax('success', $npAreaTranslator->translateAreas($areas));
-    }
-    catch (\Error $e) {
-      Response::makeAjax('error', $e->getMessage());
-    }
-  }
-
   public function getCities()
   {
+    $this->validateFrontendRequest();
+
     try {
       $cities = $this->novaPoshtaRepository->getCities($_POST['body']['ref']);
+      StorageService::setValue('wc_ukr_shipping_np_selected_area', $_POST['body']['ref']);
+      StorageService::deleteValue('wc_ukr_shipping_np_selected_city');
+      StorageService::deleteValue('wc_ukr_shipping_np_selected_warehouse');
 
       Response::makeAjax('success', $cities);
     }
@@ -100,8 +89,12 @@ class NovaPoshtaAjax
 
   public function getWarehouses()
   {
+    $this->validateFrontendRequest();
+
     try {
       $warehouses = $this->novaPoshtaRepository->getWarehouses($_POST['body']['ref']);
+      StorageService::setValue('wc_ukr_shipping_np_selected_city', $_POST['body']['ref']);
+      StorageService::deleteValue('wc_ukr_shipping_np_selected_warehouse');
 
       Response::makeAjax('success', $warehouses);
     }
@@ -157,5 +150,12 @@ class NovaPoshtaAjax
     Response::makeAjax('error', [
       'errors' => $result['errors']
     ]);
+  }
+
+  private function validateFrontendRequest()
+  {
+    if (empty($_POST['body']['nonce']) || ! wp_verify_nonce($_POST['body']['nonce'], 'wc-ukr-shipping')) {
+      Response::makeAjax('error');
+    }
   }
 }

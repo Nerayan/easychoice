@@ -11,9 +11,30 @@
 if(!defined('ABSPATH')) exit();
 ?>
 
+<!--QUICK GUIDE MODAL-->
+<div class="_TPRB_ rb-modal-wrapper" data-modal="rbm_colorskins">
+	<div class="rb-modal-inner">
+		<div class="rb-modal-content">
+			<div id="rbm_colorskins" class="rb_modal form_inner">
+				<div class="rbm_header"><i class="rbm_symbol material-icons">format_paint</i><span class="rbm_title"><?php _e('Color Skins', 'revslider');?></span><i class="rbm_close material-icons">close</i></div>	
+				<div class="rbm_content">
+					<div class="modal_fields_title" style="width:170px;margin-right:10px;"><?php _e('SKIN TITLE', 'revslider');?></div><div class="modal_fields_title"><?php _e('SKIN COLOR', 'revslider');?></div>
+					<div id="module_color_skins"></div>
+					<div class="div20"></div>
+					<div id="add_skin_color" class="basic_action_button layerinput autosize rightbutton"><i class="material-icons">color_lens</i><?php _e('Add Skin', 'revslider');?></div><div class="tp-clearfix"></div>
+					<div class="div40"></div>
+					<div class="global_sas_wrap">
+						<label_a style="max-width:none; width:auto;"><?php _e('Show this Modal on Editor launch', 'revslider');?></label_a><input type="checkbox" id="sr_show_glob_skins" class="sliderinput easyinit" data-r="skins.colorsAtStart" checked="checked">
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
 
 <!--QUICK GUIDE MODAL-->
-<div class="rb-modal-wrapper" data-modal="rbm_quickguide">
+<div class="_TPRB_ rb-modal-wrapper" data-modal="rbm_quickguide">
 	<div class="rb-modal-inner">
 		<div class="rb-modal-content">
 			<div id="rbm_quickguide" class="rb_modal form_inner">
@@ -99,7 +120,7 @@ if(!defined('ABSPATH')) exit();
 								<input data-select=".sl_fullscreen" data-unselect=".sl_auto, .sl_fullwidth" data-r="layouttype" data-evt="updatesliderlayout" type="radio" value="fullscreen" name="sliderlayouttype_guide" class="sliderinput" data-show="#sr_size_minheight_fs, .decreaseheights" data-hide=".sliderminheights">
 								<mcg_guide_image class="guide_fullscreen"></mcg_guide_image>
 								<div class="mcg_o_title"><?php _e('Full-Screen');?></div>
-								<div class="mcg_o_descp"><?php _e('The module will always fit the full area<br>withing the web-page.');?></div>
+								<div class="mcg_o_descp"><?php _e('The module will always fit the full area<br>within the web-page.');?></div>
 							</div>
 						</div>
 						<div class="mcg_footer_btns_right"><graybutton class="minimal mcg_prev_page"><?php _e('Previous Step', 'revslider');?></graybutton></div>
@@ -194,7 +215,7 @@ if(!defined('ABSPATH')) exit();
 
 
 <!--LAYER IMPORT/EXPORT MODAL-->
-<div class="rb-modal-wrapper" data-modal="rbm_layerimport">
+<div class="_TPRB_ rb-modal-wrapper" data-modal="rbm_layerimport">
 	<div class="rb-modal-inner">
 		<div class="rb-modal-content">
 			<div id="rbm_layerimport" class="rb_modal form_inner">
@@ -215,7 +236,7 @@ if(!defined('ABSPATH')) exit();
 
 
 <!-- NAVIGATION EDITOR -->
-<div class="rb-modal-wrapper" data-modal="rbm_navigation_editor">
+<div class="_TPRB_ rb-modal-wrapper" data-modal="rbm_navigation_editor">
 	<div class="rb-modal-inner">
 		<div class="rb-modal-content">
 			<div id="rbm_navigation_editor" class="rb_modal form_inner">
@@ -365,7 +386,7 @@ if(!defined('ABSPATH')) exit();
 
 
 <!-- SLIDER API MODAL -->
-<div class="rb-modal-wrapper" data-modal="rbm_slider_api" data-centerineditor="true">
+<div class="_TPRB_ rb-modal-wrapper" data-modal="rbm_slider_api" data-centerineditor="true">
 	<div class="rb-modal-inner">
 		<div class="rb-modal-content">
 			<div id="rbm_slider_api" class="rb_modal form_inner">
@@ -513,7 +534,7 @@ if(!defined('ABSPATH')) exit();
 </div>
 
 <!--LAYER META MODAL-->
-<div class="rb-modal-wrapper" data-modal="rbm_layer_metas">
+<div class="_TPRB_ rb-modal-wrapper" data-modal="rbm_layer_metas">
 	<div class="rb-modal-inner">
 		<div class="rb-modal-content">
 			<div id="rbm_layer_metas" class="rb_modal form_inner">
@@ -612,7 +633,7 @@ if(!defined('ABSPATH')) exit();
 								<div data-val="{{event_end_date}}" class="mdl_group_member"><div class="mdl_left_content"><i class="material-icons">event</i><?php _e("Event end date", 'revslider');?></div><div class="mdl_right_content">{{event_end_date}}</div><div class="mdl_placeholder_content"><?php _e('17.09.2019', 'revslider');?></div></div>
 								<div data-val="{{event_start_time}}" class="mdl_group_member"><div class="mdl_left_content"><i class="material-icons">event</i><?php _e("Event start time", 'revslider');?></div><div class="mdl_right_content">{{event_start_time}}</div><div class="mdl_placeholder_content"><?php _e('21:00', 'revslider');?></div></div>
 								<div data-val="{{event_end_time}}" class="mdl_group_member"><div class="mdl_left_content"><i class="material-icons">event</i><?php _e("Event end time", 'revslider');?></div><div class="mdl_right_content">{{event_end_time}}</div><div class="mdl_placeholder_content"><?php _e('14:00', 'revslider');?></div></div>
-								<div data-val="{{event_event_id}}" class="mdl_group_member"><div class="mdl_left_content"><i class="material-icons">event</i><?php _e("Event ID", 'revslider');?></div><div class="mdl_right_content">{{event_event_id}}</div><div class="mdl_placeholder_content"><?php _e('EQH-1879', 'revslider');?></div></div>
+								<div data-val="{{event_id}}" class="mdl_group_member"><div class="mdl_left_content"><i class="material-icons">event</i><?php _e("Event ID", 'revslider');?></div><div class="mdl_right_content">{{event_id}}</div><div class="mdl_placeholder_content"><?php _e('EQH-1879', 'revslider');?></div></div>
 							</div>
 							<div class="mdl_group">
 								<div class="mdl_group_header"><i class="material-icons">my_location</i><?php _e('Event Location', 'revslider');?><i class="material-icons accordiondrop">arrow_drop_down</i></div>
@@ -647,11 +668,11 @@ if(!defined('ABSPATH')) exit();
 								<div data-val="{{views}}" class="mdl_group_member"><div class="mdl_left_content"><i class="fa__icons fa-flickr"></i><?php _e("Views", 'revslider');?></div><div class="mdl_right_content">{{views}}</div><div class="mdl_placeholder_content"><?php _e('24', 'revslider');?></div></div>
 							</div>
 
-							<!-- INSTAGRAMM -->
+							<!-- INSTAGRAM -->
 							<div class="mdl_group">
-								<div class="mdl_group_header"><i class="fa__icons fa-instagram"></i><?php _e('Instagramm Extras', 'revslider');?><i class="material-icons accordiondrop">arrow_drop_down</i></div>
+								<div class="mdl_group_header"><i class="fa__icons fa-instagram"></i><?php _e('Instagram Extras', 'revslider');?><i class="material-icons accordiondrop">arrow_drop_down</i></div>
 								<div data-val="{{date}}" class="mdl_group_member"><div class="mdl_left_content"><i class="fa__icons fa-instagram"></i><?php _e("Date created", 'revslider');?></div><div class="mdl_right_content">{{date}}</div><div class="mdl_placeholder_content"><?php _e('08.03.2018', 'revslider');?></div></div>
-								<div data-val="{{likes}}" class="mdl_group_member"><div class="mdl_left_content"><i class="fa__icons fa-instagram"></i><?php _e("Number of Likes", 'revslider');?></div><div class="mdl_right_content">{{likes}}</div><div class="mdl_placeholder_content"><?php _e('12', 'revslider');?></div></div>
+								<!--div data-val="{{likes}}" class="mdl_group_member"><div class="mdl_left_content"><i class="fa__icons fa-instagram"></i><?php _e("Number of Likes", 'revslider');?></div><div class="mdl_right_content">{{likes}}</div><div class="mdl_placeholder_content"><?php _e('12', 'revslider');?></div></div-->
 								<div data-val="{{num_comments}}" class="mdl_group_member"><div class="mdl_left_content"><i class="fa__icons fa-instagram"></i><?php _e("Number of Comments", 'revslider');?></div><div class="mdl_right_content">{{num_comments}}</div><div class="mdl_placeholder_content"><?php _e('19', 'revslider');?></div></div>
 							</div>
 
@@ -696,7 +717,7 @@ if(!defined('ABSPATH')) exit();
 </div>
 
 <!--LAYER ACTION MODAL-->
-<div class="rb-modal-wrapper" data-modal="rbm_layer_action">
+<div class="_TPRB_ rb-modal-wrapper" data-modal="rbm_layer_action">
 	<div class="rb-modal-inner">
 		<div class="rb-modal-content">
 			<div id="rbm_layer_action" class="rb_modal form_inner">
@@ -746,6 +767,7 @@ if(!defined('ABSPATH')) exit();
 							<!-- SIMPLE LINK SETTINGS -->
 							<div id="la_settings_link" class="la_settings">
 								<label_a><?php _e('Link URL', 'revslider');?></label_a><input type="text" class="easyinit actioninput" id="la_image_link" data-r="actions.action.#actionindex#.image_link" placeholder="<?php _e('Enter Link', 'revslider');?>" ><span class="linebreak"></span>
+								<label_a><?php _e('Link Help', 'revslider');?></label_a><select id="la_link_help_in" data-r="actions.action.#actionindex#.link_help_in" class="easyinit actioninput nosearchbox tos2"><option value="http"><?php _e('http://', 'revslider');?></option><option value="https"><?php _e('https://', 'revslider');?></option><option value="auto"><?php _e('Auto http / https', 'revslider');?></option><option value="keep"><?php _e('Keep as it is', 'revslider');?></option></select>
 								<label_a><?php _e('Link Target', 'revslider');?></label_a><select id="la_link_open_in" data-r="actions.action.#actionindex#.link_open_in" class="easyinit actioninput nosearchbox tos2"><option value="_self"><?php _e('Same Window', 'revslider');?></option><option value="_blank"><?php _e('New Window', 'revslider');?></option></select>
 								<label_a><?php _e('Link Type', 'revslider');?></label_a><select id="la_link_type" data-r="actions.action.#actionindex#.link_type" class="easyinit actioninput nosearchbox tos2"></select>
 								<label_a><?php _e('Follow', 'revslider');?></label_a><select id="la_link_follow" data-r="actions.action.#actionindex#.link_follow" class="easyinit actioninput nosearchbox tos2"><option value="follow"><?php _e('Follow Link', 'revslider');?></option><option value="nofollow"><?php _e('No Follow', 'revslider');?></option></select>

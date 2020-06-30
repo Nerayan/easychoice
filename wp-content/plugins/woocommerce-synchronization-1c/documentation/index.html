@@ -1,0 +1,154 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head lang="en">
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <title>WooCommerce - 1C - Data Exchange</title>
+    <!-- Framework CSS -->
+    <link rel="stylesheet" href="assets/blueprint-css/screen.css" type="text/css" media="screen, projection">
+    <link rel="stylesheet" href="assets/blueprint-css/print.css" type="text/css" media="print">
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href="assets/blueprint-css/ie.css" type="text/css" media="screen, projection"><![endif]-->
+    <link rel="stylesheet"
+      href="assets/blueprint-css/plugins/fancy-type/screen.css"
+      type="text/css"
+      media="screen, projection">
+    <style type="text/css" media="screen">
+      p, table, hr, .box {
+        margin-bottom: 25px;
+      }
+
+      .box p {
+        margin-bottom: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h3 class="center alt">
+        &ldquo;WooCommerce - 1C - Data Exchange&rdquo; Documentation by &ldquo;itgalaxycompany&rdquo; v1.0.0
+      </h3>
+      <hr>
+      <h1 class="center">&ldquo;WooCommerce - 1C - Data Exchange&rdquo;</h1>
+      <div class="borderTop">
+        <div class="span-6 colborder info prepend-1">
+          <p class="prepend-top">
+            <strong>
+              Created: 03/10/2019
+              <br>
+              By: itgalaxycompany
+              <br>
+              Site:
+              <a href="https://codecanyon.net/user/itgalaxycompany">itgalaxycompany</a>
+            </strong>
+          </p>
+        </div><!-- end div .span-6 -->
+        <div class="span-12 last">
+          <p class="prepend-top append-0">Thank you for purchasing my plugin. If you have any questions that are beyond
+            the scope of this help file, please feel free to comments in page
+            <a href="https://codecanyon.net/user/itgalaxycompany">here</a>
+            . Thanks so much!
+          </p>
+        </div>
+      </div><!-- end div .borderTop -->
+      <hr>
+      <h2 id="top" class="alt">Table of Contents</h2>
+      <ol class="alpha">
+        <li>
+          <a href="#about">About</a>
+        </li>
+        <li>
+          <a href="#step-1">Step 1 - Integration settings site</a>
+        </li>
+        <li>
+          <a href="#step-2">Step 2 - Integration settings 1C</a>
+        </li>
+      </ol>
+      <hr>
+      <h3 id="about">
+        <strong>A) About</strong>
+        -
+        <a href="#top">top</a>
+      </h3>
+      <p>
+        The main task of the plugin is to implement the ability to synchronize data between the 1C accounting system and
+        the WooCommerce product catalog.
+      </p>
+      <img src="assets/images/about.jpg" alt="about.jpg" />
+      <hr>
+      <h3 id="step-1">
+        <strong>B) Step 1 - Integration settings site</strong>
+        -
+        <a href="#top">top</a>
+      </h3>
+      <p>
+        Go to WooCommerce -> 1C Data Exchange. And make the basic settings.
+      </p>
+      <p>
+        Invent and fill in the "User" field.
+      </p>
+      <p>
+        Invent and fill in the Password field.
+      </p>
+      <p>
+        Check the box "Enable exchange"
+      </p>
+      <p>
+        Save the settings.
+      </p>
+      <img src="assets/images/step1.jpg" alt="step1.jpg" />
+      <p>
+        Now you can use the address, user and password when setting up the exchange node in 1C, about this in the next step.
+      </p>
+      <p>Explanation of the parameters:</p>
+      <ol>
+        <li><strong>Price Type</strong> - it will be filled in automatically at the first exchange and you can choose which type of prices to use on the site if several are unloaded. You can also fill it out manually before the first exchange, getting this data from xml.</li>
+        <li><strong>File part size</strong> - as a rule, hosting has a limit on the maximum data size during transfer, this option solves the problem of transferring large files. For example, the hosting has a limit of 32 megabytes, and only the import.xml file takes 60, as a result, it can’t be transferred at a time and 1C can divide it into parts, transferring “portions” byte to the site.</li>
+        <li><strong>Script running time</strong> - as a rule, there is a limit on average of 30-60 seconds, the execution time is the time for which the script should finish, but in this case, processing a huge upload, especially the first one, can take several hours. The parameter allows organizing the possibility of long-term sequential data processing.</li>
+        <li><strong>Exchange in the archive</strong> - it is advisable to always enable this option. When using it, 1C will compress the upload to the zip archive and transfer it already, which significantly speeds up the process of transferring data to the site, especially if you have a slow Internet, and also when there are a lot of pictures, then not every file is sent to the site individually, and one archive that is unpacked after receipt.</li>
+        <li><strong>Set category thumbnails automatically</strong> - check this if you want the plugin to put category pictures. A picture is set from the first product in this category with a picture, the picture is placed only in the category to which the product relates directly.</li>
+      </ol>
+
+      <img src="assets/images/step1_1.jpg" alt="step1_1.jpg" />
+
+      <p>
+        <strong>Unload orders</strong> - enable the option if you want to receive orders from the site in 1C (when setting up the exchange node in 1C, you must remember to enable the exchange of orders, otherwise 1C will not request them).
+      </p>
+
+      <img src="assets/images/step1_2.jpg" alt="step1_2.jpg" />
+
+      <p>
+        <strong>Logging</strong> - use as needed.
+      </p>
+
+      <img src="assets/images/step1_3.jpg" alt="step1_3.jpg" />
+
+      <h3 id="step-2">
+        <strong>C) Step 2 - Integration settings 1C</strong>
+        -
+        <a href="#top">top</a>
+      </h3>
+
+      <p>
+        Basic information on setting up in 1C:
+        <br>
+        <a href="https://dev.1c-bitrix.ru/learning/course/index.php?COURSE_ID=131&CHAPTER_ID=012323&LESSON_PATH=10211.12323"
+          target="_blank">
+          https://dev.1c-bitrix.ru/learning/course/index.php?COURSE_ID=131&CHAPTER_ID=012323&LESSON_PATH=10211.12323
+        </a>
+        <br>
+        <a href="https://dev.1c-bitrix.ru/learning/course/index.php?COURSE_ID=131&CHAPTER_ID=06361&LESSON_PATH=10211.4923.6361"
+          target="_blank">
+          https://dev.1c-bitrix.ru/learning/course/index.php?COURSE_ID=131&CHAPTER_ID=06361&LESSON_PATH=10211.4923.6361
+        </a>
+      </p>
+      <hr>
+      <p class="append-bottom alt large">
+        <strong>itgalaxycompany</strong>
+      </p>
+      <p>
+        <a href="#top">Go To Table of Contents</a>
+      </p>
+      <hr class="space">
+    </div><!-- end div .container -->
+  </body>
+</html>

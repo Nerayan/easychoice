@@ -3,7 +3,8 @@
 namespace kirillbdev\WCUkrShipping\Classes;
 
 use kirillbdev\WCUkrShipping\Http\NovaPoshtaAjax;
-use kirillbdev\WCUkrShipping\Http\NovaPoshtaRest;
+use kirillbdev\WCUkrShipping\Services\CheckoutService;
+use kirillbdev\WCUkrShipping\Services\TranslateService;
 
 if ( ! defined('ABSPATH')) {
   exit;
@@ -16,24 +17,11 @@ final class WCUkrShipping
   private $activator;
   private $assetsLoader;
   private $optionsPage;
-  private $rest;
   private $ajax;
-  private $reporter;
 
   private function __construct()
   {
-    $this->activator = new Activator();
-    $this->assetsLoader = new AssetsLoader();
-    $this->optionsPage = new OptionsPage();
-    $this->rest = new NovaPoshtaRest();
-
-    add_action('admin_init', function () {
-      if ($this->maybeRESTDisabled()) {
-        $this->ajax = new NovaPoshtaAjax();
-      }
-    });
-
-    $this->reporter = new Reporter();
+    $this->instantiateContainer();
   }
 
   private function __clone() { }
@@ -53,25 +41,33 @@ final class WCUkrShipping
     return $this->$name;
   }
 
-  private function maybeRESTDisabled()
+  public function init()
   {
-    if ( ! is_plugin_active('wc-ukr-shipping/wc-ukr-shipping.php')) {
-      return false;
-    }
+    $this->activator = new Activator();
+    $this->assetsLoader = new AssetsLoader();
+    $this->optionsPage = new OptionsPage();
+    $this->ajax = new NovaPoshtaAjax();
 
-    if (get_transient('wc_ukr_shipping_request_handler') === false) {
-      set_transient('wc_ukr_shipping_request_handler', 'ajax', 3600 * 24);
+    add_action('plugins_loaded', function () {
+      load_plugin_textdomain(WCUS_TRANSLATE_DOMAIN, false, 'wc-ukr-shipping/lang');
+    });
+  }
 
-      wp_remote_get(home_url('wp-json/wc-ukr-shipping/v1/test'), [
-        'timeout' => 30,
-        'sslverify' => false
-      ]);
-    }
+  public function singleton($abstract)
+  {
+    return $this->container->singleton($abstract);
+  }
 
-    if (get_transient('wc_ukr_shipping_request_handler') === 'ajax') {
-      return true;
-    }
+  public function make($abstract)
+  {
+    return $this->container->get($abstract);
+  }
 
-    return false;
+  private function instantiateContainer()
+  {
+    $this->container = new Container();
+
+    $this->container->singleton('translate_service', TranslateService::class);
+    $this->container->singleton('checkout_service', CheckoutService::class);
   }
 }

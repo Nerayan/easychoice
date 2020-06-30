@@ -24,7 +24,7 @@ class Controller extends \WC_REST_Reports_Controller {
 	 *
 	 * @var string
 	 */
-	protected $namespace = 'wc/v4';
+	protected $namespace = 'wc-analytics';
 
 	/**
 	 * Route base.
@@ -60,6 +60,13 @@ class Controller extends \WC_REST_Reports_Controller {
 	 * @var array
 	 */
 	protected $urls = array();
+
+	/**
+	 * Contains a cache of retrieved stats data, grouped by report slug.
+	 *
+	 * @var array
+	 */
+	protected $stats_data = array();
 
 	/**
 	 * Register the routes for reports.
@@ -119,7 +126,7 @@ class Controller extends \WC_REST_Reports_Controller {
 			return true;
 		}
 
-		$request  = new \WP_REST_Request( 'GET', '/wc/v4/reports' );
+		$request  = new \WP_REST_Request( 'GET', '/wc-analytics/reports' );
 		$response = rest_do_request( $request );
 
 		if ( is_wp_error( $response ) ) {
@@ -127,7 +134,7 @@ class Controller extends \WC_REST_Reports_Controller {
 		}
 
 		if ( 200 !== $response->get_status() ) {
-			return new \WP_Error( 'woocommerce_reports_performance_indicators_result_failed', __( 'Sorry, fetching performance indicators failed.', 'woocommerce-admin' ) );
+			return new \WP_Error( 'woocommerce_analytics_performance_indicators_result_failed', __( 'Sorry, fetching performance indicators failed.', 'woocommerce-admin' ) );
 		}
 
 		$endpoints     = $response->get_data();
@@ -157,8 +164,9 @@ class Controller extends \WC_REST_Reports_Controller {
 
 					$stat            = $prefix . '/' . $property_key;
 					$allowed_stats[] = $stat;
+					$stat_label      = empty( $schema_info['title'] ) ? $schema_info['description'] : $schema_info['title'];
 
-					$this->labels[ $stat ]  = trim( preg_replace( '/\W+/', ' ', $schema_info['description'] ) );
+					$this->labels[ $stat ]  = trim( preg_replace( '/\W+/', ' ', $stat_label ) );
 					$this->formats[ $stat ] = isset( $schema_info['format'] ) ? $schema_info['format'] : 'number';
 				}
 
@@ -230,7 +238,7 @@ class Controller extends \WC_REST_Reports_Controller {
 		$stat_order = apply_filters(
 			'woocommerce_rest_report_sort_performance_indicators',
 			array(
-				'revenue/gross_revenue',
+				'revenue/total_sales',
 				'revenue/net_revenue',
 				'orders/orders_count',
 				'orders/avg_order_value',
@@ -261,6 +269,33 @@ class Controller extends \WC_REST_Reports_Controller {
 	}
 
 	/**
+	 * Get report stats data, avoiding duplicate requests for stats that use the same endpoint.
+	 *
+	 * @param string $report Report slug to request data for.
+	 * @param array  $query_args Report query args.
+	 * @return WP_REST_Response|WP_Error Report stats data.
+	 */
+	public function get_stats_data( $report, $query_args ) {
+		// Return from cache if we've already requested these report stats.
+		if ( isset( $this->stats_data[ $report ] ) ) {
+			return $this->stats_data[ $report ];
+		}
+
+		// Request the report stats.
+		$request_url = $this->endpoints[ $report ];
+		$request     = new \WP_REST_Request( 'GET', $request_url );
+		$request->set_param( 'before', $query_args['before'] );
+		$request->set_param( 'after', $query_args['after'] );
+
+		$response = rest_do_request( $request );
+
+		// Cache the response.
+		$this->stats_data[ $report ] = $response;
+
+		return $response;
+	}
+
+	/**
 	 * Get all reports.
 	 *
 	 * @param  WP_REST_Request $request Request data.
@@ -274,7 +309,7 @@ class Controller extends \WC_REST_Reports_Controller {
 
 		$query_args = $this->prepare_reports_query( $request );
 		if ( empty( $query_args['stats'] ) ) {
-			return new \WP_Error( 'woocommerce_reports_performance_indicators_empty_query', __( 'A list of stats to query must be provided.', 'woocommerce-admin' ), 400 );
+			return new \WP_Error( 'woocommerce_analytics_performance_indicators_empty_query', __( 'A list of stats to query must be provided.', 'woocommerce-admin' ), 400 );
 		}
 
 		$stats = array();
@@ -289,12 +324,7 @@ class Controller extends \WC_REST_Reports_Controller {
 				continue;
 			}
 
-			$request_url = $this->endpoints[ $report ];
-			$request     = new \WP_REST_Request( 'GET', $request_url );
-			$request->set_param( 'before', $query_args['before'] );
-			$request->set_param( 'after', $query_args['after'] );
-
-			$response = rest_do_request( $request );
+			$response = $this->get_stats_data( $report, $query_args );
 
 			if ( is_wp_error( $response ) ) {
 				return $response;

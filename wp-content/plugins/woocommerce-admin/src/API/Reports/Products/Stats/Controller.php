@@ -26,7 +26,7 @@ class Controller extends \WC_REST_Reports_Controller {
 	 *
 	 * @var string
 	 */
-	protected $namespace = 'wc/v4';
+	protected $namespace = 'wc-analytics';
 
 	/**
 	 * Route base.
@@ -48,7 +48,7 @@ class Controller extends \WC_REST_Reports_Controller {
 	 * Constructor.
 	 */
 	public function __construct() {
-		add_filter( 'woocommerce_reports_products_stats_select_query', array( $this, 'set_default_report_data' ) );
+		add_filter( 'woocommerce_analytics_products_stats_select_query', array( $this, 'set_default_report_data' ) );
 	}
 
 	/**
@@ -157,6 +157,7 @@ class Controller extends \WC_REST_Reports_Controller {
 	public function get_item_schema() {
 		$data_values = array(
 			'items_sold'   => array(
+				'title'       => __( 'Items Sold', 'woocommerce-admin' ),
 				'description' => __( 'Number of items sold.', 'woocommerce-admin' ),
 				'type'        => 'integer',
 				'context'     => array( 'view', 'edit' ),
@@ -164,7 +165,7 @@ class Controller extends \WC_REST_Reports_Controller {
 				'indicator'   => true,
 			),
 			'net_revenue'  => array(
-				'description' => __( 'Net revenue.', 'woocommerce-admin' ),
+				'description' => __( 'Net Sales.', 'woocommerce-admin' ),
 				'type'        => 'number',
 				'context'     => array( 'view', 'edit' ),
 				'readonly'    => true,
@@ -412,6 +413,12 @@ class Controller extends \WC_REST_Reports_Controller {
 				'category',
 				'variation',
 			),
+			'validate_callback' => 'rest_validate_request_arg',
+		);
+		$params['fields']     = array(
+			'description'       => __( 'Limit stats fields to the specified items.', 'woocommerce-admin' ),
+			'type'              => 'array',
+			'sanitize_callback' => 'wp_parse_slug_list',
 			'validate_callback' => 'rest_validate_request_arg',
 		);
 

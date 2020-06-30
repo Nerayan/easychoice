@@ -155,7 +155,7 @@ if ( ! function_exists( 'woocommerce_product_loop_start' ) ) {
         $data_attr = 'regular-products';
         $data_view = 'grid';
 
-        if ( is_shop() || is_product_category() || is_product_tag() || is_tax( get_object_taxonomies( 'product' ) ) ) {
+        if ( is_shop() || is_product_category() || is_product_tag() || is_tax( get_object_taxonomies( 'product' ) ) || ( is_dokan_activated() && dokan_is_store_page() ) ) {
             $data_attr = 'shop-products';
             $shop_views = electro_get_shop_views();
             foreach( $shop_views as $shop_view => $shop_view_args) {
@@ -689,25 +689,20 @@ if( ! function_exists( 'electro_products_live_search' ) ) {
                 $ids          = wp_list_pluck( $search_query->posts, 'ID' );
                 $product_objects = array_map( 'wc_get_product', $ids );
             } else {
-                $data_store = WC_Data_Store::load( 'product' );
-                $ids        = $data_store->search_products( $term, '', false );
-                if( ! empty( $ids ) ) {
-                    $product_objects = wc_get_products( apply_filters( 'electro_wc_live_search_query_args', array( 
-                        'status'    => array( 'publish' ), 
-                        'orderby'   => 'date', 
-                        'order'     => 'DESC', 
-                        'limit'     => 10, 
-                        'include'   => $ids,
-                        'tax_query' => array(
-                            array(
-                                'taxonomy' => 'product_visibility',
-                                'field'    => 'name',
-                                'terms'    => 'exclude-from-catalog',
-                                'operator' => 'NOT IN',
-                            ),
-                        )
-                    ) ) );
-                }
+                $product_objects = wc_get_products( apply_filters( 'electro_wc_live_search_query_args', array(
+                    's'         => $term,
+                    'orderby'   => 'relevance',
+                    'order'     => 'DESC',
+                    'limit'     => 10,
+                    'tax_query' => array(
+                        array(
+                            'taxonomy' => 'product_visibility',
+                            'field'    => 'name',
+                            'terms'    => 'exclude-from-catalog',
+                            'operator' => 'NOT IN',
+                        ),
+                    )
+                ) ) );
             }
 
             $results = array();
@@ -794,6 +789,11 @@ if ( ! function_exists( 'woocommerce_products_will_display' ) ) {
      */
     function woocommerce_products_will_display() {
         global $wpdb;
+
+
+        if( is_dokan_activated() && dokan_is_store_page() ) {
+            return true;
+        }
 
         if ( is_shop() ) {
             return 'subcategories' !== get_option( 'woocommerce_shop_page_display' ) || is_search();
@@ -945,6 +945,23 @@ if ( ! function_exists( 'electro_get_sale_flash' ) ) {
     }
 }
 
+if ( ! function_exists( 'electro_structured_data_product' ) ) {
+    /**
+     * Structured data update for brand.
+     */
+    function electro_structured_data_product( $markup, $product ) {
+        $brand_taxonomy = electro_get_brands_taxonomy();
+        if( $brand_taxonomy ) {
+            $product_brand = $product->get_attribute( $brand_taxonomy );
+            if( ! empty( $product_brand ) ) {
+                $markup['brand'] = $product_brand;
+            }
+        }
+
+        return $markup;
+    }
+}
+
 /**
  * Track product views.
  */
@@ -953,23 +970,23 @@ if( ! function_exists( 'electro_wc_track_product_view' ) ) {
         if ( ! is_singular( 'product' ) ) {
             return;
         }
-        
+
         global $post;
-        
+
         if ( empty( $_COOKIE['electro_wc_recently_viewed'] ) ) {
             $viewed_products = array();
         } else {
             $viewed_products = (array) explode( '|', $_COOKIE['electro_wc_recently_viewed'] );
         }
-        
+
         if ( ! in_array( $post->ID, $viewed_products ) ) {
             $viewed_products[] = $post->ID;
         }
-        
+
         if ( sizeof( $viewed_products ) > 15 ) {
             array_shift( $viewed_products );
         }
-        
+
         // Store for session only
         wc_setcookie( 'electro_wc_recently_viewed', implode( '|', $viewed_products ) );
     }

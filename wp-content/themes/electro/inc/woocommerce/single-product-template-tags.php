@@ -258,13 +258,17 @@ if( ! function_exists( 'electro_single_product_deal_countdown_timer' ) ) {
 
 		if ( apply_filters( 'electro_enable_single_product_timer', true ) ) {
 
-		global $product;
-			?>
-			<div class="section-onsale-product">
-				<div class="onsale-product">
-					<?php electro_deal_countdown_timer( $product ); ?>
+			global $product;
+
+			if( $product->is_on_sale() ) {
+				?>
+				<div class="section-onsale-product">
+					<div class="onsale-product">
+						<?php electro_deal_countdown_timer( $product ); ?>
+					</div>
 				</div>
-			</div><?php
+				<?php
+			}
 		}
 	}
 }

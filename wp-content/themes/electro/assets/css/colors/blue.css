@@ -161,7 +161,13 @@ ul.products[data-view=list-view].columns-8 > li.product .product-loop-footer .bu
 .header-v7 .masthead,
 .category-icons-carousel .category a:hover .category-icon,
 .products-carousel-banner-vertical-tabs .banners-tabs > .nav a.active,
-.products-carousel-with-timer .deal-countdown-timer {
+.products-carousel-with-timer .deal-countdown-timer,
+.dokan-elector-style-active.store-v1 .profile-frame + .dokan-store-tabs > ul li.active a:after,
+.dokan-elector-style-active.store-v5 .profile-frame + .dokan-store-tabs > ul li.active a:after,
+.aws-container .aws-search-form .aws-search-clear,
+div.wpforms-container-full .wpforms-form input[type=submit],
+div.wpforms-container-full .wpforms-form button[type=submit],
+div.wpforms-container-full .wpforms-form .wpforms-page-button {
   background-color: #0787ea; }
 
 .electro-navbar .departments-menu-v2 .departments-menu-v2-title + .dropdown-menu li.menu-item-has-children > .dropdown-menu,
@@ -257,7 +263,14 @@ section.products-carousel-v5 header .nav-inline .active .nav-link,
 .navbar-search-input-group .custom-select,
 .products-6-1 header.show-nav ul.nav .nav-item.active .nav-link,
 .electro-wide .onsale-product-carousel .onsale-product__inner,
-.electro-wide .section-onsale-product .onsale-product__inner {
+.electro-wide .section-onsale-product .onsale-product__inner,
+.header-v1 .aws-container .aws-search-field,
+.header-v3 .aws-container .aws-search-field,
+.header-v6 .aws-container .aws-search-field,
+.header-v8 .aws-container .aws-search-field,
+div.wpforms-container-full .wpforms-form input[type=submit],
+div.wpforms-container-full .wpforms-form button[type=submit],
+div.wpforms-container-full .wpforms-form .wpforms-page-button {
   border-color: #0787ea; }
 
 .widget_price_filter .price_slider_amount .button,
@@ -270,7 +283,8 @@ input[type="submit"],
 input.dokan-btn-theme[type="submit"],
 a.dokan-btn-theme, .dokan-btn-theme,
 .sign-in-button,
-.products-carousel-banner-vertical-tabs .banners-tabs .tab-content-inner > a {
+.products-carousel-banner-vertical-tabs .banners-tabs .tab-content-inner > a,
+.dokan-store-support-and-follow-wrap .dokan-btn {
   color: #fff;
   background-color: #0787ea;
   border-color: #0787ea; }
@@ -284,7 +298,8 @@ a.dokan-btn-theme, .dokan-btn-theme,
   input.dokan-btn-theme[type="submit"]:hover,
   a.dokan-btn-theme:hover, .dokan-btn-theme:hover,
   .sign-in-button:hover,
-  .products-carousel-banner-vertical-tabs .banners-tabs .tab-content-inner > a:hover {
+  .products-carousel-banner-vertical-tabs .banners-tabs .tab-content-inner > a:hover,
+  .dokan-store-support-and-follow-wrap .dokan-btn:hover {
     color: #fff;
     background-color: black;
     border-color: black; }
@@ -308,7 +323,9 @@ a.dokan-btn-theme, .dokan-btn-theme,
   .sign-in-button:focus,
   .sign-in-button.focus,
   .products-carousel-banner-vertical-tabs .banners-tabs .tab-content-inner > a:focus,
-  .products-carousel-banner-vertical-tabs .banners-tabs .tab-content-inner > a.focus {
+  .products-carousel-banner-vertical-tabs .banners-tabs .tab-content-inner > a.focus,
+  .dokan-store-support-and-follow-wrap .dokan-btn:focus,
+  .dokan-store-support-and-follow-wrap .dokan-btn.focus {
     color: #fff;
     background-color: black;
     border-color: black; }
@@ -354,7 +371,11 @@ a.dokan-btn-theme, .dokan-btn-theme,
   .products-carousel-banner-vertical-tabs .banners-tabs .tab-content-inner > a:active,
   .products-carousel-banner-vertical-tabs .banners-tabs .tab-content-inner > a.active,
   .open >
-  .products-carousel-banner-vertical-tabs .banners-tabs .tab-content-inner > a.dropdown-toggle {
+  .products-carousel-banner-vertical-tabs .banners-tabs .tab-content-inner > a.dropdown-toggle,
+  .dokan-store-support-and-follow-wrap .dokan-btn:active,
+  .dokan-store-support-and-follow-wrap .dokan-btn.active,
+  .open >
+  .dokan-store-support-and-follow-wrap .dokan-btn.dropdown-toggle {
     color: #fff;
     background-color: black;
     border-color: black;
@@ -485,7 +506,19 @@ a.dokan-btn-theme, .dokan-btn-theme,
     .open >
     .products-carousel-banner-vertical-tabs .banners-tabs .tab-content-inner > a.dropdown-toggle:focus,
     .open >
-    .products-carousel-banner-vertical-tabs .banners-tabs .tab-content-inner > a.dropdown-toggle.focus {
+    .products-carousel-banner-vertical-tabs .banners-tabs .tab-content-inner > a.dropdown-toggle.focus,
+    .dokan-store-support-and-follow-wrap .dokan-btn:active:hover,
+    .dokan-store-support-and-follow-wrap .dokan-btn:active:focus,
+    .dokan-store-support-and-follow-wrap .dokan-btn:active.focus,
+    .dokan-store-support-and-follow-wrap .dokan-btn.active:hover,
+    .dokan-store-support-and-follow-wrap .dokan-btn.active:focus,
+    .dokan-store-support-and-follow-wrap .dokan-btn.active.focus,
+    .open >
+    .dokan-store-support-and-follow-wrap .dokan-btn.dropdown-toggle:hover,
+    .open >
+    .dokan-store-support-and-follow-wrap .dokan-btn.dropdown-toggle:focus,
+    .open >
+    .dokan-store-support-and-follow-wrap .dokan-btn.dropdown-toggle.focus {
       color: #fff;
       background-color: #045696;
       border-color: #03406e; }
@@ -529,7 +562,11 @@ a.dokan-btn-theme, .dokan-btn-theme,
   .products-carousel-banner-vertical-tabs .banners-tabs .tab-content-inner > a.disabled:focus,
   .products-carousel-banner-vertical-tabs .banners-tabs .tab-content-inner > a.disabled.focus,
   .products-carousel-banner-vertical-tabs .banners-tabs .tab-content-inner > a:disabled:focus,
-  .products-carousel-banner-vertical-tabs .banners-tabs .tab-content-inner > a:disabled.focus {
+  .products-carousel-banner-vertical-tabs .banners-tabs .tab-content-inner > a:disabled.focus,
+  .dokan-store-support-and-follow-wrap .dokan-btn.disabled:focus,
+  .dokan-store-support-and-follow-wrap .dokan-btn.disabled.focus,
+  .dokan-store-support-and-follow-wrap .dokan-btn:disabled:focus,
+  .dokan-store-support-and-follow-wrap .dokan-btn:disabled.focus {
     background-color: #0787ea;
     border-color: #0787ea; }
   .widget_price_filter .price_slider_amount .button.disabled:hover, .widget_price_filter .price_slider_amount .button:disabled:hover,
@@ -552,7 +589,9 @@ a.dokan-btn-theme, .dokan-btn-theme,
   .sign-in-button.disabled:hover,
   .sign-in-button:disabled:hover,
   .products-carousel-banner-vertical-tabs .banners-tabs .tab-content-inner > a.disabled:hover,
-  .products-carousel-banner-vertical-tabs .banners-tabs .tab-content-inner > a:disabled:hover {
+  .products-carousel-banner-vertical-tabs .banners-tabs .tab-content-inner > a:disabled:hover,
+  .dokan-store-support-and-follow-wrap .dokan-btn.disabled:hover,
+  .dokan-store-support-and-follow-wrap .dokan-btn:disabled:hover {
     background-color: #0787ea;
     border-color: #0787ea; }
 
@@ -585,7 +624,9 @@ a.dokan-btn-theme, .dokan-btn-theme,
 .columns-6-1 > ul.products.product-main-6-1 .flex-control-thumbs li img.flex-active,
 .products-2-1-2 .nav-link:hover::after,
 .products-4-1-4 .nav-link:hover::after,
-.section-onsale-product-carousel .onsale-product-carousel .onsale-product .onsale-product-thumbnails .images .thumbnails a.current {
+.section-onsale-product-carousel .onsale-product-carousel .onsale-product .onsale-product-thumbnails .images .thumbnails a.current,
+.dokan-elector-style-active.store-v1 .profile-frame + .dokan-store-tabs > ul li.active a,
+.dokan-elector-style-active.store-v5 .profile-frame + .dokan-store-tabs > ul li.active a {
   border-bottom-color: #0787ea; }
 
 .home-v1-slider .btn-primary:hover,
@@ -612,22 +653,27 @@ a.dokan-btn-theme, .dokan-btn-theme,
 
 .dokan-widget-area .widget .widget-title:after,
 .dokan-report-wrap ul.dokan_tabs > li.active a::after,
-.dokan-dashboard-header h1.entry-title span.dokan-right a.dokan-btn.dokan-btn-sm {
+.dokan-dashboard-header h1.entry-title span.dokan-right a.dokan-btn.dokan-btn-sm,
+.dokan-store-sidebar .widget-store-owner .widget-title:after {
   border-color: #0787ea; }
 
 input.dokan-btn-theme[type="submit"],
-a.dokan-btn-theme, .dokan-btn-theme {
+a.dokan-btn-theme,
+.dokan-btn-theme {
   color: #fff;
   background-color: #0787ea;
   border-color: #0787ea; }
   input.dokan-btn-theme[type="submit"]:hover,
-  a.dokan-btn-theme:hover, .dokan-btn-theme:hover {
+  a.dokan-btn-theme:hover,
+  .dokan-btn-theme:hover {
     color: #fff;
     background-color: black;
     border-color: black; }
   input.dokan-btn-theme[type="submit"]:focus, input.dokan-btn-theme[type="submit"].focus,
   a.dokan-btn-theme:focus,
-  a.dokan-btn-theme.focus, .dokan-btn-theme:focus, .dokan-btn-theme.focus {
+  a.dokan-btn-theme.focus,
+  .dokan-btn-theme:focus,
+  .dokan-btn-theme.focus {
     color: #fff;
     background-color: black;
     border-color: black; }
@@ -636,8 +682,11 @@ a.dokan-btn-theme, .dokan-btn-theme {
   a.dokan-btn-theme:active,
   a.dokan-btn-theme.active,
   .open >
-  a.dokan-btn-theme.dropdown-toggle, .dokan-btn-theme:active, .dokan-btn-theme.active,
-  .open > .dokan-btn-theme.dropdown-toggle {
+  a.dokan-btn-theme.dropdown-toggle,
+  .dokan-btn-theme:active,
+  .dokan-btn-theme.active,
+  .open >
+  .dokan-btn-theme.dropdown-toggle {
     color: #fff;
     background-color: black;
     border-color: black;
@@ -657,10 +706,19 @@ a.dokan-btn-theme, .dokan-btn-theme {
     .open >
     a.dokan-btn-theme.dropdown-toggle:focus,
     .open >
-    a.dokan-btn-theme.dropdown-toggle.focus, .dokan-btn-theme:active:hover, .dokan-btn-theme:active:focus, .dokan-btn-theme:active.focus, .dokan-btn-theme.active:hover, .dokan-btn-theme.active:focus, .dokan-btn-theme.active.focus,
-    .open > .dokan-btn-theme.dropdown-toggle:hover,
-    .open > .dokan-btn-theme.dropdown-toggle:focus,
-    .open > .dokan-btn-theme.dropdown-toggle.focus {
+    a.dokan-btn-theme.dropdown-toggle.focus,
+    .dokan-btn-theme:active:hover,
+    .dokan-btn-theme:active:focus,
+    .dokan-btn-theme:active.focus,
+    .dokan-btn-theme.active:hover,
+    .dokan-btn-theme.active:focus,
+    .dokan-btn-theme.active.focus,
+    .open >
+    .dokan-btn-theme.dropdown-toggle:hover,
+    .open >
+    .dokan-btn-theme.dropdown-toggle:focus,
+    .open >
+    .dokan-btn-theme.dropdown-toggle.focus {
       color: #fff;
       background-color: #045696;
       border-color: #03406e; }
@@ -668,12 +726,18 @@ a.dokan-btn-theme, .dokan-btn-theme {
   a.dokan-btn-theme.disabled:focus,
   a.dokan-btn-theme.disabled.focus,
   a.dokan-btn-theme:disabled:focus,
-  a.dokan-btn-theme:disabled.focus, .dokan-btn-theme.disabled:focus, .dokan-btn-theme.disabled.focus, .dokan-btn-theme:disabled:focus, .dokan-btn-theme:disabled.focus {
+  a.dokan-btn-theme:disabled.focus,
+  .dokan-btn-theme.disabled:focus,
+  .dokan-btn-theme.disabled.focus,
+  .dokan-btn-theme:disabled:focus,
+  .dokan-btn-theme:disabled.focus {
     background-color: #0787ea;
     border-color: #0787ea; }
   input.dokan-btn-theme[type="submit"].disabled:hover, input.dokan-btn-theme[type="submit"]:disabled:hover,
   a.dokan-btn-theme.disabled:hover,
-  a.dokan-btn-theme:disabled:hover, .dokan-btn-theme.disabled:hover, .dokan-btn-theme:disabled:hover {
+  a.dokan-btn-theme:disabled:hover,
+  .dokan-btn-theme.disabled:hover,
+  .dokan-btn-theme:disabled:hover {
     background-color: #0787ea;
     border-color: #0787ea; }
 
@@ -782,9 +846,13 @@ p.no-comments button,
 .products-carousel-banner-vertical-tabs .banners-tabs .tab-content-inner > a,
 .products-carousel-tabs-with-deal header ul.nav-inline .nav-link.active,
 .header-v5 .handheld-header-v2 .handheld-header-links .cart .count,
+.yith-wcqv-button,
 .home-vertical-nav.departments-menu-v2 .vertical-menu-title a,
 .products-carousel-with-timer .deal-countdown-timer,
-.demo_store a {
+.demo_store a,
+div.wpforms-container-full .wpforms-form input[type=submit],
+div.wpforms-container-full .wpforms-form button[type=submit],
+div.wpforms-container-full .wpforms-form .wpforms-page-button {
   color: #fff; }
 
 .header-v7 .navbar-search > .input-group {

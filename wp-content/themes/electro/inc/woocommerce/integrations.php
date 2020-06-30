@@ -20,6 +20,14 @@ if ( is_yith_wcwl_activated() ) {
 		remove_action( 'wp_enqueue_scripts', array( $yith_wcwl->wcwl_init, 'enqueue_styles_and_stuffs' ) );
 	}
 
+	if ( !function_exists( 'electro_wishlist_dequeue_main_style' ) ) {
+		function electro_wishlist_dequeue_main_style() {
+			wp_dequeue_style( 'yith-wcwl-main' );
+		}
+	}
+
+	add_action( 'wp_enqueue_scripts', 'electro_wishlist_dequeue_main_style', 10 );
+
 	if( ! function_exists( 'electro_get_wishlist_page_id' ) ){
 		/**
 		 * Gets the page ID of wishlist page
@@ -228,4 +236,14 @@ if ( electro_is_yith_multistep_checkout_activated() ) {
 
 if ( electro_is_prdctfltr_activated() ) {
 	require_once get_template_directory() . '/inc/woocommerce/integrations/prdctfltr/functions.php';
+}
+
+if ( ! function_exists( 'electro_is_advanced_woo_search_activated' ) ) {
+	function electro_is_advanced_woo_search_activated() {
+		 return function_exists( 'aws_get_search_form' );
+	}
+}
+
+if ( electro_is_advanced_woo_search_activated() ) {
+	require_once get_template_directory() . '/inc/woocommerce/integrations/advanced-woo-search/functions.php';
 }

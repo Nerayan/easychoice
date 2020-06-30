@@ -270,6 +270,12 @@ if ( ! function_exists( 'is_dokan_activated' ) ) {
 	}
 }
 
+if ( ! function_exists( 'is_dokan_pro_activated' ) ) {
+	function is_dokan_pro_activated() {
+		return class_exists( 'Dokan_Pro' ) ? true : false;
+	}
+}
+
 /**
  * Check if Visual Composer is activated
  */

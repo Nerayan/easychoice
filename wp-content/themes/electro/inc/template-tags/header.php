@@ -41,7 +41,8 @@ if ( ! function_exists( 'electro_header_icons' ) ) {
      * @since 2.0
      */
     function electro_header_icons() {
-        ?><div class="header-icons"><?php
+        ?><div class="header-icons">
+        <?php
         /**
          *
          */

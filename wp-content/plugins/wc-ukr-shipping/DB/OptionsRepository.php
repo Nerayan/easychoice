@@ -4,6 +4,30 @@ namespace kirillbdev\WCUkrShipping\DB;
 
 class OptionsRepository
 {
+  /**
+   * @param string $key
+   * @return mixed|null
+   */
+  public static function getOption($key)
+  {
+    $defaults = [
+      'wc_ukr_shipping_np_method_title'           => 'Доставка службой Новая почта',
+      'wc_ukr_shipping_np_block_title'            => 'Укажите адрес доставки',
+      'wc_ukr_shipping_np_placeholder_area'       => 'Выберите область',
+      'wc_ukr_shipping_np_placeholder_city'       => 'Выберите город',
+      'wc_ukr_shipping_np_placeholder_warehouse'  => 'Выберите отделение',
+      'wc_ukr_shipping_np_address_title'          => 'Нужна адресная доставка',
+      'wc_ukr_shipping_np_address_placeholder'    => 'Введите адрес',
+      'wc_ukr_shipping_np_not_found_text'         => 'Ничего не найдено',
+      'wc_ukr_shipping_np_block_pos'              => 'billing',
+      'wc_ukr_shipping_np_save_warehouse'         => 0,
+      'wc_ukr_shipping_np_translates_type'        => WCUS_TRANSLATE_TYPE_PLUGIN,
+      'wc_ukr_shipping_np_new_ui'                 => 1
+    ];
+
+    return get_option($key, isset($defaults[ $key ]) ? $defaults[ $key ] : null);
+  }
+
   public function save($data)
   {
     foreach ($data['wc_ukr_shipping'] as $key => $value) {
@@ -12,10 +36,6 @@ class OptionsRepository
 
     if ( ! isset($data['wc_ukr_shipping']['address_shipping'])) {
       update_option('wc_ukr_shipping_address_shipping', 0);
-    }
-
-    if ( ! isset($data['wc_ukr_shipping']['send_statistic'])) {
-      update_option('wc_ukr_shipping_send_statistic', 0);
     }
 
     // Flush WooCommerce Shipping Cache

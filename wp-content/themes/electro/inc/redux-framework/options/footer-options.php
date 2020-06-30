@@ -23,6 +23,13 @@ $footer_options = apply_filters( 'electro_footer_options_args', array(
 		),
 
 		array(
+			'id'        => 'footer_enable_touch_slider',
+			'type'      => 'switch',
+			'default'   => 0,
+			'title'     => esc_html__( 'Enable touch drag slider for Brands ?', 'electro' ),
+		),
+
+		array(
 			'id'        => 'footer_footer_brands_slider_number',
 			'type'      => 'text',
 			'validate'  => 'numeric',
@@ -149,7 +156,7 @@ $footer_options = apply_filters( 'electro_footer_options_args', array(
 			'type'		=> 'switch',
 			'title'		=> esc_html__( 'Show Footer Call Us section', 'electro' ),
 			'default'	=> 1,
-			'required'	=> array( 'show_footer_contact_block', 'equals', 1 ),	
+			'required'	=> array( 'show_footer_contact_block', 'equals', 1 ),
 		),
 
 		array(

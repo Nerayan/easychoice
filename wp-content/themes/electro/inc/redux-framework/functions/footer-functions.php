@@ -17,6 +17,18 @@ if ( ! function_exists( 'redux_toggle_footer_brands_carousel' ) ) {
 	}
 }
 
+if ( ! function_exists( 'redux_toggle_bc_touch_drag' ) ) {
+	function redux_toggle_bc_touch_drag( $args ) {
+		global $electro_options;
+
+		if ( isset( $electro_options['footer_enable_touch_slider'] ) && $electro_options['footer_enable_touch_slider'] ) {
+			$args['touchDrag'] = true;
+		}
+
+		return $args;
+	}
+}
+
 
 if ( ! function_exists( 'redux_apply_footer_brands_number' ) ) {
 	function redux_apply_footer_brands_number( $number ) {

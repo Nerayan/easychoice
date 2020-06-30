@@ -19,16 +19,11 @@ if ( ! class_exists( 'YITH_System_Status' ) ) {
 	 * Setting Page to Manage Plugins
 	 *
 	 * @class      YITH_System_Status
-	 * @package    YITH
 	 * @since      1.0
 	 * @author     Alberto Ruggiero
+	 * @package    YITH
 	 */
 	class YITH_System_Status {
-
-		/**
-		 * @var array The settings require to add the submenu page "System Status"
-		 */
-		protected $_settings = array();
 
 		/**
 		 * @var string the page slug
@@ -48,16 +43,16 @@ if ( ! class_exists( 'YITH_System_Status' ) ) {
 		/**
 		 * Single instance of the class
 		 *
-		 * @var \YITH_System_Status
 		 * @since 1.0.0
+		 * @var \YITH_System_Status
 		 */
 		protected static $_instance = null;
 
 		/**
 		 * Main plugin Instance
 		 *
-		 * @since  1.0.0
 		 * @return YITH_System_Status
+		 * @since  1.0.0
 		 * @author Alberto Ruggiero
 		 */
 		public static function instance() {
@@ -71,8 +66,8 @@ if ( ! class_exists( 'YITH_System_Status' ) ) {
 		/**
 		 * Constructor
 		 *
-		 * @since  1.0.0
 		 * @return void
+		 * @since  1.0.0
 		 * @author Alberto Ruggiero
 		 */
 		public function __construct() {
@@ -81,16 +76,30 @@ if ( ! class_exists( 'YITH_System_Status' ) ) {
 				return;
 			}
 
-			$system_info  = get_option( 'yith_system_info' );
-			$error_notice = ( $system_info['errors'] === true ? ' <span class="yith-system-info-menu update-plugins">!</span>' : '' );
+			/**
+			 * Add to prevent trigger admin_init called directly
+			 * wp-admin/admin-post.php?page=yith_system_info
+			 */
+			if ( ! is_user_logged_in() ) {
+				return;
+			}
 
-			$this->_settings = array(
-				'parent_page' => 'yith_plugin_panel',
-				'page_title'  => __( 'System Status', 'yith-plugin-fw' ),
-				'menu_title'  => __( 'System Status', 'yith-plugin-fw' ) . $error_notice,
-				'capability'  => 'manage_options',
-				'page'        => $this->_page,
-			);
+			add_action( 'admin_menu', array( $this, 'add_submenu_page' ), 99 );
+			add_action( 'admin_init', array( $this, 'check_system_status' ) );
+			add_action( 'admin_notices', array( $this, 'activate_system_notice' ), 15 );
+			add_action( 'admin_enqueue_scripts', array( $this, 'dismissable_notice' ), 20 );
+			add_action( 'init', array( $this, 'set_requirements_labels' ) );
+
+		}
+
+		/**
+		 * Set requirements labels
+		 *
+		 * @return void
+		 * @since  1.0.0
+		 * @author Alberto Ruggiero
+		 */
+		public function set_requirements_labels() {
 
 			$this->_requirement_labels = array(
 				'min_wp_version'    => __( 'WordPress Version', 'yith-plugin-fw' ),
@@ -108,28 +117,33 @@ if ( ! class_exists( 'YITH_System_Status' ) ) {
 				'url_fopen_enabled' => __( 'URL FOpen', 'yith-plugin-fw' ),
 			);
 
-			add_action( 'admin_menu', array( $this, 'add_submenu_page' ), 99 );
-			add_action( 'admin_init', array( $this, 'check_system_status' ) );
-			add_action( 'admin_notices', array( $this, 'activate_system_notice' ), 15 );
-			add_action( 'admin_enqueue_scripts', array( $this, 'dismissable_notice' ), 20 );
-
-
 		}
 
 		/**
 		 * Add "System Information" submenu page under YITH Plugins
 		 *
-		 * @since  1.0.0
 		 * @return void
+		 * @since  1.0.0
 		 * @author Alberto Ruggiero
 		 */
 		public function add_submenu_page() {
+
+			$system_info  = get_option( 'yith_system_info', array() );
+			$error_notice = ( isset( $system_info['errors'] ) && $system_info['errors'] === true ? ' <span class="yith-system-info-menu update-plugins">!</span>' : '' );
+			$settings     = array(
+				'parent_page' => 'yith_plugin_panel',
+				'page_title'  => __( 'System Status', 'yith-plugin-fw' ),
+				'menu_title'  => __( 'System Status', 'yith-plugin-fw' ) . $error_notice,
+				'capability'  => 'manage_options',
+				'page'        => $this->_page,
+			);
+
 			add_submenu_page(
-				$this->_settings['parent_page'],
-				$this->_settings['page_title'],
-				$this->_settings['menu_title'],
-				$this->_settings['capability'],
-				$this->_settings['page'],
+				$settings['parent_page'],
+				$settings['page_title'],
+				$settings['menu_title'],
+				$settings['capability'],
+				$settings['page'],
 				array( $this, 'show_information_panel' )
 			);
 		}
@@ -137,8 +151,8 @@ if ( ! class_exists( 'YITH_System_Status' ) ) {
 		/**
 		 * Add "System Information" page template under YITH Plugins
 		 *
-		 * @since  1.0.0
 		 * @return void
+		 * @since  1.0.0
 		 * @author Alberto Ruggiero
 		 */
 		public function show_information_panel() {
@@ -153,11 +167,12 @@ if ( ! class_exists( 'YITH_System_Status' ) ) {
 		/**
 		 * Perform system status check
 		 *
-		 * @since  1.0.0
 		 * @return void
+		 * @since  1.0.0
 		 * @author Alberto Ruggiero
 		 */
 		public function check_system_status() {
+
 
 			if ( '' == get_option( 'yith_system_info' ) || ( isset( $_GET['page'] ) && $_GET['page'] == $this->_page ) ) {
 
@@ -200,7 +215,7 @@ if ( ! class_exists( 'YITH_System_Status' ) ) {
 									break;
 
 								default:
-									if ( ! version_compare( $value, $required_value, '>=' ) ) {
+									if ( ! version_compare( $value, $required_value, '>=' ) && $value != 'n/a' ) {
 										$check_results[ $key ]['errors'][ $plugin_name ] = $required_value;
 										$errors                                          = true;
 									}
@@ -222,12 +237,12 @@ if ( ! class_exists( 'YITH_System_Status' ) ) {
 		/**
 		 * Handle plugin requirements
 		 *
-		 * @since  1.0.0
-		 *
 		 * @param $plugin_name  string
 		 * @param $requirements array
 		 *
 		 * @return void
+		 * @since  1.0.0
+		 *
 		 * @author Alberto Ruggiero
 		 */
 		public function add_requirements( $plugin_name, $requirements ) {
@@ -246,8 +261,8 @@ if ( ! class_exists( 'YITH_System_Status' ) ) {
 		/**
 		 * Manages notice dismissing
 		 *
-		 * @since   1.0.0
 		 * @return  void
+		 * @since   1.0.0
 		 * @author  Alberto Ruggiero
 		 */
 		public function dismissable_notice() {
@@ -259,8 +274,8 @@ if ( ! class_exists( 'YITH_System_Status' ) ) {
 		/**
 		 * Show system notice
 		 *
-		 * @since   1.0.0
 		 * @return  void
+		 * @since   1.0.0
 		 * @author  Alberto Ruggiero
 		 */
 		public function activate_system_notice() {
@@ -291,19 +306,18 @@ if ( ! class_exists( 'YITH_System_Status' ) ) {
 		/**
 		 * Get system information
 		 *
-		 * @since   1.0.0
 		 * @return  array
+		 * @since   1.0.0
 		 * @author  Alberto Ruggiero
 		 */
 		public function get_system_info() {
 
-			$tls = '';
+			$tls = $imagick_version = 'n/a';
 
-			if ( function_exists( 'curl_init' ) ) {
+			if ( function_exists( 'curl_init' ) && apply_filters( 'yith_system_status_check_ssl', true ) ) {
 				//Get TLS version
 				$ch = curl_init();
 				curl_setopt( $ch, CURLOPT_URL, 'https://www.howsmyssl.com/a/check' );
-				curl_setopt( $ch, CURLOPT_POST, 1 );
 				curl_setopt( $ch, CURLOPT_SSL_VERIFYHOST, 0 );
 				curl_setopt( $ch, CURLOPT_SSL_VERIFYPEER, 0 );
 				curl_setopt( $ch, CURLOPT_RETURNTRANSFER, 1 );
@@ -323,15 +337,14 @@ if ( ! class_exists( 'YITH_System_Status' ) ) {
 				$wp_memory_limit = max( $wp_memory_limit, $this->memory_size_to_num( @ini_get( 'memory_limit' ) ) );
 			}
 
-			$imagick_version = '0.0.0';
-			if ( class_exists( 'Imagick' ) ) {
+			if ( class_exists( 'Imagick' ) && is_callable( array( 'Imagick', 'getVersion' ) ) ) {
 				preg_match( "/([0-9]+\.[0-9]+\.[0-9]+)/", Imagick::getVersion()['versionString'], $imatch );
 				$imagick_version = $imatch[0];
 			}
 
 			return apply_filters( 'yith_system_additional_check', array(
 				'min_wp_version'    => get_bloginfo( 'version' ),
-				'min_wc_version'    => function_exists( 'WC' ) ? WC()->version : __( 'Not installed', 'yith-plugin-fw' ),
+				'min_wc_version'    => function_exists( 'WC' ) ? WC()->version : 'n/a',
 				'wp_memory_limit'   => $wp_memory_limit,
 				'min_php_version'   => $php_version,
 				'min_tls_version'   => $tls,
@@ -350,16 +363,17 @@ if ( ! class_exists( 'YITH_System_Status' ) ) {
 		/**
 		 * Convert site into number
 		 *
-		 * @since   1.0.0
-		 *
 		 * @param   $memory_size string
 		 *
 		 * @return  integer
+		 * @since   1.0.0
+		 *
 		 * @author  Alberto Ruggiero
 		 */
 		public function memory_size_to_num( $memory_size ) {
-			$unit       = strtoupper( substr( $memory_size, - 1 ) );
-			$size       = substr( $memory_size, 0, - 1 );
+			$unit = strtoupper( substr( $memory_size, - 1 ) );
+			$size = substr( $memory_size, 0, - 1 );
+
 			$multiplier = array(
 				'P' => 5,
 				'T' => 4,
@@ -367,8 +381,11 @@ if ( ! class_exists( 'YITH_System_Status' ) ) {
 				'M' => 2,
 				'K' => 1,
 			);
-			for ( $i = 1; $i <= $multiplier[ $unit ]; $i ++ ) {
-				$size *= 1024;
+
+			if ( isset( $multiplier[ $unit ] ) ) {
+				for ( $i = 1; $i <= $multiplier[ $unit ]; $i ++ ) {
+					$size *= 1024;
+				}
 			}
 
 			return $size;

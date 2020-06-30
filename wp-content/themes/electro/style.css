@@ -5,7 +5,7 @@ Theme URI:          https://themeforest.net/item/electro-electronics-store-wooco
 Author:             MadrasThemes
 Author URI:         https://madrasthemes.com/
 Description:        Electro is a robust and flexible WordPress theme, designed by Transvelo to help you make the most out of using WooCommerce to power your online store. The design is well suited for Electronics Store, Vendor based marketplaces, affiliate websites. It is built and comes bundled with most of the advanced features available in most popular eCommerce websites like amazon, flipkart, snapdeal, walmart, alibaba, aliexpress, etc.
-Version:            2.4.3
+Version:            2.5.6
 GitHub Theme URI:   https://github.com/Transvelo/electro
 GitHub Branch:      theme
 License:            GNU General Public License v2 or later
@@ -629,17 +629,20 @@ fieldset {
       .col2-set .col-2 {
         width: 50%; } }
 
-.woocommerce-page .page-header {
+.woocommerce-page .page-header,
+.dokan-store .page-header {
   position: relative;
   margin-bottom: 1.429em; }
-  .woocommerce-page .page-header .woocommerce-result-count {
+  .woocommerce-page .page-header .woocommerce-result-count,
+  .dokan-store .page-header .woocommerce-result-count {
     position: absolute;
     margin: 0;
     right: 0;
     top: 50%;
     transform: translateY(-50%); }
 
-.woocommerce-page .page-title {
+.woocommerce-page .page-title,
+.dokan-store .page-title {
   font-size: 1.786em;
   line-height: 1.6em;
   margin: 0; }
@@ -9153,6 +9156,9 @@ h3.faq-title {
     padding-bottom: 11px;
     font-weight: bold;
     font-size: 18px; }
+  .yith-wcwl-share ul {
+    list-style: none;
+    display: flex; }
   .yith-wcwl-share ul > li > a {
     line-height: 1; }
     .yith-wcwl-share ul > li > a::before {
@@ -9166,7 +9172,9 @@ h3.faq-title {
       vertical-align: -.125em;
       font-family: 'Font Awesome 5 Brands'; }
   .yith-wcwl-share ul > li {
-    padding-right: 10px; }
+    padding-right: 20px; }
+  .yith-wcwl-share .share-button i {
+    display: none; }
   .yith-wcwl-share .facebook:before {
     content: '\f09a';
     color: #3b5998; }
@@ -9665,6 +9673,199 @@ ul .dropdown-menu-mini-cart a.tm-cart-edit-options {
 
 .yith-wcqv-main {
   padding: 30px; }
+
+.aws-container .aws-search-form {
+  height: 41px; }
+
+.aws-container .aws-search-form .aws-loader {
+  right: 20px; }
+
+.aws-container .aws-search-form .aws-search-clear span {
+  top: 0;
+  margin-top: 0; }
+
+.aws-search-result {
+  border-radius: 6px;
+  overflow: hidden;
+  margin-top: 0px; }
+
+.aws-container .aws-search-field {
+  border-width: 2px;
+  border-radius: 2.467em !important;
+  padding: .3em 2.134em;
+  height: 41px;
+  font-size: 15px;
+  background-color: #fff; }
+
+.aws-container .aws-search-form .aws-search-clear {
+  width: 60px;
+  border-top-right-radius: 2.467em !important;
+  border-bottom-right-radius: 2.467em !important;
+  color: #333e48;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  justify-content: center;
+  display: flex !important; }
+
+.aws-search-form:not(.aws-form-active):not(.aws-processing) .aws-search-clear span,
+.aws-search-form.aws-processing .aws-search-clear span {
+  display: none; }
+
+.aws-search-form:not(.aws-form-active):not(.aws-processing) .aws-search-clear::after {
+  font-family: font-electro;
+  content: "\6d";
+  font-size: 1.714em; }
+
+.aws-container .aws-search-form.aws-show-clear.aws-form-active .aws-search-clear {
+  display: flex !important; }
+
+.header-v2 .aws-container .aws-search-form .aws-search-clear,
+.header-v4 .aws-container .aws-search-form .aws-search-clear,
+.header-v5 .aws-container .aws-search-form .aws-search-clear {
+  background-color: #333e48;
+  color: #fff; }
+
+.header-v2 .aws-container .aws-search-field,
+.header-v4 .aws-container .aws-search-field,
+.header-v5 .aws-container .aws-search-field {
+  border-color: #fff; }
+
+.header-v7 .aws-container .aws-search-form .aws-search-clear {
+  width: auto;
+  background-color: transparent;
+  font-size: 11px; }
+
+.header-v7 .aws-container .aws-search-field {
+  background-color: transparent;
+  border-radius: 0 !important;
+  border-top-width: 0;
+  border-right-width: 0;
+  border-left-width: 0;
+  padding: .3em 1.134em;
+  border-bottom: 1px solid rgba(51, 62, 72, 0.3); }
+
+@media (min-width: 1480px) {
+  .header-v7 .aws-container .aws-search-field {
+    min-width: 242px; } }
+
+/**
+ * Contact Form
+ */
+/* Contact Form CSS style */
+div.wpforms-container-full .wpforms-form .wpforms-field-label {
+  font-size: 1em;
+  line-height: 1.286em;
+  font-weight: 700;
+  margin-bottom: .857em; }
+
+div.wpforms-container-full .wpforms-form input[type=email],
+div.wpforms-container-full .wpforms-form input[type=password],
+div.wpforms-container-full .wpforms-form input[type=search],
+div.wpforms-container-full .wpforms-form input[type=text],
+div.wpforms-container-full .wpforms-form input[type=url],
+div.wpforms-container-full .wpforms-form textarea {
+  padding: .857em 1.214em;
+  background-color: transparent;
+  color: #818181;
+  line-height: 1.286em;
+  outline: 0;
+  border: 0;
+  -webkit-appearance: none;
+  border-radius: 1.571em;
+  box-sizing: border-box;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #ddd;
+  height: 44px;
+  font-size: 1em; }
+
+div.wpforms-container-full .wpforms-form .wpforms-field {
+  padding-bottom: 1rem; }
+
+div.wpforms-container-full .wpforms-form input[type=email]:focus,
+div.wpforms-container-full .wpforms-form input[type=password]:focus,
+div.wpforms-container-full .wpforms-form input[type=search]:focus,
+div.wpforms-container-full .wpforms-form input[type=text]:focus,
+div.wpforms-container-full .wpforms-form input[type=url]:focus,
+div.wpforms-container-full .wpforms-form textarea:focus {
+  border-color: #66afe9;
+  outline: 0; }
+
+div.wpforms-container-full .wpforms-form input[type=submit],
+div.wpforms-container-full .wpforms-form button[type=submit],
+div.wpforms-container-full .wpforms-form .wpforms-page-button {
+  font-size: .875rem;
+  font-weight: 700;
+  border-radius: 1.571em;
+  padding: 1.036em 2.134em;
+  border-width: 0;
+  display: inline-block;
+  transition: all .2s ease-in-out; }
+
+div.wpforms-container-full .wpforms-form input[type=submit]:hover,
+div.wpforms-container-full .wpforms-form button[type=submit]:hover,
+div.wpforms-container-full .wpforms-form .wpforms-page-button:hover {
+  color: #fff;
+  background-color: #000;
+  border-color: #000;
+  border-width: 0; }
+
+/**
+ * Newsletter
+ */
+/* Newsletter CSS Style */
+/* Add a class ".ec-newsletter-form" in "Form CSS Class" field under settings tab */
+div.wpforms-container-full.ec-newsletter-form {
+  margin-bottom: 0; }
+
+div.wpforms-container-full.ec-newsletter-form .wpforms-form input[type=email] {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  background-color: #fff;
+  border: 0;
+  height: 41px;
+  padding: .734em 2em;
+  border-top-left-radius: 1.571em;
+  border-bottom-left-radius: 1.571em; }
+
+.rtl div.wpforms-container-full.ec-newsletter-form .wpforms-form input[type=email] {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  border-top-right-radius: 1.571em;
+  border-bottom-right-radius: 1.571em; }
+
+div.wpforms-container-full.ec-newsletter-form .wpforms-form {
+  display: flex; }
+
+div.wpforms-container-full.ec-newsletter-form .wpforms-form .wpforms-field-container {
+  flex-basis: 0;
+  flex-grow: 1; }
+
+div.wpforms-container-full.ec-newsletter-form .wpforms-form .wpforms-field,
+div.wpforms-container-full.ec-newsletter-form .wpforms-form .wpforms-submit-container {
+  padding: 0; }
+
+div.wpforms-container-full.ec-newsletter-form .wpforms-form input[type=submit],
+div.wpforms-container-full.ec-newsletter-form .wpforms-form button[type=submit] {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  padding: .715em 2.134em;
+  background-color: #333e48;
+  color: #fff;
+  font-weight: 400;
+  line-height: 1.5; }
+
+.rtl div.wpforms-container-full.ec-newsletter-form .wpforms-form input[type=submit],
+.rtl div.wpforms-container-full.ec-newsletter-form .wpforms-form button[type=submit] {
+  border-top-left-radius: 1.571em;
+  border-bottom-left-radius: 1.571em;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0; }
+
+div.wpforms-container-full.ec-newsletter-form .wpforms-form input[type=submit]:hover,
+div.wpforms-container-full.ec-newsletter-form .wpforms-form button[type=submit]:hover {
+  background-color: #000; }
 
 /*===================================================================================*/
 /*	RESPONSIVE XS SCREEN

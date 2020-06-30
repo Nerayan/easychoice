@@ -26,7 +26,7 @@ class Controller extends \Automattic\WooCommerce\Admin\API\Reports\Controller {
 	 *
 	 * @var string
 	 */
-	protected $namespace = 'wc/v4';
+	protected $namespace = 'wc-analytics';
 
 	/**
 	 * Route base.
@@ -42,26 +42,28 @@ class Controller extends \Automattic\WooCommerce\Admin\API\Reports\Controller {
 	 * @return array
 	 */
 	protected function prepare_reports_query( $request ) {
-		$args             = array();
-		$args['before']   = $request['before'];
-		$args['after']    = $request['after'];
-		$args['interval'] = $request['interval'];
-		$args['page']     = $request['page'];
-		$args['per_page'] = $request['per_page'];
-		$args['orderby']  = $request['orderby'];
-		$args['order']    = $request['order'];
-
-		$args['match']            = $request['match'];
-		$args['status_is']        = (array) $request['status_is'];
-		$args['status_is_not']    = (array) $request['status_is_not'];
-		$args['product_includes'] = (array) $request['product_includes'];
-		$args['product_excludes'] = (array) $request['product_excludes'];
-		$args['coupon_includes']  = (array) $request['coupon_includes'];
-		$args['coupon_excludes']  = (array) $request['coupon_excludes'];
-		$args['customer']         = $request['customer'];
-		$args['refunds']          = $request['refunds'];
-		$args['categories']       = (array) $request['categories'];
-		$args['segmentby']        = $request['segmentby'];
+		$args                      = array();
+		$args['before']            = $request['before'];
+		$args['after']             = $request['after'];
+		$args['interval']          = $request['interval'];
+		$args['page']              = $request['page'];
+		$args['per_page']          = $request['per_page'];
+		$args['orderby']           = $request['orderby'];
+		$args['order']             = $request['order'];
+		$args['fields']            = $request['fields'];
+		$args['match']             = $request['match'];
+		$args['status_is']         = (array) $request['status_is'];
+		$args['status_is_not']     = (array) $request['status_is_not'];
+		$args['product_includes']  = (array) $request['product_includes'];
+		$args['product_excludes']  = (array) $request['product_excludes'];
+		$args['coupon_includes']   = (array) $request['coupon_includes'];
+		$args['coupon_excludes']   = (array) $request['coupon_excludes'];
+		$args['tax_rate_includes'] = (array) $request['tax_rate_includes'];
+		$args['tax_rate_excludes'] = (array) $request['tax_rate_excludes'];
+		$args['customer']          = $request['customer'];
+		$args['refunds']           = $request['refunds'];
+		$args['categories']        = (array) $request['categories'];
+		$args['segmentby']         = $request['segmentby'];
 
 		return $args;
 	}
@@ -152,13 +154,14 @@ class Controller extends \Automattic\WooCommerce\Admin\API\Reports\Controller {
 	public function get_item_schema() {
 		$data_values = array(
 			'net_revenue'             => array(
-				'description' => __( 'Net revenue.', 'woocommerce-admin' ),
+				'description' => __( 'Net Sales.', 'woocommerce-admin' ),
 				'type'        => 'number',
 				'context'     => array( 'view', 'edit' ),
 				'readonly'    => true,
 				'format'      => 'currency',
 			),
 			'orders_count'            => array(
+				'title'       => __( 'Orders', 'woocommerce-admin' ),
 				'description' => __( 'Number of orders', 'woocommerce-admin' ),
 				'type'        => 'integer',
 				'context'     => array( 'view', 'edit' ),
@@ -429,7 +432,7 @@ class Controller extends \Automattic\WooCommerce\Admin\API\Reports\Controller {
 			'sanitize_callback' => 'wp_parse_id_list',
 
 		);
-		$params['product_excludes'] = array(
+		$params['product_excludes']  = array(
 			'description'       => __( 'Limit result set to items that don\'t have the specified product(s) assigned.', 'woocommerce-admin' ),
 			'type'              => 'array',
 			'items'             => array(
@@ -438,7 +441,7 @@ class Controller extends \Automattic\WooCommerce\Admin\API\Reports\Controller {
 			'default'           => array(),
 			'sanitize_callback' => 'wp_parse_id_list',
 		);
-		$params['coupon_includes']  = array(
+		$params['coupon_includes']   = array(
 			'description'       => __( 'Limit result set to items that have the specified coupon(s) assigned.', 'woocommerce-admin' ),
 			'type'              => 'array',
 			'items'             => array(
@@ -447,7 +450,7 @@ class Controller extends \Automattic\WooCommerce\Admin\API\Reports\Controller {
 			'default'           => array(),
 			'sanitize_callback' => 'wp_parse_id_list',
 		);
-		$params['coupon_excludes']  = array(
+		$params['coupon_excludes']   = array(
 			'description'       => __( 'Limit result set to items that don\'t have the specified coupon(s) assigned.', 'woocommerce-admin' ),
 			'type'              => 'array',
 			'items'             => array(
@@ -456,7 +459,27 @@ class Controller extends \Automattic\WooCommerce\Admin\API\Reports\Controller {
 			'default'           => array(),
 			'sanitize_callback' => 'wp_parse_id_list',
 		);
-		$params['customer']         = array(
+		$params['tax_rate_includes'] = array(
+			'description'       => __( 'Limit result set to items that have the specified tax rate(s) assigned.', 'woocommerce-admin' ),
+			'type'              => 'array',
+			'items'             => array(
+				'type' => 'integer',
+			),
+			'default'           => array(),
+			'sanitize_callback' => 'wp_parse_id_list',
+			'validate_callback' => 'rest_validate_request_arg',
+		);
+		$params['tax_rate_excludes'] = array(
+			'description'       => __( 'Limit result set to items that don\'t have the specified tax rate(s) assigned.', 'woocommerce-admin' ),
+			'type'              => 'array',
+			'items'             => array(
+				'type' => 'integer',
+			),
+			'default'           => array(),
+			'validate_callback' => 'rest_validate_request_arg',
+			'sanitize_callback' => 'wp_parse_id_list',
+		);
+		$params['customer']          = array(
 			'description'       => __( 'Limit result set to items that don\'t have the specified coupon(s) assigned.', 'woocommerce-admin' ),
 			'type'              => 'string',
 			'enum'              => array(
@@ -465,7 +488,7 @@ class Controller extends \Automattic\WooCommerce\Admin\API\Reports\Controller {
 			),
 			'validate_callback' => 'rest_validate_request_arg',
 		);
-		$params['refunds']          = array(
+		$params['refunds']           = array(
 			'description'       => __( 'Limit result set to specific types of refunds.', 'woocommerce-admin' ),
 			'type'              => 'string',
 			'default'           => '',
@@ -478,7 +501,7 @@ class Controller extends \Automattic\WooCommerce\Admin\API\Reports\Controller {
 			),
 			'validate_callback' => 'rest_validate_request_arg',
 		);
-		$params['segmentby']        = array(
+		$params['segmentby']         = array(
 			'description'       => __( 'Segment the response by additional constraint.', 'woocommerce-admin' ),
 			'type'              => 'string',
 			'enum'              => array(
@@ -490,8 +513,13 @@ class Controller extends \Automattic\WooCommerce\Admin\API\Reports\Controller {
 			),
 			'validate_callback' => 'rest_validate_request_arg',
 		);
+		$params['fields']            = array(
+			'description'       => __( 'Limit stats fields to the specified items.', 'woocommerce-admin' ),
+			'type'              => 'array',
+			'sanitize_callback' => 'wp_parse_slug_list',
+			'validate_callback' => 'rest_validate_request_arg',
+		);
 
 		return $params;
 	}
-
 }

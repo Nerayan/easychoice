@@ -83,6 +83,7 @@ if ( ! function_exists( 'electro_home_v7_slider_with_vertical_menu_categories_ba
                     'action_link'   => isset( $ads_options[0]['action_link'] ) ? $ads_options[0]['action_link'] : '#',
                     'ad_image'      => isset( $ads_options[0]['ad_image'] ) ? wp_get_attachment_url( $ads_options[0]['ad_image'] ) : '',
                     'el_class'      => isset( $ads_options[0]['el_class'] ) ? $ads_options[0]['el_class'] : '',
+                    'ad_image_attachment' => isset( $ads_options[0]['ad_image'] ) ? wp_get_attachment_image( $ads_options[0]['ad_image'] ) : '',
                 ),
                 array(
                     'ad_text'       => isset( $ads_options[1]['ad_text'] ) ? $ads_options[1]['ad_text'] : wp_kses_post( __( 'Shop the <strong>Hottest</strong><br>Products', 'electro' ) ),
@@ -90,6 +91,7 @@ if ( ! function_exists( 'electro_home_v7_slider_with_vertical_menu_categories_ba
                     'action_link'   => isset( $ads_options[1]['action_link'] ) ? $ads_options[1]['action_link'] : '#',
                     'ad_image'      => isset( $ads_options[1]['ad_image'] ) ? wp_get_attachment_url( $ads_options[1]['ad_image'] ) : '',
                     'el_class'      => isset( $ads_options[1]['el_class'] ) ? $ads_options[1]['el_class'] : '',
+                    'ad_image_attachment' => isset( $ads_options[1]['ad_image'] ) ? wp_get_attachment_image( $ads_options[1]['ad_image'] ) : '',
                 ),
                 array(
                     'ad_text'       => isset( $ads_options[2]['ad_text'] ) ? $ads_options[2]['ad_text'] : wp_kses_post( __( 'Laptops Notebooks<br> <strong>and More</strong>', 'electro' ) ),
@@ -97,6 +99,7 @@ if ( ! function_exists( 'electro_home_v7_slider_with_vertical_menu_categories_ba
                     'action_link'   => isset( $ads_options[2]['action_link'] ) ? $ads_options[2]['action_link'] : '#',
                     'ad_image'      => isset( $ads_options[2]['ad_image'] ) ? wp_get_attachment_url( $ads_options[2]['ad_image'] ) : '',
                     'el_class'      => isset( $ads_options[2]['el_class'] ) ? $ads_options[2]['el_class'] : '',
+                    'ad_image_attachment' => isset( $ads_options[2]['ad_image'] ) ? wp_get_attachment_image( $ads_options[2]['ad_image'] ) : '',
                 ),
             )
         ) );
@@ -110,15 +113,15 @@ if ( ! function_exists( 'electro_home_v7_slider_with_vertical_menu_categories_ba
         <div class="vertical-menu-slider-category-with-das">
             <div class="container">
                 <div class="vertical-menu-slider-category-with-das-inner">
-                    
+
                     <?php if( $nav_is_enabled === 'yes' ) :
                         electro_home_vertical_nav( $nav_args );
                     endif; ?>
 
                     <div class=" <?php echo esc_attr( $slider_cat_section_class ); ?>">
                         <?php electro_home_v7_revslider();
-                        
-                        if( $cat_is_enabled === 'yes' ) : 
+
+                        if( $cat_is_enabled === 'yes' ) :
                             electro_product_categories_list( $cat_args );
                         endif; ?>
                     </div>

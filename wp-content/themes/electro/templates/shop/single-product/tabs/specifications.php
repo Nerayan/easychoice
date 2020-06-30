@@ -19,7 +19,23 @@ if ( $specifications_display_attributes == 'yes' && ( $product->has_attributes()
 	if ( defined( 'WC_VERSION' ) && version_compare( WC_VERSION, '2.7', '<' ) ) {
 		$product->list_attributes();
 	} else {
-		wc_display_product_attributes( $product );
+		// wc_display_product_attributes( $product );
+		manufacturer();
+		sovmestimyyBrand();
+		productModel();
+		caseSize();
+		memorySize();
+		formFactor();
+		kleevoySloy();
+		material();
+		nalichiyeRamki();
+		tip();
+		vid();
+		dlina();
+		сvet();
+		garantia();
+		stranaProizvoditel();
+		stranaRegistratsiiBrenda();
 	}
 }
 

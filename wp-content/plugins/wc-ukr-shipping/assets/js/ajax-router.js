@@ -91,7 +91,8 @@
         data: {
           action: 'wc_ukr_shipping_get_cities',
           body: {
-            ref: options.areaRef
+            ref: options.areaRef,
+            nonce: options.nonce
           }
         },
         dataType: 'json',
@@ -108,12 +109,28 @@
         data: {
           action: 'wc_ukr_shipping_get_warehouses',
           body: {
-            ref: options.cityRef
+            ref: options.cityRef,
+            nonce: options.nonce
           }
         },
         dataType: 'json',
         success: function (json) {
           options.success(json);
+        }
+      });
+    },
+
+    post: function (action, body, success) {
+      $.ajax({
+        method: 'POST',
+        url: wc_ukr_shipping_globals.ajaxUrl,
+        data: {
+          action: action,
+          body: body
+        },
+        dataType: 'json',
+        success: function (json) {
+          success(json);
         }
       });
     }

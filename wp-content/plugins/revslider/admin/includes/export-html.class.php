@@ -58,7 +58,7 @@ class RevSliderSliderExportHtml extends RevSliderSliderExport {
 		$slider->init_by_id($slider_id);
 		
 		//check if an update is needed
-		if(version_compare($slider->get_param(array('settings', 'version')), get_option('revslider_update_revision', '6.0.0'), '<')){
+		if(version_compare($slider->get_param(array('settings', 'version')), get_option('revslider_update_version', '6.0.0'), '<')){
 			$upd = new RevSliderPluginUpdate();
 			$upd->upgrade_slider_to_latest($slider);
 			$slider->init_by_id($slider_id);
@@ -253,7 +253,7 @@ class RevSliderSliderExportHtml extends RevSliderSliderExport {
 			//add common files to the zip
 			if(!$this->usepcl){
 				$this->zip->addFile(RS_PLUGIN_PATH.'/public/assets/js/rs6.min.js', 'js/rs6.min.js');
-				$this->zip->addFile(RS_PLUGIN_PATH.'/public/assets/js/revolution.tools.min.js', 'js/revolution.tools.min.js');
+				$this->zip->addFile(RS_PLUGIN_PATH.'/public/assets/js/rbtools.min.js', 'js/rbtools.min.js');
 				
 				$this->zip->addFile(RS_PLUGIN_PATH.'/public/assets/css/rs6.css', 'css/rs6.css');
 				
@@ -277,7 +277,7 @@ class RevSliderSliderExportHtml extends RevSliderSliderExport {
 				$this->zip->addFile(RS_PLUGIN_PATH.'/public/assets/fonts/revicons/revicons.woff', 'fonts/revicons/revicons.woff');
 			}else{
 				$this->pclzip->add(RS_PLUGIN_PATH.'public/assets/js/rs6.min.js', PCLZIP_OPT_REMOVE_PATH, RS_PLUGIN_PATH.'public/assets/js/', PCLZIP_OPT_ADD_PATH, 'js/');
-				$this->pclzip->add(RS_PLUGIN_PATH.'public/assets/js/revolution.tools.min.js', PCLZIP_OPT_REMOVE_PATH, RS_PLUGIN_PATH.'public/assets/js/', PCLZIP_OPT_ADD_PATH, 'js/');
+				$this->pclzip->add(RS_PLUGIN_PATH.'public/assets/js/rbtools.min.js', PCLZIP_OPT_REMOVE_PATH, RS_PLUGIN_PATH.'public/assets/js/', PCLZIP_OPT_ADD_PATH, 'js/');
 				
 				$this->pclzip->add(RS_PLUGIN_PATH.'public/assets/css/rs6.css', PCLZIP_OPT_REMOVE_PATH, RS_PLUGIN_PATH.'public/assets/css/', PCLZIP_OPT_ADD_PATH, 'css/');
 				
@@ -301,7 +301,7 @@ class RevSliderSliderExportHtml extends RevSliderSliderExport {
 				$this->pclzip->add(RS_PLUGIN_PATH.'public/assets/fonts/revicons/revicons.woff', PCLZIP_OPT_REMOVE_PATH, RS_PLUGIN_PATH.'public/assets/');
 			}
 			
-			$notice_text = __('Using this data is only allowed with a valid licence of the jQuery Slider Revolution Plugin, which can be found at CodeCanyon: http://codecanyon.net/item/slider-revolution-responsive-jquery-plugin/2580848?ref=themepunch', 'revslider');
+			$notice_text = __('Using this data is only allowed with a valid licence of the jQuery Slider Revolution Plugin, which can be found at: https://www.themepunch.com/links/slider_revolution_jquery', 'revslider');
 			
 			if(!$this->usepcl){
 				$this->zip->addFromString('NOTICE.txt', $notice_text); //add slider settings
@@ -438,7 +438,7 @@ class RevSliderSliderExportHtml extends RevSliderSliderExport {
 			}
 			?>
 			<!-- REVOLUTION JS FILES -->
-			<script type="text/javascript" src="<?php echo $this->path_js; ?>revolution.tools.min.js"></script>
+			<script type="text/javascript" src="<?php echo $this->path_js; ?>rbtools.min.js"></script>
 			<script type="text/javascript" src="<?php echo $this->path_js; ?>rs6.min.js"></script>
 			
 			<?php echo RevSliderFront::js_set_start_size(); ?>
@@ -472,7 +472,7 @@ class RevSliderSliderExportHtml extends RevSliderSliderExport {
 			?>
 			<article class="small-history"> 
 				<h2 class="textaligncenter" style="margin-bottom:25px;">Your Slider Revolution jQuery Plugin</h2>
-				<p>Slider Revolution is an innovative, responsive Slider Plugin that displays your content the beautiful way. Whether it's a <strong>Slider, Carousel, Hero Scene</strong> or even a whole <strong>Front Page</strong>.<br>The <a href="https://codecanyon.net/item/slider-revolution-jquery-visual-editor-addon/13934907" target="_blank">visual drag &amp; drop editor</a> will help you to create your Sliders and tell your own stories in no time!</p>
+				<p>Slider Revolution is an innovative, responsive Slider Plugin that displays your content the beautiful way. Whether it's a <strong>Slider, Carousel, Hero Scene</strong> or even a whole <strong>Front Page</strong>.<br>The <a href="https://www.themepunch.com/links/slider_revolution_jquery_visual_editor" target="_blank">visual drag &amp; drop editor</a> will help you to create your Sliders and tell your own stories in no time!</p>
 			</article>
 			<?php
 			}
@@ -493,7 +493,7 @@ class RevSliderSliderExportHtml extends RevSliderSliderExport {
 			?>
 			<article class="small-history bottom-history" style="background:#f5f7f9;"> 
 				<h2 class="textaligncenter" style="margin-bottom:25px;">Your Slider Revolution jQuery Plugin</h2>
-				<p>Slider Revolution is an innovative, responsive Slider Plugin that displays your content the beautiful way. Whether it's a <strong>Slider, Carousel, Hero Scene</strong> or even a whole <strong>Front Page</strong>.<br>The <a href="https://codecanyon.net/item/slider-revolution-jquery-visual-editor-addon/13934907" target="_blank">visual drag &amp; drop editor</a> will help you to create your Sliders and tell your own stories in no time!</p>
+				<p>Slider Revolution is an innovative, responsive Slider Plugin that displays your content the beautiful way. Whether it's a <strong>Slider, Carousel, Hero Scene</strong> or even a whole <strong>Front Page</strong>.<br>The <a href="https://www.themepunch.com/links/slider_revolution_jquery_visual_editor" target="_blank">visual drag &amp; drop editor</a> will help you to create your Sliders and tell your own stories in no time!</p>
 			</article>
 				<?php
 			}
@@ -542,17 +542,16 @@ class RevSliderSliderExportHtml extends RevSliderSliderExport {
 				<div class="footerwidget">
 					<h3>More Versions</h3>
 					<a href="https://revolution.themepunch.com" target="_blank">WordPress</a>
-					<a href="https://codecanyon.net/item/slider-revolution-responsive-prestashop-module/7140939?ref=themepunch" target="_blank">Prestashop</a>
-					<a href="https://codecanyon.net/item/slider-revolution-responsive-magento-extension/9332896?ref=themepunch" target="_blank">Magento</a>
-					<a href="https://codecanyon.net/item/slider-revolution-responsive-opencart-module/9994648?ref=themepunch" target="_blank">OpenCart</a>
-					<a href="https://codecanyon.net/item/slider-revolution-responsive-drupal-module/12041755?ref=themepunch" target="_blank">Drupal</a>
+					<a href="https://www.themepunch.com/links/slider_revolution_prestashop" target="_blank">Prestashop</a>
+					<a href="https://www.themepunch.com/links/slider_revolution_magento" target="_blank">Magento</a>
+					<a href="https://www.themepunch.com/links/slider_revolution_opencart" target="_blank">OpenCart</a>
 				</div>
 				<div class="footerwidget social">
 					<h3>Follow Us</h3>
 					<ul>
-						<li><a href="https://www.facebook.com/themepunchofficial" target="_blank" class="so_facebook" data-rel="tooltip" data-animation="false" data-placement="bottom" data-original-title="Facebook"><i class="s_icon fa-icon-facebook "></i></a>
+						<li><a href="https://www.facebook.com/wordpress.slider.revolution" target="_blank" class="so_facebook" data-rel="tooltip" data-animation="false" data-placement="bottom" data-original-title="Facebook"><i class="s_icon fa-icon-facebook "></i></a>
 						</li>
-						<li><a href="https://twitter.com/themepunch" target="_blank" class="so_twitter" data-rel="tooltip" data-animation="false" data-placement="bottom" data-original-title="Twitter"><i class="s_icon fa-icon-twitter"></i></a>
+						<li><a href="https://twitter.com/revslider" target="_blank" class="so_twitter" data-rel="tooltip" data-animation="false" data-placement="bottom" data-original-title="Twitter"><i class="s_icon fa-icon-twitter"></i></a>
 						</li>
 					</ul>
 				</div>

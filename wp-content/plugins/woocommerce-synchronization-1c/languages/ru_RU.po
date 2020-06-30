@@ -1,0 +1,1090 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: WooCommerce 1C\n"
+"POT-Creation-Date: 2020-05-26 11:33+0300\n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: ru\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.3.1\n"
+"X-Poedit-Basepath: ..\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Poedit-KeywordsList: __;esc_html__;esc_html_e;esc_attr_e\n"
+"X-Poedit-SearchPath-0: includes\n"
+"X-Poedit-SearchPath-1: admin\n"
+"X-Poedit-SearchPath-2: exchange-process\n"
+"X-Poedit-SearchPath-3: woocommerce-synchronization-1c.php\n"
+
+#: admin/AjaxActions/ItglxWc1cClearLogs.php:36
+#: admin/AjaxActions/ItglxWc1cClearLogs.php:54
+#: admin/AjaxActions/ItglxWc1cClearTemp.php:35
+#: admin/AjaxActions/ItglxWc1cClearTemp.php:53
+msgid "Successfully cleared"
+msgstr "Успешно очищено"
+
+#: admin/AjaxActions/ItglxWc1cClearLogs.php:44
+#: admin/AjaxActions/ItglxWc1cClearTemp.php:43
+msgid "Not available for write"
+msgstr "Недоступен для записи"
+
+#: admin/AjaxActions/ItglxWc1cLogsCountAndSize.php:59
+#: admin/AjaxActions/ItglxWc1cTempCountAndSize.php:58
+msgid "(no files)"
+msgstr "(нет файлов)"
+
+#: admin/AjaxActions/ItglxWc1cLogsCountAndSize.php:64
+#: admin/AjaxActions/ItglxWc1cTempCountAndSize.php:63
+#, php-format
+msgid "(files - %d, size - %s MB)"
+msgstr "(файлов - %d, размер - %s MB)"
+
+#: admin/MetaBoxes/ProductMetaBox.php:27
+#: admin/MetaBoxes/ShopOrderMetaBox.php:34
+msgid "Exchange with 1C "
+msgstr "Обмен с 1С"
+
+#: admin/MetaBoxes/ProductMetaBox.php:44
+msgid "GUID"
+msgstr ""
+
+#: admin/MetaBoxes/ProductMetaBox.php:47
+#: admin/MetaBoxes/ShopOrderMetaBox.php:52
+#: admin/TableColumns/ProductAttributeTableColumn.php:47
+#: admin/TableColumns/ProductCatTableColumn.php:37
+#: admin/TableColumns/ProductTableColumn.php:33
+msgid "no data"
+msgstr "нет данных"
+
+#: admin/PageParts/CheckExistsExchangeEntryPointFile.php:15
+#: admin/PageParts/CheckPhpExtensionNotice.php:12
+#: admin/PageParts/CheckPhpExtensionNotice.php:25 admin/SettingsPage.php:58
+#: admin/SettingsPage.php:59
+msgid "1C Data Exchange"
+msgstr "1C Обмен данными"
+
+#: admin/PageParts/CheckExistsExchangeEntryPointFile.php:17
+msgid ""
+"There is no `import-1c.php` file in the root of the site, it should be "
+"copied to the root of the site when the plugin is activated, but for some "
+"reason this did not happen. Please copy this file from the plugin folder to "
+"the root of the site."
+msgstr ""
+"В корне сайта отсутствует файл `import-1c.php`, он должен быть скопирован в "
+"корень сайта при активации плагина, но по какой-то причине это не произошло. "
+"Пожалуйста, скопируйте этот файл из папки плагина в корень сайта."
+
+#: admin/PageParts/CheckPhpExtensionNotice.php:14
+msgid ""
+"There is no extension \"php-xml\", without it, the exchange will not work. "
+"Please install / activate the extension."
+msgstr ""
+"Отсутствует расширение \"php-xml\", без него обмен не будет работать. "
+"Пожалуйста, установите/активируйте расширение."
+
+#: admin/PageParts/CheckPhpExtensionNotice.php:27
+msgid ""
+"There is no extension \"php-zip\", so the exchange in the archive will not "
+"work. Please install / activate the extension."
+msgstr ""
+"Отсутствует расширение \"php-zip\", без него обмен в архиве не работает. "
+"Пожалуйста, установите/активируйте расширение."
+
+#: admin/PageParts/FieldInput.php:21
+msgid "Copy to clipboard"
+msgstr "Скопировать в буфер обмена"
+
+#: admin/PageParts/FieldInput.php:23
+msgid "Link copied to clipboard"
+msgstr "Ссылка скопирована в буфер обмена"
+
+#: admin/PageParts/FieldInput.php:27
+msgid "Copy"
+msgstr "Копировать"
+
+#: admin/PageParts/FieldSendOrdersStatusMapping.php:37
+msgid "If not specified, then the default value will be used - "
+msgstr "Если не указано, то будет использовано значение по умолчанию - "
+
+#: admin/PageParts/SectionAccountingSystemAuth.php:11
+msgid "Settings for authorization 1C"
+msgstr "Настройки для авторизации 1С"
+
+#: admin/PageParts/SectionAccountingSystemAuth.php:13
+msgid "Use these details when setting up an exchange node in 1C."
+msgstr "Используйте эти реквизиты при настройке узла обмена в 1С."
+
+#: admin/PageParts/SectionAccountingSystemAuth.php:19
+msgid "Enable exchange"
+msgstr "Включить обмен"
+
+#: admin/PageParts/SectionAccountingSystemAuth.php:21
+msgid "If disabled, no exchange will be possible."
+msgstr "Если отключено, то обмен невозможен."
+
+#: admin/PageParts/SectionAccountingSystemAuth.php:27
+msgid "Sync Script Address:"
+msgstr "Адрес скрипта синхронизации:"
+
+#: admin/PageParts/SectionAccountingSystemAuth.php:33
+msgid "User:"
+msgstr "Пользователь:"
+
+#: admin/PageParts/SectionAccountingSystemAuth.php:37
+msgid "Password:"
+msgstr "Пароль:"
+
+#: admin/PageParts/SectionForDebugging.php:9
+msgid "For debugging"
+msgstr "Для отладки"
+
+#: admin/PageParts/SectionForDebugging.php:13
+msgid "Do not delete files received from 1C"
+msgstr "Не удалять файлы полученные от 1С"
+
+#: admin/PageParts/SectionForDebugging.php:15
+msgid ""
+"It may be useful during debugging to analyze the contents of the received "
+"XML files. Please do not leave the option turned on for several exchanges "
+"unless you have enabled \"Exchange in archive\", otherwise the exchange "
+"files will not be overwritten, and the data will be added to existing ones, "
+"which creates invalid xml."
+msgstr ""
+"Может быть полезно при отладке, чтобы провести анализ содержимого полученных "
+"XML файлов. Пожалуйста, не оставляйте параметр включенным на несколько "
+"обменов, если вы не включили \"Обмен в архиве\", иначе файлы обмена не "
+"перезаписываются, а данные дописываются в существующие, что создает "
+"невалидный xml."
+
+#: admin/PageParts/SectionForDebugging.php:24
+msgid "Force update products"
+msgstr "Принудительно обновлять продукты"
+
+#: admin/PageParts/SectionForDebugging.php:26
+msgid ""
+"Ignore the control of product changes by hash of the contents and update "
+"anyway. It may be useful, for example, if you made changes in the "
+"administrative panel, and not in 1C, and now you want to overwrite the data."
+msgstr ""
+"Игнорировать контроль изменений продуктов по хешу от содержимого и обновлять "
+"в любом случае. Может быть полезно, например, если вы внесли изменения в "
+"административной панели, а не в 1С, а теперь хотите перезаписать данные."
+
+#: admin/PageParts/SectionForDebugging.php:34
+msgid "Clean up missing product variations"
+msgstr "Почистить отсутствующие вариации товаров"
+
+#: admin/PageParts/SectionForDebugging.php:36
+msgid ""
+"If enabled, then all variations of goods that are not in the unloading will "
+"be deleted. Be careful and use it only with a full exchange!"
+msgstr ""
+"Если включено, то вариации товаров, которые отсутствуют в выгрузке - будут "
+"удалены (только у товаров, которые есть в выгрузке). Будьте аккуратны и "
+"используйте это только при полном обмене!"
+
+#: admin/PageParts/SectionForExchangeOrders.php:12
+#: admin/PageParts/SectionForPrices.php:117
+msgid "Not chosen"
+msgstr "Не выбрано"
+
+#: admin/PageParts/SectionForExchangeOrders.php:20
+msgid "Exchange orders with 1C"
+msgstr "Обмен заказами с 1С"
+
+#: admin/PageParts/SectionForExchangeOrders.php:23
+msgid "Unloading orders"
+msgstr "Выгрузка заказов"
+
+#: admin/PageParts/SectionForExchangeOrders.php:28
+msgid "Unload orders"
+msgstr "Выгружать заказы"
+
+#: admin/PageParts/SectionForExchangeOrders.php:30
+msgid ""
+"If enabled, when exchanging with 1C, the site gives all changed and new "
+"orders since the last synchronization."
+msgstr ""
+"Если включено, то при обмене с 1С сайт отдает все измененные и новые заказы "
+"с момента последней синхронизации."
+
+#: admin/PageParts/SectionForExchangeOrders.php:38
+msgid "Response encoding:"
+msgstr "Кодировка ответа:"
+
+#: admin/PageParts/SectionForExchangeOrders.php:41
+msgid "UTF-8"
+msgstr "UTF-8"
+
+#: admin/PageParts/SectionForExchangeOrders.php:45
+msgid "CP1251 (windows-1251)"
+msgstr "CP1251 (windows-1251)"
+
+#: admin/PageParts/SectionForExchangeOrders.php:50
+msgid ""
+"If you have a problem with receiving orders and in 1C you see an error like "
+"\"Failed to read XML\", try changing the encoding."
+msgstr ""
+"Если у вас возникает проблема с получением заказов и в 1С вы видите ошибку "
+"вида \"Не удалось прочитать XML\", попробуйте изменить кодировку."
+
+#: admin/PageParts/SectionForExchangeOrders.php:56
+msgid "Date / time of last request:"
+msgstr "Дата/время последнего запроса:"
+
+#: admin/PageParts/SectionForExchangeOrders.php:59
+msgid ""
+"At the next request for loading orders, which will come from 1C, the plugin "
+"will unload new / changed orders starting from this date / time."
+msgstr ""
+"При следующем запросе на загрузку заказов, который поступит из 1С, плагин "
+"выгрузит новые/измененные заказы начиная с этой даты/времени."
+
+#: admin/PageParts/SectionForExchangeOrders.php:66
+msgid "Date / time of order creation no earlier:"
+msgstr "Дата/время создания заказа не ранее:"
+
+#: admin/PageParts/SectionForExchangeOrders.php:71
+#: admin/PageParts/SectionForExchangeOrders.php:108
+msgid ""
+"Use this setting if you want to set a lower bound for the date of creation "
+"of the order that can be unloaded. If the order is created earlier than this "
+"date, it will never be unloaded."
+msgstr ""
+"Используйте эту настройку, если нужно задать нижнюю границу даты создания "
+"заказа, который может быть выгружен. Если заказ создан раньше этой даты он "
+"никогда не попадет в выгрузку."
+
+#: admin/PageParts/SectionForExchangeOrders.php:80
+msgid "Use product id from the site (if there is no 1С guid)"
+msgstr "Использовать ид товара с сайта (если нет 1С guid)"
+
+#: admin/PageParts/SectionForExchangeOrders.php:84
+msgid ""
+"If enabled, then when generating data on products, if the product / "
+"variation is not connected with the data from the uploading from 1C (does "
+"not have a guid), then the product / variation id will be added to the \"Ид"
+"\" node, otherwise if the product / variation is not associated with data "
+"upload from 1C, node \"Ид\" will not be added."
+msgstr ""
+"Если включено, то при формировании данных по товарам, если товар/вариация не "
+"связан с данными из выгрузки из 1С (не имеет guid), то в узел \"Ид\", будет "
+"добавлено ид товара/вариации, иначе, если товар/вариация не связаны с "
+"данными выгрузки из 1С,  узел \"Ид\" не будет добавлен."
+
+#: admin/PageParts/SectionForExchangeOrders.php:93
+msgid ""
+"Order statuses at which to transfer props `Заказ оплачен` in the value "
+"`true`:"
+msgstr ""
+"Статусы заказа, при которых передавать реквизит `Заказ оплачен` в значении "
+"`true`:"
+
+#: admin/PageParts/SectionForExchangeOrders.php:99
+msgid ""
+"Select the order statuses at which you want to transfer the requisite in the "
+"value `true`, if the order status is not one of the selected, `false` will "
+"be transferred."
+msgstr ""
+"Выберите статусы заказа, при которых нужно передать реквизит в значении "
+"`true`, если статус заказа не из выбранных, то будет передано `false`."
+
+#: admin/PageParts/SectionForExchangeOrders.php:105
+msgid "Names of order statuses for 1C"
+msgstr "Названия статусов заказа для 1С (реквизит \"Статус заказа\")"
+
+#: admin/PageParts/SectionForExchangeOrders.php:118
+msgid "Loading changes (for previously unloaded orders)"
+msgstr "Загрузка изменений (по ранее выгруженным заказам)"
+
+#: admin/PageParts/SectionForExchangeOrders.php:125
+msgid "Handle status change"
+msgstr "Обрабатывать изменение статуса"
+
+#: admin/PageParts/SectionForExchangeOrders.php:127
+msgid ""
+"If enabled, when exchanging with 1C, then the site will accept and process "
+"changes in the status of the order when 1C sends this data."
+msgstr ""
+"Если включено, то при обмене с 1С, сайт примет и обработает изменения "
+"статуса заказа, когда 1С отправляет эти данные."
+
+#: admin/PageParts/SectionForExchangeOrders.php:135
+msgid ""
+"Order status, if there is \"Дата оплаты по 1С\" or \"Дата отгрузки по 1С\":"
+msgstr ""
+"Статус заказа, если есть \"Дата оплаты по 1С\" или \"Дата отгрузки по 1С\":"
+
+#: admin/PageParts/SectionForExchangeOrders.php:142
+msgid "Order status if \"Проведен\" = \"true\":"
+msgstr "Статус заказа, если \"Проведен\" = \"true\":"
+
+#: admin/PageParts/SectionForExchangeOrders.php:148
+msgid "Order status if \"ПометкаУдаления\" = \"true\":"
+msgstr "Статус заказа, если \"ПометкаУдаления\" = \"true\":"
+
+#: admin/PageParts/SectionForExchangeOrders.php:179
+msgid "At the next request, 1C will receive the following orders in response"
+msgstr "При следующем запросе, 1С получит в ответ следующие заказы"
+
+#: admin/PageParts/SectionForExchangeOrders.php:187
+msgid "There are no orders to be unloaded at the next request."
+msgstr "Пока нет заказов, которые будут выгружены при следующем запросе."
+
+#: admin/PageParts/SectionForExchangeOrders.php:194
+msgid ""
+"You can see the content that will receive 1C in response to the following "
+"request"
+msgstr ""
+"Вы можете посмотреть содержимое, которое получит 1С в ответ на следующий "
+"запрос"
+
+#: admin/PageParts/SectionForExchangeOrders.php:198 admin/SettingsPage.php:120
+msgid "open"
+msgstr "открыть"
+
+#: admin/PageParts/SectionForPrices.php:8
+msgid "For prices"
+msgstr "Для цен"
+
+#: admin/PageParts/SectionForPrices.php:12
+msgid "Price processing type"
+msgstr "Тип установки цен"
+
+#: admin/PageParts/SectionForPrices.php:17
+msgid "Mode - 1: Only the base price is set (Price Type 1)"
+msgstr "Режим - 1: Устанавливать только базовую цену (Тип цен 1)"
+
+#: admin/PageParts/SectionForPrices.php:21
+msgid ""
+"Mode - 2: The base and sale price are set (Price Type 1 - basic, Price Type "
+"2 - sale)"
+msgstr ""
+"Режим - 2: Устанавливать базовую и распродажную цену (Тип цен 1 - базовая, "
+"Тип цен 2 - распродажная)"
+
+#: admin/PageParts/SectionForPrices.php:26
+msgid ""
+"Mode - 3: Only the base price is set (Price Type 1) and show the price list "
+"in the product page"
+msgstr ""
+"Режим - 3: Устанавливать только базовую цену (Тип цен 1) и показать список "
+"цен на странице товара"
+
+#: admin/PageParts/SectionForPrices.php:31
+msgid ""
+"Mode - 4: Only the base price is set (Price Type 1) and show the price list "
+"in the product page and apply price types depending on the amount in the cart"
+msgstr ""
+"Режим - 4: Устанавливать только базовую цену (Тип цен 1) и показать список "
+"цен на странице товара и применять тип цен в зависимости от суммы корзины."
+
+#: admin/PageParts/SectionForPrices.php:39
+msgid "Choose the rule of working with prices that is convenient for you."
+msgstr "Выберите правило работы с ценами, которое подходит для вас."
+
+#: admin/PageParts/SectionForPrices.php:60
+msgid "Delete sale price (works for - Mode 1)"
+msgstr "Удалить цену распродажи (работает при - Режим 1)"
+
+#: admin/PageParts/SectionForPrices.php:75
+#: admin/PageParts/SectionForPrices.php:102
+msgid "Price Type 1"
+msgstr "Тип цен 1"
+
+#: admin/PageParts/SectionForPrices.php:86
+#: admin/PageParts/SectionForPrices.php:134
+#: admin/PageParts/SectionForPrices.php:181
+msgid "Caption:"
+msgstr "Подпись:"
+
+#: admin/PageParts/SectionForPrices.php:89
+#: admin/PageParts/SectionForPrices.php:137
+#: admin/PageParts/SectionForPrices.php:184
+msgid "Used for mode 3."
+msgstr "Используется в режиме 3."
+
+#: admin/PageParts/SectionForPrices.php:106
+msgid "Price Type Code"
+msgstr "Код типа цен"
+
+#: admin/PageParts/SectionForPrices.php:109
+msgid "Price Type Name"
+msgstr "Название типа цен"
+
+#: admin/PageParts/SectionForPrices.php:123
+#: admin/PageParts/SectionForPrices.php:214
+msgid "Price Type 2"
+msgstr "Тип цен 2"
+
+#: admin/PageParts/SectionForPrices.php:149
+#: admin/PageParts/SectionForPrices.php:196
+msgid "Cart totals:"
+msgstr "Сумма корзины:"
+
+#: admin/PageParts/SectionForPrices.php:152
+#: admin/PageParts/SectionForPrices.php:199
+msgid "Used for mode 4. Use price type if there is more in the cart."
+msgstr ""
+"Используется в режиме 4. Использовать тип цен, если сумма в корзине больше."
+
+#: admin/PageParts/SectionForPrices.php:170
+msgid "Price Type"
+msgstr "Тип цен"
+
+#: admin/PageParts/SectionForPrices.php:219
+msgid "The selection will be available after the first exchange."
+msgstr "Выбор появится после первого обмена."
+
+#: admin/PageParts/SectionLicense.php:69
+msgid "License verification"
+msgstr "Проверка лицензии"
+
+#: admin/PageParts/SectionLicense.php:72
+msgid "verified"
+msgstr "проверен"
+
+#: admin/PageParts/SectionLicense.php:76
+msgid "please verify your purchase code"
+msgstr "пожалуйста, укажите код покупки"
+
+#: admin/PageParts/SectionLicense.php:85
+msgid "Purchase code"
+msgstr "Код покупки"
+
+#: admin/PageParts/SectionLicense.php:103
+msgid "Where Is My Purchase Code?"
+msgstr "Где найти код покупки?"
+
+#: admin/PageParts/SectionLicense.php:112
+msgid "Verify"
+msgstr "Активировать"
+
+#: admin/PageParts/SectionLicense.php:117
+msgid "Unverify"
+msgstr "Деактивировать"
+
+#: admin/PageParts/SectionLogging.php:11
+msgid "Exchange logging"
+msgstr "Логирование обмена"
+
+#: admin/PageParts/SectionLogging.php:16
+msgid ""
+"Logs of exchange with 1C are recorded in this directory. If it is not "
+"available for writing and reading, then logging will not work."
+msgstr ""
+"В этот каталог записываются логи обмена. Если он недоступен для записи и "
+"чтения, то логирование работать не будет."
+
+#: admin/PageParts/SectionLogging.php:38
+msgid "Store for (days):"
+msgstr "Хранить за (дней):"
+
+#: admin/PageParts/SectionLogging.php:41
+msgid "Logs older will be deleted when exchanging."
+msgstr "Логи старше будут удаляться при обмене."
+
+#: admin/PageParts/SectionLogging.php:53
+msgid "Enable logging"
+msgstr "Включить логирование"
+
+#: admin/PageParts/SectionLogging.php:55
+msgid ""
+"If enabled, when exchanging from 1C, logs of the exchange protocol are "
+"recorded."
+msgstr ""
+"Если включено, то при обмене с 1С происходит запись логов протокола обмена."
+
+#: admin/PageParts/SectionLogging.php:67
+msgid "Enable change logging"
+msgstr "Включить логирование изменений"
+
+#: admin/PageParts/SectionLogging.php:69
+msgid ""
+"If enabled, then when exchanging from 1C, logs of changes of objects are "
+"recorded."
+msgstr ""
+"Если включено, то при обмене с 1С происходит запись логов изменения объектов."
+
+#: admin/PageParts/SectionLogging.php:85
+#: admin/PageParts/SectionTempCatalogInfo.php:36
+msgid "Download in zip archive"
+msgstr "Скачать в zip архиве"
+
+#: admin/PageParts/SectionLogging.php:90
+msgid "Clear logs"
+msgstr "Очистить"
+
+#: admin/PageParts/SectionNomenclatureExchangeConfigure.php:15
+msgid "Product catalog (nomenclature)"
+msgstr "Каталог товаров (номенклатура)"
+
+#: admin/PageParts/SectionNomenclatureExchangeConfigure.php:18
+msgid "Main"
+msgstr "Основные"
+
+#: admin/PageParts/SectionNomenclatureExchangeConfigure.php:23
+msgid "Product / Image Owner"
+msgstr "Владелец товаров/изображений"
+
+#: admin/PageParts/SectionNomenclatureExchangeConfigure.php:28
+msgid "File part size:"
+msgstr "Размер части файла:"
+
+#: admin/PageParts/SectionNomenclatureExchangeConfigure.php:30
+msgid ""
+"The maximum size of the part of the exchange files transmitted from 1C (in "
+"bytes)."
+msgstr ""
+"Максимальный размер части файлов обмена, передаваемых из 1С (в байтах)."
+
+#: admin/PageParts/SectionNomenclatureExchangeConfigure.php:37
+msgid "Script running time (second):"
+msgstr "Время работы скрипта (сек):"
+
+#: admin/PageParts/SectionNomenclatureExchangeConfigure.php:39
+msgid ""
+"Maximum time the sync script runs (in seconds), for one step processing "
+"progress."
+msgstr ""
+"Максимальное время работы скрипта синхронизации (в секундах), для одного "
+"шага прогресса обработки."
+
+#: admin/PageParts/SectionNomenclatureExchangeConfigure.php:46
+msgid "Exchange in the archive"
+msgstr "Обмен в архиве"
+
+#: admin/PageParts/SectionNomenclatureExchangeConfigure.php:48
+msgid "If enabled, the exchange takes place through a zip archive."
+msgstr "Если включено, то обмен происходит через zip архив."
+
+#: admin/PageParts/SectionNomenclatureExchangeConfigure.php:54
+msgid "Remove missing products and categories (full unload)"
+msgstr "Удалять отсутствующие товары и категории (полная выгрузка)"
+
+#: admin/PageParts/SectionNomenclatureExchangeConfigure.php:56
+msgid ""
+"If enabled, all products and categories that are missing in the unloading "
+"will be deleted  (if the product / category is created manually and is not "
+"related to the data from the upload, then they will not be affected)."
+msgstr ""
+"Если включено, то все товары и категории, которые отсутствуют в выгрузке "
+"будут удалены (если товар/категория созданы вручную и не связаны с данными "
+"из выгрузки, то они не будут затронуты)."
+
+#: admin/PageParts/SectionNomenclatureExchangeConfigure.php:65
+msgid "Set category thumbnails automatically"
+msgstr "Устанавливать миниатюры категорий автоматически"
+
+#: admin/PageParts/SectionNomenclatureExchangeConfigure.php:69
+msgid ""
+"If enabled, the category will be assigned a picture for the first product "
+"with an image when processing the upload, if the product has a direct link "
+"to the category, that is, it is linked directly."
+msgstr ""
+"Если включено, то категории будет назначена картинка по первому товару с "
+"изображением при обработке выгрузки, если товар имеет прямую связь с "
+"категорией, то есть привязан непосредсвенно."
+
+#: admin/PageParts/SectionNomenclatureExchangeConfigure.php:78
+msgid "For products"
+msgstr "Для товаров"
+
+#: admin/PageParts/SectionNomenclatureExchangeConfigure.php:83
+msgid "Try to find a product by SKU"
+msgstr "Попытка поиска товара по артикулу"
+
+#: admin/PageParts/SectionNomenclatureExchangeConfigure.php:85
+msgid ""
+"If enabled, then the plugin tries to find the product by SKU, if it is not "
+"found by ID from 1C. It may be useful if the site already has products and, "
+"in order not to create everything again, you can make their first link by "
+"SKU."
+msgstr ""
+"Если включено, то плагин пытается найти товар по артикулу, если не нашел по "
+"ИД из 1С, перед созданием нового товара и, если находит, то формирует связь "
+"по ИД из 1С. Может быть полезно, если на сайте уже есть товары и, чтобы не "
+"создавать все снова, то можно сделать их первую связь по артикулу. ВНИМАНИЕ! "
+"Пожалуйста, не используйте это, если ваши артикулы не уникальны, иначе можно "
+"получить неверное связывание товаров и в итоге, неверное обновление данных."
+
+#: admin/PageParts/SectionNomenclatureExchangeConfigure.php:93
+msgid "Use full name"
+msgstr "Использовать полное наименование"
+
+#: admin/PageParts/SectionNomenclatureExchangeConfigure.php:95
+msgid ""
+"If enabled, the title of the product will be recorded not \"Name\" and "
+"\"Full Name\" of the details of the products."
+msgstr ""
+"Если включено, то в заголовок товара будет записано не \"Наименование\", а "
+"\"Полное Наименование\" из реквизитов товара."
+
+#: admin/PageParts/SectionNomenclatureExchangeConfigure.php:102
+msgid "Products with a stock <= 0:"
+msgstr "Товары с остатком <= 0:"
+
+#: admin/PageParts/SectionNomenclatureExchangeConfigure.php:105
+msgid "Hide (not available for viewing and ordering)"
+msgstr "Скрывать (недоступно для просмотра и заказа)"
+
+#: admin/PageParts/SectionNomenclatureExchangeConfigure.php:109
+msgid "Do not hide and give the opportunity to put in the basket"
+msgstr "Не скрывать и дать возможность положить в корзину"
+
+#: admin/PageParts/SectionNomenclatureExchangeConfigure.php:113
+msgid "Do not hide, but do not give the opportunity to put in the basket"
+msgstr "Не скрывать, но не давать возможность положить в корзину"
+
+#: admin/PageParts/SectionNomenclatureExchangeConfigure.php:117
+msgid ""
+"Do not hide with a negative stock and give an opportunity to put in a "
+"basket, with a zero stock hide and do not give an opportunity to put in a "
+"basket."
+msgstr ""
+"С отрицательным остатком не скрывать и дать возможность положить в корзину, "
+"с нулевым остатком скрывать и не давать возможность положить в корзину."
+
+#: admin/PageParts/SectionNomenclatureExchangeConfigure.php:123
+msgid "Only products with a non-empty price can be opened."
+msgstr "Могут быть открыты только товары с непустой ценой."
+
+#: admin/PageParts/SectionNomenclatureExchangeConfigure.php:130
+msgid "Write the \"Description\" in a short description of the product."
+msgstr "Записывать \"Описание\" в краткое описание товара."
+
+#: admin/PageParts/SectionNomenclatureExchangeConfigure.php:134
+msgid ""
+"If enabled, the product description will be written in a short description "
+"(post_excerpt)."
+msgstr ""
+"Если включено, то описание товара будет записано в краткое описание "
+"(post_excerpt)."
+
+#: admin/PageParts/SectionNomenclatureExchangeConfigure.php:142
+msgid "Use for the main description \"Description file for the site\""
+msgstr "Использовать для основного описания \"Файл описания для сайта\""
+
+#: admin/PageParts/SectionNomenclatureExchangeConfigure.php:146
+msgid ""
+"If it is included, then the description of the product will be recorded not "
+"in the \"Description\", but in the \"Description in HTML format\" from the "
+"details of the product, if any, while the data from the \"Description\" will "
+"be recorded in a excerpt description of the product."
+msgstr ""
+"Если включено, то в описание товара будет записано не \"Описание\", а "
+"\"ОписаниеВФорматеHTML\" из реквизитов товара, если есть, при этом данные из "
+"\"Описание\" будут записаны в краткое описание товара."
+
+#: admin/PageParts/SectionNomenclatureExchangeConfigure.php:156
+msgid "Extra control over image changes"
+msgstr "Дополнительный контроль изменения изображений"
+
+#: admin/PageParts/SectionNomenclatureExchangeConfigure.php:160
+msgid ""
+"Turn this option on if you notice that changing the image in 1C does not "
+"lead to a change on the site. This can occur in a number of configurations "
+"in which the file name does not change when the image is changed."
+msgstr ""
+"Включите этот параметр, если вы заметили, что смена изображения в 1С не "
+"приводит к изменению на сайте. Это может происходить в ряде конфигураций, в "
+"которых при смене изображения не изменяется имя файла."
+
+#: admin/PageParts/SectionNomenclatureExchangeConfigure.php:168
+msgid "Get product sku from:"
+msgstr "Получать артикул из:"
+
+#: admin/PageParts/SectionNomenclatureExchangeConfigure.php:171
+msgid "SKU"
+msgstr "Артикула"
+
+#: admin/PageParts/SectionNomenclatureExchangeConfigure.php:175
+msgid "Requisite value \"Code\""
+msgstr "Значения реквизита \"Код\""
+
+#: admin/PageParts/SectionNomenclatureExchangeConfigure.php:179
+msgid "Code"
+msgstr "Кода"
+
+#: admin/PageParts/SectionNomenclatureExchangeConfigure.php:184
+msgid "Indicate from which value the article number should be written."
+msgstr "Укажите, из какого значения должен записываться артикул товара."
+
+#: admin/PageParts/SectionNomenclatureExchangeConfigure.php:191
+msgid "Skipping / excluding data"
+msgstr "Пропуск / исключение данных"
+
+#: admin/PageParts/SectionNomenclatureExchangeConfigure.php:197
+msgid "Skip products without photo"
+msgstr "Пропускать товары без фото"
+
+#: admin/PageParts/SectionNomenclatureExchangeConfigure.php:201
+msgid "If enabled, then products without photos will not be added to the site."
+msgstr "Если включено, то товары без фото не будут добавлены на сайт."
+
+#: admin/PageParts/SectionNomenclatureExchangeConfigure.php:208
+msgid "Skip product description"
+msgstr "Пропустить описание товара"
+
+#: admin/PageParts/SectionNomenclatureExchangeConfigure.php:212
+msgid "If enabled, description and except will not be writed or modified."
+msgstr ""
+"Если включено, то описание и краткое описание не будут записаны или изменены."
+
+#: admin/PageParts/SectionNomenclatureExchangeConfigure.php:219
+msgid "Do not update product title"
+msgstr "Не обновлять заголовок товара"
+
+#: admin/PageParts/SectionNomenclatureExchangeConfigure.php:223
+msgid ""
+"If enabled, the product title will be writed when the product is created and "
+"will no longer be changed according to the upload data."
+msgstr ""
+"Если включено, то заголовок товара будет записан при создании товара и "
+"больше не будет изменяться по данным выгрузки."
+
+#: admin/PageParts/SectionNomenclatureExchangeConfigure.php:231
+msgid "Skip product weight"
+msgstr "Пропустить вес  товара"
+
+#: admin/PageParts/SectionNomenclatureExchangeConfigure.php:235
+msgid "If enabled, weight will not be writed or modified."
+msgstr "Если включено, то вес не будет записан или изменен."
+
+#: admin/PageParts/SectionNomenclatureExchangeConfigure.php:242
+msgid "Skip product sizes (length, width and height)"
+msgstr "Пропустить размеры товара (длина, ширина и высота)"
+
+#: admin/PageParts/SectionNomenclatureExchangeConfigure.php:246
+msgid "If enabled, sizes will not be writed or modified."
+msgstr "Если включено, то размеры не будут записаны или изменены."
+
+#: admin/PageParts/SectionNomenclatureExchangeConfigure.php:253
+msgid "Do not update product images"
+msgstr "Не обновлять изображения товара"
+
+#: admin/PageParts/SectionNomenclatureExchangeConfigure.php:257
+msgid ""
+"If enabled, the product images will be writed when the product is created "
+"(if there is) and will no longer be changed according to the upload data."
+msgstr ""
+"Если включено, то изображения товара будут записаны при создании товара "
+"(если есть) и больше не будут изменяться по данным выгрузки."
+
+#: admin/PageParts/SectionNomenclatureExchangeConfigure.php:265
+msgid "Do not update product attributes"
+msgstr "Не обновлять атрибуты товара"
+
+#: admin/PageParts/SectionNomenclatureExchangeConfigure.php:269
+msgid ""
+"If enabled, the product attributes will be writed when the product is "
+"created and will no longer be changed according to the upload data."
+msgstr ""
+"Если включено, то атрибуты товара будут записаны при создании товара и "
+"больше не будут изменяться по данным выгрузки."
+
+#: admin/PageParts/SectionNomenclatureExchangeConfigure.php:277
+msgid "Do not change product attribute set for variations"
+msgstr "Не обновлять состав атрибутов товара, используемых для вариаций"
+
+#: admin/PageParts/SectionNomenclatureExchangeConfigure.php:281
+msgid ""
+"If enabled, then the set of attributes that are used for the variations will "
+"be writed when the product is created and will no longer be changed "
+"according to the upload data."
+msgstr ""
+"Если включено, то набор атрибутов, которые используются для вариаций будет "
+"записан при создании товара и больше не будет изменяться по данным выгрузки."
+
+#: admin/PageParts/SectionNomenclatureExchangeConfigure.php:289
+msgid "Do not update category name"
+msgstr "Не обновлять название категории"
+
+#: admin/PageParts/SectionNomenclatureExchangeConfigure.php:293
+msgid ""
+"If enabled, the category name will be writed when the category is created "
+"and will no longer be changed according to the upload data."
+msgstr ""
+"Если включено, то название категории будет записано при создании категории и "
+"больше не будет изменяться по данным выгрузки."
+
+#: admin/PageParts/SectionNomenclatureExchangeConfigure.php:301
+msgid "Do not process groups"
+msgstr "Не обрабатывать группы"
+
+#: admin/PageParts/SectionNomenclatureExchangeConfigure.php:305
+msgid ""
+"If enabled, then categories on the site will not be created / updated based "
+"on data about groups from 1C, and the category will not be assigned / "
+"changed to products."
+msgstr ""
+"Если включено, то категории на сайте не будут создаваться/обновляться на "
+"основании данных о группах из 1С, а также товарам не будет назначена/"
+"изменена категория."
+
+#: admin/PageParts/SectionTempCatalogInfo.php:10
+msgid "Temporary directory for exchange with 1C"
+msgstr "Временный каталог для обмена с 1С"
+
+#: admin/PageParts/SectionTempCatalogInfo.php:22
+msgid ""
+"Files received from 1C during the exchange are loaded into this directory if "
+"it is not available for write and read, sharing will be impossible."
+msgstr ""
+"В этот каталог загружаются файлы полученные от 1С при обмене, если он "
+"недоступен для записи и чтения, то обмен будет невозможен."
+
+#: admin/PageParts/SectionTempCatalogInfo.php:41
+msgid "Clear"
+msgstr "Очистить"
+
+#: admin/PluginActionLinksFilter.php:34
+msgid "Settings"
+msgstr "Настройки"
+
+#: admin/PluginActionLinksFilter.php:40
+msgid ""
+"https://itgalaxy.company/software/wordpress-woocommerce-1c-предприятие-обмен-"
+"данными/woocommerce-1cпредприятие-обмен-данными-инс/"
+msgstr ""
+
+#: admin/PluginActionLinksFilter.php:46
+msgid "Documentation"
+msgstr "Документация"
+
+#: admin/SettingsPage.php:95
+msgid "Settings have been saved."
+msgstr "Настройки сохранены."
+
+#: admin/SettingsPage.php:109
+msgid "Sync settings with 1C"
+msgstr "Настройки синхронизации с 1С"
+
+#: admin/SettingsPage.php:113
+msgid "Plugin documentation: "
+msgstr "Документация плагина:"
+
+#: admin/SettingsPage.php:121
+msgid "Or open the folder `documentation` in the plugin and open index.html"
+msgstr "Или откройте папку `documentation` в плагине и откройте index.html"
+
+#: admin/SettingsPage.php:140
+msgid "Save settings"
+msgstr "Сохранить настройки"
+
+#: admin/TableColumns/ProductAttributeTableColumn.php:37
+#: admin/TableColumns/ProductCatTableColumn.php:27
+msgid "1C"
+msgstr ""
+
+#: admin/TableColumns/ProductTableColumn.php:28
+msgid "GUID: "
+msgstr ""
+
+#: exchange-process/ParserXmlOrders.php:107
+msgid "Order status changed through 1C, order id - "
+msgstr "Статус заказа изменен через 1С, заказ - "
+
+#: exchange-process/RequestProcessing/CatalogModeComplete.php:28
+msgid "Package complete!"
+msgstr "Пакет обработан!"
+
+#: exchange-process/RequestProcessing/CatalogModeDeactivate.php:22
+msgid "Task deactivate registered!"
+msgstr "Задача на деактивацию зарегистрирована!"
+
+#: exchange-process/RequestProcessing/CatalogModeFile.php:21
+#: exchange-process/RequestProcessing/SaleModeFile.php:33
+msgid "Error reading http stream!"
+msgstr "Ошибка чтения http потока!"
+
+#: exchange-process/RequestProcessing/CatalogModeFile.php:32
+#: exchange-process/RequestProcessing/SaleModeFile.php:44
+msgid "The directory / file is not writable"
+msgstr "Каталог/файл недоступен для записи"
+
+#: exchange-process/RequestProcessing/CatalogModeFile.php:42
+#: exchange-process/RequestProcessing/SaleModeFile.php:54
+msgid "Error writing file!"
+msgstr "Ошибка записи файла!"
+
+#: exchange-process/RequestProcessing/CatalogModeImport.php:33
+msgid "Archive unpacked"
+msgstr "Архив распакован"
+
+#: exchange-process/RequestProcessing/CatalogModeImport.php:98
+#: exchange-process/RequestProcessing/CatalogModeImport.php:102
+msgid "Processing groups"
+msgstr "Обработка групп"
+
+#: exchange-process/RequestProcessing/CatalogModeImport.php:129
+#: exchange-process/RequestProcessing/CatalogModeImport.php:132
+msgid "Reading file"
+msgstr "Чтение файла"
+
+#: exchange-process/RequestProcessing/CatalogModeImport.php:149
+#: exchange-process/RequestProcessing/CatalogModeImport.php:157
+msgid "Import file"
+msgstr "Импорт файла"
+
+#: exchange-process/RequestProcessing/CatalogModeImport.php:153
+#: exchange-process/RequestProcessing/CatalogModeImport.php:161
+msgid "completed!"
+msgstr "завершен!"
+
+#: exchange-process/RequestProcessing/CatalogModeInit.php:15
+#: exchange-process/RequestProcessing/SaleModeInit.php:16
+msgid "Initialization Error!"
+msgstr "Ошибка инициализации!"
+
+#: exchange-process/RootProcessStarter.php:133
+msgid "Error! Synchronization is prohibited!"
+msgstr "Ошибка! Синхронизация запрещена!"
+
+#: exchange-process/RootProcessStarter.php:154
+msgid "Error! Empty login or password! Maybe not configured php-fpm."
+msgstr ""
+
+#: exchange-process/RootProcessStarter.php:168
+msgid "Error! Wrong login or password!"
+msgstr "Ошибка! Неверный логин или пароль!"
+
+#: includes/Bootstrap.php:118
+msgid ""
+"To run the plug-in, you must first install and activate the WooCommerce "
+"plugin."
+msgstr ""
+"Для работы плагина сначала необходимо установить и активировать плагин "
+"Woocommerce."
+
+#: includes/Bootstrap.php:122
+msgid "Error while activating the WooCommerce - 1C:Enterprise - Data Exchange"
+msgstr "Ошибка при активации WooCommerce - 1C: Предприятие - Обмен данными"
+
+#: includes/Helper.php:106
+msgid "Failed open archive "
+msgstr ""
+
+#: includes/Helper.php:114
+msgid "Failed extract archive "
+msgstr ""
+
+#: includes/Helper.php:122
+msgid "Failed close archive "
+msgstr ""
+
+#: includes/Helper.php:140
+msgid "Exists, but is not available for writing. Change permissions."
+msgstr "Существует, но недоступен для записи. Измените права."
+
+#: includes/Helper.php:149
+msgid "Created and available for writing."
+msgstr "Создан и доступен для записи."
+
+#: includes/Helper.php:154
+msgid "Not exist and unavailable for writing.."
+msgstr "Не существует и недоступен для записи."
+
+#: includes/Helper.php:160
+msgid "Exists and available for writing."
+msgstr "Существует и доступен для записи."
+
+#: includes/Logger.php:83
+#, php-format
+msgid "Error code (%s): %s."
+msgstr ""
+
+#: includes/Logger.php:90
+msgid "An error occurred while writing the log file."
+msgstr ""
+
+#~ msgid "Show code 1C"
+#~ msgstr "Показать код 1С"
+
+#~ msgid ""
+#~ "If enabled, the metabox with the code will appear in the admin panel, as "
+#~ "well as when viewing the list - the code will be displayed under the "
+#~ "product name."
+#~ msgstr ""
+#~ "Если включено, то в админке у товаров появится метабокс с кодом, а также "
+#~ "при просмотре списка - под названием товара будет отображаться код."
+
+#~ msgid "1C ID"
+#~ msgstr "Ид 1C"
+
+#~ msgid ""
+#~ "It may be useful during debugging to analyze the contents of the received "
+#~ "XML files."
+#~ msgstr ""
+#~ "Может быть полезно при отладке, чтобы провести анализ содержимого "
+#~ "полученных XML файлов."
+
+#~ msgid ""
+#~ "Set category thumbnails automatically (based on a product with a "
+#~ "miniature in the category)"
+#~ msgstr ""
+#~ "Устанавливать миниатюры категорий автоматически (исходя из товара с "
+#~ "миниатюрой в категории)"
+
+#~ msgid "Additionally"
+#~ msgstr "Дополнительно"
+
+#~ msgid "Categories for exclusion:"
+#~ msgstr "Категории для исключения:"
+
+#~ msgid "Category IDs with a semicolon."
+#~ msgstr "Ид категорий через точку с запятой."
+
+#~ msgid "days"
+#~ msgstr "дней"
+
+#~ msgid ""
+#~ "If enabled, all products that are missing in the unloading will be "
+#~ "deleted."
+#~ msgstr ""
+#~ "Если включено, то все товары, которые отсутствуют в выгрузке будут "
+#~ "удалены."
+
+#~ msgid "Upload orders"
+#~ msgstr "Выгружать заказы"
+
+#~ msgid "Delete sale price (works for - Only the base price is set)"
+#~ msgstr ""
+#~ "Удалить цену распродажи (работает при - Устанавливать только базовую цену)"
+
+#~ msgid "Only the base price is set (Price Type 1)"
+#~ msgstr "Устанавливать только базовую цену (Тип цен 1)"
+
+#~ msgid ""
+#~ "The base and sale price are set (Price Type 1 - basic, Price Type 2 - "
+#~ "sale)"
+#~ msgstr ""
+#~ "Устанавливать базовую и распродажную цену (Тип цен 1 - базовая, Тип цен 2 "
+#~ "- распродажная)"
+
+#~ msgid "Price Type:"
+#~ msgstr "Тип цен:"
+
+#~ msgid ""
+#~ "Type of prices in 1C, which will be used as the value of the products."
+#~ msgstr "Тип цен в 1С который будет использоваться как стоимость товара."
+
+#~ msgid "Use only specified price type"
+#~ msgstr "Использовать только указанный тип цен"
+
+#~ msgid ""
+#~ "If it is enabled, then at the same time, if there is no such type of "
+#~ "prices in the offer, then the product remains with an empty price."
+#~ msgstr ""
+#~ "Если включено, то при этом, если в предложении нет такого типа цен, то "
+#~ "товар остается с пустой ценой."
+
+#~ msgid ""
+#~ "If enabled, the product description will be written in a short "
+#~ "description (post_excerpt), instead of the main one (post_content)."
+#~ msgstr ""
+#~ "Если включено, то описание товара будет записано в краткое описание "
+#~ "(post_excerpt)."

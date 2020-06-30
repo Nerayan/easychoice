@@ -15,7 +15,7 @@ defined( 'ABSPATH' ) || exit;
  * WC_Admin_Notes_Woo_Subscriptions_Notes
  */
 class WC_Admin_Notes_Woo_Subscriptions_Notes {
-	const LAST_REFRESH_OPTION_KEY = 'wc-admin-wc-helper-last-refresh';
+	const LAST_REFRESH_OPTION_KEY = 'woocommerce_admin-wc-helper-last-refresh';
 	const CONNECTION_NOTE_NAME    = 'wc-admin-wc-helper-connection';
 	const SUBSCRIPTION_NOTE_NAME  = 'wc-admin-wc-helper-subscription';
 	const NOTIFY_WHEN_DAYS_LEFT   = 60;
@@ -191,7 +191,8 @@ class WC_Admin_Notes_Woo_Subscriptions_Notes {
 		$note->add_action(
 			'connect',
 			__( 'Connect', 'woocommerce-admin' ),
-			'?page=wc-addons&section=helper'
+			'?page=wc-addons&section=helper',
+			WC_Admin_Note::E_WC_ADMIN_NOTE_UNACTIONED
 		);
 		$note->save();
 	}
@@ -358,7 +359,7 @@ class WC_Admin_Notes_Woo_Subscriptions_Notes {
 		$product_name = $subscription['product_name'];
 		$product_page = $subscription['product_url'];
 		$expires      = intval( $subscription['expires'] );
-		$expires_date = date( 'F jS', $expires );
+		$expires_date = gmdate( 'F jS', $expires );
 
 		$note = $this->find_note_for_product_id( $product_id );
 		if ( $note ) {

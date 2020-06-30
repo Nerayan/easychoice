@@ -18,6 +18,9 @@
 </head>
 
 <body <?php body_class(); ?>>
+    <?php
+	wp_body_open();
+	?>
 <div class="off-canvas-wrapper">
 <div id="page" class="hfeed site">
     <?php
@@ -28,7 +31,7 @@
     do_action( 'electro_before_header' ); ?>
 
     <header id="masthead" class="site-header header-v1 stick-this">
-        
+
         <div class="container <?php echo esc_attr( electro_desktop_header_responsive_class() ); ?>">
             <?php
             /**
@@ -43,7 +46,7 @@
          * @hooked electro_handheld_header - 10
          */
         do_action( 'electro_after_header' ); ?>
-        
+
     </header><!-- #masthead -->
 
     <?php do_action( 'electro_before_content' ); ?>

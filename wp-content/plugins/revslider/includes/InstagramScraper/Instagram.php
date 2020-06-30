@@ -294,8 +294,26 @@ class Instagram
     
     public function getTopUser($username) {
     	try {
-    		$get = file_get_contents("https://www.instagram.com/web/search/topsearch/?context=user&count=0&query=$username");
-    		$jsonResult = json_decode($get, true);
+    		$file = "https://www.instagram.com/web/search/topsearch/?context=user&count=0&query=$username";
+            
+            if (function_exists('curl_version'))
+            {
+                $curl = curl_init();
+                curl_setopt($curl, CURLOPT_URL, $file);
+                curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+                $get = curl_exec($curl);
+                curl_close($curl);
+            }
+            else if (file_get_contents(__FILE__) && ini_get('allow_url_fopen'))
+            {
+                $get = file_get_contents($file);
+            }
+            else
+            {
+                throw new InstagramNotFoundException('Your server have neither cUrl installed nor allow_url_fopen activated. Please contact hosting company!', 404);
+            }
+            
+            $jsonResult = json_decode($get, true);
     		$userModel = $jsonResult["users"][0]["user"];
     		return $userModel;
     	} catch (\Exception $exception) {

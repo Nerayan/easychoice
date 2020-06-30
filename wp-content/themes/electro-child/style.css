@@ -11,3 +11,247 @@
  Tags:          light, dark, two-columns, right-sidebar, responsive-layout
  Text Domain:   electro-child
 */
+
+/* GLOBAL */
+/* .form-electro-wc-ppp, */
+.wpsl-search,
+.wpsl-provided-by,
+.wp-block-separator,
+.wishlist-title .show-title-form,
+.yith-wcwl-wishlistexistsbrowse,
+.yith-wcwl-add-button {
+	display: none;
+}
+
+/* HEADER */
+
+.header-v2 .header-logo-area, .masthead .header-logo-area {
+    min-width: 180px;
+    max-width: 180px;
+}
+
+.primary-nav .nav-inline>.menu-item+.menu-item, .primary-nav-menu .nav-inline>.menu-item+.menu-item {
+    margin-left: 0.7em;
+}
+
+.primary-nav-menu .sale a,
+.secondary-nav-menu .sale a {
+	color: red !important;
+}
+.primary-nav-menu .dropship a,
+.secondary-nav-menu .dropship a {
+	color: #a3d133 !important;
+}
+
+.departments-menu-v2 .dropdown ul {
+	opacity: 0;
+	transition: all 0.3s ease-in-out;
+}
+
+.departments-menu-v2 .dropdown:hover ul {
+	opacity: 100%;
+}
+
+.departments-menu-v2 .departments-menu-v2-title+.dropdown-menu li>a {
+	padding: 10px 0;
+}
+
+.departments-menu-v2 .departments-menu-v2-title+.dropdown-menu li {
+	padding: 0 0 0 10px;
+}
+
+.header-icon i {
+    line-height: 1.9em;
+    font-size: 1.429em;
+}
+
+.header-icon i:hover {
+	cursor: pointer;
+}
+
+.electro-navbar .header-icon i {
+	color: #fff;
+}
+
+.header-icon.view-history {
+	position: relative;
+}
+
+.vh-widget {
+	margin-top: 7px;
+	position: absolute;
+	left: -200px;
+	height: 400px;
+	width: 400px;
+	background-color: #fff;
+	box-shadow: 0 0 6px 0 rgba(1,1,1,.3);
+	overflow-y: auto;
+	overflow-x: hidden;
+	z-index: 2;
+	opacity: 0;
+	pointer-events: none;
+	transition: all 0.3s ease-in-out;
+}
+
+.product_list_widget>li:first-child {
+/* 	margin-top: 10px; */
+}
+
+.header-icon.view-history:hover .vh-widget {
+	opacity: 100%;
+	pointer-events: all;
+}
+
+/* PRODUCT */
+.product-sku {
+	font-size: .929em;
+	color: #949494;
+	margin: 15px 0;
+}
+
+.action-buttons .yith-wcwl-wishlistexistsbrowse,
+.action-buttons .yith-wcwl-add-button{
+	display: block;
+}
+
+/* FOOTER */
+.header-logo-link img,
+.footer-logo img {
+	width: 136px;
+}
+
+.footer-bottom-widgets-menu .widget_text a {
+	color: #333e48;
+	line-height: 2em;
+}
+
+/* WPSL */
+#wpsl-wrap.wpsl-store-below #wpsl-result-list li {
+	transition: all 0.3s ease-in-out;
+	display: grid;
+    grid-template-columns: auto 170px;
+}
+
+#wpsl-wrap.wpsl-store-below #wpsl-result-list li:hover {
+	background-color: #f7f7f7;
+}
+
+#wpsl-result-list li p {
+    margin: 0 0 32px 0;
+}
+
+.opening-hours {
+	position: relative;
+}
+
+.opening-hours .hours-list {
+	position: absolute;
+	top: -10px;
+	right: 45px;
+	opacity: 0;
+	font-size: 10px;
+	transition: all 0.3s ease-in-out;
+}
+
+.opening-hours:hover .hours-list {
+	opacity: 100%;
+}
+
+.wpsl-store-location {
+	display: grid;
+    grid-template-columns: 70% auto 0px;
+}
+
+.wpsl-store-location p,
+.wpsl-store-location table {
+	margin: 0;
+}
+.wpsl-location {
+	display: grid;
+	grid-template-columns: 100px 220px 200px auto;
+}
+
+.wpsl-city {
+	text-align: right;
+	padding-right: 5px;
+}
+
+.wpsl-city::after {
+	display: inline-block;
+	content: ','
+}
+
+.wpsl-directions {
+	display: block;
+    text-align: center;
+    background-color: #a3d133;
+    color: #fff;
+	font-weight: bold;
+    border-radius: 50px;
+    padding: 8px;
+    width: 160px;
+    margin: auto;
+	transition: all 0.3s ease-in-out;
+}
+
+.wpsl-directions:hover {
+	color: #fff;
+	background-color: #000;
+}
+
+.woocommerce-Tabs-panel--specification {
+	display: grid;
+	grid-template-columns: 2fr 4fr;
+}
+
+.woocommerce-Tabs-panel--specification span {
+	font-weight: bold;
+	margin: 4px 0;
+}
+
+@media (max-width: 1480px) {
+	.header-support {
+		display: none;
+	}
+}
+
+@media (min-width: 1200px) {
+	.off-canvas-navigation-wrapper {
+		display: none;
+	}
+}
+
+@media (max-width: 768px) {
+	.wpsl-location,
+	.wpsl-store-location {
+		display: block;
+	}
+	.wpsl-city {
+		text-align: left;
+	}
+}
+
+@media (max-width: 600px) {
+	#wpsl-wrap.wpsl-store-below #wpsl-result-list li {
+		display: block;
+	}
+	
+	#wpsl-result-list li p {
+		margin: 0;
+	}
+	
+	.opening-hours .hours-list {
+		position: initial;
+		margin-bottom: 10px;
+		opacity: 100%;
+	}
+	
+	.wpsl-location strong {
+		display: block;
+	}
+	
+	.wpsl-city,
+	.wpsl-street {
+		display: inline-block;
+	}
+}

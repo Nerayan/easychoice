@@ -44,6 +44,11 @@ body.rtl .mdl_group_header i.material-icons,
 body.rtl .lal_group_header i.material-icons,
 body.rtl .box_with_icon i.material-icons { margin-right: 0px; margin-left: 10px; }
 
+body.rtl .quick_colorchange_dark { left: 40px; right: auto; }
+body.rtl .quick_colorchange_light { left: 18px; right: auto; }
+
+body.rtl .qse_boxshadow { left: auto; right: 50px; }
+
 
 body.rtl .mdl_group_header i.material-icons.accordiondrop, 
 body.rtl .lal_group_header i.material-icons.accordiondrop { left: 5px; right: auto; }
@@ -148,6 +153,7 @@ body.rtl .page_button { margin-right: 0px; margin-left: 5px; }
 body.rtl .rs_fh_right { float: left; }
 body.rtl .rs_fh_left { float: right; }
 body.rtl grayiconbox { margin-right: 0px; margin-left:20px;}
+body.rtl blueiconbox.blueiconongray { margin-right: -34px; margin-left:20px;}
 body.rtl .pli_left { padding-right: 0px; padding-left: 80px;     border-left: 1px solid #323438; border-right: none }
 body.rtl .pli_right { padding-left: 0px; padding-right: 30px; }
 body.rtl .system_requirement, 
@@ -165,6 +171,21 @@ body.rtl .rsle_folder { left: 0px; right: auto; text-align:left; padding-left:10
 body.rtl .rs_library_element .title_container { right: 0px; left: auto; }
 
 body.rtl .show_rsle { left: 0px; padding-left: 10px; padding-right: 0px; right: auto;  text-align: left;}
+
+body.rtl #decmod_do_btn { margin-left: 10px !important; margin-right: 0px !important}
+
+body.rtl .rbm_darkhalfbutton i.material-icons { margin-right: 0px; margin-left: 10px; }
+
+body.rtl #rs_ne_ce_wrap { left: 0px;  right:auto;}
+
+body.rtl #rs_ne_helper_wrap { padding-right: 30px; }
+
+body.rtl #rs_ne_meta_values_inner .rs_ne_nskin_tbar_basic { right: auto; left: 0px; text-align: left; }
+
+body.rtl #rs_ne_cssmeta_config label_a { text-align: right }
+
+
+body.rtl #no_layer_selected .material-icons { margin-left: 10px; margin-right: 0px }
 
 
 /* OBJECT LIBRARY CHANGES */
@@ -210,13 +231,15 @@ body.rtl .toolbar_dd_subdrop { left: auto;right: 100%; }
 body.rtl .outicon_dd_rwap, 
 body.rtl .tool_dd_wrap { left: auto; right: 0px; }
 body.rtl .sle_thumb { right: 200px; left: auto; }
-body.rtl .shortcuttext { left: 16px; right: auto; }
+body.rtl .shortcuttext { left: 16px; right: auto; float:left;}
 body.rtl .toolbar_listelement .material-icons, 
 body.rtl .toolkit_selector .material-icons, 
 body.rtl .screen_selector .material-icons { margin-left: 15px; margin-right: 0px; }
 body.rtl #_layer_settings .tool_drop { padding-right: 20px; padding-left: 0px; }
 body.rtl .toolbar_rightoriented .tool_dd_wrap { margin-right: -49px; margin-left: 0px; }
 body.rtl .toolbar_rightoriented #main_screenselector .tool_dd_wrap { margin-left: 0px; margin-right: -99px; }
+
+body.rtl .toolkit_selector .near_me_addon { right: 28px; left: auto; }
 
 body.rtl .icon_trigger_wrap,
 body.rtl .on_off_navig_wrap { left: 0px; right: auto; }
@@ -231,6 +254,8 @@ body.rtl li .right-divided-icon { left: 0px; right: auto;}
 
 body.rtl li.added_slide_transition >i.transition-replace { left: 30px; border-left: 1px solid rgba(0,0,0,0.2);; border-right: none; right: auto;}
 body.rtl .right-divided-icon { left: 0px; right: auto;}
+
+body.rtl #screen_selector_top_list .screen_selector .tponoffwrap {   left:10px; right:auto;}
  
 
 /* ADD ONS */
@@ -278,6 +303,11 @@ body.rtl #rs_notices_wrapper { left: 0px; right:auto; }
 
 /* LAYERS */
 body.rtl ._group_lock_toggle_ { left: 0px; right: auto; }
+
+body.rtl .undo_redo_wrap .tool_dd_wrap:before {
+	left: 0px; right: auto;
+	 background: linear-gradient(to left, rgba(41,44,46,0) 0%, rgba(41,44,46,1) 100%);
+}
 
 @media only screen and (max-width: 1365px) {
   body.rtl #add_layer_toolbar_wrap {

@@ -21,7 +21,6 @@ class RevSliderSliderImport extends RevSliderSlider {
 	private $slides_data;
 	private $import_statics;
 	private $imported;
-	private $map;
 	private $is_template;
 	private $navigation_map;
 	
@@ -38,7 +37,6 @@ class RevSliderSliderImport extends RevSliderSlider {
 		$this->import_zip		= false;
 		$this->exists			= !empty($this->slider_id);
 		$this->imported			= array();
-		$this->map				= array();
 		$this->slider_data		= array();
 		$this->slides_data		= array();
 		$this->navigation_map	= array();
@@ -49,13 +47,6 @@ class RevSliderSliderImport extends RevSliderSlider {
 	 **/
 	public function get_old_slider_id(){
 		return $this->old_slider_id;
-	}
-	
-	/**
-	 * return the map of slide IDs
-	 **/
-	public function get_map(){
-		return $this->map;
 	}
 	
 	/**
@@ -101,13 +92,18 @@ class RevSliderSliderImport extends RevSliderSlider {
 			//do the update routines
 			$slider = new RevSliderSliderImport();
 			$slider->init_by_id($this->slider_id);
-			RevSliderPluginUpdate::upgrade_slider_to_latest($slider);
+			$upd = new RevSliderPluginUpdate();
+			
+			$upd->upgrade_slider_to_latest($slider);
+			//RevSliderPluginUpdate::upgrade_slider_to_latest($slider);
 			
 			//reinit because we just updated data which is outside of the $slider object
 			$slider = new RevSliderSliderImport();
 			$slider->init_by_id($this->slider_id);
 			
 			$slider->update_css_and_javascript_ids($this->old_slider_id, $this->slider_id, $this->map);
+			
+			//$slider->update_modal_ids($slider_ids, $slides_ids);
 			
 			$this->real_slider_id = $this->slider_id;
 			
@@ -128,7 +124,17 @@ class RevSliderSliderImport extends RevSliderSlider {
 		
 		do_action('revslider_slider_imported', $this->real_slider_id);
 		
-		return array('success' => true, 'sliderID' => $this->real_slider_id, 'map' => array('slider_map' => array($this->old_slider_id => $this->slider_id), 'slide_map' => $this->map));
+		return array(
+			'success' => true,
+			'sliderID' => $this->real_slider_id,
+			'map' => array(
+				'slider' => array(
+					'zip_to_template' => array($this->old_slider_id => $this->slider_id), //zip id to template id
+					'zip_to_duplication' => array($this->old_slider_id => $this->real_slider_id) //template id to duplication id
+				),
+				'slides' => $this->map
+			)
+		);
 	}
 	
 	
@@ -170,7 +176,8 @@ class RevSliderSliderImport extends RevSliderSlider {
 		$file = unzip_file($path, $this->download_path);
 		
 		if(is_wp_error($file)){
-			define('FS_METHOD', 'direct'); //lets try direct. 
+			@define('FS_METHOD', 'direct'); //lets try direct.
+			
 			WP_Filesystem();  //WP_Filesystem() needs to be called again since now we use direct!
 			
 			$file = unzip_file($path, $this->download_path);
@@ -584,6 +591,9 @@ class RevSliderSliderImport extends RevSliderSlider {
 		if(!isset($params['layout'])) $params['layout'] = array();
 		if(!isset($params['layout']['bg'])) $params['layout']['bg'] = array();
 		
+		//remove imageId if it is set
+		if($this->get_val($params, array('layout', 'bg', 'imageId'), false) !== false) unset($params['layout']['bg']['imageId']);
+		
 		if($this->get_val($params, array('layout', 'bg', 'useImage'), false) !== false){
 			$params['layout']['bg']['useImage'] = $this->check_file_in_zip($this->download_path, $this->get_val($params, array('layout', 'bg', 'useImage')), $alias, $this->imported);
 			$params['layout']['bg']['useImage'] = $this->get_image_url_from_path($this->get_val($params, array('layout', 'bg', 'useImage')));
@@ -819,11 +829,11 @@ class RevSliderSliderImport extends RevSliderSlider {
 			$d = array('params' => $params, 'sliderParams' => $this->slider_data, 'layers' => $layers, 'settings' => $settings, 'imported' => $this->imported);
 			$d = apply_filters('revslider_importSliderFromPost_modify_data', $d, 'normal', $this->download_path);
 			
-			$params				= $d['params'];
-			$this->slider_data	= $d['sliderParams'];
-			$layers				= $d['layers'];
-			$settings			= $d['settings'];
-			$this->imported		= $d['imported'];
+			$params			= $d['params'];
+			$this->slider_data = $d['sliderParams'];
+			$layers			= $d['layers'];
+			$settings		= $d['settings'];
+			$this->imported	= $d['imported'];
 			
 			$my_layers		= json_encode($layers);
 			$my_layers		= (empty($my_layers)) ? stripslashes(json_encode($layers)) : $my_layers;
@@ -983,13 +993,19 @@ class RevSliderSliderImport extends RevSliderSlider {
 						$medium		= $this->get_val($layer, array('media', 'thumbs', 'medium'), false);
 						$small		= $this->get_val($layer, array('media', 'thumbs', 'small'), false);
 						
-						if($image_url !== false)$layer['media']['imageUrl'] = $this->get_image_url_from_path($this->check_file_in_zip($this->download_path, $image_url, $alias, $this->imported));
-						if($bg_image !== false) $layer['idle']['backgroundImage'] = $this->get_image_url_from_path($this->check_file_in_zip($this->download_path, $bg_image, $alias, $this->imported));
+						$very_big	= (is_array($very_big) && isset($very_big['url'])) ? $very_big['url'] : $very_big;
+						$big		= (is_array($big) && isset($big['url'])) ? $big['url'] : $big;
+						$large		= (is_array($large) && isset($large['url'])) ? $large['url'] : $large;
+						$medium		= (is_array($medium) && isset($medium['url'])) ? $medium['url'] : $medium;
+						$small		= (is_array($small) && isset($small['url'])) ? $small['url'] : $small;
+						
+						if($image_url !== false)$layer['media']['imageUrl']			 = $this->get_image_url_from_path($this->check_file_in_zip($this->download_path, $image_url, $alias, $this->imported));
+						if($bg_image !== false) $layer['idle']['backgroundImage']	 = $this->get_image_url_from_path($this->check_file_in_zip($this->download_path, $bg_image, $alias, $this->imported));
 						if($very_big !== false) $layer['media']['thumbs']['veryBig'] = $this->get_image_url_from_path($this->check_file_in_zip($this->download_path, $very_big, $alias, $this->imported));
-						if($big !== false)		$layer['media']['thumbs']['big'] = $this->get_image_url_from_path($this->check_file_in_zip($this->download_path, $big, $alias, $this->imported));
-						if($large !== false)	$layer['media']['thumbs']['large'] = $this->get_image_url_from_path($this->check_file_in_zip($this->download_path, $large, $alias, $this->imported));
-						if($medium !== false)	$layer['media']['thumbs']['medium'] = $this->get_image_url_from_path($this->check_file_in_zip($this->download_path, $medium, $alias, $this->imported));
-						if($small !== false)	$layer['media']['thumbs']['small'] = $this->get_image_url_from_path($this->check_file_in_zip($this->download_path, $small, $alias, $this->imported));
+						if($big !== false)		$layer['media']['thumbs']['big']	 = $this->get_image_url_from_path($this->check_file_in_zip($this->download_path, $big, $alias, $this->imported));
+						if($large !== false)	$layer['media']['thumbs']['large']	 = $this->get_image_url_from_path($this->check_file_in_zip($this->download_path, $large, $alias, $this->imported));
+						if($medium !== false)	$layer['media']['thumbs']['medium']	 = $this->get_image_url_from_path($this->check_file_in_zip($this->download_path, $medium, $alias, $this->imported));
+						if($small !== false)	$layer['media']['thumbs']['small']	 = $this->get_image_url_from_path($this->check_file_in_zip($this->download_path, $small, $alias, $this->imported));
 						
 						if(!empty($layer['media']['imageUrl'])){
 							$imgid = $this->get_image_id_by_url($layer['media']['imageUrl']);
@@ -1101,10 +1117,11 @@ class RevSliderSliderImport extends RevSliderSlider {
 		$layers = $this->get_val($slide, 'layers', array());
 		
 		//change for WPML the parent IDs if necessary
-		$parent_id = $this->get_val($slide, array('child', 'parentId'), false);
+		$parent_id = $this->get_val($slide, array('params', 'child', 'parentId'), false);
 		
 		if(!in_array($parent_id, array(false, ''), true) && isset($this->map[$parent_id])){
 			$create = array('params' => $params);
+			
 			$this->set_val($create, array('params', 'child', 'parentId'), $this->map[$parent_id]);
 			
 			$new_params = json_encode($create['params']);
@@ -1458,6 +1475,10 @@ class RevSliderSliderImport extends RevSliderSlider {
 				//convert layers images:
 				if(!empty($layers)){
 					foreach($layers as $layer_key => $layer){
+						if($this->get_val($layer, array('media', 'imageId'), false) !== false) unset($layer['media']['imageId']);
+						if($this->get_val($layer, array('media', 'posterId'), false) !== false) unset($layer['media']['posterId']);
+						if($this->get_val($layer, array('idle', 'backgroundImageId'), false) !== false) unset($layer['idle']['backgroundImageId']);
+
 						$image = trim($this->get_val($layer, array('media', 'imageUrl'), ''));
 						if($image !== ''){
 							$layer['media']['imageUrl'] = $this->import_media_from_zip($image);
@@ -1588,6 +1609,21 @@ class RevSliderSliderImport extends RevSliderSlider {
 			}else{
 				$mslider = new RevSliderSlider();
 				$this->real_slider_id = $mslider->duplicate_slider_by_id($this->slider_id, true);
+			}
+		
+			$map = $mslider->get_map();
+			if(!empty($map)){
+				$new_map = array();
+				if(!empty($this->map)){
+					foreach($this->map as $os => $ns){
+						if(isset($map[$ns])){
+							$new_map[$os] = $map[$ns];
+						}
+					}
+					if(!empty($new_map)){ //push these into the duplicate tree
+						$this->map[$this->real_slider_id] = $new_map;
+					}
+				}
 			}
 		}
 		

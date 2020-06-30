@@ -47,6 +47,7 @@ if ( ! function_exists( 'electro_home_mobile_v1_ads_block' ) ) {
         }
 
         $animation = isset( $home_mobile_v1['ad']['animation'] ) ? $home_mobile_v1['ad']['animation'] : '';
+        $ad_image_attachment_size = apply_filters( 'electro_ad_image_attachment_size', 'full', 'mobile_v1' );
 
         $args = apply_filters( 'home_mobile_v1_ads_args', array(
             array(
@@ -55,6 +56,7 @@ if ( ! function_exists( 'electro_home_mobile_v1_ads_block' ) ) {
                 'action_link'   => isset( $home_mobile_v1['ad'][0]['action_link'] ) ? $home_mobile_v1['ad'][0]['action_link'] : '#',
                 'ad_image'      => isset( $home_mobile_v1['ad'][0]['ad_image'] ) ? wp_get_attachment_url( $home_mobile_v1['ad'][0]['ad_image'] ) : '',
                 'el_class'      => isset( $home_mobile_v1['ad'][0]['el_class'] ) ? $home_mobile_v1['ad'][0]['el_class'] : ' ',
+                'ad_image_attachment' => isset( $home_mobile_v1['ad'][0]['ad_image'] ) ? wp_get_attachment_image( $home_mobile_v1['ad'][0]['ad_image'], $ad_image_attachment_size ) : '',
             ),
             array(
                 'ad_text'       => isset( $home_mobile_v1['ad'][1]['ad_text'] ) ? $home_mobile_v1['ad'][1]['ad_text'] : wp_kses_post( __( 'Tablets, Smartphones <strong>and more</strong>', 'electro' ) ),
@@ -62,6 +64,7 @@ if ( ! function_exists( 'electro_home_mobile_v1_ads_block' ) ) {
                 'action_link'   => isset( $home_mobile_v1['ad'][1]['action_link'] ) ? $home_mobile_v1['ad'][1]['action_link'] : '#',
                 'ad_image'      => isset( $home_mobile_v1['ad'][1]['ad_image'] ) ? wp_get_attachment_url( $home_mobile_v1['ad'][1]['ad_image'] ) : '',
                 'el_class'      => isset( $home_mobile_v1['ad'][1]['el_class'] ) ? $home_mobile_v1['ad'][1]['el_class'] : ' ',
+                'ad_image_attachment' => isset( $home_mobile_v1['ad'][1]['ad_image'] ) ? wp_get_attachment_image( $home_mobile_v1['ad'][1]['ad_image'], $ad_image_attachment_size ) : '',
             )
         ) );
 

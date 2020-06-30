@@ -197,6 +197,7 @@ add_filter( 'woocommerce_single_product_carousel_options',  'electro_wc_single_p
 add_filter( 'woocommerce_single_product_image_gallery_classes',	'electro_single_product_image_gallery_classes' );
 add_filter( 'woocommerce_loop_add_to_cart_link',            'electro_wrap_add_to_cart_link',                90, 2 );
 add_filter( 'woocommerce_sale_flash',                       'electro_get_sale_flash',                       20, 3 );
+add_filter( 'woocommerce_structured_data_product',          'electro_structured_data_product',              10, 2 );
 
 if ( defined( 'WC_VERSION' ) && version_compare( WC_VERSION, '2.7', '<' ) ) {
 	add_filter( 'woocommerce_get_price_html_from_to',			'electro_get_price_html_from_to',				10, 4 );

@@ -1,18 +1,12 @@
 <?php
 
 function electro_ocdi_import_files() {
-    $dd_path    = trailingslashit( get_template_directory() ) . 'assets/dummy-data/lite/';
     $dd_path_vc = trailingslashit( get_template_directory() ) . 'assets/dummy-data/visualcomposer/';
     $dd_path_el = trailingslashit( get_template_directory() ) . 'assets/dummy-data/elementor/';
 
-    if( apply_filters( 'electro_ocdi_dd_load_heavy', false ) ) {
-        $dd_path = trailingslashit( get_template_directory() ) . 'assets/dummy-data/heavy/';
-    }
-
     $import_files = array(
         array(
-            'import_file_name'             => 'Electro',
-            'categories'                   => array( 'Electronics' ),
+            'import_file_name'             => 'Electro - WP Bakery Page Builder',
             'local_import_file'            => $dd_path_vc . 'dummy-data.xml',
             'local_import_widget_file'     => $dd_path_vc . 'widgets.wie',
             'local_import_redux'           => array(
@@ -30,7 +24,6 @@ function electro_ocdi_import_files() {
     if ( is_elementor_activated() ) {
         $import_files[] = array(
             'import_file_name'             => 'Electro - Elementor',
-            'categories'                   => array( 'Electronics' ),
             'local_import_file'            => $dd_path_el . 'dummy-data.xml',
             'local_import_widget_file'     => $dd_path_el . 'widgets.wie',
             'local_import_redux'           => array(
@@ -49,7 +42,7 @@ function electro_ocdi_import_files() {
 }
 
 function electro_ocdi_after_import_setup( $selected_import ) {
-    
+
     // Assign menus to their locations.
     $topbar_left_menu       = get_term_by( 'name', 'Top Bar Left', 'nav_menu' );
     $topbar_right_menu      = get_term_by( 'name', 'Top Bar Right', 'nav_menu' );
@@ -111,10 +104,7 @@ function electro_ocdi_after_import_setup( $selected_import ) {
     }
 
     if( class_exists( 'RevSlider' ) ) {
-        $dd_path = trailingslashit( get_template_directory() ) . 'assets/dummy-data/lite/';
-        if( apply_filters( 'electro_ocdi_dd_load_heavy', false ) ) {
-            $dd_path = trailingslashit( get_template_directory() ) . 'assets/dummy-data/heavy/';
-        }
+        $dd_path = trailingslashit( get_template_directory() ) . 'assets/dummy-data/sliders/';
 
         require_once( ABSPATH . 'wp-load.php' );
         require_once( ABSPATH . 'wp-includes/functions.php' );
@@ -144,6 +134,9 @@ function electro_ocdi_after_import_setup( $selected_import ) {
     if ( function_exists( 'wc_delete_expired_transients' ) ) {
         wc_delete_expired_transients();
     }
+
+    // Import WPForms
+    electro_ocdi_import_wpforms();
 }
 
 function electro_ocdi_before_widgets_import() {
@@ -172,4 +165,38 @@ function electro_ocdi_before_widgets_import() {
     }
 
     update_option( 'sidebars_widgets', $new_sidebars_widgets );
+}
+
+function electro_ocdi_import_wpforms() {
+    if ( ! function_exists( 'wpforms' ) ) {
+		return;
+	}
+
+    $forms = [
+        [
+            'file' => get_template_directory() . '/assets/dummy-data/wpforms-contact.json'
+        ],
+        [
+            'file' => get_template_directory() . '/assets/dummy-data/wpforms-newsletter.json'
+        ]
+    ];
+
+    foreach ( $forms as $form ) {
+        $form_data = json_decode( file_get_contents( $form['file'] ), true );
+
+        if ( empty( $form_data[0] ) ) {
+			continue;
+		}
+		$form_data = $form_data[0];
+		// Create initial form to get the form ID.
+		$form_id   = wpforms()->form->add( $form_data['settings']['form_title'] );
+
+        if ( empty( $form_id ) ) {
+			continue;
+		}
+
+        $form_data['id'] = $form_id;
+		// Save the form data to the new form.
+		wpforms()->form->update( $form_id, $form_data );
+    }
 }

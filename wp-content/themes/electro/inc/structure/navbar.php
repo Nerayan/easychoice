@@ -60,7 +60,11 @@ if ( ! function_exists( 'electro_navbar_search' ) ) {
 	 * Displays search box in navbar
 	 */
 	function electro_navbar_search() {
-		electro_get_template( 'sections/navbar-search.php' );
+		if ( ! apply_filters( 'electro_use_third_party_navbar_search', false ) ) {
+			electro_get_template( 'sections/navbar-search.php' );	
+		} else {
+			do_action( 'electro_navbar_search_third_party' );
+		}
 	}
 }
 

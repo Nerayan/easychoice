@@ -18,6 +18,9 @@
 </head>
 
 <body <?php body_class(); ?>>
+	<?php
+	wp_body_open();
+	?>
 <div class="off-canvas-wrapper">
 <div id="page" class="hfeed site">
 	<?php
