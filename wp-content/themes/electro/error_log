@@ -1,0 +1,4 @@
+[18-Jul-2020 19:21:58 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function electro_get_header() in /home/easychoi/develop/wp-content/themes/electro/index.php:14
+Stack trace:
+#0 {main}
+  thrown in /home/easychoi/develop/wp-content/themes/electro/index.php on line 14
