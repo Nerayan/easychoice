@@ -1,0 +1,24 @@
+[22-Jul-2020 01:57:21 UTC] PHP Fatal error:  Uncaught Error: Class 'WP_Customize_Control' not found in /home/easychoi/develop/wp-includes/customize/class-wp-customize-background-position-control.php:17
+Stack trace:
+#0 {main}
+  thrown in /home/easychoi/develop/wp-includes/customize/class-wp-customize-background-position-control.php on line 17
+[22-Jul-2020 01:57:23 UTC] PHP Fatal error:  Uncaught Error: Class 'WP_Customize_Setting' not found in /home/easychoi/develop/wp-includes/customize/class-wp-customize-background-image-setting.php:17
+Stack trace:
+#0 {main}
+  thrown in /home/easychoi/develop/wp-includes/customize/class-wp-customize-background-image-setting.php on line 17
+[22-Jul-2020 01:57:24 UTC] PHP Fatal error:  Uncaught Error: Class 'WP_Customize_Cropped_Image_Control' not found in /home/easychoi/develop/wp-includes/customize/class-wp-customize-site-icon-control.php:19
+Stack trace:
+#0 {main}
+  thrown in /home/easychoi/develop/wp-includes/customize/class-wp-customize-site-icon-control.php on line 19
+[27-Jul-2020 02:00:49 UTC] PHP Fatal error:  Uncaught Error: Class 'WP_Customize_Setting' not found in /home/easychoi/develop/wp-includes/customize/class-wp-customize-background-image-setting.php:17
+Stack trace:
+#0 {main}
+  thrown in /home/easychoi/develop/wp-includes/customize/class-wp-customize-background-image-setting.php on line 17
+[27-Jul-2020 02:00:51 UTC] PHP Fatal error:  Uncaught Error: Class 'WP_Customize_Cropped_Image_Control' not found in /home/easychoi/develop/wp-includes/customize/class-wp-customize-site-icon-control.php:19
+Stack trace:
+#0 {main}
+  thrown in /home/easychoi/develop/wp-includes/customize/class-wp-customize-site-icon-control.php on line 19
+[27-Jul-2020 02:00:52 UTC] PHP Fatal error:  Uncaught Error: Class 'WP_Customize_Control' not found in /home/easychoi/develop/wp-includes/customize/class-wp-customize-background-position-control.php:17
+Stack trace:
+#0 {main}
+  thrown in /home/easychoi/develop/wp-includes/customize/class-wp-customize-background-position-control.php on line 17
