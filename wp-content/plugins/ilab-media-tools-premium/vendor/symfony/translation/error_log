@@ -1,1 +1,0 @@
-[01-Jul-2020 17:11:57 UTC] PHP Fatal error:  Namespace declaration statement has to be the very first statement or after any declare call in the script in /home/easychoi/develop/wp-content/plugins/ilab-media-tools-premium/vendor/symfony/translation/MessageCatalogue.php on line 12

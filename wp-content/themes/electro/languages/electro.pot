@@ -2,11 +2,11 @@
 # This file is distributed under the GNU General Public License v2 or later.=!>
 msgid ""
 msgstr ""
-"Project-Id-Version: Electro 2.5.6\n"
+"Project-Id-Version: Electro 2.5.8\n"
 "Report-Msgid-Bugs-To: "
 "https://themeforest.net/item/electro-electronics-store-woocommerce-theme/157"
 "20624/support/\n"
-"POT-Creation-Date: 2020-05-05 13:30:01+00:00\n"
+"POT-Creation-Date: 2020-07-24 11:46:03+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -64,8 +64,8 @@ msgid "Product Categories"
 msgstr ""
 
 #: 404.php:41 inc/admin/meta-boxes/class-electro-meta-box-home-v5.php:531
-#: inc/functions/homepages/home-v5.php:150 inc/structure/homepage.php:1388
-#: inc/structure/homepage.php:1551 inc/template-tags/homepages/home-v5.php:344
+#: inc/functions/homepages/home-v5.php:150 inc/structure/homepage.php:1402
+#: inc/structure/homepage.php:1565 inc/template-tags/homepages/home-v5.php:344
 msgid "Popular Products"
 msgstr ""
 
@@ -101,37 +101,37 @@ msgstr ""
 msgid "Send Message"
 msgstr ""
 
-#: dokan/store-header.php:100 dokan/store-header.php:243
-#: dokan/store-header.php:318 dokan/store-header.php:349
+#: dokan/store-header.php:100 dokan/store-header.php:246
+#: dokan/store-header.php:327 dokan/store-header.php:358
 msgid "No ratings found yet!"
 msgstr ""
 
-#: dokan/store-header.php:102 dokan/store-header.php:245
-#: dokan/store-header.php:320 dokan/store-header.php:351
+#: dokan/store-header.php:102 dokan/store-header.php:248
+#: dokan/store-header.php:329 dokan/store-header.php:360
 msgid "%d review"
 msgid_plural "%d reviews"
 msgstr[0] ""
 msgstr[1] ""
 
-#: dokan/store-header.php:103 dokan/store-header.php:246
-#: dokan/store-header.php:321 dokan/store-header.php:352
+#: dokan/store-header.php:103 dokan/store-header.php:249
+#: dokan/store-header.php:330 dokan/store-header.php:361
 msgid "Rated %s out of %d"
 msgstr ""
 
-#: dokan/store-header.php:191 dokan/store-lists-loop.php:188
+#: dokan/store-header.php:194 dokan/store-lists-loop.php:188
 #: dokan/store-lists-loop.php:248
 msgid "products sold"
 msgstr ""
 
-#: dokan/store-header.php:197
+#: dokan/store-header.php:200
 msgid "On"
 msgstr ""
 
-#: dokan/store-header.php:197
+#: dokan/store-header.php:200
 msgid "from"
 msgstr ""
 
-#: dokan/store-header.php:203
+#: dokan/store-header.php:206
 msgid "Owner"
 msgstr ""
 
@@ -142,13 +142,13 @@ msgid "Visit Store"
 msgstr ""
 
 #: dokan/store-lists-loop.php:75 dokan/store-lists-loop.php:192
-#: dokan/store-lists-loop.php:286 inc/woocommerce/template-tags.php:1095
+#: dokan/store-lists-loop.php:286 inc/woocommerce/template-tags.php:1096
 #: templates/shop/single-product-advanced-reviews.php:33
 msgid "Rated %s out of 5"
 msgstr ""
 
 #: dokan/store-lists-loop.php:77 dokan/store-lists-loop.php:194
-#: dokan/store-lists-loop.php:288 inc/woocommerce/template-tags.php:1096
+#: dokan/store-lists-loop.php:288 inc/woocommerce/template-tags.php:1097
 msgid "out of 5"
 msgstr ""
 
@@ -164,8 +164,8 @@ msgstr ""
 #: inc/functions/homepages/home-v1.php:110
 #: inc/functions/homepages/home-v2.php:69
 #: inc/functions/homepages/home-v4.php:45 inc/structure/homepage-v3.php:67
-#: inc/structure/homepage.php:212 inc/structure/homepage.php:950
-#: inc/structure/homepage.php:1392 inc/template-tags/homepages/home-v1.php:134
+#: inc/structure/homepage.php:212 inc/structure/homepage.php:964
+#: inc/structure/homepage.php:1406 inc/template-tags/homepages/home-v1.php:134
 #: inc/template-tags/homepages/home-v2.php:120
 #: inc/template-tags/homepages/home-v3.php:130
 #: inc/template-tags/homepages/home-v4.php:112
@@ -294,7 +294,7 @@ msgstr ""
 #: inc/widgets/class-electro-products-carousel-tabs.php:99
 #: inc/widgets/class-electro-products-carousel-widget.php:176
 #: inc/widgets/class-electro-products-tabs.php:99
-#: inc/woocommerce/functions.php:469 inc/woocommerce/template-tags.php:1502
+#: inc/woocommerce/functions.php:469 inc/woocommerce/template-tags.php:1503
 msgid "Featured Products"
 msgstr ""
 
@@ -762,7 +762,7 @@ msgstr ""
 #: inc/functions/homepages/home-mobile-v1.php:199
 #: inc/functions/homepages/home-mobile-v1.php:356
 #: inc/functions/homepages/home-mobile-v2.php:300
-#: inc/functions/homepages/home-v2.php:265 inc/structure/homepage.php:1649
+#: inc/functions/homepages/home-v2.php:265 inc/structure/homepage.php:1663
 #: inc/template-tags/homepages/home-mobile.php:468
 msgid "Recently Viewed"
 msgstr ""
@@ -2060,8 +2060,8 @@ msgstr ""
 #: inc/functions/homepages/home-v1.php:119
 #: inc/functions/homepages/home-v2.php:78
 #: inc/functions/homepages/home-v4.php:54 inc/structure/homepage-v3.php:76
-#: inc/structure/homepage.php:217 inc/structure/homepage.php:955
-#: inc/structure/homepage.php:1397 inc/template-tags/homepages/home-v1.php:140
+#: inc/structure/homepage.php:217 inc/structure/homepage.php:969
+#: inc/structure/homepage.php:1411 inc/template-tags/homepages/home-v1.php:140
 #: inc/template-tags/homepages/home-v2.php:126
 #: inc/template-tags/homepages/home-v3.php:136
 #: inc/template-tags/homepages/home-v4.php:118
@@ -2098,8 +2098,8 @@ msgstr ""
 #: inc/functions/homepages/home-v1.php:128
 #: inc/functions/homepages/home-v2.php:87
 #: inc/functions/homepages/home-v4.php:63 inc/structure/homepage-v3.php:85
-#: inc/structure/homepage.php:222 inc/structure/homepage.php:960
-#: inc/structure/homepage.php:1402 inc/template-tags/homepages/home-v1.php:146
+#: inc/structure/homepage.php:222 inc/structure/homepage.php:974
+#: inc/structure/homepage.php:1416 inc/template-tags/homepages/home-v1.php:146
 #: inc/template-tags/homepages/home-v2.php:132
 #: inc/template-tags/homepages/home-v3.php:142
 #: inc/template-tags/homepages/home-v4.php:124
@@ -2642,7 +2642,7 @@ msgstr ""
 
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v4.php:481
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v4.php:488
-#: inc/functions/homepages/home-v4.php:94 inc/structure/homepage.php:1600
+#: inc/functions/homepages/home-v4.php:94 inc/structure/homepage.php:1614
 msgid "Week Deals limited, Just now"
 msgstr ""
 
@@ -2758,7 +2758,7 @@ msgstr ""
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v7.php:434
 #: inc/functions/homepages/home-v5.php:40
 #: inc/functions/homepages/home-v6.php:127
-#: inc/functions/homepages/home-v7.php:60 inc/structure/homepage.php:1826
+#: inc/functions/homepages/home-v7.php:60 inc/structure/homepage.php:1840
 #: inc/template-tags/homepages/home-v5.php:134
 #: inc/template-tags/homepages/home-v5.php:275
 #: inc/template-tags/homepages/home-v6.php:258
@@ -2774,7 +2774,7 @@ msgstr ""
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v6.php:722
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v6.php:724
 #: inc/functions/homepages/home-v5.php:46
-#: inc/functions/homepages/home-v6.php:140 inc/structure/homepage.php:1831
+#: inc/functions/homepages/home-v6.php:140 inc/structure/homepage.php:1845
 #: inc/template-tags/homepages/home-v5.php:141
 #: inc/template-tags/homepages/home-v6.php:273
 msgid "-80% off"
@@ -2788,7 +2788,7 @@ msgstr ""
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v6.php:762
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v6.php:764
 #: inc/functions/homepages/home-v5.php:64
-#: inc/functions/homepages/home-v6.php:158 inc/structure/homepage.php:1841
+#: inc/functions/homepages/home-v6.php:158 inc/structure/homepage.php:1855
 #: inc/template-tags/homepages/home-v5.php:153
 #: inc/template-tags/homepages/home-v6.php:285
 msgid "-45%"
@@ -2804,7 +2804,7 @@ msgstr ""
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v6.php:782
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v6.php:784
 #: inc/functions/homepages/home-v5.php:73
-#: inc/functions/homepages/home-v6.php:167 inc/structure/homepage.php:1846
+#: inc/functions/homepages/home-v6.php:167 inc/structure/homepage.php:1860
 #: inc/template-tags/homepages/home-v5.php:159
 #: inc/template-tags/homepages/home-v6.php:291
 msgid "-25%"
@@ -2949,7 +2949,7 @@ msgstr ""
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v6.php:391
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v6.php:439
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v6.php:441
-#: inc/structure/homepage.php:1981
+#: inc/structure/homepage.php:1995
 msgid "Gaming Monitors"
 msgstr ""
 
@@ -2974,10 +2974,10 @@ msgstr ""
 #: inc/functions/homepages/home-v6.php:30
 #: inc/functions/homepages/home-v6.php:37
 #: inc/functions/homepages/home-v6.php:44
-#: inc/functions/homepages/home-v6.php:51 inc/structure/homepage.php:1982
-#: inc/structure/homepage.php:1990 inc/structure/homepage.php:1998
-#: inc/structure/homepage.php:2006 inc/structure/homepage.php:2014
-#: inc/structure/homepage.php:2022 inc/template-tags/homepages/home-v6.php:36
+#: inc/functions/homepages/home-v6.php:51 inc/structure/homepage.php:1996
+#: inc/structure/homepage.php:2004 inc/structure/homepage.php:2012
+#: inc/structure/homepage.php:2020 inc/structure/homepage.php:2028
+#: inc/structure/homepage.php:2036 inc/template-tags/homepages/home-v6.php:36
 #: inc/template-tags/homepages/home-v6.php:44
 #: inc/template-tags/homepages/home-v6.php:52
 #: inc/template-tags/homepages/home-v6.php:60
@@ -3007,10 +3007,10 @@ msgstr ""
 #: inc/functions/homepages/home-v6.php:31
 #: inc/functions/homepages/home-v6.php:38
 #: inc/functions/homepages/home-v6.php:45
-#: inc/functions/homepages/home-v6.php:52 inc/structure/homepage.php:1983
-#: inc/structure/homepage.php:1991 inc/structure/homepage.php:1999
-#: inc/structure/homepage.php:2007 inc/structure/homepage.php:2015
-#: inc/structure/homepage.php:2023 inc/template-tags/homepages/home-v6.php:37
+#: inc/functions/homepages/home-v6.php:52 inc/structure/homepage.php:1997
+#: inc/structure/homepage.php:2005 inc/structure/homepage.php:2013
+#: inc/structure/homepage.php:2021 inc/structure/homepage.php:2029
+#: inc/structure/homepage.php:2037 inc/template-tags/homepages/home-v6.php:37
 #: inc/template-tags/homepages/home-v6.php:45
 #: inc/template-tags/homepages/home-v6.php:53
 #: inc/template-tags/homepages/home-v6.php:61
@@ -3042,10 +3042,10 @@ msgstr ""
 #: inc/functions/homepages/home-v6.php:32
 #: inc/functions/homepages/home-v6.php:39
 #: inc/functions/homepages/home-v6.php:46
-#: inc/functions/homepages/home-v6.php:53 inc/structure/homepage.php:1984
-#: inc/structure/homepage.php:1992 inc/structure/homepage.php:2000
-#: inc/structure/homepage.php:2008 inc/structure/homepage.php:2016
-#: inc/structure/homepage.php:2024 inc/template-tags/homepages/home-v6.php:38
+#: inc/functions/homepages/home-v6.php:53 inc/structure/homepage.php:1998
+#: inc/structure/homepage.php:2006 inc/structure/homepage.php:2014
+#: inc/structure/homepage.php:2022 inc/structure/homepage.php:2030
+#: inc/structure/homepage.php:2038 inc/template-tags/homepages/home-v6.php:38
 #: inc/template-tags/homepages/home-v6.php:46
 #: inc/template-tags/homepages/home-v6.php:54
 #: inc/template-tags/homepages/home-v6.php:62
@@ -3171,7 +3171,7 @@ msgid "Tab #6 Banner Image"
 msgstr ""
 
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v6.php:643
-#: inc/functions/homepages/home-v6.php:126 inc/structure/homepage.php:1823
+#: inc/functions/homepages/home-v6.php:126 inc/structure/homepage.php:1837
 #: inc/template-tags/homepages/home-v6.php:257
 msgid "Catch Daily Deals!"
 msgstr ""
@@ -3187,7 +3187,7 @@ msgstr ""
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v6.php:742
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v6.php:744
 #: inc/functions/homepages/home-v5.php:55
-#: inc/functions/homepages/home-v6.php:149 inc/structure/homepage.php:1836
+#: inc/functions/homepages/home-v6.php:149 inc/structure/homepage.php:1850
 #: inc/template-tags/homepages/home-v5.php:147
 #: inc/template-tags/homepages/home-v6.php:279
 msgid "-65%"
@@ -3306,7 +3306,7 @@ msgid "Recommendation For You"
 msgstr ""
 
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v7.php:1010
-#: inc/functions/homepages/home-v7.php:210 inc/structure/homepage.php:2182
+#: inc/functions/homepages/home-v7.php:210 inc/structure/homepage.php:2196
 #: inc/template-tags/homepages/home-v7.php:498
 msgid "View All Recommendations"
 msgstr ""
@@ -3767,65 +3767,65 @@ msgstr ""
 msgid "Attributes Title"
 msgstr ""
 
-#: inc/dokan/functions.php:288
+#: inc/dokan/functions.php:291
 msgid "Join to my followers"
 msgstr ""
 
-#: inc/dokan/functions.php:294
+#: inc/dokan/functions.php:297
 msgid "Joined"
 msgstr ""
 
-#: inc/dokan/functions.php:300
+#: inc/dokan/functions.php:303
 msgid "Disjoin"
 msgstr ""
 
-#: inc/dokan/functions.php:312
+#: inc/dokan/functions.php:315
 msgid "Search this Store"
 msgstr ""
 
-#: inc/dokan/functions.php:317 templates/sections/navbar-search.php:26
+#: inc/dokan/functions.php:320 templates/sections/navbar-search.php:26
 #: templates/sections/navbar-search.php:58
 msgid "Search for:"
 msgstr ""
 
-#: inc/dokan/functions.php:343
+#: inc/dokan/functions.php:346
 msgid "Default sorting"
 msgstr ""
 
-#: inc/dokan/functions.php:344
+#: inc/dokan/functions.php:347
 msgid "Sort by popularity"
 msgstr ""
 
-#: inc/dokan/functions.php:345
+#: inc/dokan/functions.php:348
 msgid "Sort by average rating"
 msgstr ""
 
-#: inc/dokan/functions.php:346
+#: inc/dokan/functions.php:349
 msgid "Sort by latest"
 msgstr ""
 
-#: inc/dokan/functions.php:347
+#: inc/dokan/functions.php:350
 msgid "Sort by price: low to high"
 msgstr ""
 
-#: inc/dokan/functions.php:348
+#: inc/dokan/functions.php:351
 msgid "Sort by price: high to low"
 msgstr ""
 
-#: inc/dokan/functions.php:356
+#: inc/dokan/functions.php:359
 #: inc/widgets/class-electro-wc-catalog-orderby.php:45
 msgid "Relevance"
 msgstr ""
 
-#: inc/dokan/functions.php:375
+#: inc/dokan/functions.php:378
 msgid "Seller Items order"
 msgstr ""
 
-#: inc/dokan/functions.php:422
+#: inc/dokan/functions.php:425
 msgid "Owner of Store"
 msgstr ""
 
-#: inc/dokan/functions.php:431
+#: inc/dokan/functions.php:434
 msgid "Since %s"
 msgstr ""
 
@@ -4022,8 +4022,8 @@ msgid ""
 "class=\"value\"><sup>$</sup>74</span><span class=\"suffix\">99</span></span>"
 msgstr ""
 
-#: inc/functions/homepages/home-v2.php:111 inc/structure/homepage.php:455
-#: inc/structure/homepage.php:608 inc/template-tags/homepages/home-v2.php:200
+#: inc/functions/homepages/home-v2.php:111 inc/structure/homepage.php:460
+#: inc/structure/homepage.php:617 inc/template-tags/homepages/home-v2.php:200
 #: inc/widgets/class-electro-onsale-products-carousel.php:31
 msgid "Deals of the week"
 msgstr ""
@@ -4032,7 +4032,7 @@ msgstr ""
 msgid "Computers"
 msgstr ""
 
-#: inc/functions/homepages/home-v4.php:95 inc/structure/homepage.php:1601
+#: inc/functions/homepages/home-v4.php:95 inc/structure/homepage.php:1615
 #: inc/template-tags/homepages/home-v4.php:235
 msgid "Hurry up! Offer ends in:"
 msgstr ""
@@ -4057,7 +4057,7 @@ msgstr ""
 msgid "Your Recently Viewed Products"
 msgstr ""
 
-#: inc/functions/homepages/home-v5.php:12 inc/structure/homepage.php:2318
+#: inc/functions/homepages/home-v5.php:12 inc/structure/homepage.php:2332
 #: inc/template-tags/headers/header-v6.php:22
 #: inc/template-tags/headers/header-v6.php:33
 #: inc/template-tags/homepages/home-v5.php:30
@@ -4085,27 +4085,27 @@ msgstr ""
 msgid "Gaming Monitors 65"
 msgstr ""
 
-#: inc/functions/homepages/home-v6.php:22 inc/structure/homepage.php:1989
+#: inc/functions/homepages/home-v6.php:22 inc/structure/homepage.php:2003
 #: inc/template-tags/homepages/home-v6.php:43
 msgid "Smartphones Sale"
 msgstr ""
 
-#: inc/functions/homepages/home-v6.php:29 inc/structure/homepage.php:1997
+#: inc/functions/homepages/home-v6.php:29 inc/structure/homepage.php:2011
 #: inc/template-tags/homepages/home-v6.php:51
 msgid "End Season Sale"
 msgstr ""
 
-#: inc/functions/homepages/home-v6.php:36 inc/structure/homepage.php:2005
+#: inc/functions/homepages/home-v6.php:36 inc/structure/homepage.php:2019
 #: inc/template-tags/homepages/home-v6.php:59
 msgid "Laptops Arrivals"
 msgstr ""
 
-#: inc/functions/homepages/home-v6.php:43 inc/structure/homepage.php:2013
+#: inc/functions/homepages/home-v6.php:43 inc/structure/homepage.php:2027
 #: inc/template-tags/homepages/home-v6.php:67
 msgid "Earphones - 25%"
 msgstr ""
 
-#: inc/functions/homepages/home-v6.php:50 inc/structure/homepage.php:2021
+#: inc/functions/homepages/home-v6.php:50 inc/structure/homepage.php:2035
 #: inc/template-tags/homepages/home-v6.php:75
 msgid "Tablets 10 inch Sale"
 msgstr ""
@@ -4120,12 +4120,12 @@ msgstr ""
 msgid "Catch Big <br><strong>Deals</strong> on the Cameras"
 msgstr ""
 
-#: inc/functions/homepages/home-v7.php:15 inc/structure/homepage.php:2305
+#: inc/functions/homepages/home-v7.php:15 inc/structure/homepage.php:2319
 #: inc/template-tags/homepages/home-v7.php:58
 msgid "Departments"
 msgstr ""
 
-#: inc/functions/homepages/home-v7.php:16 inc/structure/homepage.php:2306
+#: inc/functions/homepages/home-v7.php:16 inc/structure/homepage.php:2320
 #: inc/template-tags/homepages/home-v7.php:59
 msgid "View All"
 msgstr ""
@@ -5365,17 +5365,17 @@ msgid "Register Benefits"
 msgstr ""
 
 #: inc/redux-framework/options/shop-options.php:268
-#: inc/woocommerce/template-tags.php:901
+#: inc/woocommerce/template-tags.php:902
 msgid "Speed your way through checkout"
 msgstr ""
 
 #: inc/redux-framework/options/shop-options.php:269
-#: inc/woocommerce/template-tags.php:902
+#: inc/woocommerce/template-tags.php:903
 msgid "Track your orders easily"
 msgstr ""
 
 #: inc/redux-framework/options/shop-options.php:270
-#: inc/woocommerce/template-tags.php:903
+#: inc/woocommerce/template-tags.php:904
 msgid "Keep a record of all your purchases"
 msgstr ""
 
@@ -5696,15 +5696,15 @@ msgstr ""
 msgid "<span class=\"highlight\">Special</span> Offer"
 msgstr ""
 
-#: inc/structure/homepage.php:316 inc/structure/homepage.php:459
+#: inc/structure/homepage.php:316 inc/structure/homepage.php:464
 #: inc/template-tags/homepages/home-v2.php:203
 #: inc/widgets/class-electro-onsale-product.php:34
 #: inc/widgets/class-electro-onsale-products-carousel.php:34
-#: inc/woocommerce/template-tags.php:634
+#: inc/woocommerce/template-tags.php:635
 msgid "Save"
 msgstr ""
 
-#: inc/structure/homepage.php:1075
+#: inc/structure/homepage.php:1089
 msgid "Top %s"
 msgstr ""
 
@@ -5793,7 +5793,7 @@ msgid "End Season Sale 2"
 msgstr ""
 
 #: inc/template-tags/homepages/home-v7.php:165
-#: inc/woocommerce/template-tags.php:789
+#: inc/woocommerce/template-tags.php:790
 msgid "Ends in:"
 msgstr ""
 
@@ -6582,84 +6582,84 @@ msgstr ""
 msgid "Filters"
 msgstr ""
 
-#: inc/woocommerce/template-tags.php:670
+#: inc/woocommerce/template-tags.php:671
 msgid "Already Sold:"
 msgstr ""
 
-#: inc/woocommerce/template-tags.php:671
+#: inc/woocommerce/template-tags.php:672
 msgid "Available:"
 msgstr ""
 
-#: inc/woocommerce/template-tags.php:727
+#: inc/woocommerce/template-tags.php:728
 msgid "Hurry Up! Offer ends in:"
 msgstr ""
 
-#: inc/woocommerce/template-tags.php:786
+#: inc/woocommerce/template-tags.php:787
 msgid "Starts in:"
 msgstr ""
 
-#: inc/woocommerce/template-tags.php:864
+#: inc/woocommerce/template-tags.php:865
 msgid "Shipping Details"
 msgstr ""
 
-#: inc/woocommerce/template-tags.php:874
+#: inc/woocommerce/template-tags.php:875
 msgid ""
 "Vestibulum lacus magna, faucibus vitae dui eget, aliquam fringilla.\n"
 "In et commodo elit. Class aptent taciti sociosqu ad litora."
 msgstr ""
 
-#: inc/woocommerce/template-tags.php:888
+#: inc/woocommerce/template-tags.php:889
 msgid ""
 "Create new account today to reap the benefits of a personalized shopping "
 "experience. Praesent placerat, est sed aliquet finibus."
 msgstr ""
 
-#: inc/woocommerce/template-tags.php:906
+#: inc/woocommerce/template-tags.php:907
 msgid "Sign sdf today and you will be able to :"
 msgstr ""
 
-#: inc/woocommerce/template-tags.php:926
+#: inc/woocommerce/template-tags.php:927
 msgid "or"
 msgstr ""
 
-#: inc/woocommerce/template-tags.php:986
+#: inc/woocommerce/template-tags.php:987
 msgid "Availability:"
 msgstr ""
 
-#: inc/woocommerce/template-tags.php:1063
+#: inc/woocommerce/template-tags.php:1064
 msgid "Your comment is awaiting approval"
 msgstr ""
 
-#: inc/woocommerce/template-tags.php:1071
+#: inc/woocommerce/template-tags.php:1072
 msgid "verified owner"
 msgstr ""
 
-#: inc/woocommerce/template-tags.php:1150
+#: inc/woocommerce/template-tags.php:1151
 msgid "SKU: %s"
 msgstr ""
 
-#: inc/woocommerce/template-tags.php:1178
-#: inc/woocommerce/template-tags.php:1412
+#: inc/woocommerce/template-tags.php:1179
+#: inc/woocommerce/template-tags.php:1413
 msgid "Placeholder"
 msgstr ""
 
-#: inc/woocommerce/template-tags.php:1297
+#: inc/woocommerce/template-tags.php:1298
 msgid "Awaiting product image"
 msgstr ""
 
-#: inc/woocommerce/template-tags.php:1509
+#: inc/woocommerce/template-tags.php:1510
 msgid "On Sale Now"
 msgstr ""
 
-#: inc/woocommerce/template-tags.php:1516
+#: inc/woocommerce/template-tags.php:1517
 msgid "New In Store"
 msgstr ""
 
-#: inc/woocommerce/template-tags.php:1530
+#: inc/woocommerce/template-tags.php:1531
 msgid "Your order"
 msgstr ""
 
-#: inc/woocommerce/template-tags.php:1560
+#: inc/woocommerce/template-tags.php:1561
 msgid "brand"
 msgstr ""
 

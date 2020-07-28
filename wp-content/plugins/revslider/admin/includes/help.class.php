@@ -1337,10 +1337,10 @@ class RevSliderHelp {
 								)
 							),
 							'app_id' => array(
-								$t => __("Access Token", 'revsliderhelp'),
+								$t => __("App ID", 'revsliderhelp'),
 								$h => "source.facebook.appId",
 								$k => array("facebook", "app id"),
-								$d => __("<a href='https://www.themepunch.com/faq/facebook-stream-setup-instructions-access-token/' target='_blank'>Generate</a> a Facebook Access Token with the needed permissions", 'revsliderhelp'),
+								$d => __("Your <a href='https://developers.facebook.com/docs/apps/register' target='_blank'>Facebook App's</a> ID", 'revsliderhelp'),
 								$a => $u . "module-content/#facebook",
 								$hl => array(
 									$dp => array(array($p => 'settings.sourcetype', $v => 'facebook', $o => 'slider_sourcetype_facebook')), 
@@ -2845,7 +2845,7 @@ class RevSliderHelp {
 							$t => __("Lazy Loading", 'revsliderhelp'),
 							$h => "general.lazyLoad",
 							$k => array("lazy", "lazy load", "lazy loading"),
-							$d => __("Choose 'All' to LazyLoad all images in the Slider when the Slider first loads, 'Smart' to only LazyLoad the prev/next Slide's images, and 'Single' to only LazyLoad the current Slide's images.", 'revsliderhelp'),
+							$d => __("Choose 'All' to LazyLoad all images in the Slider when the Slider first lpads, 'Smart' to only LazyLoad the prev/next Slide's images, and 'Single' to only LazyLoad the current Slide's images.", 'revsliderhelp'),
 							$a => $u . "advanced-module-settings/",
 							$hl => array($m => "#module_settings_trigger, #gst_sl_10", $st => '#form_slidergeneral_advanced_loading', $f => "#sr_adv_performance_load")
 						),
@@ -7241,88 +7241,7 @@ class RevSliderHelp {
 									$f => "#layer_max_height"
 								)
 							)
-						),
-						'responsive_behavior' => array(
-							'intelligent_inheriting' => array(
-								$di => "layers_intelligent_inheriting",
-								$t => __("Intelligent Inheriting", 'revsliderhelp'),
-								$h => "behavior.intelligentInherit",
-								$k => array("responsive", "intelligent inheriting", "responsive behavior"),
-								$d => __("Automatically resize/reposition new Layers for each device viewport inside the editor", 'revsliderhelp'),
-								$a => $u . "size-position/",
-								$hl => array(
-									$dp => array('layerselected'), 
-									$m => "#module_layers_trigger, #gst_layer_2", 
-									$st => '#form_layerposition_advanced', 
-									$f => "#layer_behavior_intelSize"
-								)								
-							),
-							'inherit_from_desktop' => array(
-								$t => __("Inherit from Desktop", 'revsliderhelp'),
-								$h => "resetIntelligentInherits",
-								$k => array("responsive behavior", "inherit all values", "inherit all values from desktop", "intelligent inheriting"),
-								$d => __("Automatically resize/reposition all Layers for each device viewport inside the editor", 'revsliderhelp'),
-								$a => $u . "size-position/",
-								$hl => array(
-									$dp => array('layerselected', array($p => '#slide#.layers.#layer#.behavior.intelligentInherit', $v => true, $o => 'layers_intelligent_inheriting')), 
-									$m => "#module_layers_trigger, #gst_layer_2", 
-									$st => '#form_layerposition_advanced', 
-									$f => "#intelligent_buttons_true"
-								)
-							),
-							'reset_from_desktop' => array(
-								$t => __("Reset from Desktop", 'revsliderhelp'),
-								$h => "inheritValuesFromDesktop",
-								$k => array("responsive behavior", "reset all values", "reset all values from desktop", "intelligent inheriting"),
-								$d => __("Reset the size/position of all Layers to their desktop values for each viewport inside the editor", 'revsliderhelp'),
-								$a => $u . "size-position/",
-								$hl => array(
-									$dp => array('layerselected', array($p => '#slide#.layers.#layer#.behavior.intelligentInherit', $v => false, $o => 'layers_intelligent_inheriting')),  
-									$m => "#module_layers_trigger, #gst_layer_2", 
-									$st => '#form_layerposition_advanced', 
-									$f => "#intelligent_buttons_false"
-								)
-							),
-							'resize_between_devices' => array(
-								$t => __("Resize Between Devices", 'revsliderhelp'),
-								$h => "behavior.autoResponsive",
-								$k => array("responsive", "resize", "resize layers", "resize layer", "layer resizing", "layer sizing", "responsive sizes", "responsive sizing"),
-								$d => __("Automatically resize Layers for each responsive device viewport", 'revsliderhelp'),
-								$a => $u . "size-position/",
-								$hl => array(
-									$dp => array('layerselected'), 
-									$m => "#module_layers_trigger, #gst_layer_2", 
-									$st => '#form_layerposition_advanced', 
-									$f => "#layer_behavior_autoResponsive"
-								)
-							),
-							'responsive_offsets' => array(
-								$t => __("Responsive Offsets", 'revsliderhelp'),
-								$h => "behavior.responsiveOffset",
-								$k => array("responsive", "responsive offset", "responsive offsets"),
-								$d => __("Automatically adjust the positioning for Layers for each responsive device viewport", 'revsliderhelp'),
-								$a => $u . "size-position/",
-								$hl => array(
-									$dp => array('layerselected'), 
-									$m => "#module_layers_trigger, #gst_layer_2", 
-									$st => '#form_layerposition_advanced', 
-									$f => "#layer_behavior_responsiveOffset"
-								)
-							),
-							'responsive_children' => array(
-								$t => __("Responsive Children", 'revsliderhelp'),
-								$h => "behavior.responsiveChilds",
-								$k => array("responsive", "responsive children"),
-								$d => __("Choose to resize the Layer's inner HTML elements if the Layer includes custom HTML", 'revsliderhelp'),
-								$a => $u . "size-position/",
-								$hl => array(
-									$dp => array('layerselected'), 
-									$m => "#module_layers_trigger, #gst_layer_2", 
-									$st => '#form_layerposition_advanced', 
-									$f => "#layer_behavior_responsiveChilds"
-								)
-							)
-						),
+						)
 					),
 					'gst_layer_6' => array(
 						'basic_transforms' => array(
@@ -10728,9 +10647,88 @@ class RevSliderHelp {
 							)
 						)
 					),
-					
 					'gst_layer_13' => array(
-						
+						'responsive_behavior' => array(
+							'intelligent_inheriting' => array(
+								$di => "layers_intelligent_inheriting",
+								$t => __("Intelligent Inheriting", 'revsliderhelp'),
+								$h => "behavior.intelligentInherit",
+								$k => array("responsive", "intelligent inheriting", "responsive behavior"),
+								$d => __("Automatically resize/reposition new Layers for each device viewport inside the editor", 'revsliderhelp'),
+								$a => $u . "responsive-settings/",
+								$hl => array(
+									$dp => array('layerselected'), 
+									$m => "#module_layers_trigger, #gst_layer_13", 
+									$st => '#form_layer_responsiveness', 
+									$f => "#layer_behavior_intelSize"
+								)
+							),
+							'inherit_from_desktop' => array(
+								$t => __("Inherit from Desktop", 'revsliderhelp'),
+								$h => "resetIntelligentInherits",
+								$k => array("responsive behavior", "inherit all values", "inherit all values from desktop", "intelligent inheriting"),
+								$d => __("Automatically resize/reposition all Layers for each device viewport inside the editor", 'revsliderhelp'),
+								$a => $u . "responsive-settings/",
+								$hl => array(
+									$dp => array('layerselected', array($p => '#slide#.layers.#layer#.behavior.intelligentInherit', $v => true, $o => 'layers_intelligent_inheriting')), 
+									$m => "#module_layers_trigger, #gst_layer_13", 
+									$st => '#form_layer_responsiveness', 
+									$f => "#intelligent_buttons_true"
+								)
+							),
+							'reset_from_desktop' => array(
+								$t => __("Reset from Desktop", 'revsliderhelp'),
+								$h => "inheritValuesFromDesktop",
+								$k => array("responsive behavior", "reset all values", "reset all values from desktop", "intelligent inheriting"),
+								$d => __("Reset the size/position of all Layers to their desktop values for each viewport inside the editor", 'revsliderhelp'),
+								$a => $u . "responsive-settings/",
+								$hl => array(
+									$dp => array('layerselected', array($p => '#slide#.layers.#layer#.behavior.intelligentInherit', $v => false, $o => 'layers_intelligent_inheriting')),  
+									$m => "#module_layers_trigger, #gst_layer_13", 
+									$st => '#form_layer_responsiveness', 
+									$f => "#intelligent_buttons_false"
+								)
+							),
+							'resize_between_devices' => array(
+								$t => __("Resize Between Devices", 'revsliderhelp'),
+								$h => "behavior.autoResponsive",
+								$k => array("responsive", "resize", "resize layers", "resize layer", "layer resizing", "layer sizing", "responsive sizes", "responsive sizing"),
+								$d => __("Automatically resize Layers for each responsive device viewport", 'revsliderhelp'),
+								$a => $u . "responsive-settings/",
+								$hl => array(
+									$dp => array('layerselected'), 
+									$m => "#module_layers_trigger, #gst_layer_13", 
+									$st => '#form_layer_responsiveness', 
+									$f => "#layer_behavior_autoResponsive"
+								)
+							),
+							'responsive_offsets' => array(
+								$t => __("Responsive Offsets", 'revsliderhelp'),
+								$h => "behavior.responsiveOffset",
+								$k => array("responsive", "responsive offset", "responsive offsets"),
+								$d => __("Automatically adjust the positioning for Layers for each responsive device viewport", 'revsliderhelp'),
+								$a => $u . "responsive-settings/",
+								$hl => array(
+									$dp => array('layerselected'), 
+									$m => "#module_layers_trigger, #gst_layer_13", 
+									$st => '#form_layer_responsiveness', 
+									$f => "#layer_behavior_responsiveOffset"
+								)
+							),
+							'responsive_children' => array(
+								$t => __("Responsive Children", 'revsliderhelp'),
+								$h => "behavior.responsiveChilds",
+								$k => array("responsive", "responsive children"),
+								$d => __("Choose to resize the Layer's inner HTML elements if the Layer includes custom HTML", 'revsliderhelp'),
+								$a => $u . "responsive-settings/",
+								$hl => array(
+									$dp => array('layerselected'), 
+									$m => "#module_layers_trigger, #gst_layer_13", 
+									$st => '#form_layer_responsiveness', 
+									$f => "#layer_behavior_responsiveChilds"
+								)
+							)
+						),
 						'visibility' => array(
 							'desktop' => array(
 								$t => __("Show/Hide on Desktop", 'revsliderhelp'),

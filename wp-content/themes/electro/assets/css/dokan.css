@@ -1087,6 +1087,9 @@ ul.order-statuses-filter > li > a {
 .dokan-dashboard .dokan-orders-area > a {
   margin-bottom: 20px; }
 
+.dokan-dashboard .dokan-orders-area td.total {
+  text-align: right; }
+
 .dokan-dashboard #tracking-modal .modal-header {
   padding: 1em 2.2em; }
 
@@ -1236,6 +1239,10 @@ ul.order-statuses-filter > li > a {
 .single-product .dokan-btn {
   margin-top: 10px; }
 
+tr.shipping > td,
+tr.shipping > th {
+  display: table-cell; }
+
 .electro-tabs #tab-seller.electro-tab .tab-content h2, .electro-tabs #tab-seller #tab-seller h2, .woocommerce-tabs.electro-tab .tab-content h2, .woocommerce-tabs #tab-seller h2 {
   color: #333e48;
   font-size: 1.643em;
@@ -1280,6 +1287,28 @@ ul.order-statuses-filter > li > a {
 
 .dokan-theme-electro .col2-set .col-2 p.form-row.form-group.user-role {
   padding: 0 25px; }
+
+.woocommerce-account #dokan-seller-listing-wrap h2 {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  margin-left: 20px;
+  font-size: 20px; }
+
+.woocommerce-account #dokan-seller-listing-wrap ul.dokan-seller-wrap li {
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 10px; }
+
+.woocommerce-account #dokan-seller-listing-wrap .dokan-single-seller__inner--products {
+  display: none; }
+
+.woocommerce-account #dokan-seller-listing-wrap .dokan-single-seller__inner--bottom {
+  display: flex;
+  align-items: center; }
+
+.woocommerce-account #dokan-seller-listing-wrap .dokan-single-seller__inner__logo img {
+  width: 50px;
+  border-radius: 50%; }
 
 .dokan-rating .star-rating {
   float: left; }

@@ -114,8 +114,8 @@ class Electro_Elementor_Brands_Carousel_Block extends Widget_Base {
                 'type'      => Controls_Manager::SWITCHER,
                 'label_on'      => esc_html__( 'Hide', 'electro-extensions' ),
                 'label_off'     => esc_html__( 'Show', 'electro-extensions' ),
-                'return_value'  => true,
-                'default'       => false,
+                'return_value'  => 'true',
+                'default'       => 'false',
                 'placeholder'   => esc_html__( 'Show Brands does not have products', 'electro-extensions' ),
             ]
         );
@@ -156,8 +156,8 @@ class Electro_Elementor_Brands_Carousel_Block extends Widget_Base {
                 'type'          => Controls_Manager::SWITCHER,
                 'label_on'      => esc_html__( 'Hide', 'electro-extensions' ),
                 'label_off'     => esc_html__( 'Show', 'electro-extensions' ),
-                'return_value'  => true,
-                'default'       => false,
+                'return_value'  => 'true',
+                'default'       => 'false',
             ]
         );
 
@@ -168,8 +168,20 @@ class Electro_Elementor_Brands_Carousel_Block extends Widget_Base {
                 'type'          => Controls_Manager::SWITCHER,
                 'label_on'      => esc_html__( 'Enable', 'electro-extensions' ),
                 'label_off'     => esc_html__( 'Disable', 'electro-extensions' ),
-                'return_value'  => true,
-                'default'       => false,
+                'return_value'  => 'true',
+                'default'       => 'false',
+            ]
+        );
+
+        $this->add_control(
+            'is_loop',
+            [
+                'label'         => esc_html__( 'Carousel: Loop', 'electro-extensions' ),
+                'type'          => Controls_Manager::SWITCHER,
+                'label_on'      => esc_html__( 'Enable', 'electro-extensions' ),
+                'label_off'     => esc_html__( 'Disable', 'electro-extensions' ),
+                'return_value'  => 'true',
+                'default'       => 'false',
             ]
         );
 
@@ -213,6 +225,7 @@ class Electro_Elementor_Brands_Carousel_Block extends Widget_Base {
         $carousel_args  = array(
             'touchDrag'         => $is_touchdrag,
             'autoplay'          => $is_autoplay,
+            'loop'              => $is_loop,
         );
 
         if( function_exists( 'electro_brands_carousel' ) ) {

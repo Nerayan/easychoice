@@ -40,7 +40,11 @@ class ProductAndVariationPrices
                 ['', '.'],
                 (string) $price['ЦенаЗаЕдиницу']
             );
-            $value = $value / (float) $rate;
+            $value = (float) apply_filters(
+                'itglx_wc1c_parsed_offer_price_value',
+                $value / (float) $rate,
+                (string) $price['ИдТипаЦены']
+            );
             $allPrices[(string) $price['ИдТипаЦены']] = $value;
 
             if ((string) $price['ИдТипаЦены'] === $basePriceType) {
@@ -81,6 +85,7 @@ class ProductAndVariationPrices
             return;
         }
 
+        update_post_meta($productId, '_all_prices', $resolvePrices['all']);
         update_post_meta($productId, '_regular_price', $priceValue);
 
         if ($parentProductID) {
@@ -237,7 +242,5 @@ class ProductAndVariationPrices
         }
 
         do_action('itglx_wc1c_after_set_product_price', $productId, $priceValue, $priceWorkRule);
-
-        update_post_meta($productId, '_all_prices', $resolvePrices['all']);
     }
 }

@@ -234,8 +234,8 @@ class Electro_Elementor_Product_List_Block extends Widget_Base {
                 'description' => esc_html__( 'Show Categories list on header block.', 'electro-extensions' ),
                 'label_on'      => esc_html__( 'Enable', 'electro-extensions' ),
                 'label_off'     => esc_html__( 'Disable', 'electro-extensions' ),
-                'return_value'  => true,
-                'default'       => false,
+                'return_value'  => 'true',
+                'default'       => 'false',
             ]
         );
 
@@ -263,8 +263,8 @@ class Electro_Elementor_Product_List_Block extends Widget_Base {
                 'description' => esc_html__( 'Show Categories does not have products', 'electro-extensions' ),
                 'label_on'      => esc_html__( 'Enable', 'electro-extensions' ),
                 'label_off'     => esc_html__( 'Disable', 'electro-extensions' ),
-                'return_value'  => true,
-                'default'       => false,
+                'return_value'  => 'true',
+                'default'       => 'false',
             ]
         ); 
 

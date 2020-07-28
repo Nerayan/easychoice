@@ -30,10 +30,12 @@ class ProductAndVariationStock
                     $stock += (float) $stockElement->Количество;
                 }
             }
-        } else {
-            $stock = (string) $element->Количество
-                ? (float) $element->Количество
-                : 0;
+        } elseif (isset($element->Количество)) {
+            $stock = (float) $element->Количество;
+        } elseif (isset($element->Склад)) {
+            foreach ($element->Склад as $store) {
+                $stock += (float) $store['КоличествоНаСкладе'];
+            }
         }
 
         return [
@@ -48,6 +50,14 @@ class ProductAndVariationStock
 
         if (isset($element->Склад)) {
             foreach ($element->Склад as $store) {
+                if (!isset($stocks[(string) $store['ИдСклада']])) {
+                    $stocks[(string) $store['ИдСклада']] = 0;
+                }
+
+                $stocks[(string) $store['ИдСклада']] += (float) $store['КоличествоНаСкладе'];
+            }
+        } elseif (isset($element->Склады)) {
+            foreach ($element->Склады as $store) {
                 if (!isset($stocks[(string) $store['ИдСклада']])) {
                     $stocks[(string) $store['ИдСклада']] = 0;
                 }
@@ -72,11 +82,15 @@ class ProductAndVariationStock
             isset($element->КоличествоНаСкладах->КоличествоНаСкладе)
         ) {
             foreach ($element->КоличествоНаСкладах->КоличествоНаСкладе as $stockElement) {
-                if (!isset($stocks[(string) $stockElement->Ид])) {
-                    $stocks[(string) $stockElement->Ид] = 0;
+                $stockID = isset($stockElement->ИдСклада)
+                    ? (string) $stockElement->ИдСклада
+                    : (string) $stockElement->Ид;
+
+                if (!isset($stocks[$stockID])) {
+                    $stocks[$stockID] = 0;
                 }
 
-                $stocks[(string) $stockElement->Ид] += (float) $stockElement->Количество;
+                $stocks[$stockID] += (float) $stockElement->Количество;
             }
         }
 
@@ -111,22 +125,9 @@ class ProductAndVariationStock
             );
         }
 
-        $hide = self::resolveHide(
-            $products1cStockNull,
-            $stockData,
-            $productId,
-            $parentProductID
-        );
-        $disableManageStock = self::resolveDisableManageStock(
-            $products1cStockNull,
-            $stockData,
-            $productId,
-            $parentProductID
-        );
-
         // resolve stock status
-        if (!$hide) {
-            if ($disableManageStock) {
+        if (!self::resolveHide($products1cStockNull, $stockData, $productId, $parentProductID)) {
+            if (self::resolveDisableManageStock($products1cStockNull, $stockData, $productId, $parentProductID)) {
                 \update_post_meta($productId, '_manage_stock', 'no');
             } else {
                 \update_post_meta(
@@ -145,7 +146,28 @@ class ProductAndVariationStock
                 );
             }
 
-            Product::show($productId, true);
+            Product::show(
+                $productId,
+                true,
+                apply_filters(
+                    'itglx_wc1c_stock_status_value_if_not_hide',
+                    self::resolveStockStatus($products1cStockNull, $stockData),
+                    $stockData['_stock'],
+                    $productId,
+                    $parentProductID
+                )
+            );
+
+            // set backorders value
+            if ($stockData['_stock'] > 0) {
+                update_post_meta(
+                    $productId,
+                    '_backorders',
+                    empty($settings['products_onbackorder_stock_positive_rule'])
+                        ? 'no'
+                        : $settings['products_onbackorder_stock_positive_rule']
+                );
+            }
 
             // set stock variation
             if ($parentProductID) {
@@ -181,7 +203,23 @@ class ProductAndVariationStock
 
             unset($productObject);
         }
+
+        do_action('itglx_wc1c_after_set_product_stock', $productId, $stockData['_stock'], $parentProductID);
     }
+
+    private static function resolveStockStatus($products1cStockNull, $stockData)
+    {
+        if ($stockData['_stock'] > 0) {
+            return 'instock';
+        }
+
+        if ($products1cStockNull !== 'not_hide_and_put_basket_with_disable_manage_stock_and_stock_status_onbackorder') {
+            return 'instock';
+        }
+
+        return 'onbackorder';
+    }
+
 
     private static function resolveHide($products1cStockNull, $stockData, $productId, $parentProductID = null)
     {
@@ -192,6 +230,9 @@ class ProductAndVariationStock
                 $hide = $stockData['_stock'] <= 0;
                 break;
             case '1':
+                $hide = false;
+                break;
+            case 'not_hide_and_put_basket_with_disable_manage_stock_and_stock_status_onbackorder':
                 $hide = false;
                 break;
             case '2':
@@ -237,6 +278,9 @@ class ProductAndVariationStock
                 // Nothing
                 break;
             case '1':
+                $disableManageStock =  $stockData['_stock'] <= 0;
+                break;
+            case 'not_hide_and_put_basket_with_disable_manage_stock_and_stock_status_onbackorder':
                 $disableManageStock =  $stockData['_stock'] <= 0;
                 break;
             case '2':

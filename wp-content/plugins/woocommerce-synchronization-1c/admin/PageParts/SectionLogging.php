@@ -90,7 +90,7 @@ class SectionLogging
                     <?php echo esc_html__('Clear logs', 'itgalaxy-woocommerce-1c'); ?>
                     <span data-ui-component="itglx-wc1c-logs-count-and-size-text"></span>
                 </span>
-                <span class="spinner-grow spinner-grow-sm d-none" role="status" aria-hidden="true"></span>
+                <span class="spinner-grow spinner-grow-sm" role="status"></span>
             </button>
             <?php
         }

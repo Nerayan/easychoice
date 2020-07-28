@@ -1,2 +1,0 @@
-# easychoice
-EasyChoise Store Website

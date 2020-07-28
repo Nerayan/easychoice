@@ -16,16 +16,7 @@ class SaleModeQuery
             self::notEnabled($version);
         }
 
-        $dom = new \DOMDocument;
-        $dom->loadXML(
-            "<?xml version='1.0' encoding='utf-8'?><КоммерческаяИнформация></КоммерческаяИнформация>"
-        );
-        $xml = simplexml_import_dom($dom);
-        unset($dom);
-
-        $xml->addAttribute('ВерсияСхемы', $version);
-        $xml->addAttribute('ДатаФормирования', date('Y-m-d H:i', current_time('timestamp', 0)));
-
+        $xml = self::getStartedXmlObject($version);
         $orders = self::getOrders();
 
         Logger::logProtocol('count orders', count($orders));
@@ -43,10 +34,13 @@ class SaleModeQuery
                 }
 
                 $orderData = $order->get_data();
-                $shippingAddress = self::resolveAddress('shipping', $order);
-                $billingAddress = self::resolveAddress('billing', $order);
 
-                $document = $xml->addChild('Документ');
+                if (self::resolveVersion() === '3.1') {
+                    $container = $xml->addChild('Контейнер');
+                    $document = $container->addChild('Документ');
+                } else {
+                    $document = $xml->addChild('Документ');
+                }
 
                 $document->addChild('Ид', $order->get_id());
                 $document->addChild('Номер', $order->get_id());
@@ -93,7 +87,7 @@ class SaleModeQuery
                         'Имя' => htmlspecialchars($order->get_billing_first_name()),
                         'АдресРегистрации' => [
                             'Вид' => 'Адрес доставки',
-                            'Представление' => htmlspecialchars($shippingAddress),
+                            'Представление' => htmlspecialchars(self::resolveAddress('shipping', $order)),
                             'АдресноеПоле' => self::resolveContragentAddressRegistration($order)
                         ],
                         'Контакты' => [
@@ -124,252 +118,26 @@ class SaleModeQuery
                     itglx_wc1c_xml_order_contragent_data($contragents, $order);
                 }
 
-                if ($order->get_discount_total() > 0) {
-                    $discounts = $document->addChild('Скидки');
-                    $discount = $discounts->addChild('Скидка');
-                    $discount->addChild('Наименование', 'Скидка');
-                    $discount->addChild('Сумма', $order->get_discount_total());
-                    $discount->addChild('УчтеноВСумме', 'true');
-                }
-
-                $productsXml = $document->addChild('Товары');
-
-                $products = [];
-
-                foreach ($order->get_items() as $item) {
-                    $product = $order->get_product_from_item($item);
-                    $sku = '';
-
-                    if ($product instanceof \WC_Product && $product->get_sku()) {
-                        $sku = $product->get_sku();
-                    }
-
-                    $products[] = [
-                        'id' => $item['variation_id'] ? $item['variation_id'] : $item['product_id'],
-                        'productId' => $item['product_id'],
-                        'variationId' => $item['variation_id'],
-                        '_id_1c' => get_post_meta(
-                            $item['variation_id'] ? $item['variation_id'] : $item['product_id'],
-                            '_id_1c',
-                            true
-                        ),
-                        'quantity' => $item['qty'],
-                        'name' => htmlspecialchars($item['name']),
-                        'priceInOrder' => $item['line_total'] / $item['qty'],
-                        'lineTotal' => $item['line_total'],
-                        'sku' => $sku
-                    ];
-                }
-
-                foreach ($products as $product) {
-                    $productXml = $productsXml->addChild('Товар');
-
-                    // has 1C guid
-                    if (!empty($product['_id_1c'])) {
-                        $productXml->addChild('Ид', $product['_id_1c']);
-                    } else {
-                        if (!empty($settings['send_orders_use_product_id_from_site'])) {
-                            Logger::logProtocol(
-                                'used product/variation id form site in node "Ид"',
-                                [$product['id'], $order->get_id()]
-                            );
-
-                            $productXml->addChild('Ид', $product['id']);
-                        } else {
-                            Logger::logProtocol(
-                                'generate product without node "Ид"',
-                                [$product['id'], $order->get_id()]
-                            );
-                        }
-
-                        if ($product['sku'] !== '') {
-                            Logger::logProtocol(
-                                'no 1C guid, added "Артикул"',
-                                [$product['id'], $product['sku'], $order->get_id()]
-                            );
-
-                            $productXml->addChild('Артикул', $product['sku']);
-                        } else {
-                            Logger::logProtocol(
-                                'no 1C guid and empty sku, "Артикул" no added',
-                                [$product['id'], $order->get_id()]
-                            );
-                        }
-                    }
-
-                    $productXml->addChild('Наименование', wp_strip_all_tags(html_entity_decode($product['name'])));
-
-                    if ($unit = get_post_meta($product['id'], '_unit', true)) {
-                        $base = $productXml->addChild('БазоваяЕдиница', $unit['value']);
-                        $base->addAttribute('Код', $unit['code']);
-                        $base->addAttribute('НаименованиеПолное', $unit['nameFull']);
-                        $base->addAttribute('МеждународноеСокращение', $unit['internationalAcronym']);
-                    } else {
-                        $base = $productXml->addChild('БазоваяЕдиница', 'шт');
-                        $base->addAttribute('Код', 796);
-                        $base->addAttribute('НаименованиеПолное', 'Штука');
-                        $base->addAttribute('МеждународноеСокращение', 'PCE');
-                    }
-
-                    $productXml->addChild('ЦенаЗаЕдиницу', $product['priceInOrder']);
-                    $productXml->addChild('Количество', $product['quantity']);
-                    $productXml->addChild('Сумма', $product['lineTotal']);
-
-                    $details = $productXml->addChild('ЗначенияРеквизитов');
-
-                    $detail = $details->addChild('ЗначениеРеквизита');
-                    $detail->addChild('Наименование', 'ВидНоменклатуры');
-                    $detail->addChild('Значение', 'Товар');
-
-                    $detail = $details->addChild('ЗначениеРеквизита');
-                    $detail->addChild('Наименование', 'ТипНоменклатуры');
-                    $detail->addChild('Значение', 'Товар');
-
-                    // can be used if you want to transfer custom data
-                    $moreProductInfo = apply_filters(
-                        'itglx_wc1c_xml_product_info_custom',
-                        [],
-                        $product['productId'],
-                        $product['variationId']
-                    );
-
-                    if ($moreProductInfo) {
-                        foreach ($moreProductInfo as $key => $moreProductInfoValue) {
-                            $productXml->addChild($key, $moreProductInfoValue);
-                        }
-                    }
-                }
-
-                if ($order->get_shipping_total() > 0) {
-                    $productXml = $productsXml->addChild('Товар');
-                    $productXml->addChild('Ид', 'ORDER_DELIVERY');
-                    $productXml->addChild(
-                        'Наименование',
-                        wp_strip_all_tags(html_entity_decode($order->get_shipping_method()))
-                    );
-
-                    $base = $productXml->addChild('БазоваяЕдиница', 'шт');
-                    $base->addAttribute('Код', 796);
-                    $base->addAttribute('НаименованиеПолное', 'Штука');
-                    $base->addAttribute('МеждународноеСокращение', 'PCE');
-
-                    $productXml->addChild('ЦенаЗаЕдиницу', $order->get_shipping_total());
-                    $productXml->addChild('Количество', '1');
-                    $productXml->addChild('Сумма', $order->get_shipping_total());
-
-                    $details = $productXml->addChild('ЗначенияРеквизитов');
-
-                    $detail = $details->addChild('ЗначениеРеквизита');
-                    $detail->addChild('Наименование', 'ВидНоменклатуры');
-                    $detail->addChild('Значение', 'Услуга');
-
-                    $detail = $details->addChild('ЗначениеРеквизита');
-                    $detail->addChild('Наименование', 'ТипНоменклатуры');
-                    $detail->addChild('Значение', 'Услуга');
-                }
-
-                $details = $document->addChild('ЗначенияРеквизитов');
-
-                if (wc_get_payment_gateway_by_order($order)) {
-                    $detail = $details->addChild('ЗначениеРеквизита');
-                    $detail->addChild('Наименование', 'Способ оплаты');
-                    $detail->addChild(
-                        'Значение',
-                        wp_strip_all_tags(html_entity_decode(wc_get_payment_gateway_by_order($order)->title))
-                    );
-                    $detail = $details->addChild('ЗначениеРеквизита');
-                    $detail->addChild('Наименование', 'Метод оплаты');
-                    $detail->addChild(
-                        'Значение',
-                        wp_strip_all_tags(html_entity_decode(wc_get_payment_gateway_by_order($order)->title))
-                    );
-                }
-
-                // order status
-                $detail = $details->addChild('ЗначениеРеквизита');
-
-                if (isset($_SESSION['version']) && (float) $_SESSION['version'] > 3) {
-                    $detail->addChild('Наименование', 'Статус заказа ИД');
-                } else {
-                    $detail->addChild('Наименование', 'Статус заказа');
-                }
-
-                $orderStatus = $order->get_status();
-
-                // resolve status name - maybe mapping
-                if (
-                    !empty($settings['send_orders_status_mapping']) &&
-                    !empty($settings['send_orders_status_mapping'][$orderStatus])
-                ) {
-                    $redefinedStatus = trim($settings['send_orders_status_mapping'][$orderStatus]);
-
-                    Logger::logProtocol(
-                        'setting - send_orders_status_mapping is configured for current order status',
-                        [
-                            $order->get_id(),
-                            $orderStatus,
-                            $redefinedStatus
-                        ]
-                    );
-
-                    $orderStatus = $redefinedStatus;
-                }
-
-                $detail->addChild('Значение', htmlspecialchars($orderStatus));
-
-                $detail = $details->addChild('ЗначениеРеквизита');
-                $detail->addChild('Наименование', 'Дата изменения статуса');
-                $detail->addChild('Значение', $order->get_date_modified()->date_i18n('Y-m-d H:i'));
-
-                if ($order->get_shipping_method()) {
-                    $detail = $details->addChild('ЗначениеРеквизита');
-                    $detail->addChild('Наименование', 'Способ доставки');
-                    $detail->addChild('Значение', htmlspecialchars($order->get_shipping_method()));
-
-                    $detail = $details->addChild('ЗначениеРеквизита');
-                    $detail->addChild('Наименование', 'Доставка разрешена');
-                    $detail->addChild('Значение', $order->get_shipping_total() > 0 ? 'true' : 'false');
-
-                    $detail = $details->addChild('ЗначениеРеквизита');
-                    $detail->addChild('Наименование', 'Адрес доставки');
-                    $detail->addChild(
-                        'Значение',
-                        wp_strip_all_tags(
-                            html_entity_decode(empty($shippingAddress) ? $billingAddress : $shippingAddress)
-                        )
-                    );
-                }
-
-                $detail = $details->addChild('ЗначениеРеквизита');
-                $detail->addChild('Наименование', 'Адрес плательщика');
-                $detail->addChild('Значение', htmlspecialchars($billingAddress));
-
-                if ($order->get_status() == 'cancelled') {
-                    $detail = $details->addChild('ЗначениеРеквизита');
-                    $detail->addChild('Наименование', 'ПометкаУдаления');
-                    $detail->addChild('Значение', 'true');
-                }
-
-                $detail = $details->addChild('ЗначениеРеквизита');
-                $detail->addChild('Наименование', 'Отменен');
-                $detail->addChild('Значение', $order->get_status() === 'cancelled' ? 'true' : 'false');
-
-                // requisite is paid
-                $detail = $details->addChild('ЗначениеРеквизита');
-                $detail->addChild('Наименование', 'Заказ оплачен');
-                $detail->addChild(
-                    'Значение',
-                    !empty($settings['send_orders_status_is_paid']) &&
-                    in_array($order->get_status(), $settings['send_orders_status_is_paid'])
-                        ? 'true'
-                        : 'false'
-                );
+                self::generateOrderDiscount($document, $order);
+                self::generateOrderProducts($document, $order);
+                self::generateOrderRequisites($document, $order);
             }
         }
 
         self::sendResponse($xml);
 
         Logger::logProtocol('order query send result');
+
+        // with 3.1 - 1c maybe not send request success
+        // https://dev.1c-bitrix.ru/api_help/sale/algorithms/doc_from_site.php
+        if (self::resolveVersion() === '3.1') {
+            $settings = get_option(Bootstrap::OPTIONS_KEY);
+
+            $settings['send_orders_last_success_export'] = str_replace(' ', 'T', date_i18n('Y-m-d H:i'));
+            update_option(Bootstrap::OPTIONS_KEY, $settings);
+
+            Logger::logProtocol('setting `send_orders_last_success_export` set', [date_i18n('Y-m-d H:i')]);
+        }
     }
 
     public static function hasNewOrders()
@@ -382,14 +150,9 @@ class SaleModeQuery
         global $wpdb;
 
         $settings = get_option(Bootstrap::OPTIONS_KEY);
-
-        if (!empty($settings['send_orders_last_success_export'])) {
-            $lastTime = $settings['send_orders_last_success_export'];
-        } else {
-            $lastTime = '2019-10-01 00:00:00';
-        }
-
-        $lastTime = date_i18n('Y-m-d H:i:s', strtotime($lastTime));
+        $lastTime = !empty($settings['send_orders_last_success_export'])
+            ? date_i18n('Y-m-d H:i:s', strtotime($settings['send_orders_last_success_export']))
+            : date_i18n('Y-m-d H:i:s');
 
         if ($withLog) {
             Logger::logProtocol('start orders modified date', $lastTime);
@@ -405,9 +168,21 @@ class SaleModeQuery
             Logger::logProtocol('setting - send_orders_date_create_start', $startOrderCreateDate);
         }
 
+        $excludeOrdersWithStatus = !empty($settings['send_orders_exclude_if_status'])
+            ? $settings['send_orders_exclude_if_status']
+            : [];
+
+        if ($withLog && $excludeOrdersWithStatus) {
+            Logger::logProtocol('setting - send_orders_exclude_if_status', $excludeOrdersWithStatus);
+        }
+
         $statuses = [];
 
         foreach (\wc_get_order_statuses() as $status => $_) {
+            if (in_array(str_replace('wc-', '', $status), $excludeOrdersWithStatus, true)) {
+                continue;
+            }
+
             $statuses[] = $status;
         }
 
@@ -450,6 +225,12 @@ class SaleModeQuery
 
     private static function resolveVersion()
     {
+        $settings = get_option(Bootstrap::OPTIONS_KEY);
+
+        if (!empty($settings['send_orders_use_scheme31'])) {
+            return '3.1';
+        }
+
         $version = '2.05';
 
         if (isset($_SESSION['version']) && (float) $_SESSION['version'] > 2.08) {
@@ -462,9 +243,7 @@ class SaleModeQuery
     private static function getCurrency()
     {
         $settings = get_option(Bootstrap::OPTIONS_KEY);
-        $basePriceType = isset($settings['price_type_1'])
-            ? $settings['price_type_1']
-            : '';
+        $basePriceType = isset($settings['price_type_1']) ? $settings['price_type_1'] : '';
         $allPriceTypes = get_option('all_prices_types');
 
         // if empty, then use the first
@@ -485,15 +264,10 @@ class SaleModeQuery
     private static function sendResponse($xml)
     {
         $settings = get_option(Bootstrap::OPTIONS_KEY);
+        $resultEncoding = 'windows-1251';
 
         if (!empty($settings['send_orders_response_encoding'])) {
             $resultEncoding = $settings['send_orders_response_encoding'];
-        } else {
-            if (isset($_SESSION['version'])) {
-                $resultEncoding = 'utf-8';
-            } else {
-                $resultEncoding = 'windows-1251';
-            }
         }
 
         Logger::logProtocol('used encoding', $resultEncoding);
@@ -503,7 +277,7 @@ class SaleModeQuery
                 header("Content-Type: text/xml; charset=utf-8");
 
                 echo $xml->asXML();
-                // 1c response does not require escape
+                // escape ok
 
                 break;
             default:
@@ -514,7 +288,7 @@ class SaleModeQuery
                     'cp1251',
                     'utf-8'
                 );
-                // 1c response does not require escape
+                // escape ok
 
                 break;
         }
@@ -522,7 +296,17 @@ class SaleModeQuery
 
     private static function notEnabled($version)
     {
-        $dom = new \DOMDocument;
+        self::sendResponse(self::getStartedXmlObject($version));
+
+        Logger::logProtocol('order unload not enabled');
+        Logger::endProcessingRequestLogProtocolEntry();
+
+        exit();
+    }
+
+    private static function getStartedXmlObject($version)
+    {
+        $dom = new \DOMDocument();
         $dom->loadXML(
             "<?xml version='1.0' encoding='utf-8'?><КоммерческаяИнформация></КоммерческаяИнформация>"
         );
@@ -532,18 +316,13 @@ class SaleModeQuery
         $xml->addAttribute('ВерсияСхемы', $version);
         $xml->addAttribute('ДатаФормирования', date('Y-m-d H:i', current_time('timestamp', 0)));
 
-        self::sendResponse($xml);
-
-        Logger::logProtocol('order unload not enabled');
-        Logger::endProcessingRequestLogProtocolEntry();
-
-        exit();
+        return $xml;
     }
 
     // todo: refactor to universal
     private static function generateContragentXml($xml, $data)
     {
-       foreach ($data as $name => $value) {
+        foreach ($data as $name => $value) {
             if (!is_array($value)) {
                 $xml->addChild($name, $value);
             } else {
@@ -567,6 +346,274 @@ class SaleModeQuery
                     }
                 }
             }
+        }
+    }
+
+    private static function generateOrderDiscount($document, $order)
+    {
+        if ($order->get_discount_total() <= 0) {
+            return;
+        }
+
+        $discounts = $document->addChild('Скидки');
+        $discount = $discounts->addChild('Скидка');
+        $discount->addChild('Наименование', 'Скидка');
+        $discount->addChild('Сумма', $order->get_discount_total());
+        $discount->addChild('УчтеноВСумме', 'true');
+    }
+
+    private static function generateOrderProducts($document, $order)
+    {
+        $settings = get_option(Bootstrap::OPTIONS_KEY);
+        $productsXml = $document->addChild('Товары');
+
+        $products = [];
+
+        foreach ($order->get_items() as $item) {
+            $product = $order->get_product_from_item($item);
+            $sku = '';
+
+            if ($product instanceof \WC_Product && $product->get_sku()) {
+                $sku = $product->get_sku();
+            }
+
+            $exportProduct = [
+                'id' => $item['variation_id'] ? $item['variation_id'] : $item['product_id'],
+                'productId' => $item['product_id'],
+                'variationId' => $item['variation_id'],
+                '_id_1c' => get_post_meta(
+                    $item['variation_id'] ? $item['variation_id'] : $item['product_id'],
+                    '_id_1c',
+                    true
+                ),
+                'quantity' => $item['qty'],
+                'name' => htmlspecialchars($item['name']),
+                'priceInOrder' => $item['line_total'] / $item['qty'],
+                'lineTotal' => $item['line_total'],
+                'sku' => $sku,
+                'attributes' => []
+            ];
+
+            if (
+                empty($exportProduct['_id_1c']) &&
+                $product instanceof \WC_Product &&
+                $item['variation_id'] &&
+                !empty($settings['send_orders_use_variation_characteristics_from_site']) &&
+                $product->get_attribute_summary()
+            ) {
+                $attributes = explode(', ', $product->get_attribute_summary());
+
+                foreach ($attributes as $attribute) {
+                    $exportProduct['attributes'][] = explode(': ', $attribute);
+                }
+            }
+
+            $products[] = $exportProduct;
+        }
+
+        foreach ($products as $product) {
+            $productXml = $productsXml->addChild('Товар');
+
+            // has 1C guid
+            if (!empty($product['_id_1c'])) {
+                $productXml->addChild('Ид', $product['_id_1c']);
+            } else {
+                if (!empty($settings['send_orders_use_product_id_from_site'])) {
+                    Logger::logProtocol(
+                        'used product/variation id form site in node "Ид"',
+                        [$product['id'], $order->get_id()]
+                    );
+
+                    $productXml->addChild('Ид', $product['id']);
+                } else {
+                    Logger::logProtocol(
+                        'generate product without node "Ид"',
+                        [$product['id'], $order->get_id()]
+                    );
+                }
+
+                if ($product['sku'] !== '') {
+                    Logger::logProtocol(
+                        'no 1C guid, added "Артикул"',
+                        [$product['id'], $product['sku'], $order->get_id()]
+                    );
+
+                    $productXml->addChild('Артикул', $product['sku']);
+                } else {
+                    Logger::logProtocol(
+                        'no 1C guid and empty sku, "Артикул" no added',
+                        [$product['id'], $order->get_id()]
+                    );
+                }
+            }
+
+            $productXml->addChild('Наименование', wp_strip_all_tags(html_entity_decode($product['name'])));
+            $unit = get_post_meta($product['id'], '_unit', true);
+
+            if ($unit) {
+                $base = $productXml->addChild('БазоваяЕдиница', $unit['value']);
+                $base->addAttribute('Код', $unit['code']);
+                $base->addAttribute('НаименованиеПолное', $unit['nameFull']);
+                $base->addAttribute('МеждународноеСокращение', $unit['internationalAcronym']);
+            } else {
+                $base = $productXml->addChild('БазоваяЕдиница', 'шт');
+                $base->addAttribute('Код', 796);
+                $base->addAttribute('НаименованиеПолное', 'Штука');
+                $base->addAttribute('МеждународноеСокращение', 'PCE');
+            }
+
+            $productXml->addChild('ЦенаЗаЕдиницу', $product['priceInOrder']);
+            $productXml->addChild('Количество', $product['quantity']);
+            $productXml->addChild('Сумма', $product['lineTotal']);
+
+            if (!empty($product['attributes'])) {
+                $characteristics = $productXml->addChild('ХарактеристикиТовара');
+
+                foreach ($product['attributes'] as $attribute) {
+                    $characteristic = $characteristics->addChild('ХарактеристикаТовара');
+                    $characteristic->addChild('Наименование', $attribute[0]);
+                    $characteristic->addChild('Значение', $attribute[1]);
+                }
+            }
+
+            $details = $productXml->addChild('ЗначенияРеквизитов');
+
+            $detail = $details->addChild('ЗначениеРеквизита');
+            $detail->addChild('Наименование', 'ВидНоменклатуры');
+            $detail->addChild('Значение', 'Товар');
+
+            $detail = $details->addChild('ЗначениеРеквизита');
+            $detail->addChild('Наименование', 'ТипНоменклатуры');
+            $detail->addChild('Значение', 'Товар');
+
+            // can be used if you want to transfer custom data
+            $moreProductInfo = apply_filters(
+                'itglx_wc1c_xml_product_info_custom',
+                [],
+                $product['productId'],
+                $product['variationId']
+            );
+
+            if ($moreProductInfo) {
+                foreach ($moreProductInfo as $key => $moreProductInfoValue) {
+                    $productXml->addChild($key, $moreProductInfoValue);
+                }
+            }
+        }
+
+        if ($order->get_shipping_total() > 0) {
+            $productXml = $productsXml->addChild('Товар');
+            $productXml->addChild('Ид', 'ORDER_DELIVERY');
+            $productXml->addChild(
+                'Наименование',
+                wp_strip_all_tags(html_entity_decode($order->get_shipping_method()))
+            );
+
+            $base = $productXml->addChild('БазоваяЕдиница', 'шт');
+            $base->addAttribute('Код', 796);
+            $base->addAttribute('НаименованиеПолное', 'Штука');
+            $base->addAttribute('МеждународноеСокращение', 'PCE');
+
+            $productXml->addChild('ЦенаЗаЕдиницу', $order->get_shipping_total());
+            $productXml->addChild('Количество', '1');
+            $productXml->addChild('Сумма', $order->get_shipping_total());
+
+            $details = $productXml->addChild('ЗначенияРеквизитов');
+
+            $detail = $details->addChild('ЗначениеРеквизита');
+            $detail->addChild('Наименование', 'ВидНоменклатуры');
+            $detail->addChild('Значение', 'Услуга');
+
+            $detail = $details->addChild('ЗначениеРеквизита');
+            $detail->addChild('Наименование', 'ТипНоменклатуры');
+            $detail->addChild('Значение', 'Услуга');
+        }
+    }
+
+    private static function generateOrderRequisites($document, $order)
+    {
+        $settings = get_option(Bootstrap::OPTIONS_KEY);
+        $shippingAddress = self::resolveAddress('shipping', $order);
+        $billingAddress = self::resolveAddress('billing', $order);
+
+        $requisitesArray = [];
+        $paymentGateway = wc_get_payment_gateway_by_order($order);
+
+        if ($paymentGateway && isset($paymentGateway->title)) {
+            $requisitesArray['Способ оплаты'] = wp_strip_all_tags(html_entity_decode($paymentGateway->title));
+            $requisitesArray['Метод оплаты'] = $requisitesArray['Способ оплаты'];
+
+            if (self::resolveVersion() === '3.1') {
+                $requisitesArray['Метод оплаты ИД'] = $paymentGateway->id;
+            }
+        }
+
+        $orderStatus = $order->get_status();
+
+        // resolve status name - maybe mapping
+        if (
+            !empty($settings['send_orders_status_mapping']) &&
+            !empty($settings['send_orders_status_mapping'][$orderStatus])
+        ) {
+            $redefinedStatus = trim($settings['send_orders_status_mapping'][$orderStatus]);
+
+            Logger::logProtocol(
+                'setting - send_orders_status_mapping is configured for current order status',
+                [
+                    $order->get_id(),
+                    $orderStatus,
+                    $redefinedStatus
+                ]
+            );
+
+            $orderStatus = $redefinedStatus;
+        }
+
+        if ((float) self::resolveVersion() > 3) {
+            $requisitesArray['Статус заказа ИД'] = htmlspecialchars($orderStatus);
+        }
+
+        $requisitesArray['Статус заказа'] = htmlspecialchars($orderStatus);
+
+        $requisitesArray['Дата изменения статуса'] = $order->get_date_modified()->date_i18n('Y-m-d H:i');
+
+        if ($order->get_shipping_method()) {
+            $requisitesArray['Способ доставки'] = htmlspecialchars($order->get_shipping_method());
+
+            if (self::resolveVersion() === '3.1') {
+                $requisitesArray['Метод доставки ИД'] = current($order->get_shipping_methods())->get_method_id();
+            }
+
+            $requisitesArray['Доставка разрешена'] = $order->get_shipping_total() > 0 ? 'true' : 'false';
+            $requisitesArray['Адрес доставки'] = wp_strip_all_tags(
+                html_entity_decode(empty($shippingAddress) ? $billingAddress : $shippingAddress)
+            );
+        }
+
+        $requisitesArray['Адрес плательщика'] = htmlspecialchars($billingAddress);
+        $requisitesArray['ПометкаУдаления'] = $order->get_status() === 'cancelled' ? 'true' : 'false';
+        $requisitesArray['Отменен'] = $order->get_status() === 'cancelled' ? 'true' : 'false';
+        $requisitesArray['Заказ оплачен'] = !empty($settings['send_orders_status_is_paid']) &&
+            in_array($order->get_status(), $settings['send_orders_status_is_paid'], true)
+                ? 'true'
+                : 'false';
+
+        $requisitesArray = (array) apply_filters(
+            'itglx_wc1c_order_xml_requisites_data_array',
+            $requisitesArray,
+            $order
+        );
+
+        if (empty($requisitesArray)) {
+            return;
+        }
+
+        $requisites = $document->addChild('ЗначенияРеквизитов');
+
+        foreach ($requisitesArray as $name => $value) {
+            $requisite = $requisites->addChild('ЗначениеРеквизита');
+            $requisite->addChild('Наименование', $name);
+            $requisite->addChild('Значение', $value);
         }
     }
 

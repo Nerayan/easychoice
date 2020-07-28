@@ -13,10 +13,21 @@ class SaleModeFile
         $settings = get_option(Bootstrap::OPTIONS_KEY);
 
         // if exchange order not enabled
-        if (empty($settings['handle_get_order_status_change'])) {
+        if (
+            empty($settings['handle_get_order_status_change']) &&
+            empty($settings['handle_get_order_product_set_change'])
+        ) {
             RootProcessStarter::successResponse();
             Logger::logProtocol('success');
-            Logger::logProtocol('handle_get_order_status_change not enabled');
+
+            if (empty($settings['handle_get_order_status_change'])) {
+                Logger::logProtocol('handle_get_order_status_change not enabled');
+            }
+
+            if (empty($settings['handle_get_order_product_set_change'])) {
+                Logger::logProtocol('handle_get_order_product_set_change not enabled');
+            }
+
             Logger::endProcessingRequestLogProtocolEntry();
 
             exit();

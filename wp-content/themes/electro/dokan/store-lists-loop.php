@@ -173,10 +173,10 @@
                                             </div>
                                         </div>
                                         <div class="store-data">
-                                            <?php if( is_dokan_pro_activated() && class_exists( 'Dokan_Follow_Store_Follow_Button' ) ) : ?>
+                                            <?php if( electro_dokan_store_follow_exists() ) : ?>
                                                 <?php
                                                 $follow_button = new Dokan_Follow_Store_Follow_Button();
-                                                remove_all_actions( 'dokan_after_store_tabs', 99 );
+                                                electro_remove_class_action( 'dokan_after_store_tabs', 'Dokan_Follow_Store_Follow_Button', 'add_follow_button_after_store_tabs', 99 );
                                                 ?>
 
                                                 <div class="dokan-store-follow-store-button-container dokan-store-follow-store-btn-wrap">
@@ -250,10 +250,10 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <?php if( is_dokan_pro_activated() && class_exists( 'Dokan_Follow_Store_Follow_Button' ) ) : ?>
+                                        <?php if( electro_dokan_store_follow_exists() ) : ?>
                                             <?php
                                             $follow_button = new Dokan_Follow_Store_Follow_Button();
-                                            remove_all_actions( 'dokan_after_store_tabs', 99 );
+                                            electro_remove_class_action( 'dokan_after_store_tabs', 'Dokan_Follow_Store_Follow_Button', 'add_follow_button_after_store_tabs', 99 );
                                             ?>
 
                                             <div class="dokan-store-follow-store-button-container dokan-store-follow-store-btn-wrap">

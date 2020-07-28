@@ -730,6 +730,13 @@ if ( function_exists( 'vc_map' ) ) :
 							'param_name'	=> 'columns',
 							'description'	=> esc_html__('Enter the number of columns to display.', 'electro-extensions'),
 						),
+
+						array(
+							'type'			=> 'textfield',
+							'heading'		=> esc_html__( 'Columns Wide', 'electro-extensions' ),
+							'param_name'	=> 'columns_wide',
+							'description'	=> esc_html__('Enter the number of columns wide to display.', 'electro-extensions'),
+						),
 						
 						array(
 							'type'			=> 'textfield',
@@ -2092,6 +2099,15 @@ if ( function_exists( 'vc_map' ) ) :
 					'type' => 'checkbox',
 					'param_name' => 'is_autoplay',
 					'heading' => esc_html__( 'Carousel: Autoplay', 'electro-extensions' ),
+					'value' => array(
+						esc_html__( 'Allow', 'electro-extensions' ) => 'true'
+					)
+				),
+
+				array(
+					'type' => 'checkbox',
+					'param_name' => 'is_loop',
+					'heading' => esc_html__( 'Carousel: Loop', 'electro-extensions' ),
 					'value' => array(
 						esc_html__( 'Allow', 'electro-extensions' ) => 'true'
 					)
@@ -5308,6 +5324,13 @@ if ( function_exists( 'vc_map' ) ) :
 					'heading'		=> esc_html__( 'Columns', 'electro-extensions' ),
 					'param_name'	=> 'columns',
 					'description'	=> esc_html__('Enter the number of columns to display.', 'electro-extensions'),
+				),
+
+				array(
+					'type'			=> 'textfield',
+					'heading'		=> esc_html__( 'Columns Wide', 'electro-extensions' ),
+					'param_name'	=> 'columns_wide',
+					'description'	=> esc_html__('Enter the number of columns wide to display.', 'electro-extensions'),
 				),
 			),
 		)

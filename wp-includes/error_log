@@ -1,8 +1,0 @@
-[23-Jul-2020 06:20:21 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function wp_using_themes() in /home/easychoi/develop/wp-includes/template-loader.php:7
-Stack trace:
-#0 {main}
-  thrown in /home/easychoi/develop/wp-includes/template-loader.php on line 7
-[27-Jul-2020 02:00:51 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function wp_using_themes() in /home/easychoi/develop/wp-includes/template-loader.php:7
-Stack trace:
-#0 {main}
-  thrown in /home/easychoi/develop/wp-includes/template-loader.php on line 7

@@ -11,6 +11,7 @@ use Itgalaxy\Wc\Exchange1c\ExchangeProcess\DataResolvers\Groups;
 use Itgalaxy\Wc\Exchange1c\ExchangeProcess\DataResolvers\Stocks;
 
 use Itgalaxy\Wc\Exchange1c\ExchangeProcess\DataResolvers\VariationCharacteristicsToGlobalProductAttributes;
+use Itgalaxy\Wc\Exchange1c\ExchangeProcess\Helpers\ProductUnvariable;
 use Itgalaxy\Wc\Exchange1c\ExchangeProcess\Helpers\SetVariationAttributeToProducts;
 use Itgalaxy\Wc\Exchange1c\ExchangeProcess\Helpers\HeartBeat;
 use Itgalaxy\Wc\Exchange1c\ExchangeProcess\Helpers\Term;
@@ -66,11 +67,11 @@ class ParserXml31
         $reader->open($filename);
 
         while ($reader->read()) {
-            if ($reader->name == 'Каталог' && $this->onlyChanges == '') {
+            if ($reader->name === 'Каталог' && $this->onlyChanges === '') {
                 $this->onlyChanges = $reader->getAttribute('СодержитТолькоИзменения');
             }
 
-            if ($reader->name == 'Классификатор') {
+            if ($reader->name === 'Классификатор') {
                 $valid = true;
 
                 $processDataGroups = [
@@ -85,15 +86,16 @@ class ParserXml31
 
                 $reader->read();
 
-                while ($reader->read()
-                    && !($reader->name == 'Классификатор'
-                        && $reader->nodeType == \XMLReader::END_ELEMENT)
+                while (
+                    $reader->read() &&
+                    !($reader->name === 'Классификатор' && $reader->nodeType === \XMLReader::END_ELEMENT)
                 ) {
                     // resolve attributes
-                    if (!isset($_SESSION['IMPORT_1C']['optionsIsParse'])
-                        && $reader->name == 'Свойства'
-                        && $reader->nodeType == \XMLReader::ELEMENT
-                        && str_replace(' ', '', $reader->readOuterXml()) !== '<Свойства/>'
+                    if (
+                        !isset($_SESSION['IMPORT_1C']['optionsIsParse']) &&
+                        $reader->name === 'Свойства' &&
+                        $reader->nodeType === \XMLReader::ELEMENT &&
+                        str_replace(' ', '', $reader->readOuterXml()) !== '<Свойства/>'
                     ) {
                         GlobalProductAttributes::process($reader);
 
@@ -111,17 +113,17 @@ class ParserXml31
                     }
 
                     // resolve price types
-                    if ($reader->name == 'ТипыЦен' && $reader->nodeType !== \XMLReader::END_ELEMENT) {
+                    if ($reader->name === 'ТипыЦен' && $reader->nodeType !== \XMLReader::END_ELEMENT) {
                         PriceTypes::process($reader);
                     }
 
                     // resolve stocks
-                    if ($reader->name == 'Склады' && $reader->nodeType !== \XMLReader::END_ELEMENT) {
+                    if ($reader->name === 'Склады' && $reader->nodeType !== \XMLReader::END_ELEMENT) {
                         Stocks::process($reader);
                     }
 
                     // resolve `Категории -> Свойства`
-                    if ($reader->name == 'Категории' && $reader->nodeType !== \XMLReader::END_ELEMENT) {
+                    if ($reader->name === 'Категории' && $reader->nodeType !== \XMLReader::END_ELEMENT) {
                         NomenclatureCategories::process($reader);
                     }
                 }
@@ -131,7 +133,7 @@ class ParserXml31
             } // 'Классификатор'
 
 
-            if ($reader->name == 'Товары') {
+            if ($reader->name === 'Товары') {
                 $valid = true;
 
                 $all1cProducts = (array) get_option('all1cProducts');
@@ -147,11 +149,11 @@ class ParserXml31
                     $categoryIds = [];
                 }
 
-                while ($reader->read() &&
-                    !($reader->name == 'Товары' &&
-                        $reader->nodeType == \XMLReader::END_ELEMENT)
+                while (
+                    $reader->read() &&
+                    !($reader->name === 'Товары' && $reader->nodeType === \XMLReader::END_ELEMENT)
                 ) {
-                    if ($reader->name == 'Товар' && $reader->nodeType == \XMLReader::ELEMENT) {
+                    if ($reader->name === 'Товар' && $reader->nodeType === \XMLReader::ELEMENT) {
                         if (!HeartBeat::next('Товар', $reader)) {
                             return false;
                         }
@@ -171,18 +173,6 @@ class ParserXml31
 
                         $product = Product::getProductIdByMeta($xmlID);
 
-                        // maybe removed
-                        if ((string) $element->ПометкаУдаления &&
-                            (string) $element->ПометкаУдаления === 'true'
-                        ) {
-                            if ($product) {
-                                Product::removeProduct($product);
-                            }
-
-                            unset($element);
-                            continue;
-                        }
-
                         // prevent search product if not exists
                         if (!$product) {
                             $product = apply_filters('itglx_wc1c_find_product_id', $product, $element);
@@ -196,6 +186,17 @@ class ParserXml31
                                 continue;
                             }
                         }
+
+                        // maybe removed
+                        if (apply_filters('itglx_wc1c_product_is_removed', false, $element, $product)) {
+                            if ($product) {
+                                Product::removeProduct($product);
+                            }
+
+                            unset($element);
+                            continue;
+                        }
+
 
                         $productEntry = [
                             'ID' => $product
@@ -212,9 +213,10 @@ class ParserXml31
 
                         $productHash = md5(json_encode((array) $element));
 
-                        if (!empty($productEntry['ID'])
-                            && empty($settings['force_update_product'])
-                            && $productHash == get_post_meta($productEntry['ID'], '_md5', true)
+                        if (
+                            !empty($productEntry['ID']) &&
+                            empty($settings['force_update_product']) &&
+                            $productHash == get_post_meta($productEntry['ID'], '_md5', true)
                         ) {
                             $_SESSION['IMPORT_1C_PROCESS']['allCurrentProducts'][] = $productEntry['ID'];
                             $all1cProducts[] = $productEntry['ID'];
@@ -243,11 +245,17 @@ class ParserXml31
                         $productEntry = Product::mainProductData(
                             $element,
                             $productEntry,
-                            trim(strip_tags((string) $element->Наименование)),
+                            trim(\wp_strip_all_tags((string) $element->Наименование)),
                             $categoryIds,
                             $productHash,
                             $postAuthor
                         );
+
+                        if (empty($productEntry)) {
+                            unset($productEntry, $element);
+
+                            continue;
+                        }
 
                         $all1cProducts[] = $productEntry['ID'];
 
@@ -276,7 +284,7 @@ class ParserXml31
                 wp_cache_flush();
             }
 
-            if ($reader->name == 'ПакетПредложений') {
+            if ($reader->name === 'ПакетПредложений') {
                 $this->onlyChanges = $reader->getAttribute('СодержитТолькоИзменения');
                 $valid = true;
 
@@ -286,9 +294,9 @@ class ParserXml31
 
                 if (!isset($_SESSION['IMPORT_1C']['offers_parse'])) {
                     while ($reader->read() &&
-                        !($reader->name == 'ПакетПредложений' &&
-                            $reader->nodeType == \XMLReader::END_ELEMENT)) {
-                        if ($reader->name == 'Предложение' && $reader->nodeType == \XMLReader::ELEMENT) {
+                        !($reader->name === 'ПакетПредложений' &&
+                            $reader->nodeType === \XMLReader::END_ELEMENT)) {
+                        if ($reader->name === 'Предложение' && $reader->nodeType === \XMLReader::ELEMENT) {
                             if (!HeartBeat::next('Предложение', $reader)) {
                                 return false;
                             }
@@ -310,8 +318,21 @@ class ParserXml31
 
                             // not empty variation hash
                             if (!empty($parseID[1])) {
-                                $productEntry['ID'] = Product::getProductIdByMeta((string) $element->Ид);
+                                $productEntry['ID'] = Product::getProductIdByMeta((string) $element->Ид, '_id_1c', true);
                                 $productEntry['post_parent'] = Product::getProductIdByMeta($parseID[0]);
+
+                                // prevent search product if not exists
+                                if (!$productEntry['post_parent']) {
+                                    $productEntry['post_parent'] = apply_filters(
+                                        'itglx_wc1c_find_product_id',
+                                        $productEntry['post_parent'],
+                                        $element
+                                    );
+
+                                    if ($productEntry['post_parent']) {
+                                        update_post_meta($productEntry['post_parent'], '_id_1c', (string) $parseID[0]);
+                                    }
+                                }
 
                                 if (empty($productEntry['post_parent'])) {
                                     Logger::logChanges(
@@ -365,9 +386,10 @@ class ParserXml31
                                         \WC_Product_Variable::sync($productEntry['post_parent']);
                                     }
 
-                                    if (isset($element->Остатки)
-                                        || isset($element->КоличествоНаСкладах)
-                                        || isset($element->Количество)
+                                    if (
+                                        isset($element->Остатки) ||
+                                        isset($element->КоличествоНаСкладах) ||
+                                        isset($element->Количество)
                                     ) {
                                         ProductAndVariationStock::set(
                                             $productEntry['ID'],
@@ -388,6 +410,15 @@ class ParserXml31
                             } else {
                                 $productId = Product::getProductIdByMeta((string) $element->Ид);
 
+                                // prevent search product if not exists
+                                if (!$productId) {
+                                    $productId = apply_filters('itglx_wc1c_find_product_id', $productId, $element);
+
+                                    if ($productId) {
+                                        update_post_meta($productId, '_id_1c', (string) $element->Ид);
+                                    }
+                                }
+
                                 if (empty($productId)) {
                                     Logger::logChanges(
                                         '(product) Error! Not exists product by offer id',
@@ -396,6 +427,12 @@ class ParserXml31
                                 }
 
                                 if ($productId) {
+                                    if (!isset($_SESSION['IMPORT_1C_PROCESS']['allCurrentProductIdBySimpleOffers'])) {
+                                        $_SESSION['IMPORT_1C_PROCESS']['allCurrentProductIdBySimpleOffers'] = [];
+                                    }
+
+                                    $_SESSION['IMPORT_1C_PROCESS']['allCurrentProductIdBySimpleOffers'][] = $productId;
+
                                     if (isset($element->Цены)) {
                                         ProductAndVariationPrices::setPrices(
                                             ProductAndVariationPrices::resolvePrices(
@@ -406,9 +443,10 @@ class ParserXml31
                                         );
                                     }
 
-                                    if (isset($element->Остатки)
-                                        || isset($element->КоличествоНаСкладах)
-                                        || isset($element->Количество)
+                                    if (
+                                        isset($element->Остатки) ||
+                                        isset($element->КоличествоНаСкладах) ||
+                                        isset($element->Количество)
                                     ) {
                                         ProductAndVariationStock::set(
                                             $productId,
@@ -427,6 +465,13 @@ class ParserXml31
                     }
 
                     $_SESSION['IMPORT_1C']['offers_parse'] = true;
+                }
+
+                // maybe unvariable
+                $ready = ProductUnvariable::process();
+
+                if (!$ready) {
+                    return false;
                 }
 
                 $ready = SetVariationAttributeToProducts::process();

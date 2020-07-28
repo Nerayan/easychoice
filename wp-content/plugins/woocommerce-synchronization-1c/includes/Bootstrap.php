@@ -1,7 +1,9 @@
 <?php
 namespace Itgalaxy\Wc\Exchange1c\Includes;
 
+use Itgalaxy\Wc\Exchange1c\ExchangeProcess\Filters\CreateProductInDraft;
 use Itgalaxy\Wc\Exchange1c\ExchangeProcess\Filters\FindProductId;
+use Itgalaxy\Wc\Exchange1c\ExchangeProcess\Filters\ProductIsRemoved;
 use Itgalaxy\Wc\Exchange1c\ExchangeProcess\Filters\SkipProductByXml;
 
 use Itgalaxy\Wc\Exchange1c\ExchangeProcess\RootProcessStarter;
@@ -37,7 +39,9 @@ class Bootstrap
             }
 
             // bind filters
+            CreateProductInDraft::getInstance();
             FindProductId::getInstance();
+            ProductIsRemoved::getInstance();
             SkipProductByXml::getInstance();
 
             // exchange start
@@ -139,7 +143,9 @@ class Bootstrap
             add_option(
                 self::OPTIONS_KEY,
                 [
+                    'enable_exchange' => 1,
                     'use_file_zip' => 1,
+                    'send_orders_last_success_export' => str_replace(' ', 'T', date_i18n('Y-m-d H:i')),
                     'log_days' => 5,
                     'enable_logs_protocol' => 1,
                     'enable_logs_changes' => 1

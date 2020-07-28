@@ -2,6 +2,7 @@
 namespace Itgalaxy\Wc\Exchange1c\Admin;
 
 use Itgalaxy\Wc\Exchange1c\Admin\PageParts\CheckExistsExchangeEntryPointFile;
+use Itgalaxy\Wc\Exchange1c\Admin\PageParts\CheckExistsWooCommerceAttributesTableColumn;
 use Itgalaxy\Wc\Exchange1c\Admin\PageParts\CheckPhpExtensionNotice;
 use Itgalaxy\Wc\Exchange1c\Admin\PageParts\SectionAccountingSystemAuth;
 use Itgalaxy\Wc\Exchange1c\Admin\PageParts\SectionForDebugging;
@@ -35,12 +36,15 @@ class SettingsPage
         if (isset($_GET['page']) && $_GET['page'] === Bootstrap::OPTIONS_KEY) {
             // https://developer.wordpress.org/reference/hooks/admin_enqueue_scripts/
             add_action('admin_enqueue_scripts', function () {
+                // https://developer.wordpress.org/reference/functions/wp_enqueue_style/
                 wp_enqueue_style(
                     'itgalaxy-woocommerce-1c-page-css',
                     AssetsHelper::getPathAssetFile('/admin/css/app.css'),
                     false,
                     null
                 );
+
+                // https://developer.wordpress.org/reference/functions/wp_enqueue_script/
                 wp_enqueue_script(
                     'itgalaxy-woocommerce-1c-page-js',
                     AssetsHelper::getPathAssetFile('/admin/js/app.js'),
@@ -53,6 +57,7 @@ class SettingsPage
 
     public function addSubmenu()
     {
+        // https://developer.wordpress.org/reference/functions/add_submenu_page/
         add_submenu_page(
             'woocommerce',
             esc_html__('1C Data Exchange', 'itgalaxy-woocommerce-1c'),
@@ -104,6 +109,9 @@ class SettingsPage
 
         // check exists exchange entry point file
         CheckExistsExchangeEntryPointFile::render();
+
+        // maybe column was not added when activating the plugin
+        CheckExistsWooCommerceAttributesTableColumn::render();
         ?>
         <div id="poststuff" class="wrap woocommerce">
             <h1><?php esc_html_e('Sync settings with 1C', 'itgalaxy-woocommerce-1c'); ?></h1>

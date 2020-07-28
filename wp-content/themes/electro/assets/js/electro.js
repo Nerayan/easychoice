@@ -750,7 +750,7 @@
         // Hamburger Sidebar Close Trigger when click outside menu slide
         $( document ).on("click", function(event) {
             if ( $( '.site-content' ).hasClass( 'active-hh-sidebar' ) ) {
-                if ( ! $( '.handheld-sidebar-toggle' ).is( event.target ) && 0 === $( '.handheld-sidebar-toggle' ).has( event.target ).length && ! $( '#sidebar' ).is( event.target ) && 0 === $( '#sidebar' ).has( event.target ).length ) {
+                if ( ! $( '.handheld-sidebar-toggle' ).is( event.target ) && 0 === $( '.handheld-sidebar-toggle' ).has( event.target ).length && ! $( '#sidebar' ).is( event.target ) && 0 === $( '#sidebar' ).has( event.target ).length && ! $( '.select2-container' ).is( event.target ) && 0 === $( '.select2-container' ).has( event.target ).length ) {
                     $( '.site-content' ).toggleClass( "active-hh-sidebar" );
                 }
             }

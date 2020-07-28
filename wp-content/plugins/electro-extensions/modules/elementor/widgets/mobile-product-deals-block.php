@@ -105,8 +105,8 @@ class Electro_Elementor_Product_Deals_Block extends Widget_Base {
                 'type'          => Controls_Manager::SWITCHER,
                 'label_on'      => esc_html__( 'Enable', 'electro-extensions' ),
                 'label_off'     => esc_html__( 'Disable', 'electro-extensions' ),
-                'return_value'  => true,
-                'default'       => true,
+                'return_value'  => 'true',
+                'default'       => 'true',
             ]
         );
 

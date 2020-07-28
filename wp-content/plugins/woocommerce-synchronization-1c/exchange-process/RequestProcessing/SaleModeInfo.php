@@ -8,7 +8,7 @@ class SaleModeInfo
 {
     public static function process()
     {
-        $dom = new \DOMDocument;
+        $dom = new \DOMDocument();
         $dom->loadXML(
             "<?xml version='1.0' encoding='utf-8'?><Справочник></Справочник>"
         );
@@ -61,15 +61,10 @@ class SaleModeInfo
     private static function sendResponse($xml)
     {
         $settings = get_option(Bootstrap::OPTIONS_KEY);
+        $resultEncoding = 'windows-1251';
 
         if (!empty($settings['send_orders_response_encoding'])) {
             $resultEncoding = $settings['send_orders_response_encoding'];
-        } else {
-            if (isset($_SESSION['version'])) {
-                $resultEncoding = 'utf-8';
-            } else {
-                $resultEncoding = 'windows-1251';
-            }
         }
 
         Logger::logProtocol('used encoding', $resultEncoding);
@@ -79,7 +74,7 @@ class SaleModeInfo
                 header("Content-Type: text/xml; charset=utf-8");
 
                 echo $xml->asXML();
-                // 1c response does not require escape
+                // escape ok
 
                 break;
             default:
@@ -90,7 +85,7 @@ class SaleModeInfo
                     'cp1251',
                     'utf-8'
                 );
-                // 1c response does not require escape
+                // escape ok
 
                 break;
         }

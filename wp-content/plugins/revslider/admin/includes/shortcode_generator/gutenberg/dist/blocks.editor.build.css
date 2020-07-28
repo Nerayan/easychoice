@@ -4,18 +4,6 @@
  * Can include things like variables and mixins
  * that are used across the project.
 */
-/**
- * #.# Common SCSS
- *
- * Can include things like variables and mixins
- * that are used across the project.
-*/
-/**
- * #.# Common SCSS
- *
- * Can include things like variables and mixins
- * that are used across the project.
-*/
 div.revslider_block {
   background: url(images/rs6_logo_2x.png);
   background-size: contain;
@@ -55,23 +43,10 @@ div.revslider_block .slider_editor_button {
   text-rendering: optimizeLegibility;
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-feature-settings: 'liga';
-  font-feature-settings: 'liga';
-  border-color: #5e35b1;
-  background: #5e35b1;
-  color: #fff; }
+  font-feature-settings: 'liga'; }
 
-div.revslider_block .slider_edit_button, div.revslider_block .slider_editor_button, div.revslider_block .slider_edit_button:focus, div.revslider_block .slider_editor_button:focus, div.revslider_block .slider_edit_button:active, div.revslider_block .slider_editor_button:active, div.revslider_block .slider_edit_button:active:enabled, div.revslider_block .slider_editor_button:active:enabled,
-div.revslider_block .slider_edit_button.components-button, div.revslider_block .slider_editor_button.components-button, div.revslider_block .slider_edit_button.components-button:focus, div.revslider_block .slider_editor_button.components-button:focus, div.revslider_block .slider_edit_button.components-button:active, div.revslider_block .slider_editor_button.components-button:active, div.revslider_block .slider_edit_button.components-button:active:enabled, div.revslider_block .slider_editor_button.components-button:active:enabled {
-  border-color: #5e35b1;
-  background: #5e35b1;
-  color: #fff; }
-
-div.revslider_block .slider_edit_button:hover, div.revslider_block .slider_editor_button:hover {
-  -webkit-filter: brightness(120%);
-  filter: brightness(120%);
-  border-color: #5e35b1;
-  background: #5e35b1;
-  color: #fff; }
+[data-type="themepunch/revslider"] .editor-block-list__block-edit:before {
+  outline: 1px solid rgba(145, 151, 162, 0.25) !important; }
 
 .editor-block-list-item-themepunch-revslider svg,
 .components-panel__body.edit-post-block-sidebar__panel svg.dashicons-update {
@@ -113,7 +88,7 @@ div.revslider_block .slider_edit_button:hover, div.revslider_block .slider_edito
   direction: ltr;
   vertical-align: top;
   line-height: 26px;
-  /*font-size: 16px;*/
+  font-size: 16px;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   -moz-osx-font-smoothing: grayscale;
@@ -133,53 +108,13 @@ div.revslider_block .slider_edit_button:hover, div.revslider_block .slider_edito
   white-space: nowrap;
   direction: ltr;
   vertical-align: top;
-  line-height: 13px !important;
-  /*font-size: 16px;*/
+  line-height: 26px;
+  font-size: 16px;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-feature-settings: 'liga';
   font-feature-settings: 'liga'; }
 
-.wp-block[data-type="themepunch/revslider"] .editor-block-toolbar > .components-toolbar svg {
-  color: inherit !important; }
-
-.wp-block[data-type="themepunch/revslider"] .editor-block-list__block-edit.block-editor-block-list__block-edit {
-  background: #f6f6f9; }
-
-.wp-block[data-type="themepunch/revslider"] .revslider_block {
-  background-position: 14px 14px; }
-
-.wp-block[data-type="themepunch/revslider"] .revslider_block .sliderBar {
-  padding: 14px 14px 14px 160px;
-  overflow: hidden;
-  position: relative; }
-
-.wp-block[data-type="themepunch/revslider"] .revslider_block .sliderImage {
-  margin-top: 0px;
-  padding: 14px; }
-
-.wp-block[data-type="themepunch/revslider"] .sliderBar slider_editor_button_wrap {
-  display: none; }
-
-.slider_editor_button_wrap {
-  display: none;
-  position: absolute;
-  right: 14px;
-  top: 14px;
-  padding-top: 2px;
-  white-space: nowrap;
-  width: 220px;
-  height: 30px;
-  background: #f6f6f9; }
-
-.wp-block[data-type="themepunch/revslider"].is-hovered .sliderBar .slider_editor_button_wrap,
-.wp-block[data-type="themepunch/revslider"].is-selected .sliderBar .slider_editor_button_wrap {
-  display: inline-block; }
-
-.wp-block[data-type="themepunch/revslider"] .sliderBar span {
-  white-space: nowrap;
-  height: 23px;
-  overflow: hidden;
-  display: inline-block;
-  max-width: 100%; }
+.showHideButtons span {
+  line-height: 28px; }

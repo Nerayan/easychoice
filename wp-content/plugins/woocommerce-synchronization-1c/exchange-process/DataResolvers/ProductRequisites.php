@@ -5,6 +5,14 @@ use Itgalaxy\Wc\Exchange1c\Includes\Bootstrap;
 
 class ProductRequisites
 {
+    private static $ignoreRequisites = [
+        'ОписаниеФайла'
+    ];
+
+    private static $excludeFromAllRequisites = [
+        'ОписаниеВФорматеHTML'
+    ];
+
     public static function process($element)
     {
         $requisites = [
@@ -59,15 +67,17 @@ class ProductRequisites
             </ЗначениеРеквизита>
             */
 
-            if ($requisiteName === 'ОписаниеФайла') {
+            if (in_array($requisiteName, self::$ignoreRequisites, true)) {
                 continue;
             }
 
-            $requisites['allRequisites'][$requisiteName] = (string) $requisite->Значение;
+            if (!in_array($requisiteName, self::$excludeFromAllRequisites, true)) {
+                $requisites['allRequisites'][$requisiteName] = (string) $requisite->Значение;
+            }
 
             switch ($requisiteName) {
                 case 'Полное наименование':
-                case 'Повне найменування':
+                case 'Повне найменування': // requisite name in Ukrainian configurations
                     $fullName = (string) $requisite->Значение;
 
                     if (!empty($fullName) && !empty($settings['product_use_full_name'])) {

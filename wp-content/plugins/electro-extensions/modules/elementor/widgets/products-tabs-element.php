@@ -128,6 +128,14 @@ class Electro_Elementor_Product_Tabs_Elements extends Widget_Base {
                         'label' => esc_html__( 'Columns', 'electro-extensions' ),
                         'type'  => Controls_Manager::TEXT,
                         'description'   => esc_html__('Enter the number of columns to display.', 'electro-extensions'),
+                        'default'=>'5',
+                    ],
+
+                    [
+                        'name'  => 'columns_wide',
+                        'label' => esc_html__( 'Columns Wide', 'electro-extensions' ),
+                        'type'  => Controls_Manager::TEXT,
+                        'description'   => esc_html__('Enter the number of columns wide to display.', 'electro-extensions'),
                         'default'=>'3',
                     ],
                     [
@@ -196,12 +204,13 @@ class Electro_Elementor_Product_Tabs_Elements extends Widget_Base {
                     'order'                 => 'desc',
                     'products_choice'       => 'ids',
                     'product_id'            => '',
+                    'columns_wide'          => 5,
                     'category'              => '',
                     'cat_operator'          => 'IN',
                 ), $tab));
                 
                 $shortcode_atts = function_exists( 'electro_get_atts_for_shortcode' ) ? electro_get_atts_for_shortcode( array( 'shortcode' => $shortcode_tag, 'product_category_slug' => $category, 'cat_operator' => $cat_operator, 'products_choice' => $products_choice, 'products_ids_skus' => $product_id ) ) : array();
-                $shortcode_atts = wp_parse_args( $shortcode_atts, array( 'order' => $order, 'orderby' => $orderby, 'columns' => $columns, 'per_page' => $per_page ) );
+                $shortcode_atts = wp_parse_args( $shortcode_atts, array( 'order' => $order, 'orderby' => $orderby, 'columns' => $columns, 'columns_wide' => $columns_wide, 'per_page' => $per_page ) );
 
                 $tabs_args[] = array(
                     'title'             => $title,

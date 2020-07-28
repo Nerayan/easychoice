@@ -107,12 +107,9 @@ class SetVariationAttributeToProducts
                 );
             }
 
-            \wp_set_object_terms(
-                $productID,
-                array_map('intval', $ids),
-                $taxonomy
-            );
+            $ids = array_map('intval', $ids);
 
+            Term::setObjectTerms($productID, $ids, $taxonomy);
             Logger::logChanges(
                 '(product) Set attribute terms, ID - ' . $productID,
                 [get_post_meta($productID, '_id_1c', true), $ids, $taxonomy]
@@ -133,20 +130,17 @@ class SetVariationAttributeToProducts
                 continue;
             }
 
-            if ($value['is_variation'] && !in_array($key, $allCurrentTaxes)) {
-                unset($resolvedAttributes[$key]);
-
-                \wp_set_object_terms(
-                    $productID,
-                    [],
-                    $key
-                );
-
-                Logger::logChanges(
-                    '(product) Unset variation attribute, ID - ' . $productID,
-                    [get_post_meta($productID, '_id_1c', true), $key]
-                );
+            if (!$value['is_variation'] || in_array($key, $allCurrentTaxes, true)) {
+                continue;
             }
+
+            unset($resolvedAttributes[$key]);
+
+            Term::setObjectTerms($productID, [], $key);
+            Logger::logChanges(
+                '(product) Unset variation attribute, ID - ' . $productID,
+                [get_post_meta($productID, '_id_1c', true), $key]
+            );
         }
 
         return $resolvedAttributes;
@@ -154,6 +148,7 @@ class SetVariationAttributeToProducts
 
     private static function cleanupMissingProductVariations($productID)
     {
+        // https://developer.wordpress.org/reference/functions/wp_parse_id_list/
         $variationIds = wp_parse_id_list(
             get_posts(
                 [
@@ -176,14 +171,22 @@ class SetVariationAttributeToProducts
 
         if (!empty($variationIds)) {
             foreach ($variationIds as $variationId) {
-                if (!in_array($variationId, $_SESSION['IMPORT_1C']['productVariations'][$productID])) {
-                    Logger::logChanges(
-                        '(variation) Removed variation, ID - ' . $variationId,
-                        [get_post_meta($variationId, '_id_1c', true)]
-                    );
-
-                    wp_delete_post($variationId, true);
+                if (in_array($variationId, $_SESSION['IMPORT_1C']['productVariations'][$productID])) {
+                    continue;
                 }
+
+                Logger::logChanges(
+                    '(variation) Removed variation, ID - ' . $variationId,
+                    [get_post_meta($variationId, '_id_1c', true)]
+                );
+
+                // https://developer.wordpress.org/reference/functions/has_post_thumbnail/
+                if (has_post_thumbnail($variationId)) {
+                    Product::removeProductImages($variationId);
+                }
+
+                // https://developer.wordpress.org/reference/functions/wp_delete_post/
+                wp_delete_post($variationId, true);
             }
         }
 

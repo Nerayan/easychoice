@@ -13,6 +13,7 @@ if ( ! function_exists( 'electro_brands_carousel_element' ) ) :
 			'include'			=> '',
 			'is_touchdrag'		=> false,
 			'is_autoplay'		=> false,
+			'is_loop'			=> false,
 		), $atts));
 
 		$section_args = array(
@@ -34,6 +35,7 @@ if ( ! function_exists( 'electro_brands_carousel_element' ) ) :
 		$carousel_args 	= array(
 			'touchDrag'			=> $is_touchdrag,
 			'autoplay'			=> $is_autoplay,
+			'loop'				=> $is_loop,
 		);
 
 		$html = '';

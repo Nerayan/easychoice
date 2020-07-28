@@ -125,8 +125,8 @@ class Electro_Elementor_Products_List_Categories_Menu extends Widget_Base {
                         'description' => esc_html__( 'Show Categories does not have products', 'electro-extensions' ),
                         'label_on'      => esc_html__( 'Enable', 'electro-extensions' ),
                         'label_off'     => esc_html__( 'Disable', 'electro-extensions' ),
-                        'return_value'  => true,
-                        'default'       => false,
+                        'return_value'  => 'true',
+                        'default'       => 'false',
 
 
                     ],

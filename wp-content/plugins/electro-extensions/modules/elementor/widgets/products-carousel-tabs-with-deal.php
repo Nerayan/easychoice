@@ -130,8 +130,8 @@ class Electro_Elementor_Products_Carousel_Tabs_With_Deal extends Widget_Base {
                 'type'          => Controls_Manager::SWITCHER,
                 'label_on'      => esc_html__( 'Enable', 'electro-extensions' ),
                 'label_off'     => esc_html__( 'Disable', 'electro-extensions' ),
-                'return_value'  => true,
-                'default'       => true,
+                'return_value'  => 'true',
+                'default'       => 'true',
             ]
         );
 
@@ -331,8 +331,8 @@ class Electro_Elementor_Products_Carousel_Tabs_With_Deal extends Widget_Base {
                 'type'          => Controls_Manager::SWITCHER,
                 'label_on'      => esc_html__( 'Enable', 'electro-extensions' ),
                 'label_off'     => esc_html__( 'Disable', 'electro-extensions' ),
-                'return_value'  => true,
-                'default'       => true,
+                'return_value'  => 'true',
+                'default'       => 'true',
             ]
         );
 
@@ -343,8 +343,8 @@ class Electro_Elementor_Products_Carousel_Tabs_With_Deal extends Widget_Base {
                 'type'          => Controls_Manager::SWITCHER,
                 'label_on'      => esc_html__( 'Enable', 'electro-extensions' ),
                 'label_off'     => esc_html__( 'Disable', 'electro-extensions' ),
-                'return_value'  => true,
-                'default'       => true,
+                'return_value'  => 'true',
+                'default'       => 'true',
             ]
         );
 

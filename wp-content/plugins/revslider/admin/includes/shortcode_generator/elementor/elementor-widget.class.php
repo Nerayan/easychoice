@@ -17,13 +17,13 @@ class RevSliderElementorWidget extends \Elementor\Widget_Shortcode {
 
 	public function get_title() {
 		
-		return 'Slider Revolution 6';
+		return 'Slider Revolution';
 		
 	}
 
 	public function get_icon() {
 		
-		return 'eicon-sync';
+		return 'fa fa-refresh';
 		
 	}
 
@@ -35,20 +35,10 @@ class RevSliderElementorWidget extends \Elementor\Widget_Shortcode {
 
 	protected function _register_controls() {
 		
-		/*Fallback
-		$shortcode = $this->get_settings_for_display( 'text' );
-		if(empty($shortcode)) $shortcode = $this->get_settings_for_display( 'shortcode' ); 
-
-		$revslidertitle = $this->get_settings_for_display( 'sliderTitle' );
-		if(empty($revslidertitle)) $revslidertitle = $this->get_settings_for_display( 'revslidertitle' ); 
-
-		var_dump($revslidertitle);
-		*/
-
 		$this->start_controls_section(
 			'content_section',
 			array(
-				'label' => 'Slider Revolution 6',
+				'label' => 'ThemePunch',
 				'tab' => \Elementor\Controls_Manager::TAB_CONTENT,
 			)
 		);
@@ -56,9 +46,8 @@ class RevSliderElementorWidget extends \Elementor\Widget_Shortcode {
 		$this->add_control(
 			'revslidertitle',
 			array(
-				'label' => __( 'Selected Module:', 'revslider' ),
+				'label' => __( 'Slider Revolution:', 'revslider' ),
 				'type' => \Elementor\Controls_Manager::TEXT,
-				'render_type' => 'none',
 				'placeholder' => '',
 				'default' => '',
 				'event' => 'themepunch.selectslider',
@@ -68,72 +57,32 @@ class RevSliderElementorWidget extends \Elementor\Widget_Shortcode {
 		$this->add_control(
 			'shortcode',
 			array(
-				//'type' => \Elementor\Controls_Manager::HIDDEN,
-				'type' => \Elementor\Controls_Manager::TEXT,
-				'label' => __( 'Shortcode', 'revslider' ),
+				'type' => \Elementor\Controls_Manager::HIDDEN,
 				'dynamic' => ['active' => true],
 				'placeholder' => '',
 				'default' => '',
 			)
 		);
-
-		// Advanced 		
+		
 		$this->add_control(
 			'select_slider',
 			array(
 				'type' => \Elementor\Controls_Manager::BUTTON,
 				'button_type' => 'default',
-				'text' => __( '<i type="button" class="material-icons">cached</i> Select Module', 'revslider' ),
+				'text' => __( 'Select / Edit Slider', 'revslider' ),
 				'event' => 'themepunch.selectslider',
 			)
 		);
+
+		$this->end_controls_section();
 		
-		$this->add_control(
-			'edit_slider',
-			array(
-				'type' => \Elementor\Controls_Manager::BUTTON,
-				'button_type' => 'default',
-				'text' => __( '<i type="button" class="material-icons">edit</i> Edit Module', 'revslider' ),
-				'event' => 'themepunch.editslider',
-			)
-		);
-
-		$this->add_control(
-			'settings_slider',
-			array(
-				'type' => \Elementor\Controls_Manager::BUTTON,
-				'button_type' => 'default',
-				'text' => __( '<i type="button" class="material-icons">tune</i> Block Settings', 'revslider' ),
-				'event' => 'themepunch.settingsslider',
-			)
-		);
-
-		$this->add_control(
-			'optimize_slider',
-			array(
-				'type' => \Elementor\Controls_Manager::BUTTON,
-				'button_type' => 'default',
-				'text' => __( '<i type="button" class="material-icons">flash_on</i> Optimize File Sizes', 'revslider' ),
-				'event' => 'themepunch.optimizeslider',
-			)
-		);
-		$this->end_controls_section();	
 	}
 
 	protected function render() {
 		
 		$shortcode = $this->get_settings_for_display( 'shortcode' );
 		$shortcode = do_shortcode( shortcode_unautop( $shortcode ) );
-
-		$zindex = $this->get_settings_for_display( 'zindex' );
-		$style = $zindex ? ' style="z-index:'.$zindex.';"' : '';
-
-		/*if ( \Elementor\Plugin::$instance->editor->is_edit_mode() ) {
-			//EDIT
-		} else {
-			//FRONTEND
-		}*/
-
+		
 		// hack to make sure object library only opens when the user manually adds a slider to the page
 		if(empty($shortcode)) {
 		?>
@@ -141,9 +90,7 @@ class RevSliderElementorWidget extends \Elementor\Widget_Shortcode {
 		<?php
 		}
 		?>
-
-		<div class="wp-block-themepunch-revslider"<?php echo $style;?>><?php echo $shortcode; ?></div>
-
+		<div class="elementor-shortcode"><?php echo $shortcode; ?></div>
 		<?php
 	}
 	

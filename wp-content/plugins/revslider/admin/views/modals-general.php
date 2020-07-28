@@ -15,7 +15,7 @@ if(!defined('ABSPATH')) exit();
 <div id="rb_modal_underlay"></div>
 
 <!-- DECISION MODAL -->
-<div class="_TPRB_ rb-modal-wrapper" data-modal="rbm_decisionModal">
+<div class="rb-modal-wrapper" data-modal="rbm_decisionModal">
 	<div class="rb-modal-inner">
 		<div class="rb-modal-content">
 			<div id="rbm_decisionModal" class="rb_modal form_inner">
@@ -33,7 +33,7 @@ if(!defined('ABSPATH')) exit();
 </div>
 
 <!-- PREVIEW MODAL -->
-<div class="_TPRB_ rb-modal-wrapper" data-modal="rbm_preview">
+<div class="rb-modal-wrapper" data-modal="rbm_preview">
 	<div class="rb-modal-inner">
 		<div class="rb-modal-content">
 			<div id="rbm_preview" class="rb_modal form_inner">
@@ -48,7 +48,7 @@ if(!defined('ABSPATH')) exit();
 </div>
 
 <!--ADDONS INSTALLATION MODAL-->
-<div class="_TPRB_ rb-modal-wrapper" data-modal="rbm_addons">
+<div class="rb-modal-wrapper" data-modal="rbm_addons">
 	<div class="rb-modal-inner">
 		<div class="rb-modal-content">
 			<div id="rbm_addons" class="rb_modal form_inner">

@@ -37,7 +37,10 @@ class ProductManufacturer
             $productAttributes = [];
         }
 
-        $uniqueId1c = md5((string) $element->Изготовитель->Ид . $taxName);
+        $uniqueId1c = md5(
+            (string) $element->Изготовитель->Ид
+            . $_SESSION['IMPORT_1C']['brand_taxonomy']['createdTaxName']
+        );
 
         if (
             !isset($_SESSION['IMPORT_1C']['brand_taxonomy']['values']) ||
@@ -96,28 +99,21 @@ class ProductManufacturer
                 ]
             );
         } else {
-            $optionTermID =
-                wp_insert_term(
-                    (string) $element->Изготовитель->Наименование,
-                    $taxName,
-                    [
-                        'slug' => wp_unique_term_slug(
-                            sanitize_title((string) $element->Изготовитель->Наименование),
-                            (object) [
-                                'taxonomy' => $taxName,
-                                'parent' => 0
-                            ]
-                        ),
-                        'description' => '',
-                        'parent' => 0
-                    ]
-                );
+            $optionTermID = Term::insertProductAttributeValue(
+                (string) $element->Изготовитель->Наименование,
+                $taxName,
+                $uniqueId1c
+            );
 
             if (is_wp_error($optionTermID)) {
-                print_r($optionTermID);
-                // 1c response does not require escape
-
-                exit();
+                throw new \Exception(
+                    'ERROR ADD ATTRIBUTE VALUE - '
+                    . $optionTermID->get_error_message()
+                    . ', tax - '
+                    . $taxName
+                    . ', value - '
+                    . (string) $element->Изготовитель->Наименование
+                );
             }
 
             $optionTermID = $optionTermID['term_id'];
@@ -159,9 +155,10 @@ class ProductManufacturer
 
         // exists
         if ($attribute) {
-            $_SESSION['IMPORT_1C']['brand_taxonomy']['name'] = $attributeTaxName;
+            $_SESSION['IMPORT_1C']['brand_taxonomy']['name'] = 'pa_' . $attribute->attribute_name;
+            $_SESSION['IMPORT_1C']['brand_taxonomy']['createdTaxName'] = $attributeTaxName;
 
-            return $attributeTaxName;
+            return 'pa_' . $attribute->attribute_name;
         }
 
         $attributeCreate = [
@@ -210,6 +207,7 @@ class ProductManufacturer
         register_taxonomy($attributeTaxName, null);
 
         $_SESSION['IMPORT_1C']['brand_taxonomy']['name'] = $attributeTaxName;
+        $_SESSION['IMPORT_1C']['brand_taxonomy']['createdTaxName'] = $attributeTaxName;
 
         return $attributeTaxName;
     }

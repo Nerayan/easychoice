@@ -35,11 +35,20 @@ class VariationCharacteristicsToGlobalProductAttributes
 
             // exists
             if ($attribute && isset($options[$attributeName])) {
+                $options[$attributeName]['taxName'] = 'pa_' . $attribute->attribute_name;
+
+                if (!isset($options[$attributeName]['createdTaxName'])) {
+                    $options[$attributeName]['createdTaxName'] = $options[$attributeName]['taxName'];
+                }
+
+                update_option('all_product_options', $options);
+
                 continue;
             }
 
             $options[$attributeName] = [
                 'taxName' => $attributeTaxName,
+                'createdTaxName' => $attributeTaxName,
                 'type' => 'simple',
                 'values' => []
             ];

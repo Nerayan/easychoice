@@ -83,6 +83,7 @@ if ( ! function_exists( 'electro_product_tabs_element' ) ) {
 					'shortcode_tag'			=> 'recent_products',
 					'per_page' 				=> 3,
 					'columns'				=> 3,
+					'columns_wide'			=> 5,
 					'orderby' 				=> 'date',
 					'order' 				=> 'desc',
 					'products_choice'		=> 'ids',
@@ -95,7 +96,7 @@ if ( ! function_exists( 'electro_product_tabs_element' ) ) {
 				), $tab));
 				
 				$shortcode_atts = function_exists( 'electro_get_atts_for_shortcode' ) ? electro_get_atts_for_shortcode( array( 'shortcode' => $shortcode_tag, 'product_category_slug' => $category, 'cat_operator' => $cat_operator, 'products_choice' => $products_choice, 'products_ids_skus' => $product_id, 'attribute' => $attribute, 'terms' => $terms, 'terms_operator' => $terms_operator ) ) : array();
-				$shortcode_atts = wp_parse_args( $shortcode_atts, array( 'order' => $order, 'orderby' => $orderby, 'columns' => $columns, 'per_page' => $per_page ) );
+				$shortcode_atts = wp_parse_args( $shortcode_atts, array( 'order' => $order, 'orderby' => $orderby, 'columns' => $columns, 'columns_wide' => $columns_wide , 'per_page' => $per_page ) );
 
 				$tabs_args[] = array(
 					'title'				=> $title,

@@ -101,7 +101,7 @@ class RevSliderLoadBalancer {
 		global $wp_version;
 		
 		//add version if not passed
-		$data['version'] = (!isset($data['version'])) ? urlencode(RS_REVISION) : $data['version'];
+		$data['version'] = urlencode(RS_REVISION);
 		
 		$done	= false;
 		$count	= 0;

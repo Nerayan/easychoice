@@ -51,11 +51,7 @@ class Term
 
     public static function update1cId($termID, $ID1c)
     {
-        \update_term_meta(
-            $termID,
-            '_id_1c',
-            $ID1c
-        );
+        \update_term_meta($termID, '_id_1c', $ID1c);
     }
 
     public static function updateProductCat($categoryEntry)
@@ -75,11 +71,7 @@ class Term
             //$params['slug'] = self::uniqueTermSlug($categoryEntry['name'], \get_term($categoryEntry['term_id'], 'product_cat'));
         }
 
-        \wp_update_term(
-            $categoryEntry['term_id'],
-            'product_cat',
-            $params
-        );
+        \wp_update_term($categoryEntry['term_id'], 'product_cat', $params);
     }
 
     public static function insertProductCat($categoryEntry)
@@ -103,13 +95,48 @@ class Term
         return $result['term_id'];
     }
 
-    public static function getObjectTerms($objectIDs, $taxonomies, $args)
+    public static function insertProductAttributeValue($name, $taxonomy, $alternativeSlug)
     {
+        $attributeValue = wp_insert_term(
+            $name,
+            $taxonomy,
+            [
+                'slug' =>  wp_unique_term_slug(
+                    sanitize_title($name),
+                    (object) [
+                        'taxonomy' => $taxonomy,
+                        'parent' => 0
+                    ]
+                ),
+                'description' => '',
+                'parent' => 0
+            ]
+        );
+
+        if (is_wp_error($attributeValue)) {
+            $attributeValue = wp_insert_term(
+                $name,
+                $taxonomy,
+                [
+                    'slug' => $alternativeSlug,
+                    'description' => '',
+                    'parent' => 0
+                ]
+            );
+        }
+
+        return $attributeValue;
+    }
+
+    public static function getObjectTerms($objectIDs, $taxonomies, $args = [])
+    {
+        // https://developer.wordpress.org/reference/functions/wp_get_object_terms/
         return \wp_get_object_terms($objectIDs, $taxonomies, $args);
     }
 
     public static function setObjectTerms($objectID, $terms, $taxonomy, $append = false)
     {
+        // https://developer.wordpress.org/reference/functions/wp_set_object_terms/
         return \wp_set_object_terms($objectID, $terms, $taxonomy, $append);
     }
 

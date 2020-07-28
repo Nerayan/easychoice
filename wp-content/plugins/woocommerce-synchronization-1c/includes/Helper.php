@@ -98,7 +98,7 @@ class Helper
 
     public static function extractArchive($filename)
     {
-        $zip = new \ZipArchive;
+        $zip = new \ZipArchive();
 
         $result = $zip->open($filename);
 

@@ -133,8 +133,8 @@ class Electro_Elementor_Products_Carousel_Categories_With_Image extends Widget_B
                 'type'          => Controls_Manager::SWITCHER,
                 'label_on'      => esc_html__( 'Enable', 'electro-extensions' ),
                 'label_off'     => esc_html__( 'Disable', 'electro-extensions' ),
-                'return_value'  => true,
-                'default'       => false,
+                'return_value'  => 'true',
+                'default'       => 'false',
             ]
         );
 
@@ -216,8 +216,8 @@ class Electro_Elementor_Products_Carousel_Categories_With_Image extends Widget_B
                 'description' => esc_html__( 'Show Categories list on header block.', 'electro-extensions' ),
                 'label_on'      => esc_html__( 'Enable', 'electro-extensions' ),
                 'label_off'     => esc_html__( 'Disable', 'electro-extensions' ),
-                'return_value'  => true,
-                'default'       => true,
+                'return_value'  => 'true',
+                'default'       => 'true',
             ]
         );
 
@@ -238,8 +238,8 @@ class Electro_Elementor_Products_Carousel_Categories_With_Image extends Widget_B
                 'description' => esc_html__( 'Show Categories does not have products', 'electro-extensions' ),
                 'label_on'      => esc_html__( 'Enable', 'electro-extensions' ),
                 'label_off'     => esc_html__( 'Disable', 'electro-extensions' ),
-                'return_value'  => true,
-                'default'       => false,
+                'return_value'  => 'true',
+                'default'       => 'false',
             ]
         ); 
 
@@ -354,8 +354,8 @@ class Electro_Elementor_Products_Carousel_Categories_With_Image extends Widget_B
                 'type'          => Controls_Manager::SWITCHER,
                 'label_on'      => esc_html__( 'Enable', 'electro-extensions' ),
                 'label_off'     => esc_html__( 'Disable', 'electro-extensions' ),
-                'return_value'  => true,
-                'default'       => true,
+                'return_value'  => 'true',
+                'default'       => 'true',
             ]
         );
 
@@ -367,8 +367,8 @@ class Electro_Elementor_Products_Carousel_Categories_With_Image extends Widget_B
                 'type'          => Controls_Manager::SWITCHER,
                 'label_on'      => esc_html__( 'Enable', 'electro-extensions' ),
                 'label_off'     => esc_html__( 'Disable', 'electro-extensions' ),
-                'return_value'  => true,
-                'default'       => false,
+                'return_value'  => 'true',
+                'default'       => 'false',
             ]
         );
 
@@ -379,8 +379,8 @@ class Electro_Elementor_Products_Carousel_Categories_With_Image extends Widget_B
                 'type'          => Controls_Manager::SWITCHER,
                 'label_on'      => esc_html__( 'Enable', 'electro-extensions' ),
                 'label_off'     => esc_html__( 'Disable', 'electro-extensions' ),
-                'return_value'  => true,
-                'default'       => false,
+                'return_value'  => 'true',
+                'default'       => 'false',
             ]
         );
 

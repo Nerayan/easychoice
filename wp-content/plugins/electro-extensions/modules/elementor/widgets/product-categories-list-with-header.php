@@ -121,8 +121,8 @@ class Electro_Elementor_Products_Categories_List_With_Header_Image_Block extends
                 'type'  => Controls_Manager::SWITCHER,
                 'label_on'      => esc_html__( 'Enable', 'electro-extensions' ),
                 'label_off'     => esc_html__( 'Disable', 'electro-extensions' ),
-                'return_value'  => true,
-                'default'       => false,
+                'return_value'  => 'true',
+                'default'       => 'false',
                 'description'   => esc_html__( 'Show header block.', 'electro-extensions' ),
             ]
         );
@@ -151,8 +151,8 @@ class Electro_Elementor_Products_Categories_List_With_Header_Image_Block extends
                 'type'  => Controls_Manager::SWITCHER,
                 'label_on'      => esc_html__( 'Enable', 'electro-extensions' ),
                 'label_off'     => esc_html__( 'Disable', 'electro-extensions' ),
-                'return_value'  => true,
-                'default'       => false,
+                'return_value'  => 'true',
+                'default'       => 'false',
                 'description'   => esc_html__( 'Show Categories does not have products', 'electro-extensions' ),
             ]
         );

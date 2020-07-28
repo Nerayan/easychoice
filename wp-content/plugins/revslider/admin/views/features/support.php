@@ -6,7 +6,7 @@ if(!defined('ABSPATH')) exit();
 							<rs-module id="rev_slider_733_1" class="feature_slider" style="display:none;" data-version="6.0.0">
 								<rs-slides>
 									<rs-slide data-key="rs-2447" data-title="Slide" data-anim="ei:d;eo:d;s:300;r:0;t:fade;sl:d;">
-										<img src="<?php echo RS_PLUGIN_URL;?>admin/views/features/assets/dummy.png" data-lazyload="<?php echo RS_PLUGIN_URL;?>admin/views/features/assets/transparent.png" data-bg="p:center center;c:#2a2c2f;" class="rev-slidebg" data-no-retina>
+										<img src="<?php echo RS_PLUGIN_URL;?>admin/views/features/assets/dummy.png" title="kriki" data-lazyload="<?php echo RS_PLUGIN_URL;?>admin/views/features/assets/transparent.png" data-bg="p:center center;c:#2a2c2f;" class="rev-slidebg" data-no-retina>
 										<rs-layer
 											id="slide-2447-layer-1" 
 											data-type="image"
@@ -58,8 +58,8 @@ if(!defined('ABSPATH')) exit();
 											data-text="s:25;l:30;fw:700;a:center;"
 											data-border="bow:0px;"
 											data-frame_0="y:-50;"
-											data-frame_1="e:power4.out;st:100;sp:1000;sR:100;"
-											data-frame_999="y:50;o:0;e:power4.out;st:a;sp:600;sR:7900;"
+											data-frame_1="e:Power4.easeOut;st:100;sp:1000;sR:100;"
+											data-frame_999="y:50;o:0;e:Power4.easeOut;st:a;sp:600;sR:7900;"
 											style="z-index:8;font-family:Roboto;"
 										>Premium 1on1<br/>Support Center 
 										</rs-layer>
@@ -72,8 +72,8 @@ if(!defined('ABSPATH')) exit();
 											data-text="s:25;l:30;fw:700;a:center;"
 											data-border="bow:0px;"
 											data-frame_0="y:-50;"
-											data-frame_1="e:power4.out;st:a;sp:1000;sR:100;"
-											data-frame_999="y:50px;o:0;e:power4.out;st:a;sp:600;sR:7900;"
+											data-frame_1="e:Power4.easeOut;st:a;sp:1000;sR:100;"
+											data-frame_999="y:50px;o:0;e:Power4.easeOut;st:a;sp:600;sR:7900;"
 											style="z-index:9;font-family:Roboto;"
 										>We are here<br/>to Help! 
 										</rs-layer>
@@ -88,8 +88,8 @@ if(!defined('ABSPATH')) exit();
 											data-padding="r:35;l:35;"
 											data-border="bos:solid;boc:rgba(0,0,0,1);bow:0px;bor:3px,3px,3px,3px;"
 											data-frame_0="y:50;"
-											data-frame_1="e:power4.out;st:500;sp:1000;sR:500;"
-											data-frame_999="o:0;e:power4.inOut;st:w;sp:1000;sR:7500;"
+											data-frame_1="e:Power4.easeOut;st:500;sp:1000;sR:500;"
+											data-frame_999="o:0;e:Power4.easeInOut;st:w;sp:1000;sR:7500;"
 											data-frame_hover="c:rgba(255,255,255,1);bgc:#0a447a;boc:rgba(0,0,0,1);bor:3px,3px,3px,3px;bos:solid;oX:50;oY:50;sp:300;"
 											style="z-index:10;background-color:#006dd2;font-family:Roboto;"
 										>Submit a Ticket 
@@ -109,7 +109,6 @@ if(!defined('ABSPATH')) exit();
 											data-frame_1="sR:10;"
 											data-frame_999="o:0;st:w;sR:8690;"
 											style="z-index:11;"
-											id="2447a"
 										> 
 										</a>
 									</rs-slide>

@@ -694,6 +694,7 @@ if( ! function_exists( 'electro_products_live_search' ) ) {
                     'orderby'   => 'relevance',
                     'order'     => 'DESC',
                     'limit'     => 10,
+                    'post_status' => 'publish',
                     'tax_query' => array(
                         array(
                             'taxonomy' => 'product_visibility',
@@ -762,6 +763,7 @@ if( ! function_exists( 'electro_products_live_search' ) ) {
 
 if( ! function_exists( 'electro_wc_get_product_id' ) ) {
     function electro_wc_get_product_id( $product ) {
+        if ( ! ( $product instanceof WC_Product ) ) { return 0; }
         if ( defined( 'WC_VERSION' ) && version_compare( WC_VERSION, '2.7', '<' ) ) {
             return isset( $product->id ) ? $product->id : 0;
         }
@@ -772,6 +774,7 @@ if( ! function_exists( 'electro_wc_get_product_id' ) ) {
 
 if( ! function_exists( 'electro_wc_get_product_type' ) ) {
     function electro_wc_get_product_type( $product ) {
+        if ( ! ( $product instanceof WC_Product ) ) { return 'simple'; }
         if ( defined( 'WC_VERSION' ) && version_compare( WC_VERSION, '2.7', '<' ) ) {
             return isset( $product->product_type ) ? $product->product_type : 'simple';
         }
@@ -780,99 +783,9 @@ if( ! function_exists( 'electro_wc_get_product_type' ) ) {
     }
 }
 
-if ( ! function_exists( 'woocommerce_products_will_display' ) ) {
-
-    /**
-     * Check if we will be showing products or not (and not sub-categories only).
-     * @subpackage  Loop
-     * @return bool
-     */
-    function woocommerce_products_will_display() {
-        global $wpdb;
-
-
-        if( is_dokan_activated() && dokan_is_store_page() ) {
-            return true;
-        }
-
-        if ( is_shop() ) {
-            return 'subcategories' !== get_option( 'woocommerce_shop_page_display' ) || is_search();
-        }
-
-        if ( ! is_product_taxonomy() ) {
-            return false;
-        }
-
-        if ( is_search() || is_filtered() || is_paged() ) {
-            return true;
-        }
-
-        $term = get_queried_object();
-
-        if ( is_product_category() ) {
-            $display_type = defined( 'WC_VERSION' ) && version_compare( WC_VERSION, '3.6', '<' ) ? get_woocommerce_term_meta( $term->term_id, 'display_type', true ) : get_term_meta( $term->term_id, 'display_type', true );
-            switch ( $display_type ) {
-                case 'subcategories' :
-                    // Nothing - we want to continue to see if there are products/subcats
-                break;
-                case 'products' :
-                case 'both' :
-                    return true;
-                break;
-                default :
-                    // Default - no setting
-                    if ( get_option( 'woocommerce_category_archive_display' ) != 'subcategories' ) {
-                        return true;
-                    }
-                break;
-            }
-        }
-
-        // Begin subcategory logic
-        if ( empty( $term->term_id ) || empty( $term->taxonomy ) ) {
-            return true;
-        }
-
-        if ( is_tax( 'product_brand' ) ) {
-            return true;
-        }
-
-
-        $transient_name = 'wc_products_will_display_' . $term->term_id . '_' . WC_Cache_Helper::get_transient_version( 'product_query' );
-
-        if ( false === ( $products_will_display = get_transient( $transient_name ) ) ) {
-
-            $has_children = $wpdb->get_col( $wpdb->prepare( "SELECT term_id FROM {$wpdb->term_taxonomy} WHERE parent = %d AND taxonomy = %s", $term->term_id, $term->taxonomy ) );
-
-            if ( $has_children ) {
-                // Check terms have products inside - parents first. If products are found inside, subcats will be shown instead of products so we can return false.
-                if ( sizeof( get_objects_in_term( $has_children, $term->taxonomy ) ) > 0 ) {
-                    $products_will_display = false;
-                } else {
-                    // If we get here, the parents were empty so we're forced to check children
-                    foreach ( $has_children as $term_id ) {
-                        $children = get_term_children( $term_id, $term->taxonomy );
-
-                        if ( sizeof( get_objects_in_term( $children, $term->taxonomy ) ) > 0 ) {
-                            $products_will_display = false;
-                            break;
-                        }
-                    }
-                }
-            } else {
-                $products_will_display = true;
-            }
-        }
-
-        set_transient( $transient_name, $products_will_display, DAY_IN_SECONDS * 30 );
-
-        return $products_will_display;
-    }
-}
-
 if ( ! function_exists( 'electro_get_savings_on_sale' ) ) {
     function electro_get_savings_on_sale( $product, $in = 'amount' ) {
-
+        if ( ! ( $product instanceof WC_Product ) ) { return 0; }
         if( ! $product->is_on_sale() ) {
             return 0;
         }

@@ -5,7 +5,7 @@ Theme URI:          https://themeforest.net/item/electro-electronics-store-wooco
 Author:             MadrasThemes
 Author URI:         https://madrasthemes.com/
 Description:        Electro is a robust and flexible WordPress theme, designed by Transvelo to help you make the most out of using WooCommerce to power your online store. The design is well suited for Electronics Store, Vendor based marketplaces, affiliate websites. It is built and comes bundled with most of the advanced features available in most popular eCommerce websites like amazon, flipkart, snapdeal, walmart, alibaba, aliexpress, etc.
-Version:            2.5.6
+Version:            2.5.8
 GitHub Theme URI:   https://github.com/Transvelo/electro
 GitHub Branch:      theme
 License:            GNU General Public License v2 or later
@@ -9175,6 +9175,8 @@ h3.faq-title {
     font-size: 40px;
     line-height: 50px;
     color: #434343; }
+  .wishlist-title .show-title-form .fa {
+    font-family: "FontAwesome"; }
 
 .yith-wcwl-add-button img,
 .yith-wcwl-wishlistexistsbrowse .feedback,
@@ -9774,7 +9776,8 @@ ul .dropdown-menu-mini-cart a.tm-cart-edit-options {
   padding: 30px; }
 
 .aws-container .aws-search-form {
-  height: 41px; }
+  height: 41px;
+  background-color: transparent; }
 
 .aws-container .aws-search-form .aws-loader {
   right: 20px; }
@@ -9806,6 +9809,11 @@ ul .dropdown-menu-mini-cart a.tm-cart-edit-options {
   padding: 0;
   justify-content: center;
   display: flex !important; }
+  .rtl .aws-container .aws-search-form .aws-search-clear {
+    border-top-left-radius: 2.467em !important;
+    border-bottom-left-radius: 2.467em !important;
+    border-top-right-radius: 0 !important;
+    border-bottom-right-radius: 0 !important; }
 
 .aws-search-form:not(.aws-form-active):not(.aws-processing) .aws-search-clear span,
 .aws-search-form.aws-processing .aws-search-clear span {

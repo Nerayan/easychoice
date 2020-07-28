@@ -105,6 +105,16 @@ class GlobalProductAttributes
                     ]
                 );
 
+                // Clear transients.
+                delete_transient('wc_attribute_taxonomies');
+
+                if (
+                    class_exists('\\WC_Cache_Helper') &&
+                    method_exists('\\WC_Cache_Helper', 'invalidate_cache_group')
+                ) {
+                    \WC_Cache_Helper::invalidate_cache_group('woocommerce-attributes');
+                }
+
                 Logger::logChanges(
                     '(attribute) Update attribute by data `Свойства` - ' . $attributeTaxName,
                     (string) $element->Ид
@@ -166,6 +176,9 @@ class GlobalProductAttributes
 
             $options[(string) $element->Ид] = [
                 'taxName' => $attributeTaxName,
+                'createdTaxName' => isset($options[(string) $element->Ид]['createdTaxName'])
+                    ? $options[(string) $element->Ид]['createdTaxName']
+                    : $attributeTaxName,
                 'type' => $type,
                 'values' => []
             ];
@@ -219,7 +232,7 @@ class GlobalProductAttributes
                         continue;
                     }
 
-                    $uniqId1c = md5((string) $variant->ИдЗначения . $attributeTaxName);
+                    $uniqId1c = md5((string) $variant->ИдЗначения . $options[(string) $element->Ид]['createdTaxName']);
                     $variantTerm = Term::getTermIdByMeta($uniqId1c);
 
                     if (!$variantTerm) {
@@ -244,22 +257,21 @@ class GlobalProductAttributes
                             ]
                         );
                     } else {
-                        $variantTerm =
-                            wp_insert_term(
-                                (string) $variant->Значение,
-                                $attributeTaxName,
-                                [
-                                    'slug' => uniqid(),
-                                    'description' => '',
-                                    'parent' => 0
-                                ]
-                            );
+                        $variantTerm = Term::insertProductAttributeValue(
+                            (string) $variant->Значение,
+                            $attributeTaxName,
+                            uniqid()
+                        );
 
                         if (is_wp_error($variantTerm)) {
-                            print_r($variantTerm);
-                            // 1c response does not require escape
-
-                            exit();
+                            throw new \Exception(
+                                'ERROR ADD ATTRIBUTE VALUE - '
+                                . $variantTerm->get_error_message()
+                                . ', tax - '
+                                . $attributeTaxName
+                                . ', value - '
+                                . (string) $variant->Значение
+                            );
                         }
 
                         $variantTerm = $variantTerm['term_id'];

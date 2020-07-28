@@ -270,8 +270,8 @@ class Electro_Elementor_products_carousel_1 extends Widget_Base {
                 'type'          => Controls_Manager::SWITCHER,
                 'label_on'      => esc_html__( 'Enable', 'electro-extensions' ),
                 'label_off'     => esc_html__( 'Disable', 'electro-extensions' ),
-                'return_value'  => true,
-                'default'       => true,
+                'return_value'  => 'true',
+                'default'       => 'true',
             ]
         );
 
@@ -283,8 +283,8 @@ class Electro_Elementor_products_carousel_1 extends Widget_Base {
                 'type'          => Controls_Manager::SWITCHER,
                 'label_on'      => esc_html__( 'Enable', 'electro-extensions' ),
                 'label_off'     => esc_html__( 'Disable', 'electro-extensions' ),
-                'return_value'  => true,
-                'default'       => true,
+                'return_value'  => 'true',
+                'default'       => 'true',
             ]
         );
 
@@ -296,8 +296,8 @@ class Electro_Elementor_products_carousel_1 extends Widget_Base {
                 'type'          => Controls_Manager::SWITCHER,
                 'label_on'      => esc_html__( 'Enable', 'electro-extensions' ),
                 'label_off'     => esc_html__( 'Disable', 'electro-extensions' ),
-                'return_value'  => true,
-                'default'       => false,
+                'return_value'  => 'true',
+                'default'       => 'false',
             ]
         );
 
@@ -308,8 +308,8 @@ class Electro_Elementor_products_carousel_1 extends Widget_Base {
                 'type'          => Controls_Manager::SWITCHER,
                 'label_on'      => esc_html__( 'Enable', 'electro-extensions' ),
                 'label_off'     => esc_html__( 'Disable', 'electro-extensions' ),
-                'return_value'  => true,
-                'default'       => false,
+                'return_value'  => 'true',
+                'default'       => 'false',
             ]
         );
 

@@ -4,13 +4,13 @@ use Itgalaxy\Wc\Exchange1c\Admin\PluginActionLinksFilter;
 use Itgalaxy\Wc\Exchange1c\Admin\ProductAttributesPage1cIdInfo;
 
 // table columns
-use Itgalaxy\Wc\Exchange1c\Admin\TableColumns\ProductAttributeTableColumn;
-use Itgalaxy\Wc\Exchange1c\Admin\TableColumns\ProductCatTableColumn;
-use Itgalaxy\Wc\Exchange1c\Admin\TableColumns\ProductTableColumn;
+use Itgalaxy\Wc\Exchange1c\Admin\TableColumns\TableColumnProductAttribute;
+use Itgalaxy\Wc\Exchange1c\Admin\TableColumns\TableColumnProductCat;
+use Itgalaxy\Wc\Exchange1c\Admin\TableColumns\TableColumnProduct;
 
 // metaboxes
-use Itgalaxy\Wc\Exchange1c\Admin\MetaBoxes\ProductMetaBox;
-use Itgalaxy\Wc\Exchange1c\Admin\MetaBoxes\ShopOrderMetaBox;
+use Itgalaxy\Wc\Exchange1c\Admin\MetaBoxes\MetaBoxProduct;
+use Itgalaxy\Wc\Exchange1c\Admin\MetaBoxes\MetaBoxShopOrder;
 
 // ajax actions
 use Itgalaxy\Wc\Exchange1c\Admin\AjaxActions\ItglxWc1cClearLogs;
@@ -19,8 +19,11 @@ use Itgalaxy\Wc\Exchange1c\Admin\AjaxActions\ItglxWc1cLogsCountAndSize;
 use Itgalaxy\Wc\Exchange1c\Admin\AjaxActions\ItglxWc1cTempCountAndSize;
 
 // admin requests
-use Itgalaxy\Wc\Exchange1c\Admin\RequestProcessing\LogsGetInArchive;
-use Itgalaxy\Wc\Exchange1c\Admin\RequestProcessing\TempGetInArchive;
+use Itgalaxy\Wc\Exchange1c\Admin\RequestProcessing\GetInArchiveLogs;
+use Itgalaxy\Wc\Exchange1c\Admin\RequestProcessing\GetInArchiveTemp;
+
+//other
+use Itgalaxy\Wc\Exchange1c\Admin\Other\VariationHeaderGuidInfo;
 
 if (!defined('ABSPATH')) {
     exit();
@@ -36,13 +39,13 @@ PluginActionLinksFilter::getInstance();
 ProductAttributesPage1cIdInfo::getInstance();
 
 // table columns
-ProductAttributeTableColumn::getInstance();
-ProductCatTableColumn::getInstance();
-ProductTableColumn::getInstance();
+TableColumnProductAttribute::getInstance();
+TableColumnProductCat::getInstance();
+TableColumnProduct::getInstance();
 
 // metaboxes
-ProductMetaBox::getInstance();
-ShopOrderMetaBox::getInstance();
+MetaBoxProduct::getInstance();
+MetaBoxShopOrder::getInstance();
 
 // bind ajax actions
 ItglxWc1cClearLogs::getInstance();
@@ -51,5 +54,8 @@ ItglxWc1cLogsCountAndSize::getInstance();
 ItglxWc1cTempCountAndSize::getInstance();
 
 // bind admin request handlers
-LogsGetInArchive::getInstance();
-TempGetInArchive::getInstance();
+GetInArchiveLogs::getInstance();
+GetInArchiveTemp::getInstance();
+
+// bind other admin actions
+VariationHeaderGuidInfo::getInstance();

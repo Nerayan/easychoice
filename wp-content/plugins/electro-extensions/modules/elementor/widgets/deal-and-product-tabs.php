@@ -106,8 +106,8 @@ class Electro_Elementor_Deals_And_Products_Tabs_Element extends Widget_Base {
                 'type'          => Controls_Manager::SWITCHER,
                 'label_on'      => esc_html__( 'Enable', 'electro-extensions' ),
                 'label_off'     => esc_html__( 'Disable', 'electro-extensions' ),
-                'return_value'  => true,
-                'default'       => false,
+                'return_value'  => 'true',
+                'default'       => 'false',
                 'description'   => esc_html__( 'Deals savings text', 'electro-extensions' ),
             ]
         );

@@ -35,7 +35,34 @@ Once completed, visit your plugins page.
 
 == Changelog ==
 
-= 1.57.1 =
+= 1.67.0 =
+Feature: the ability to set `allow backorders?` variant for product with stock > 0.
+Feature: the ability to generate attribute data for variations (if there is no 1C guid) when unloading orders.
+Feature: formation of usual slugs for attribute values if possible.
+Feature: there can be more than one value for one attribute in a product.
+
+= 1.63.6 =
+Chore: disable object cache when `maybe unvariable` process - since a large number of metadata requests consume memory.
+Chore: added new filter `itglx_wc1c_stock_status_value_if_not_hide`.
+Chore: compatibility check with WC 4.3
+Fixed: set onbackorder for simple product (stock <= 0).
+Fixed: ability to use the product/variation id from the site (if there is no 1C guid).
+Chore: more support in stock xml schemes.
+Feature: another option for working with stock <= 0 - "Do not hide and give the opportunity to put in the basket (manage stock - disable, stock status - onbackorder)".
+Feature: ability to forming an upload of orders using the mandatory features of the scheme 3.1
+
+= 1.61.1 =
+Chore: added new filter `itglx_wc1c_product_is_removed`.
+Feature: support for changing in the set of products of the order on the site based on data from 1C.
+Feature: ability do not unload orders in selected statuses.
+Feature: ability to search for an existing product by SKU, when processing offers data - it may be useful if the unloading nomenclature is not used (only offers).
+
+= 1.58.1 =
+Chore: added new filter `itglx_wc1c_parsed_offer_price_value`.
+Feature: the ability to enable the creation of products in draft status, instead of published.
+
+= 1.57.2 =
+Chore: added new filter `itglx_wc1c_insert_post_new_product_params`.
 Chore: compatibility check with WC 4.2
 Feature: progress not only in the processing of properties, but also in the processing of values within a property.
 Feature: index in tables `postmeta` and `termmeta`, to improve performance.

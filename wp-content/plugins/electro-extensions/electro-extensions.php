@@ -5,10 +5,10 @@
  * Description:    	This selection of extensions compliment our lean and mean theme for WooCommerce, Electro. Please note: they don’t work with any WordPress theme, just Electro.
  * Author:         	MadrasThemes
  * Author URL:     	https://madrasthemes.com/
- * Version:        	2.4.3
+ * Version:        	2.5.8
  * Text Domain: 	electro-extensions
  * Domain Path: 	/languages
- * WC tested up to: 3.6.0
+ * WC tested up to: 4.3.1
  */
 
 // Exit if accessed directly

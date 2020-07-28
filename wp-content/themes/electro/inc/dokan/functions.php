@@ -274,9 +274,12 @@ if ( ! function_exists( 'electro_dokan_vendor_page_modify_hooks' ) ) {
 				add_action( 'woocommerce_before_main_content', 'electro_dokan_store_jumbotron', 5 );
 				add_action( 'dokan_after_store_tabs', 'electro_dokan_vendor_product_search', 100 );
 
-				if( class_exists( 'Dokan_Pro_Store_Share' ) ) {
-					$dokan_social = Dokan_Pro_Store_Share::init();
-					remove_action( 'dokan_after_store_tabs', array( $dokan_social, 'render_share_button' ), 1 );
+				if( electro_dokan_store_share_exists() ) {
+					if( version_compare( dokan_pro()->version, '3.0.0' , '<' ) ) {
+	                    electro_remove_class_action( 'dokan_after_store_tabs', 'Dokan_Pro_Store_Share', 'render_share_button' , 1 );
+	                } else {
+	                    electro_remove_class_action( 'dokan_after_store_tabs', 'WeDevs\DokanPro\StoreShare', 'render_share_button' , 1 );
+	                }
 				}
 			}
 		}
@@ -438,5 +441,47 @@ if ( ! function_exists( 'electro_dokan_store_owner_info' ) ) {
 			</div>
 			<?php
 		}
+	}
+}
+
+if ( ! function_exists( 'electro_dokan_store_support_exists' ) ) {
+	function electro_dokan_store_support_exists() {
+		if( is_dokan_pro_activated() ) {
+			$dokan_pro = dokan_pro();
+			if( version_compare( $dokan_pro->version, '3.0.0' , '<' ) && class_exists( 'Dokan_Store_Support' ) ) {
+				return true;
+			} elseif( $dokan_pro->module->is_active( 'store_support' ) ) {
+				return true;
+			}
+		}
+		return false;
+	}
+}
+
+if ( ! function_exists( 'electro_dokan_store_follow_exists' ) ) {
+	function electro_dokan_store_follow_exists() {
+		if( is_dokan_pro_activated() ) {
+			$dokan_pro = dokan_pro();
+			if( version_compare( $dokan_pro->version, '3.0.0' , '<' ) && class_exists( 'Dokan_Follow_Store_Follow_Button' ) ) {
+				return true;
+			} elseif( $dokan_pro->module->is_active( 'follow_store' ) ) {
+				return true;
+			}
+		}
+		return false;
+	}
+}
+
+if ( ! function_exists( 'electro_dokan_store_share_exists' ) ) {
+	function electro_dokan_store_share_exists() {
+		if( is_dokan_pro_activated() ) {
+			$dokan_pro = dokan_pro();
+			if( ! version_compare( $dokan_pro->version, '3.0.0' , '<' ) && isset( $dokan_pro->store_share ) && ! empty( $dokan_pro->store_share ) ) {
+				return true;
+			} elseif( version_compare( $dokan_pro->version, '3.0.0' , '<' ) && class_exists( 'Dokan_Pro_Store_Share' ) ) {
+				return true;
+			}
+		}
+		return false;
 	}
 }

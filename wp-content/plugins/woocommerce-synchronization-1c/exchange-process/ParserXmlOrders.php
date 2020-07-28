@@ -2,6 +2,7 @@
 
 namespace Itgalaxy\Wc\Exchange1c\ExchangeProcess;
 
+use Itgalaxy\Wc\Exchange1c\ExchangeProcess\Helpers\Product;
 use Itgalaxy\Wc\Exchange1c\Includes\Bootstrap;
 use Itgalaxy\Wc\Exchange1c\Includes\Logger;
 
@@ -14,6 +15,7 @@ class ParserXmlOrders
 
     public function parce($filename)
     {
+        $settings = get_option(Bootstrap::OPTIONS_KEY);
         $reader = new \XMLReader();
         $reader->open($filename);
 
@@ -59,6 +61,16 @@ class ParserXmlOrders
             }
 
             Logger::logProtocol('exist order by `Номер` - ' . (int) $element->Номер);
+
+            if (!empty($settings['handle_get_order_product_set_change'])) {
+                Logger::logProtocol('apply changes set of products - ' . (int) $element->Номер);
+
+                $this->applyProductChanges($order, $this->resolveXmlProductData($element));
+            }
+
+            if (empty($settings['handle_get_order_status_change'])) {
+                continue;
+            }
 
             $requisites = [];
 
@@ -115,6 +127,78 @@ class ParserXmlOrders
         }
 
         return true;
+    }
+
+    private function resolveXmlProductData($element)
+    {
+        $products = [];
+
+        foreach ($element->Товары->Товар as $product) {
+            $products[(string) $product->Ид] = [
+                'qty' => (float) $product->Количество,
+                'total' => (float) $product->Сумма
+            ];
+        }
+
+        return $products;
+    }
+
+    private function applyProductChanges($order, $current1CData)
+    {
+        foreach ($order->get_items() as $item) {
+            $guid = get_post_meta($item['variation_id'] ? $item['variation_id'] : $item['product_id'], '_id_1c', true);
+
+            if ($guid) {
+                if (!isset($current1CData[$guid])) {
+                    $order->remove_item($item->get_id());
+
+                    unset($item);
+
+                    continue;
+                }
+
+                $item->set_quantity($current1CData[$guid]['qty']);
+                $item->set_total($current1CData[$guid]['total']);
+                $item->set_subtotal($current1CData[$guid]['total']);
+                $item->save();
+
+                unset($current1CData[$guid]);
+            }
+        }
+
+        if (!empty($current1CData)) {
+            foreach ($current1CData as $guid => $itemData) {
+                $elementID = Product::getProductIdByMeta($guid);
+
+                if (!$elementID) {
+                    continue;
+                }
+
+                $product = wc_get_product($elementID);
+
+                // must be a valid WC_Product
+                if (!is_object($product)) {
+                    continue;
+                }
+
+                $item = new \WC_Order_Item_Product();
+                $item->set_product($product);
+                $item->set_order_id($order->get_id());
+
+                if ($product->get_type() === 'variable') {
+                    $item->set_variation_id($elementID);
+                }
+
+                $item->set_quantity($itemData['qty']);
+                $item->set_total($itemData['total']);
+                $item->set_subtotal($itemData['total']);
+
+                $order->add_item($item);
+            }
+        }
+
+        $order->calculate_totals(true);
+        $order->save();
     }
 
     private function resolveResultStatus($requisites, $element)

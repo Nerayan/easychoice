@@ -7,10 +7,11 @@ if ( ! function_exists( 'electro_vc_recent_viewed_products' ) ) :
         extract(shortcode_atts(array(
             'section_title'     => '',
             'per_page'          => 10,
-            'columns'           => '5'
+            'columns'           => '5',
+            'columns_wide'      => '5'
         ), $atts));
 
-        $shortcode_atts = array( 'per_page'  => $per_page, 'columns'    => $columns );
+        $shortcode_atts = array( 'per_page'  => $per_page, 'columns'    => $columns ,'columns_wide'    => $columns_wide );
 
         $args = array(
             'section_title'     => $section_title,

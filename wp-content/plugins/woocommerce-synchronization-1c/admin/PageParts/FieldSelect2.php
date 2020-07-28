@@ -9,6 +9,10 @@ class FieldSelect2
     {
         $settings = get_option(Bootstrap::OPTIONS_KEY);
         $currentValues = isset($settings[$name]) ? $settings[$name] : [];
+
+        if (isset($field['options'][''])) {
+            unset($field['options']['']);
+        }
         ?>
         <div>
             <label for="<?php echo esc_attr(Bootstrap::OPTIONS_KEY . '_' . $name); ?>">

@@ -158,7 +158,16 @@ class Product
                 $params['post_excerpt'] = $productEntry['post_excerpt'];
             }
 
+            $params = (array) apply_filters('itglx_wc1c_insert_post_new_product_params', $params, $element);
+
+            // https://developer.wordpress.org/reference/functions/wp_insert_post/
             $productEntry['ID'] = wp_insert_post($params);
+
+            if (is_wp_error($productEntry['ID'])) {
+                Logger::logChanges('(product) Error adding product', [(string) $element->Ид, $productEntry['ID']]);
+
+                return [];
+            }
 
             $productMeta['_sale_price'] = '';
             $productMeta['_stock'] = 0;
@@ -242,20 +251,20 @@ class Product
                 [(string) $element->Ид]
             );
         } else {
-            $productEntry['ID'] =
-                wp_insert_post(
-                    [
-                        'post_title' => (string) $element->Наименование,
-                        'post_type' => 'product_variation',
-                        'post_name' => sanitize_title((string) $element->Наименование),
-                        'post_author' => $postAuthor,
-                        'post_parent' => $productEntry['post_parent'],
-                        // enabled or disabled by default based on the setting WooCommerce
-                        'post_status' => get_option('woocommerce_manage_stock') === 'yes'
-                            ? 'private'
-                            : 'publish'
-                    ]
-                );
+            // https://developer.wordpress.org/reference/functions/wp_insert_post/
+            $productEntry['ID'] = wp_insert_post(
+                [
+                    'post_title' => (string) $element->Наименование,
+                    'post_type' => 'product_variation',
+                    'post_name' => sanitize_title((string) $element->Наименование),
+                    'post_author' => $postAuthor,
+                    'post_parent' => $productEntry['post_parent'],
+                    // enabled or disabled by default based on the setting WooCommerce
+                    'post_status' => get_option('woocommerce_manage_stock') === 'yes'
+                        ? 'private'
+                        : 'publish'
+                ]
+            );
 
             update_post_meta($productEntry['ID'], '_id_1c', (string) $element->Ид);
 
@@ -295,62 +304,62 @@ class Product
 
         foreach ($element->ХарактеристикиТовара->ХарактеристикаТовара as $property) {
             if (
-                !empty($property->Значение) &&
-                !empty($property->Наименование)
+                empty($property->Значение) ||
+                empty($property->Наименование)
             ) {
-                $label = (string) $property->Наименование;
-                $taxByLabel = trim(strtolower($label));
-                $taxByLabel = hash('crc32', $taxByLabel);
+                continue;
+            }
 
-                $attributeName = 'simple_' . $taxByLabel;
+            $label = (string) $property->Наименование;
+            $taxByLabel = trim(strtolower($label));
+            $taxByLabel = hash('crc32', $taxByLabel);
 
-                if (empty($productOptions[$attributeName])) {
-                    continue;
-                }
+            $attributeName = 'simple_' . $taxByLabel;
 
-                $attribute = $productOptions[$attributeName];
+            if (empty($productOptions[$attributeName])) {
+                continue;
+            }
 
-                $optionTermID = false;
+            $attribute = $productOptions[$attributeName];
+            $uniqId1c = md5($attribute['createdTaxName'] . (string) $property->Значение);
+            $optionTermID = Term::getTermIdByMeta($uniqId1c);
 
-                $optionTermSlug =
-                    md5(
-                        $attribute['taxName']
-                        . (string) $property->Значение
-                    );
-                $term = get_term_by('slug', $optionTermSlug, $attribute['taxName']);
-
-                if ($term) {
-                    $optionTermID = $term->term_id;
-                } else {
-                    $term =
-                        wp_insert_term(
-                            (string) $property->Значение,
-                            $attribute['taxName'],
-                            [
-                                'slug' => $optionTermSlug,
-                                'description' => '',
-                                'parent' => 0
-                            ]
-                        );
-
-                    if (!is_wp_error($term)) {
-                        $optionTermID = $term['term_id'];
-
-                        // default meta value by ordering
-                        update_term_meta($optionTermID, 'order_' . $attribute['taxName'], 0);
-                    }
-                }
+            if (!$optionTermID) {
+                $optionTermID = get_term_by('name', (string) $property->Значение, $attribute['taxName']);
 
                 if ($optionTermID) {
-                    update_post_meta(
-                        $productEntry['ID'],
-                        'attribute_' . $attribute['taxName'],
-                        get_term_by('id', $optionTermID, $attribute['taxName'])->slug
-                    );
+                    $optionTermID = $optionTermID->term_id;
 
-                    $_SESSION['IMPORT_1C']['setTerms'][$productEntry['post_parent']][$attribute['taxName']][] =
-                        $optionTermID;
+                    Term::update1cId($optionTermID, $uniqId1c);
                 }
+            }
+
+            if (!$optionTermID) {
+                $term = Term::insertProductAttributeValue(
+                    (string) $property->Значение,
+                    $attribute['taxName'],
+                    $uniqId1c
+                );
+
+                if (!is_wp_error($term)) {
+                    $optionTermID = $term['term_id'];
+
+                    // default meta value by ordering
+                    update_term_meta($optionTermID, 'order_' . $attribute['taxName'], 0);
+
+                    Term::update1cId($optionTermID, $uniqId1c);
+                }
+            }
+
+            if ($optionTermID) {
+                update_post_meta(
+                    $productEntry['ID'],
+                    'attribute_' . $attribute['taxName'],
+                    get_term_by('id', $optionTermID, $attribute['taxName'])->slug
+                );
+
+                $_SESSION['IMPORT_1C']['setTerms'][$productEntry['post_parent']][$attribute['taxName']][] =
+                    $optionTermID;
             }
         }
     }
@@ -361,58 +370,57 @@ class Product
 
         foreach ($element->ЗначенияСвойств->ЗначенияСвойства as $property) {
             if (
-                !empty($property->Значение) &&
-                !empty($productOptions[(string) $property->Ид])
+                empty($property->Значение) ||
+                empty($productOptions[(string) $property->Ид])
             ) {
-                $attribute =
-                    $productOptions[(string) $property->Ид];
+                continue;
+            }
 
-                $optionTermID = false;
+            $attribute = $productOptions[(string) $property->Ид];
 
-                if ($attribute['type'] === 'Справочник') {
-                    $optionTermID =
-                        $attribute['values'][(string) $property->Значение];
-                } else {
-                    $optionTermSlug =
-                        md5(
-                            $attribute['taxName']
-                            . (string) $property->Значение
-                        );
-                    $term = get_term_by('slug', $optionTermSlug, $attribute['taxName']);
+            if ($attribute['type'] === 'Справочник') {
+                $optionTermID = $attribute['values'][(string) $property->Значение];
+            } else {
+                $uniqId1c = md5($attribute['createdTaxName'] . (string) $property->Значение);
+                $optionTermID = Term::getTermIdByMeta($uniqId1c);
 
-                    if ($term) {
-                        $optionTermID = $term->term_id;
-                    } else {
-                        $term =
-                            wp_insert_term(
-                                (string) $property->Значение,
-                                $attribute['taxName'],
-                                [
-                                    'slug' => $optionTermSlug,
-                                    'description' => '',
-                                    'parent' => 0
-                                ]
-                            );
+                if (!$optionTermID) {
+                    $optionTermID = get_term_by('name', (string) $property->Значение, $attribute['taxName']);
 
-                        if (!is_wp_error($term)) {
-                            $optionTermID = $term['term_id'];
+                    if ($optionTermID) {
+                        $optionTermID = $optionTermID->term_id;
 
-                            // default meta value by ordering
-                            update_term_meta($optionTermID, 'order_' . $attribute['taxName'], 0);
-                        }
+                        Term::update1cId($optionTermID, $uniqId1c);
                     }
                 }
 
-                if ($optionTermID) {
-                    update_post_meta(
-                        $productEntry['ID'],
-                        'attribute_' . $attribute['taxName'],
-                        get_term_by('id', $optionTermID, $attribute['taxName'])->slug
+                if (!$optionTermID) {
+                    $term = Term::insertProductAttributeValue(
+                        (string) $property->Значение,
+                        $attribute['taxName'],
+                        $uniqId1c
                     );
 
-                    $_SESSION['IMPORT_1C']['setTerms'][$productEntry['post_parent']][$attribute['taxName']][] =
-                        $optionTermID;
+                    if (!is_wp_error($term)) {
+                        $optionTermID = $term['term_id'];
+
+                        // default meta value by ordering
+                        update_term_meta($optionTermID, 'order_' . $attribute['taxName'], 0);
+
+                        Term::update1cId($optionTermID, $uniqId1c);
+                    }
                 }
+            }
+
+            if ($optionTermID) {
+                update_post_meta(
+                    $productEntry['ID'],
+                    'attribute_' . $attribute['taxName'],
+                    get_term_by('id', $optionTermID, $attribute['taxName'])->slug
+                );
+
+                $_SESSION['IMPORT_1C']['setTerms'][$productEntry['post_parent']][$attribute['taxName']][] =
+                    $optionTermID;
             }
         }
     }
@@ -432,6 +440,7 @@ class Product
             $_SESSION['IMPORT_1C']['product_cat_list'] = Term::getProductCatIDs(false);
         }
 
+        // https://developer.wordpress.org/reference/functions/wp_get_object_terms/
         $currentProductCats = wp_get_object_terms($productID, 'product_cat', ['fields' => 'ids']);
 
         //add only categories not from 1C to the main set
@@ -443,23 +452,21 @@ class Product
             }
         }
 
+        $categoryIds = array_map('intval', $categoryIds);
+
         Logger::logChanges(
             '(product) Set product cat list, ID - ' . $productID,
-            [get_post_meta($productID, '_id_1c', true), array_map('intval', $categoryIds)]
+            [get_post_meta($productID, '_id_1c', true), $categoryIds]
         );
 
-        Term::setObjectTerms(
-            $productID,
-            array_map('intval', $categoryIds),
-            'product_cat'
-        );
+        Term::setObjectTerms($productID, $categoryIds, 'product_cat');
     }
 
-    public static function show($productID, $withSetStatus = false)
+    public static function show($productID, $withSetStatus = false, $statusValue = 'instock')
     {
         if ($withSetStatus) {
-            update_post_meta($productID, '_stock_status', 'instock');
-            self::updateLookupTable((int) $productID, 'instock');
+            update_post_meta($productID, '_stock_status', $statusValue);
+            self::updateLookupTable((int) $productID, $statusValue);
         }
 
         $setTerms = [];
@@ -468,11 +475,7 @@ class Product
             $setTerms[] = 'featured';
         }
 
-        Term::setObjectTerms(
-            $productID,
-            $setTerms,
-            'product_visibility'
-        );
+        Term::setObjectTerms($productID, $setTerms, 'product_visibility');
     }
 
     public static function hide($productID, $withSetStatus = false)
@@ -507,11 +510,11 @@ class Product
         );
     }
 
-    public static function getProductIdByMeta($value, $metaKey = '_id_1c')
+    public static function getProductIdByMeta($value, $metaKey = '_id_1c', $isVariation = false)
     {
         global $wpdb;
 
-        $product = $wpdb->get_var(
+        $productId = $wpdb->get_var(
             $wpdb->prepare(
                 "SELECT `post_id` FROM `{$wpdb->postmeta}` WHERE `meta_value` = %s AND `meta_key` = %s",
                 (string) $value,
@@ -519,43 +522,60 @@ class Product
             )
         );
 
-        if ($product) {
-            return $product;
+        if (!$productId) {
+            return null;
         }
 
-        return null;
+        $postType = get_post_type($productId);
+
+        if ($isVariation && $postType !== 'product_variation') {
+            return null;
+        } elseif ($postType !== 'product') {
+            return null;
+        }
+
+        return $productId;
     }
 
-    public static function removeProductThumbnail($productID)
+    public static function removeProductImages($productID)
     {
         Logger::logChanges(
             '(image) Removed thumbnail for ID - ' . $productID,
             [get_post_meta($productID, '_id_1c', true)]
         );
 
+        // https://developer.wordpress.org/reference/functions/wp_delete_attachment/
+        // https://developer.wordpress.org/reference/functions/get_post_thumbnail_id/
         wp_delete_attachment(get_post_thumbnail_id($productID), true);
+
+        // https://developer.wordpress.org/reference/functions/delete_post_thumbnail/
         delete_post_thumbnail($productID);
 
         $images = get_post_meta($productID, '_product_image_gallery', true);
 
-        if (!empty($images)) {
-            $images = explode(',', $images);
-
-            foreach ($images as $image) {
-                wp_delete_attachment($image, true);
-            }
-
-            update_post_meta($productID, '_product_image_gallery', '');
-
-            Logger::logChanges(
-                '(image) Removed gallery for ID - ' . $productID,
-                [get_post_meta($productID, '_id_1c', true)]
-            );
+        // if product gallery is empty
+        if (empty($images)) {
+            return;
         }
+
+        $images = explode(',', $images);
+
+        foreach ($images as $image) {
+            // https://developer.wordpress.org/reference/functions/wp_delete_attachment/
+            wp_delete_attachment($image, true);
+        }
+
+        update_post_meta($productID, '_product_image_gallery', '');
+
+        Logger::logChanges(
+            '(image) Removed gallery for ID - ' . $productID,
+            [get_post_meta($productID, '_id_1c', true)]
+        );
     }
 
     public static function removeVariations($productId)
     {
+        // https://developer.wordpress.org/reference/functions/wp_parse_id_list/
         $variationIds = wp_parse_id_list(
             get_posts(
                 [
@@ -570,29 +590,31 @@ class Product
 
         if (!empty($variationIds)) {
             foreach ($variationIds as $variationId) {
+                // https://developer.wordpress.org/reference/functions/wp_delete_post/
                 wp_delete_post($variationId, true);
             }
         }
 
         delete_transient('wc_product_children_' . $productId);
+
+        Logger::logChanges(
+            '(product) Removed product variations, ID - ' . $productId,
+            [get_post_meta($productId, '_id_1c', true)]
+        );
     }
 
     public static function removeProduct($productId)
     {
-        $postType = get_post_type($productId);
-
-        if ($postType !== 'product') {
+        if (get_post_type($productId) !== 'product') {
             return;
         }
 
         // https://developer.wordpress.org/reference/functions/has_post_thumbnail/
         if (has_post_thumbnail($productId)) {
-            self::removeProductThumbnail($productId);
+            self::removeProductImages($productId);
         }
 
-        $variable = get_post_meta($productId, '_is_set_variable', true);
-
-        if ($variable) {
+        if (get_post_meta($productId, '_is_set_variable', true)) {
             self::removeVariations($productId);
         }
 

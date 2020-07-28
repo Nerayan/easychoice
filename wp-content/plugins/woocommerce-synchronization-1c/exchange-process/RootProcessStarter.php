@@ -42,7 +42,7 @@ class RootProcessStarter
 
             switch ($_GET['type']) {
                 case 'catalog':
-                    // catalog exchange
+                    // catalog exchange - https://dev.1c-bitrix.ru/api_help/sale/algorithms/data_2_site.php
                     Catalog::process();
                     break;
                 case 'listen':
@@ -99,11 +99,18 @@ class RootProcessStarter
 
     private function sentHeaders()
     {
-        // If headers have not been sent yet and this is not a request for orders
-        if (
-            headers_sent() ||
-            isset($_GET['query'])
-        ) {
+        // If headers has been sent
+        if (headers_sent()) {
+            return;
+        }
+
+        // If is a request for orders
+        if (isset($_GET['mode']) && $_GET['mode'] === 'query') {
+            return;
+        }
+
+        // If is a request for info
+        if (isset($_GET['mode']) && $_GET['mode'] === 'info') {
             return;
         }
 

@@ -52,6 +52,15 @@ class SectionForExchangeOrders
                                 'itgalaxy-woocommerce-1c'
                             )
                         ],
+                        'send_orders_use_scheme31' => [
+                            'type' => 'checkbox',
+                            'title' => esc_html__('Use scheme 3.1', 'itgalaxy-woocommerce-1c'),
+                            'description' => esc_html__(
+                                'If enabled, then the unloading of orders will be formed indicating version 3.1, a '
+                                . 'number of mandatory details, as well as nesting of documents in containers.',
+                                'itgalaxy-woocommerce-1c'
+                            )
+                        ],
                         'send_orders_last_success_export' => [
                             'title' => esc_html__('Date / time of last request:', 'itgalaxy-woocommerce-1c'),
                             'type' => 'datetime-local',
@@ -74,6 +83,18 @@ class SectionForExchangeOrders
                                 'itgalaxy-woocommerce-1c'
                             )
                         ],
+                        'send_orders_exclude_if_status' => [
+                            'title' => esc_html__(
+                                'Do not unload orders in selected statuses:',
+                                'itgalaxy-woocommerce-1c'
+                            ),
+                            'type' => 'select2',
+                            'options' => $orderStatusList,
+                            'description' => esc_html__(
+                                'Use this setting if you want to exclude orders in some status from unloading.',
+                                'itgalaxy-woocommerce-1c'
+                            )
+                        ],
                         'send_orders_use_product_id_from_site' => [
                             'type' => 'checkbox',
                             'title' => esc_html__(
@@ -85,6 +106,19 @@ class SectionForExchangeOrders
                                 . 'connected with the data from the uploading from 1C (does not have a guid), then the '
                                 . 'product / variation id will be added to the "Ид" node, otherwise if the product / '
                                 . 'variation is not associated with data upload from 1C, node "Ид" will not be added.',
+                                'itgalaxy-woocommerce-1c'
+                            )
+                        ],
+                        'send_orders_use_variation_characteristics_from_site' => [
+                            'type' => 'checkbox',
+                            'title' => esc_html__(
+                                'Generate attribute data for variations (if there is no 1С guid)',
+                                'itgalaxy-woocommerce-1c'
+                            ),
+                            'description' => esc_html__(
+                                'If enabled, then when generating data about goods, if this is a variation and it does'
+                                . 'not have a guid, that is, it is not associated with unloading data, then generate'
+                                . 'data on the attributes and values of the variation in node "ХарактеристикиТовара".',
                                 'itgalaxy-woocommerce-1c'
                             )
                         ],
@@ -149,6 +183,17 @@ class SectionForExchangeOrders
                                 'itgalaxy-woocommerce-1c'
                             ),
                             'options' => $orderStatusList
+                        ],
+                        'handle_get_order_product_set_change' => [
+                            'type' => 'checkbox',
+                            'title' => esc_html__('Handle changes in the set of products', 'itgalaxy-woocommerce-1c'),
+                            'description' => esc_html__(
+                                'If enabled, when exchanging with 1C, then the site will accept and process changes in '
+                                . 'the set of products of the order when 1C sends this data (Add, remove, quantity, '
+                                . 'price). Changes apply only if the product / variation on the site has guid from '
+                                . '1C.',
+                                'itgalaxy-woocommerce-1c'
+                            )
                         ],
                     ]
                 ]

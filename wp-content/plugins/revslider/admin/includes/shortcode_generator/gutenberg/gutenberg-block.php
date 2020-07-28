@@ -24,10 +24,10 @@ if(!class_exists('RevSliderGutenberg')){
 			add_filter('block_categories', array($this, 'create_block_category'), 10, 2);
 			
 			// Hook: Frontend assets.
-			add_action('enqueue_block_assets', array($this, 'revslider_gutenberg_cgb_block_assets'));
+			add_action('enqueue_block_assets', array( $this, 'revslider_gutenberg_cgb_block_assets'));
 			
 			// Hook: Editor assets.
-			add_action('enqueue_block_editor_assets', array($this, 'revslider_gutenberg_cgb_editor_assets'));
+			add_action('enqueue_block_editor_assets', array( $this, 'revslider_gutenberg_cgb_editor_assets'));
 		}
 		
 		/**
@@ -67,8 +67,8 @@ if(!class_exists('RevSliderGutenberg')){
 			wp_enqueue_style(
 				'revslider_gutenberg-cgb-style-css', // Handle.
 				plugins_url( $this->prefix . 'dist/blocks.style.build.css', dirname( __FILE__ )), // Block style CSS.
-				array('wp-editor'), // Dependency to include the CSS after it.
-				RS_REVISION// filemtime( plugin_dir_path( __DIR__ ) . 'dist/blocks.style.build.css') // Version: File modification time.
+				array('wp-editor') // Dependency to include the CSS after it.
+				// filemtime( plugin_dir_path( __DIR__ ) . 'dist/blocks.style.build.css') // Version: File modification time.
 			);
 		}
 
@@ -88,7 +88,6 @@ if(!class_exists('RevSliderGutenberg')){
 				plugins_url( $this->prefix . 'dist/blocks.build.js', dirname( __FILE__ )), // Block.build.js: We register the block here. Built with Webpack.
 				array('wp-blocks', 'wp-i18n', 'wp-element', 'wp-editor'), // Dependencies, defined above.
 				// filemtime( plugin_dir_path( __DIR__ ) . 'dist/blocks.build.js'), // Version: File modification time.
-				RS_REVISION,
 				true // Enqueue the script in the footer.
 			);
 
@@ -96,8 +95,7 @@ if(!class_exists('RevSliderGutenberg')){
 			wp_enqueue_style(
 				'revslider_gutenberg-cgb-block-editor-css', // Handle.
 				plugins_url( $this->prefix . 'dist/blocks.editor.build.css', dirname( __FILE__ )), // Block editor CSS.
-				array('wp-edit-blocks'), // Dependency to include the CSS after it.
-				RS_REVISION
+				array('wp-edit-blocks') // Dependency to include the CSS after it.
 				// filemtime( plugin_dir_path( __DIR__ ) . 'dist/blocks.editor.build.css') // Version: File modification time.
 			);
 		}

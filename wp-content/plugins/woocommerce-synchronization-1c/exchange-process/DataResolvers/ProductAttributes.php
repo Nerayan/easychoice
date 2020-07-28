@@ -22,6 +22,7 @@ class ProductAttributes
         }
 
         $currentAttributes = [];
+        $setAttributes = [];
 
         foreach ($element->ЗначенияСвойств->ЗначенияСвойства as $property) {
             if (empty($property->Значение) || empty($productOptions[(string) $property->Ид])) {
@@ -43,8 +44,6 @@ class ProductAttributes
 
             $attribute = $productOptions[(string) $property->Ид];
 
-            $optionTermID = false;
-
             if (
                 $attribute['type'] === 'Справочник' &&
                 isset($attribute['values'][(string) $property->Значение]) &&
@@ -52,26 +51,34 @@ class ProductAttributes
             ) {
                 $optionTermID = $attribute['values'][(string) $property->Значение];
             } else {
-                $optionTermSlug = md5($attribute['taxName']
-                    . (string) $property->Значение);
-                $term = get_term_by('slug', $optionTermSlug, $attribute['taxName']);
+                $uniqId1c = md5($attribute['createdTaxName'] . (string) $property->Значение);
 
-                if ($term) {
-                    $optionTermID = $term->term_id;
-                } else {
-                    $term =
-                        wp_insert_term(
-                            (string) $property->Значение,
-                            $attribute['taxName'],
-                            [
-                                'slug' => $optionTermSlug,
-                                'description' => '',
-                                'parent' => 0
-                            ]
-                        );
+                $optionTermID = Term::getTermIdByMeta($uniqId1c);
+
+                if (!$optionTermID) {
+                    $optionTermID = get_term_by('name', (string) $property->Значение, $attribute['taxName']);
+
+                    if ($optionTermID) {
+                        $optionTermID = $optionTermID->term_id;
+
+                        Term::update1cId($optionTermID, $uniqId1c);
+                    }
+                }
+
+                if (!$optionTermID) {
+                    $term = Term::insertProductAttributeValue(
+                        (string) $property->Значение,
+                        $attribute['taxName'],
+                        $uniqId1c
+                    );
 
                     if (!is_wp_error($term)) {
                         $optionTermID = $term['term_id'];
+
+                        // default meta value by ordering
+                        update_term_meta($optionTermID, 'order_' . $attribute['taxName'], 0);
+
+                        Term::update1cId($optionTermID, $uniqId1c);
                     }
                 }
             }
@@ -99,11 +106,21 @@ class ProductAttributes
 
             $currentAttributes[] = $attribute['taxName'];
 
-            Term::setObjectTerms(
-                $productId,
-                (int) $optionTermID,
-                $attribute['taxName']
-            );
+            if (!isset($setAttributes[$attribute['taxName']])) {
+                $setAttributes[$attribute['taxName']] = [];
+            }
+
+            $setAttributes[$attribute['taxName']][] = (int) $optionTermID;
+        }
+
+        if ($setAttributes) {
+            foreach ($setAttributes as $tax => $values) {
+                Term::setObjectTerms(
+                    $productId,
+                    array_map('intval', $values),
+                    $tax
+                );
+            }
         }
 
         // remove non exists attributes

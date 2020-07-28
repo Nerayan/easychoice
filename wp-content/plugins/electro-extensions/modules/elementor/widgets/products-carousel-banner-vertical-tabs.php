@@ -295,8 +295,8 @@ class Electro_Elementor_Products_Carousel_Banner_Vertical_Tabs extends Widget_Ba
                 'type'          => Controls_Manager::SWITCHER,
                 'label_on'      => esc_html__( 'Enable', 'electro-extensions' ),
                 'label_off'     => esc_html__( 'Disable', 'electro-extensions' ),
-                'return_value'  => true,
-                'default'       => true,
+                'return_value'  => 'true',
+                'default'       => 'true',
             ]
         );
 
@@ -307,8 +307,8 @@ class Electro_Elementor_Products_Carousel_Banner_Vertical_Tabs extends Widget_Ba
                 'type'          => Controls_Manager::SWITCHER,
                 'label_on'      => esc_html__( 'Enable', 'electro-extensions' ),
                 'label_off'     => esc_html__( 'Disable', 'electro-extensions' ),
-                'return_value'  => true,
-                'default'       => true,
+                'return_value'  => 'true',
+                'default'       => 'true',
             ]
         );
 
@@ -319,8 +319,8 @@ class Electro_Elementor_Products_Carousel_Banner_Vertical_Tabs extends Widget_Ba
                 'type'          => Controls_Manager::SWITCHER,
                 'label_on'      => esc_html__( 'Enable', 'electro-extensions' ),
                 'label_off'     => esc_html__( 'Disable', 'electro-extensions' ),
-                'return_value'  => true,
-                'default'       => true,
+                'return_value'  => 'true',
+                'default'       => 'true',
             ]
         );
 

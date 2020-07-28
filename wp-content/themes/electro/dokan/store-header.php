@@ -124,32 +124,35 @@ if ( is_user_logged_in() ) {
                             </div> <!-- .title-and-rating -->
                         <?php endif; ?>
                         <?php if ( $store_version === 'store-v5' ) : ?>
-                            <?php if ( is_dokan_pro_activated() && ( ( class_exists( 'Dokan_Store_Support' ) && $show_support_btn ) || class_exists( 'Dokan_Follow_Store_Follow_Button' ) || class_exists( 'Dokan_Pro_Store_Share' ) ) ) : ?>
+                            <?php if ( is_dokan_pro_activated() && ( ( electro_dokan_store_support_exists() && $show_support_btn ) || electro_dokan_store_follow_exists() || electro_dokan_store_share_exists() ) ) : ?>
                                 <div class="dokan-store-support-and-follow-wrap">
                                     <?php
                                         $vendor = dokan()->vendor->get( $store_id );
                                         $store_info = dokan_get_store_info( $store_id );
 
-                                        if( class_exists( 'Dokan_Store_Support' ) && $show_support_btn ) {
-                                            $support_button = Dokan_Store_Support::init();
-                                            remove_action( 'dokan_after_store_tabs', array( $support_button, 'generate_support_button' ) );
+                                        if( electro_dokan_store_support_exists() && $show_support_btn ) {
+                                            if( version_compare( dokan_pro()->version, '3.0.0' , '<' ) ) {
+                                                electro_remove_class_action( 'dokan_after_store_tabs', 'Dokan_Store_Support', 'generate_support_button' );
+                                            } else {
+                                                electro_remove_class_action( 'dokan_after_store_tabs', 'WeDevs\DokanPro\Modules\StoreSupport\Module', 'generate_support_button' );
+                                            }
 
                                             ?><div class="dokan-store-support-btn-wrap">
                                                 <button data-store_id="<?php echo $store_id; ?>" class="dokan-store-support-btn dokan-btn dokan-btn-theme dokan-btn-sm <?php echo $user_logged_in ?>"><?php echo esc_html( $support_text ); ?></button>
                                             </div><?php
                                         }
 
-                                        if( class_exists( 'Dokan_Follow_Store_Follow_Button' ) ) {
+                                        if( electro_dokan_store_follow_exists() ) {
                                             $follow_button = new Dokan_Follow_Store_Follow_Button();
-                                            remove_all_actions( 'dokan_after_store_tabs', 99 );
+                                            electro_remove_class_action( 'dokan_after_store_tabs', 'Dokan_Follow_Store_Follow_Button', 'add_follow_button_after_store_tabs', 99 );
 
                                             ?><div class="dokan-store-follow-store-button-container dokan-store-follow-store-btn-wrap">
                                                 <?php $follow_button->add_follow_button( $vendor->data, array( 'dokan-btn-sm' ) ); ?>
                                             </div><?php
                                         }
 
-                                        if( class_exists( 'Dokan_Pro_Store_Share' ) ) {
-                                            $dokan_social = Dokan_Pro_Store_Share::init();
+                                        if( electro_dokan_store_share_exists() ) {
+                                            $dokan_social = version_compare( dokan_pro()->version, '3.0.0' , '<' ) ? Dokan_Pro_Store_Share::init() : dokan_pro()->store_share;
                                             echo $dokan_social->render_html();
                                         }
                                     ?>
@@ -267,42 +270,48 @@ if ( is_user_logged_in() ) {
                     </div> <!-- .profile-summery-info-wrapper -->
 
                     <?php if ( is_dokan_pro_activated() && $store_version !== 'store-v5' ) : ?>
-                        <?php if( ( $store_version !== 'store-v2' ) && ( ( class_exists( 'Dokan_Store_Support' ) && $show_support_btn ) || class_exists( 'Dokan_Follow_Store_Follow_Button' ) || ( class_exists( 'Dokan_Pro_Store_Share' ) && ( $store_version === 'store-v3' || $store_version === 'store-v4' ) ) ) ) : ?>
+                        <?php if( ( $store_version !== 'store-v2' ) && ( ( electro_dokan_store_support_exists() && $show_support_btn ) || electro_dokan_store_follow_exists() || ( electro_dokan_store_share_exists() && ( $store_version === 'store-v3' || $store_version === 'store-v4' ) ) ) ) : ?>
                             <div class="dokan-store-support-and-follow-wrap">
                                 <?php
                                     $vendor = dokan()->vendor->get( $store_id );
                                     $store_info = dokan_get_store_info( $store_id );
 
-                                    if( class_exists( 'Dokan_Store_Support' ) && $show_support_btn ) {
-                                        $support_button = Dokan_Store_Support::init();
-                                        remove_action( 'dokan_after_store_tabs', array( $support_button, 'generate_support_button' ) );
+                                    if( electro_dokan_store_support_exists() && $show_support_btn ) {
+                                        if( version_compare( dokan_pro()->version, '3.0.0' , '<' ) ) {
+                                            electro_remove_class_action( 'dokan_after_store_tabs', 'Dokan_Store_Support', 'generate_support_button' );
+                                        } else {
+                                            electro_remove_class_action( 'dokan_after_store_tabs', 'WeDevs\DokanPro\Modules\StoreSupport\Module', 'generate_support_button' );
+                                        }
 
                                         ?><div class="dokan-store-support-btn-wrap dokan-right">
                                             <button data-store_id="<?php echo $store_id; ?>" class="dokan-store-support-btn dokan-btn dokan-btn-theme dokan-btn-sm <?php echo $user_logged_in ?>"><?php echo esc_html( $support_text ); ?></button>
                                         </div><?php
                                     }
 
-                                    if( class_exists( 'Dokan_Follow_Store_Follow_Button' ) ) {
+                                    if( electro_dokan_store_follow_exists() ) {
                                         $follow_button = new Dokan_Follow_Store_Follow_Button();
-                                        remove_all_actions( 'dokan_after_store_tabs', 99 );
+                                        electro_remove_class_action( 'dokan_after_store_tabs', 'Dokan_Follow_Store_Follow_Button', 'add_follow_button_after_store_tabs', 99 );
 
                                         ?><div class="dokan-store-follow-store-button-container dokan-store-follow-store-btn-wrap">
                                             <?php $follow_button->add_follow_button( $vendor->data, array( 'dokan-btn-sm' ) ); ?>
                                         </div><?php
                                     }
 
-                                    if( ( $store_version === 'store-v3' || $store_version === 'store-v4' ) && class_exists( 'Dokan_Pro_Store_Share' ) ) {
-                                        $dokan_social = Dokan_Pro_Store_Share::init();
+                                    if( ( $store_version === 'store-v3' || $store_version === 'store-v4' ) && electro_dokan_store_share_exists() ) {
+                                        $dokan_social = version_compare( dokan_pro()->version, '3.0.0' , '<' ) ? Dokan_Pro_Store_Share::init() : dokan_pro()->store_share;
                                         echo $dokan_social->render_html();
                                     }
                                 ?>
                             </div>
                         <?php elseif ( ( $store_version == 'store-v2' ) ) : ?>
                             <div class="dokan-store-support-and-rating-wrap">
-                                <?php if ( class_exists( 'Dokan_Store_Support' ) && $show_support_btn ) : ?>
+                                <?php if ( electro_dokan_store_support_exists() && $show_support_btn ) : ?>
                                     <?php
-                                        $support_button = Dokan_Store_Support::init();
-                                        remove_action( 'dokan_after_store_tabs', array( $support_button, 'generate_support_button' ) );
+                                        if( version_compare( dokan_pro()->version, '3.0.0' , '<' ) ) {
+                                            electro_remove_class_action( 'dokan_after_store_tabs', 'Dokan_Store_Support', 'generate_support_button' );
+                                        } else {
+                                            electro_remove_class_action( 'dokan_after_store_tabs', 'WeDevs\DokanPro\Modules\StoreSupport\Module', 'generate_support_button' );
+                                        }
                                     ?>
 
                                     <div class="dokan-store-support-btn-wrap">

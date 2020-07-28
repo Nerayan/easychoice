@@ -41,7 +41,7 @@ class SectionTempCatalogInfo
                 <?php echo esc_html__('Clear', 'itgalaxy-woocommerce-1c'); ?>
                 <span data-ui-component="itglx-wc1c-temp-count-and-size-text"></span>
             </span>
-            <span class="spinner-grow spinner-grow-sm d-none" role="status" aria-hidden="true"></span>
+            <span class="spinner-grow spinner-grow-sm" role="status"></span>
         </button>
         <?php
 

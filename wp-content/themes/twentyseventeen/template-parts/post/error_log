@@ -1,8 +1,0 @@
-[11-Jul-2020 15:39:14 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function the_ID() in /home/easychoi/develop/wp-content/themes/twentyseventeen/template-parts/post/content-video.php:15
-Stack trace:
-#0 {main}
-  thrown in /home/easychoi/develop/wp-content/themes/twentyseventeen/template-parts/post/content-video.php on line 15
-[16-Jul-2020 13:33:44 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function the_ID() in /home/easychoi/develop/wp-content/themes/twentyseventeen/template-parts/post/content-video.php:15
-Stack trace:
-#0 {main}
-  thrown in /home/easychoi/develop/wp-content/themes/twentyseventeen/template-parts/post/content-video.php on line 15

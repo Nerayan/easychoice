@@ -116,6 +116,17 @@ class Groups
             return $processData;
         }
 
+        if ($category) {
+            $realTerm = get_term($category, 'product_cat');
+
+            if (!$realTerm) {
+                delete_term_meta($category, '_id_1c');
+                $category = false;
+            }
+
+            unset($realTerm);
+        }
+
         $categoryEntry = [];
 
         if (!$category) {
