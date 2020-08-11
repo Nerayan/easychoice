@@ -1,0 +1,12 @@
+[01-Aug-2020 02:20:33 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function esc_attr() in /home/easychoi/develop/wp-content/plugins/electro-extensions/modules/post-formats/views/format-gallery.php:6
+Stack trace:
+#0 {main}
+  thrown in /home/easychoi/develop/wp-content/plugins/electro-extensions/modules/post-formats/views/format-gallery.php on line 6
+[06-Aug-2020 03:25:45 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function esc_attr() in /home/easychoi/develop/wp-content/plugins/electro-extensions/modules/post-formats/views/format-gallery.php:6
+Stack trace:
+#0 {main}
+  thrown in /home/easychoi/develop/wp-content/plugins/electro-extensions/modules/post-formats/views/format-gallery.php on line 6
+[11-Aug-2020 03:45:30 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function esc_attr() in /home/easychoi/develop/wp-content/plugins/electro-extensions/modules/post-formats/views/format-gallery.php:6
+Stack trace:
+#0 {main}
+  thrown in /home/easychoi/develop/wp-content/plugins/electro-extensions/modules/post-formats/views/format-gallery.php on line 6

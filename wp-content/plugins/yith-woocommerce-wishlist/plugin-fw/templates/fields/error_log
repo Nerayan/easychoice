@@ -1,0 +1,15 @@
+[01-Aug-2020 02:20:27 UTC] PHP Warning:  extract() expects parameter 1 to be array, null given in /home/easychoi/develop/wp-content/plugins/yith-woocommerce-wishlist/plugin-fw/templates/fields/sidebars.php on line 13
+[01-Aug-2020 02:20:27 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function checked() in /home/easychoi/develop/wp-content/plugins/yith-woocommerce-wishlist/plugin-fw/templates/fields/sidebars.php:21
+Stack trace:
+#0 {main}
+  thrown in /home/easychoi/develop/wp-content/plugins/yith-woocommerce-wishlist/plugin-fw/templates/fields/sidebars.php on line 21
+[06-Aug-2020 03:25:51 UTC] PHP Warning:  extract() expects parameter 1 to be array, null given in /home/easychoi/develop/wp-content/plugins/yith-woocommerce-wishlist/plugin-fw/templates/fields/sidebars.php on line 13
+[06-Aug-2020 03:25:51 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function checked() in /home/easychoi/develop/wp-content/plugins/yith-woocommerce-wishlist/plugin-fw/templates/fields/sidebars.php:21
+Stack trace:
+#0 {main}
+  thrown in /home/easychoi/develop/wp-content/plugins/yith-woocommerce-wishlist/plugin-fw/templates/fields/sidebars.php on line 21
+[11-Aug-2020 03:45:19 UTC] PHP Warning:  extract() expects parameter 1 to be array, null given in /home/easychoi/develop/wp-content/plugins/yith-woocommerce-wishlist/plugin-fw/templates/fields/sidebars.php on line 13
+[11-Aug-2020 03:45:19 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function checked() in /home/easychoi/develop/wp-content/plugins/yith-woocommerce-wishlist/plugin-fw/templates/fields/sidebars.php:21
+Stack trace:
+#0 {main}
+  thrown in /home/easychoi/develop/wp-content/plugins/yith-woocommerce-wishlist/plugin-fw/templates/fields/sidebars.php on line 21
