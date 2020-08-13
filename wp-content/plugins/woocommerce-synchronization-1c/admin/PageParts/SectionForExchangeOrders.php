@@ -109,6 +109,13 @@ class SectionForExchangeOrders
                                 'itgalaxy-woocommerce-1c'
                             )
                         ],
+                        'send_orders_combine_data_variation_as_main_product' => [
+                            'type' => 'checkbox',
+                            'title' => esc_html__(
+                                'Combine data on variations and pass it as one line with the main product',
+                                'itgalaxy-woocommerce-1c'
+                            )
+                        ],
                         'send_orders_use_variation_characteristics_from_site' => [
                             'type' => 'checkbox',
                             'title' => esc_html__(

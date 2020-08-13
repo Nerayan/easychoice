@@ -335,20 +335,18 @@ class Product
             }
 
             if (!$optionTermID) {
-                $term = Term::insertProductAttributeValue(
+                $term = ProductAttributeHelper::insertValue(
                     (string) $property->Значение,
                     $attribute['taxName'],
                     $uniqId1c
                 );
 
-                if (!is_wp_error($term)) {
-                    $optionTermID = $term['term_id'];
+                $optionTermID = $term['term_id'];
 
-                    // default meta value by ordering
-                    update_term_meta($optionTermID, 'order_' . $attribute['taxName'], 0);
+                // default meta value by ordering
+                update_term_meta($optionTermID, 'order_' . $attribute['taxName'], 0);
 
-                    Term::update1cId($optionTermID, $uniqId1c);
-                }
+                Term::update1cId($optionTermID, $uniqId1c);
             }
 
             if ($optionTermID) {
@@ -379,7 +377,9 @@ class Product
             $attribute = $productOptions[(string) $property->Ид];
 
             if ($attribute['type'] === 'Справочник') {
-                $optionTermID = $attribute['values'][(string) $property->Значение];
+                $optionTermID = isset($attribute['values'][(string) $property->Значение])
+                    ? $attribute['values'][(string) $property->Значение]
+                    : false;
             } else {
                 $uniqId1c = md5($attribute['createdTaxName'] . (string) $property->Значение);
                 $optionTermID = Term::getTermIdByMeta($uniqId1c);
@@ -395,20 +395,18 @@ class Product
                 }
 
                 if (!$optionTermID) {
-                    $term = Term::insertProductAttributeValue(
+                    $term = ProductAttributeHelper::insertValue(
                         (string) $property->Значение,
                         $attribute['taxName'],
                         $uniqId1c
                     );
 
-                    if (!is_wp_error($term)) {
-                        $optionTermID = $term['term_id'];
+                    $optionTermID = $term['term_id'];
 
-                        // default meta value by ordering
-                        update_term_meta($optionTermID, 'order_' . $attribute['taxName'], 0);
+                    // default meta value by ordering
+                    update_term_meta($optionTermID, 'order_' . $attribute['taxName'], 0);
 
-                        Term::update1cId($optionTermID, $uniqId1c);
-                    }
+                    Term::update1cId($optionTermID, $uniqId1c);
                 }
             }
 
@@ -514,27 +512,25 @@ class Product
     {
         global $wpdb;
 
-        $productId = $wpdb->get_var(
+        $product = $wpdb->get_row(
             $wpdb->prepare(
-                "SELECT `post_id` FROM `{$wpdb->postmeta}` WHERE `meta_value` = %s AND `meta_key` = %s",
+                "SELECT `meta`.`post_id` as `post_id`, `posts`.`post_type` as `post_type` FROM `{$wpdb->postmeta}` as `meta`
+                INNER JOIN `{$wpdb->posts}` as `posts` ON (`meta`.`post_id` = `posts`.`ID`)
+                WHERE `meta`.`meta_value` = %s AND `meta`.`meta_key` = %s",
                 (string) $value,
                 (string) $metaKey
             )
         );
 
-        if (!$productId) {
+        if (!isset($product->post_type)) {
             return null;
         }
 
-        $postType = get_post_type($productId);
-
-        if ($isVariation && $postType !== 'product_variation') {
-            return null;
-        } elseif ($postType !== 'product') {
-            return null;
+        if ($isVariation) {
+            return $product->post_type === 'product_variation' ? $product->post_id : null;
         }
 
-        return $productId;
+        return $product->post_type === 'product' ? $product->post_id : null;
     }
 
     public static function removeProductImages($productID)

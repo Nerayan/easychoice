@@ -89,6 +89,9 @@ class Cron
 
             if ($attributeTaxonomies) {
                 foreach ($attributeTaxonomies as $tax) {
+                    // widget filter by attribute clean transient
+                    \delete_transient('wc_layered_nav_counts_pa_' . $tax->attribute_name);
+
                     $this->recalculatePostCountInTax(
                         // https://docs.woocommerce.com/wc-apidocs/function-wc_attribute_taxonomy_name.html
                         \wc_attribute_taxonomy_name($tax->attribute_name)

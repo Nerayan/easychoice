@@ -2,6 +2,7 @@
 namespace Itgalaxy\Wc\Exchange1c\Includes;
 
 use Itgalaxy\Wc\Exchange1c\ExchangeProcess\Filters\CreateProductInDraft;
+use Itgalaxy\Wc\Exchange1c\ExchangeProcess\Filters\FindProductCatId;
 use Itgalaxy\Wc\Exchange1c\ExchangeProcess\Filters\FindProductId;
 use Itgalaxy\Wc\Exchange1c\ExchangeProcess\Filters\ProductIsRemoved;
 use Itgalaxy\Wc\Exchange1c\ExchangeProcess\Filters\SkipProductByXml;
@@ -11,6 +12,7 @@ use Itgalaxy\Wc\Exchange1c\ExchangeProcess\RootProcessStarter;
 class Bootstrap
 {
     const OPTIONS_KEY = 'wc-itgalaxy-1c-exchange-settings';
+    const OPTION_INFO_KEY = 'wc-itgalaxy-1c-exchange-additional-info';
     const PURCHASE_CODE_OPTIONS_KEY = 'wc-itgalaxy-1c-exchange-purchase-code';
 
     public static $plugin = '';
@@ -40,6 +42,7 @@ class Bootstrap
 
             // bind filters
             CreateProductInDraft::getInstance();
+            FindProductCatId::getInstance();
             FindProductId::getInstance();
             ProductIsRemoved::getInstance();
             SkipProductByXml::getInstance();
@@ -157,6 +160,10 @@ class Bootstrap
 
         if (get_option(self::PURCHASE_CODE_OPTIONS_KEY) === false) {
             add_option(self::PURCHASE_CODE_OPTIONS_KEY, '', '', 'no');
+        }
+
+        if (get_option(self::OPTION_INFO_KEY) === false) {
+            add_option(self::OPTION_INFO_KEY, [], '', 'no');
         }
 
         if (get_option('all_prices_types') === false) {

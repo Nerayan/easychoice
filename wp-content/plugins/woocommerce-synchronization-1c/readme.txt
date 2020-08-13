@@ -35,7 +35,15 @@ Once completed, visit your plugins page.
 
 == Changelog ==
 
-= 1.67.0 =
+= 1.70.2 =
+Fixed: generate unique attribute name.
+Chore: compatibility check with WP 5.5
+Feature: ability to search for an existing category by name, before creating a new one.
+
+= 1.69.1 =
+Chore: search for a product / variation by guid without an object cache, as this consumes a lot of memory in large sizes.
+Feature: generating transliterated attribute slugs.
+Feature: the ability to combine data on variations and pass it as one line with the main product (unloading orders).
 Feature: the ability to set `allow backorders?` variant for product with stock > 0.
 Feature: the ability to generate attribute data for variations (if there is no 1C guid) when unloading orders.
 Feature: formation of usual slugs for attribute values if possible.

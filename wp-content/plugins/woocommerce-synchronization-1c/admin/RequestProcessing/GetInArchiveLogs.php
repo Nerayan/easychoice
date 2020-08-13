@@ -43,7 +43,14 @@ class GetInArchiveLogs
         $this->createArchive(Logger::getLogPath(), $file);
 
         header('Content-Type: application/zip');
-        header('Content-Disposition: attachment; filename="' . 'logs_' . date('Y-m-d_H:i:s') . '.zip' . '"');
+        header(
+            'Content-Disposition: attachment; filename="'
+            . 'logs_('
+            . ITGALAXY_WC_1C_PLUGIN_VERSION
+            . ')_'
+            . date('Y-m-d_H:i:s')
+            . '.zip"'
+        );
         header('Content-Length: ' . filesize($file));
 
         readfile($file);

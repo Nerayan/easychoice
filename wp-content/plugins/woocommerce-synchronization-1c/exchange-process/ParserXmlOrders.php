@@ -168,7 +168,14 @@ class ParserXmlOrders
 
         if (!empty($current1CData)) {
             foreach ($current1CData as $guid => $itemData) {
-                $elementID = Product::getProductIdByMeta($guid);
+                $parseID = explode('#', (string) $guid);
+
+                // is variation
+                if (!empty($parseID[1])) {
+                    $elementID = Product::getProductIdByMeta($guid, '_id_1c', true);
+                } else {
+                    $elementID = Product::getProductIdByMeta($guid);
+                }
 
                 if (!$elementID) {
                     continue;

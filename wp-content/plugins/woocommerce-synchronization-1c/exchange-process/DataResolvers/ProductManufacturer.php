@@ -1,6 +1,7 @@
 <?php
 namespace Itgalaxy\Wc\Exchange1c\ExchangeProcess\DataResolvers;
 
+use Itgalaxy\Wc\Exchange1c\ExchangeProcess\Helpers\ProductAttributeHelper;
 use Itgalaxy\Wc\Exchange1c\ExchangeProcess\Helpers\Term;
 use Itgalaxy\Wc\Exchange1c\Includes\Logger;
 
@@ -99,22 +100,11 @@ class ProductManufacturer
                 ]
             );
         } else {
-            $optionTermID = Term::insertProductAttributeValue(
+            $optionTermID = ProductAttributeHelper::insertValue(
                 (string) $element->Изготовитель->Наименование,
                 $taxName,
                 $uniqueId1c
             );
-
-            if (is_wp_error($optionTermID)) {
-                throw new \Exception(
-                    'ERROR ADD ATTRIBUTE VALUE - '
-                    . $optionTermID->get_error_message()
-                    . ', tax - '
-                    . $taxName
-                    . ', value - '
-                    . (string) $element->Изготовитель->Наименование
-                );
-            }
 
             $optionTermID = $optionTermID['term_id'];
 
@@ -139,19 +129,12 @@ class ProductManufacturer
             $_SESSION['IMPORT_1C']['brand_taxonomy'] = [];
         }
 
-        global $wpdb;
-
         $taxByLabel = hash('crc32', 'Изготовитель');
 
         $attributeName = 'brand_' . $taxByLabel;
         $attributeTaxName = 'pa_' . $attributeName;
 
-        $attribute = $wpdb->get_row(
-            $wpdb->prepare(
-                "SELECT * FROM `{$wpdb->prefix}woocommerce_attribute_taxonomies` WHERE `id_1c` = %s",
-                $attributeTaxName
-            )
-        );
+        $attribute = ProductAttributeHelper::get($attributeTaxName);
 
         // exists
         if ($attribute) {
@@ -161,50 +144,11 @@ class ProductManufacturer
             return 'pa_' . $attribute->attribute_name;
         }
 
-        $attributeCreate = [
-            'attribute_label' => 'Изготовитель',
-            'attribute_name' => $attributeName,
-            'attribute_type' => 'select',
-            'attribute_public' => 0,
-            'attribute_orderby' => 'menu_order',
-            'id_1c' => $attributeTaxName
-        ];
+        $attributeCreate = ProductAttributeHelper::insert('Изготовитель', $attributeName, $attributeTaxName);
+        Logger::logChanges('(attribute) Create attribute `Изготовитель`', $attributeCreate);
+        $attributeTaxName = 'pa_' . $attributeCreate['attribute_name'];
 
-        $wpdb->insert(
-            $wpdb->prefix . 'woocommerce_attribute_taxonomies',
-            $attributeCreate
-        );
-
-        // maybe error when insert processing, for example, non exists column `id_1c`
-        if (empty($wpdb->insert_id)) {
-            throw new \Exception(
-                'LAST ERROR - '
-                . $wpdb->last_error
-                . ', LAST QUERY - '
-                . $wpdb->last_query
-            );
-        }
-
-        Logger::logChanges(
-            '(attribute) Create attribute `Изготовитель` - ' . $attributeName,
-            $attributeCreate
-        );
-
-        do_action('woocommerce_attribute_added', $wpdb->insert_id, $attributeCreate);
-
-        flush_rewrite_rules();
-        delete_transient('wc_attribute_taxonomies');
-
-        if (
-            class_exists('\\WC_Cache_Helper') &&
-            method_exists('\\WC_Cache_Helper', 'invalidate_cache_group')
-        ) {
-            \WC_Cache_Helper::invalidate_cache_group('woocommerce-attributes');
-        }
-
-        delete_option($attributeTaxName . '_children');
-
-        register_taxonomy($attributeTaxName, null);
+        \register_taxonomy($attributeTaxName, null);
 
         $_SESSION['IMPORT_1C']['brand_taxonomy']['name'] = $attributeTaxName;
         $_SESSION['IMPORT_1C']['brand_taxonomy']['createdTaxName'] = $attributeTaxName;

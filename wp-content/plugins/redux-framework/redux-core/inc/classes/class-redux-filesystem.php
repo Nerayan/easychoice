@@ -94,6 +94,8 @@ if ( ! class_exists( 'Redux_Filesystem', false ) ) {
 		 */
 		public function __construct( $force_no_fs = false ) {
 
+			// This little number fixes some issues with certain filesystem setups.
+
 			if ( ! function_exists( 'request_filesystem_credentials' ) ) {
 				require_once ABSPATH . '/wp-admin/includes/template.php';
 				require_once ABSPATH . '/wp-includes/pluggable.php';
@@ -611,9 +613,14 @@ if ( ! class_exists( 'Redux_Filesystem', false ) ) {
 		 * @return string
 		 */
 		public function get_local_file_contents( $abs_path ) {
-			ob_start();
-			include $abs_path;
-			$contents = ob_get_clean();
+			try {
+				ob_start();
+				require_once $abs_path;
+				$contents = ob_get_clean();
+			} catch ( Exception $e ) {
+				// This means that ob_start has been disabled on the system. Let's fallback to good old file_get_contents.
+				$contents = file_get_contents( $abs_path ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
+			}
 
 			return $contents;
 		}
@@ -625,12 +632,13 @@ if ( ! class_exists( 'Redux_Filesystem', false ) ) {
 		 * @return string
 		 */
 		public function get_contents( $abs_path ) {
-			// phpcs:ignore WordPress.PHP.NoSilencedErrors
-			$return = $this->get_local_file_contents( $abs_path );
-
-			if ( ! $return && $this->use_filesystem ) {
-				$abs_path = $this->get_sanitized_path( $abs_path );
-				$return   = $this->wp_filesystem->get_contents( $abs_path );
+			$abs_path = $this->get_sanitized_path( $abs_path );
+			$return   = '';
+			if ( $this->use_filesystem ) {
+				$return = $this->wp_filesystem->get_contents( $abs_path );
+			}
+			if ( empty( $return ) ) {
+				$return = $this->get_local_file_contents( $abs_path );
 			}
 
 			return $return;

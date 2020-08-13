@@ -55,6 +55,7 @@ class SaleModeInfo
 
         self::sendResponse($xml);
 
+        Logger::saveLastResponseInfo('result content');
         Logger::logProtocol('info query send result');
     }
 

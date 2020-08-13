@@ -127,12 +127,28 @@ class Groups
             unset($realTerm);
         }
 
-        $categoryEntry = [];
+        $_SESSION['IMPORT_1C']['categoryIdStack'] = $processData['categoryIdStack'];
+
+        $categoryEntry = [
+            'parent' => $processData['categoryIdStack'][0],
+            'name' => trim(wp_strip_all_tags((string) $element->Наименование))
+        ];
 
         if (!$category) {
-            $category = apply_filters('itglx_wc1c_find_product_cat_term_id', $category, $element, 'product_cat');
+            $category = apply_filters(
+                'itglx_wc1c_find_product_cat_term_id',
+                $category,
+                $element,
+                'product_cat',
+                $categoryEntry['parent']
+            );
 
             if ($category) {
+                Logger::logChanges(
+                    '(product_cat) Found through filter `itglx_wc1c_find_product_cat_term_id`, `term_id` - '
+                        . $category,
+                    [(string) $element->Ид]
+                );
                 Term::update1cId($category, (string) $element->Ид);
             }
         }
@@ -140,11 +156,6 @@ class Groups
         if ($category) {
             $categoryEntry['term_id'] = $category;
         }
-
-        $_SESSION['IMPORT_1C']['categoryIdStack'] = $processData['categoryIdStack'];
-
-        $categoryEntry['parent'] = $processData['categoryIdStack'][0];
-        $categoryEntry['name'] = trim(wp_strip_all_tags((string) $element->Наименование));
 
         if (isset($categoryEntry['term_id'])) {
             Term::updateProductCat($categoryEntry);

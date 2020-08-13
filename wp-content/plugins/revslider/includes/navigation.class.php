@@ -378,31 +378,6 @@ class RevSliderNavigation extends RevSliderFunctions {
 	
 	
 	/**
-	 * change rgb, rgba and hex to rgba like 120,130,50,0.5 (no () and rgb/rgba)
-	 * @since: x.x.x
-	 **/
-	public function convert_any_rgb_or_rgba($css, $type){
-		if(strpos($css, 'rgb') !== false){
-			//$css = explode(')', explode('(', $css)[1])[0];
-			$css_1 = explode('(', $css);
-			$css_2 = explode(')', $css_1[1]);
-			$css = $css_2[0];
-
-		}else{
-			if($type === 'color-rgba'){
-				$css = $this->hex2rgba($css, false, true);
-			}else{
-				$css = $this->hex2rgba($css, false, true, true);
-			}
-		}
-
-		if($type === 'color-rgba' && count(explode(',', $css)) < 4) $css .= ',1';
-
-		return $css;
-	}
-	
-	
-	/**
 	 * Check the CSS for placeholders, replace them with correspinding values
 	 * @since: x.x.x
 	 **/
@@ -494,20 +469,6 @@ class RevSliderNavigation extends RevSliderFunctions {
 		}
 		
 		return $c_css;
-	}
-	
-	
-	/**
-	 * Check for example if the type is color or color-rgba and change hex and rgba values to fit our needs
-	 * @since: 5.2.0
-	 **/
-	public function check_css_convert($css, $type){
-		if($type == 'color' || $type == 'color-rgba'){
-			//modify css
-			$css = $this->convert_any_rgb_or_rgba($css, $type);
-		}
-		
-		return $css;
 	}
 	
 	
@@ -628,10 +589,10 @@ class RevSliderNavigation extends RevSliderFunctions {
 						array(
 							'settings' => json_encode(
 								array(
-									'dim'			=> $this->get_val($nav, 'dim'),
-									'placeholders'	=> $placeholders,
-									'presets'		=> $this->get_val($nav, 'presets'),
-									'version'		=> $this->version
+									'dim'		=> $this->get_val($nav, 'dim'),
+									'placeholders' => $placeholders,
+									'presets'	=> $this->get_val($nav, 'presets'),
+									'version'	=> $this->version
 								)
 							)
 						),

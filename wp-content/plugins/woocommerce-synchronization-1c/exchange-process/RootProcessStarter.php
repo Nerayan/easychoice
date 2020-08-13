@@ -89,12 +89,16 @@ class RootProcessStarter
     public static function failureResponse($message)
     {
         echo "failure\n" . esc_html($message);
+
+        Logger::saveLastResponseInfo('failure - ' . $message);
     }
 
     public static function successResponse($message = '')
     {
         echo "success\n" . $message;
         // escape ok
+
+        Logger::saveLastResponseInfo('success - ' . $message);
     }
 
     private function sentHeaders()

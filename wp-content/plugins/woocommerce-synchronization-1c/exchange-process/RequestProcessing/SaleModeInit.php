@@ -28,5 +28,6 @@ class SaleModeInit
         // 1c response does not require escape
 
         Logger::logProtocol('zip=no, file_limit=10000000');
+        Logger::saveLastResponseInfo('parameters');
     }
 }

@@ -236,6 +236,22 @@ if ( ! class_exists( 'Redux_Functions', false ) ) {
 		}
 
 		/**
+		 * Parse CSS shim.
+		 *
+		 * @since       4.0.0
+		 * @access      public
+		 *
+		 * @param array  $css_array CSS data.
+		 * @param string $style CSS style.
+		 * @param string $value CSS values.
+		 *
+		 * @return string CSS string
+		 */
+		public static function parseCSS( $css_array = array(), $style = '', $value = '' ) { // phpcs:ignore WordPress.NamingConventions.ValidFunctionName
+			return self::parse_css( $css_array, $style, $value );
+		}
+
+		/**
 		 * Parse CSS the old way, without mode options.
 		 *
 		 * @param array  $css_array CSS data.
@@ -499,7 +515,7 @@ if ( ! class_exists( 'Redux_Functions', false ) ) {
 			$result = preg_replace_callback(
 				'/[A-Z]/',
 				function ( $matches ) {
-					return '-' . strtolower( $matches[0] );
+					return '-' . Redux_Core::strtolower( $matches[0] );
 				},
 				$keys
 			);

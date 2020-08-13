@@ -95,39 +95,6 @@ class Term
         return $result['term_id'];
     }
 
-    public static function insertProductAttributeValue($name, $taxonomy, $alternativeSlug)
-    {
-        $attributeValue = wp_insert_term(
-            $name,
-            $taxonomy,
-            [
-                'slug' =>  wp_unique_term_slug(
-                    sanitize_title($name),
-                    (object) [
-                        'taxonomy' => $taxonomy,
-                        'parent' => 0
-                    ]
-                ),
-                'description' => '',
-                'parent' => 0
-            ]
-        );
-
-        if (is_wp_error($attributeValue)) {
-            $attributeValue = wp_insert_term(
-                $name,
-                $taxonomy,
-                [
-                    'slug' => $alternativeSlug,
-                    'description' => '',
-                    'parent' => 0
-                ]
-            );
-        }
-
-        return $attributeValue;
-    }
-
     public static function getObjectTerms($objectIDs, $taxonomies, $args = [])
     {
         // https://developer.wordpress.org/reference/functions/wp_get_object_terms/

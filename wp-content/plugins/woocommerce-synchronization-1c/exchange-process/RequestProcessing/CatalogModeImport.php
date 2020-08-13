@@ -141,6 +141,8 @@ class CatalogModeImport
         }
 
         if ($_SESSION['IMPORT_1C_STEP'] < 3) {
+            Logger::saveLastResponseInfo('progress - ' . $strMessage);
+
             echo "progress\n" . esc_html($strMessage);
             // 1c response does not require escape
         } else {

@@ -4,7 +4,9 @@ Plugin Name: Slider Revolution
 Plugin URI: https://revolution.themepunch.com/
 Description: Slider Revolution - Premium responsive slider
 Author: ThemePunch
-Version: 6.1.2
+Text Domain: revslider
+Domain Path: /languages
+Version: 6.2.15
 Author URI: https://themepunch.com/
 */
 
@@ -15,7 +17,7 @@ if(class_exists('RevSliderFront')){
 	die('ERROR: It looks like you have more than one instance of Slider Revolution installed. Please remove additional instances for this plugin to work again.');
 }
 
-define('RS_REVISION',			'6.1.2');
+define('RS_REVISION',			'6.2.15');
 define('RS_PLUGIN_PATH',		plugin_dir_path(__FILE__));
 define('RS_PLUGIN_SLUG_PATH',	plugin_basename(__FILE__));
 define('RS_PLUGIN_FILE_PATH',	__FILE__);
@@ -23,11 +25,12 @@ define('RS_PLUGIN_SLUG',		apply_filters('set_revslider_slug', 'revslider'));
 define('RS_PLUGIN_URL',			get_rs_plugin_url());
 define('RS_PLUGIN_URL_CLEAN',	str_replace(array('http://', 'https://'), '//', RS_PLUGIN_URL));
 define('RS_DEMO',				false);
-define('RS_TP_TOOLS',			'6.0'); //holds the version of the tp-tools script, load only the latest!
+define('RS_TP_TOOLS',			'6.2.15'); //holds the version of the tp-tools script, load only the latest!
 
 $revslider_fonts = array('queue' => array(), 'loaded' => array());
 $revslider_is_preview_mode = false;
 $revslider_save_post = false;
+$revslider_addon_notice_merged = 0;
 
 //include frameword files
 require_once(RS_PLUGIN_PATH . 'includes/data.class.php');
@@ -56,12 +59,18 @@ require_once(RS_PLUGIN_PATH . 'public/revslider-front.class.php');
 require_once(RS_PLUGIN_PATH . 'includes/backwards.php');
 
 try{
+	RevSliderFunctions::set_memory_limit();
 	
 	function rev_slider_shortcode($args, $mid_content = null){
 		extract(shortcode_atts(array('alias'	=> ''), $args, 'rev_slider'));
 		extract(shortcode_atts(array('settings' => ''), $args, 'rev_slider'));
 		extract(shortcode_atts(array('order'	=> ''), $args, 'rev_slider'));
 		extract(shortcode_atts(array('usage'	=> ''), $args, 'rev_slider'));
+		extract(shortcode_atts(array('modal'	=> ''), $args, 'rev_slider'));
+		extract(shortcode_atts(array('layout'	=> ''), $args, 'rev_slider'));
+		extract(shortcode_atts(array('offset'	=> ''), $args, 'rev_slider'));
+		extract(shortcode_atts(array('skin'		=> ''), $args, 'rev_slider'));
+		extract(shortcode_atts(array('zindex'	=> ''), $args, 'rev_slider'));
 		
 		$output = new RevSliderOutput();
 		
@@ -74,15 +83,20 @@ try{
 		
 		$output->set_custom_order($order);
 		$output->set_custom_settings($settings);
+		$output->set_custom_skin($skin);
 
 		$gallery_ids = $output->check_for_shortcodes($mid_content); //check for example on gallery shortcode and do stuff
 		if($gallery_ids !== false) $output->set_gallery_ids($gallery_ids);
 		
 		ob_start();
-		$slider = $output->add_slider_to_stage($slider_alias, $usage);
+		$slider = $output->add_slider_to_stage($slider_alias, $usage, $layout, $offset, $modal);
 		$content = ob_get_contents();
 		ob_clean();
 		ob_end_clean();
+
+		if(!empty($zindex)){
+			$content = '<div class="wp-block-themepunch-revslider" style="z-index:'.$zindex.';">' .$content. '</div>';
+		}
 		
 		if(!empty($slider)){
 			switch($slider->get_param(array('troubleshooting', 'outPutFilter'), '')){
@@ -112,6 +126,7 @@ try{
 	add_action('widgets_init', array('RevSliderWidget', 'register_widget'));
 	
 	if(is_admin()){
+		require_once(RS_PLUGIN_PATH . 'admin/includes/license.class.php');
 		require_once(RS_PLUGIN_PATH . 'admin/includes/addons.class.php');
 		require_once(RS_PLUGIN_PATH . 'admin/includes/template.class.php');
 		require_once(RS_PLUGIN_PATH . 'admin/includes/functions-admin.class.php');
@@ -159,6 +174,7 @@ try{
 			ob_end_clean();
 			
 			echo $content;
+
 		}
 		
 		$rev_slider_front = new RevSliderFront();

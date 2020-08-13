@@ -92,13 +92,17 @@ class RevSliderSliderImport extends RevSliderSlider {
 			//do the update routines
 			$slider = new RevSliderSliderImport();
 			$slider->init_by_id($this->slider_id);
-			RevSliderPluginUpdate::upgrade_slider_to_latest($slider);
+			$upd = new RevSliderPluginUpdate();
+			
+			$upd->upgrade_slider_to_latest($slider);
+			//RevSliderPluginUpdate::upgrade_slider_to_latest($slider);
 			
 			//reinit because we just updated data which is outside of the $slider object
 			$slider = new RevSliderSliderImport();
 			$slider->init_by_id($this->slider_id);
 			
 			$slider->update_css_and_javascript_ids($this->old_slider_id, $this->slider_id, $this->map);
+			$slider->update_color_ids($this->map);
 			
 			//$slider->update_modal_ids($slider_ids, $slides_ids);
 			
@@ -588,6 +592,9 @@ class RevSliderSliderImport extends RevSliderSlider {
 		if(!isset($params['layout'])) $params['layout'] = array();
 		if(!isset($params['layout']['bg'])) $params['layout']['bg'] = array();
 		
+		//remove imageId if it is set
+		if($this->get_val($params, array('layout', 'bg', 'imageId'), false) !== false) unset($params['layout']['bg']['imageId']);
+		
 		if($this->get_val($params, array('layout', 'bg', 'useImage'), false) !== false){
 			$params['layout']['bg']['useImage'] = $this->check_file_in_zip($this->download_path, $this->get_val($params, array('layout', 'bg', 'useImage')), $alias, $this->imported);
 			$params['layout']['bg']['useImage'] = $this->get_image_url_from_path($this->get_val($params, array('layout', 'bg', 'useImage')));
@@ -823,11 +830,11 @@ class RevSliderSliderImport extends RevSliderSlider {
 			$d = array('params' => $params, 'sliderParams' => $this->slider_data, 'layers' => $layers, 'settings' => $settings, 'imported' => $this->imported);
 			$d = apply_filters('revslider_importSliderFromPost_modify_data', $d, 'normal', $this->download_path);
 			
-			$params				= $d['params'];
-			$this->slider_data	= $d['sliderParams'];
-			$layers				= $d['layers'];
-			$settings			= $d['settings'];
-			$this->imported		= $d['imported'];
+			$params			= $d['params'];
+			$this->slider_data = $d['sliderParams'];
+			$layers			= $d['layers'];
+			$settings		= $d['settings'];
+			$this->imported	= $d['imported'];
 			
 			$my_layers		= json_encode($layers);
 			$my_layers		= (empty($my_layers)) ? stripslashes(json_encode($layers)) : $my_layers;
@@ -987,13 +994,19 @@ class RevSliderSliderImport extends RevSliderSlider {
 						$medium		= $this->get_val($layer, array('media', 'thumbs', 'medium'), false);
 						$small		= $this->get_val($layer, array('media', 'thumbs', 'small'), false);
 						
-						if($image_url !== false)$layer['media']['imageUrl'] = $this->get_image_url_from_path($this->check_file_in_zip($this->download_path, $image_url, $alias, $this->imported));
-						if($bg_image !== false) $layer['idle']['backgroundImage'] = $this->get_image_url_from_path($this->check_file_in_zip($this->download_path, $bg_image, $alias, $this->imported));
+						$very_big	= (is_array($very_big) && isset($very_big['url'])) ? $very_big['url'] : $very_big;
+						$big		= (is_array($big) && isset($big['url'])) ? $big['url'] : $big;
+						$large		= (is_array($large) && isset($large['url'])) ? $large['url'] : $large;
+						$medium		= (is_array($medium) && isset($medium['url'])) ? $medium['url'] : $medium;
+						$small		= (is_array($small) && isset($small['url'])) ? $small['url'] : $small;
+						
+						if($image_url !== false)$layer['media']['imageUrl']			 = $this->get_image_url_from_path($this->check_file_in_zip($this->download_path, $image_url, $alias, $this->imported));
+						if($bg_image !== false) $layer['idle']['backgroundImage']	 = $this->get_image_url_from_path($this->check_file_in_zip($this->download_path, $bg_image, $alias, $this->imported));
 						if($very_big !== false) $layer['media']['thumbs']['veryBig'] = $this->get_image_url_from_path($this->check_file_in_zip($this->download_path, $very_big, $alias, $this->imported));
-						if($big !== false)		$layer['media']['thumbs']['big'] = $this->get_image_url_from_path($this->check_file_in_zip($this->download_path, $big, $alias, $this->imported));
-						if($large !== false)	$layer['media']['thumbs']['large'] = $this->get_image_url_from_path($this->check_file_in_zip($this->download_path, $large, $alias, $this->imported));
-						if($medium !== false)	$layer['media']['thumbs']['medium'] = $this->get_image_url_from_path($this->check_file_in_zip($this->download_path, $medium, $alias, $this->imported));
-						if($small !== false)	$layer['media']['thumbs']['small'] = $this->get_image_url_from_path($this->check_file_in_zip($this->download_path, $small, $alias, $this->imported));
+						if($big !== false)		$layer['media']['thumbs']['big']	 = $this->get_image_url_from_path($this->check_file_in_zip($this->download_path, $big, $alias, $this->imported));
+						if($large !== false)	$layer['media']['thumbs']['large']	 = $this->get_image_url_from_path($this->check_file_in_zip($this->download_path, $large, $alias, $this->imported));
+						if($medium !== false)	$layer['media']['thumbs']['medium']	 = $this->get_image_url_from_path($this->check_file_in_zip($this->download_path, $medium, $alias, $this->imported));
+						if($small !== false)	$layer['media']['thumbs']['small']	 = $this->get_image_url_from_path($this->check_file_in_zip($this->download_path, $small, $alias, $this->imported));
 						
 						if(!empty($layer['media']['imageUrl'])){
 							$imgid = $this->get_image_id_by_url($layer['media']['imageUrl']);
@@ -1105,10 +1118,11 @@ class RevSliderSliderImport extends RevSliderSlider {
 		$layers = $this->get_val($slide, 'layers', array());
 		
 		//change for WPML the parent IDs if necessary
-		$parent_id = $this->get_val($slide, array('child', 'parentId'), false);
+		$parent_id = $this->get_val($slide, array('params', 'child', 'parentId'), false);
 		
 		if(!in_array($parent_id, array(false, ''), true) && isset($this->map[$parent_id])){
 			$create = array('params' => $params);
+			
 			$this->set_val($create, array('params', 'child', 'parentId'), $this->map[$parent_id]);
 			
 			$new_params = json_encode($create['params']);
@@ -1462,6 +1476,10 @@ class RevSliderSliderImport extends RevSliderSlider {
 				//convert layers images:
 				if(!empty($layers)){
 					foreach($layers as $layer_key => $layer){
+						if($this->get_val($layer, array('media', 'imageId'), false) !== false) unset($layer['media']['imageId']);
+						if($this->get_val($layer, array('media', 'posterId'), false) !== false) unset($layer['media']['posterId']);
+						if($this->get_val($layer, array('idle', 'backgroundImageId'), false) !== false) unset($layer['idle']['backgroundImageId']);
+
 						$image = trim($this->get_val($layer, array('media', 'imageUrl'), ''));
 						if($image !== ''){
 							$layer['media']['imageUrl'] = $this->import_media_from_zip($image);
@@ -1489,9 +1507,8 @@ class RevSliderSliderImport extends RevSliderSlider {
 						}
 						
 						if(isset($layer['type']) && $layer['type'] == 'svg'){
-							if(isset($layer['svgSource'])){
-								$layer['svgSource'] = content_url().$layer['svgSource'];
-							}
+							$svg = $this->get_val($layer, array('svg', 'source'), '');
+							if(!empty($svg)) $layer['svg']['source'] = content_url().$svg;
 						}
 						
 						$actions = $this->get_val($layer, array('actions', 'action'), array());
@@ -1611,6 +1628,42 @@ class RevSliderSliderImport extends RevSliderSlider {
 		}
 		
 		return true;
+	}
+	
+	
+	/**
+	 * update the slide ids in the slider skins 
+	 * @since: 6.2.3
+	 * skins -> colors -> [] -> ref -> [] -> r & slide
+	 **/
+	public function update_color_ids($map){
+		$skins = $this->get_param('skins', array());
+		if(!empty($skins) && isset($skins['colors']) && !empty($skins['colors']) && !empty($map)){
+			
+			$update = false;
+			foreach($skins['colors'] as $k => $v){
+				if(isset($v['ref']) && !empty($v['ref'])){
+					foreach($v['ref'] as $rk => $rv){
+						$os = $this->get_val($rv, 'slide');
+						
+						if(isset($map[$os])){
+							$update = true;
+							$skins['colors'][$k]['ref'][$rk]['slide'] = (string)$map[$os];
+							
+							$r = explode('.', $this->get_val($rv, 'r'));
+							if(!empty($r) && is_array($r)){
+								$r[0] = $map[$os];
+								$skins['colors'][$k]['ref'][$rk]['r'] = implode('.', $r);
+							}
+						}
+					}
+				}
+			}
+			
+			if($update){
+				$this->update_params(array('skins' => $skins));
+			}
+		}
 	}
 	
 	

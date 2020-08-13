@@ -38,12 +38,36 @@ class Logger
 
     public static function startProcessingRequestLogProtocolEntry()
     {
-        self::logProtocol('START PROCESSING REQUEST');
+        $option = \get_option(Bootstrap::OPTION_INFO_KEY, []);
+
+        $option['last_request'] = [
+            'date' => \date_i18n('Y-m-d H:i:s'),
+            'user' => isset($_SERVER['PHP_AUTH_USER']) ? $_SERVER['PHP_AUTH_USER'] : 'non user',
+            'query' => $_SERVER['QUERY_STRING']
+        ];
+
+        \update_option(Bootstrap::OPTION_INFO_KEY, $option);
+
+        self::logProtocol('START PROCESSING REQUEST', self::getMemoryUsage());
     }
 
     public static function endProcessingRequestLogProtocolEntry()
     {
-        self::logProtocol('END PROCESSING REQUEST');
+        self::logProtocol('END PROCESSING REQUEST', self::getMemoryUsage());
+    }
+
+    public static function saveLastResponseInfo($message)
+    {
+        $option = \get_option(Bootstrap::OPTION_INFO_KEY, []);
+
+        $option['last_response'] = [
+            'date' => \date_i18n('Y-m-d H:i:s'),
+            'user' => isset($_SERVER['PHP_AUTH_USER']) ? $_SERVER['PHP_AUTH_USER'] : 'non user',
+            'query' => $_SERVER['QUERY_STRING'],
+            'message' => $message
+        ];
+
+        \update_option(Bootstrap::OPTION_INFO_KEY, $option);
     }
 
     public static function logChanges($message, $data = [])
@@ -175,5 +199,16 @@ class Logger
         $record['user'] = isset($_SERVER['PHP_AUTH_USER']) ? $_SERVER['PHP_AUTH_USER'] : 'non user';
 
         return $record;
+    }
+
+    private static function getMemoryUsage()
+    {
+        $usage = round(memory_get_usage() / 1024 / 1024, 2);
+        $peak = round(memory_get_peak_usage() / 1024 / 1024, 2);
+
+        return [
+            'Usage, mb' => (string) $usage,
+            'Peak, mb' => (string) $peak
+        ];
     }
 }

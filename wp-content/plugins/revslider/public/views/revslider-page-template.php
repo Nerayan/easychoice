@@ -6,7 +6,8 @@
  */
  
 if(!defined('ABSPATH')) exit();
-
+$page_bg = get_post_meta(get_the_ID(), 'rs_page_bg_color', true);
+$page_bg = ($page_bg == '' || $page_bg == 'transparent') ? 'transparent' : $page_bg.";";
 ?>
 <!DOCTYPE html>
 <html <?php language_attributes(); ?> class="no-js">
@@ -20,7 +21,7 @@ if(!defined('ABSPATH')) exit();
 		<style type="text/css">
 			body:before { display:none !important}
 			body:after { display:none !important}
-			body { background:transparent}
+			body, body.page-template-revslider-page-template, body.page-template---publicviewsrevslider-page-template-php { background:<?php echo $page_bg;?>}
 		</style>
 	</head>
 

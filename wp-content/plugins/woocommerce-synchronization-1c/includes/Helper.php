@@ -103,25 +103,19 @@ class Helper
         $result = $zip->open($filename);
 
         if ($result !== true) {
-            Logger::logProtocol(esc_html__('Failed open archive ' . $filename . ', code - ' . $result));
-
-            return;
+            throw new \Exception('Failed open archive ' . $filename . ', code - ' . $result);
         }
 
         $result = $zip->extractTo(dirname($filename));
 
         if ($result !== true) {
-            Logger::logProtocol(esc_html__('Failed extract archive ' . $filename . ', to - ' . dirname($filename)));
-
-            return;
+            throw new \Exception('Failed extract archive ' . $filename . ', to - ' . dirname($filename));
         }
 
         $result = $zip->close();
 
         if ($result !== true) {
-            Logger::logProtocol(esc_html__('Failed close archive ' . $filename));
-
-            return;
+            throw new \Exception('Failed close archive ' . $filename);
         }
 
         unlink($filename);

@@ -34,7 +34,7 @@ if(!defined('ABSPATH')) exit();
 			--><div id="gst_layer_9" data-select="#gst_layer_9" data-unselect=".layer_submodule_trigger" class="layer_submodule_trigger opensettingstrigger" data-collapse="true" data-forms='["#form_layer_hover"]'><i class="material-icons">mouse</i><span data-stickycolor="blue"  class="gso_title"><?php _e('Hover', 'revslider');?></span></div><!--
 			--><div id="gst_layer_8" data-select="#gst_layer_8" data-unselect=".layer_submodule_trigger" class="layer_submodule_trigger opensettingstrigger" data-collapse="true" data-forms='["#form_layer_parallax"]'><i class="material-icons">system_update_alt</i><span data-stickycolor="blue"  class="gso_title"><?php _e('On Scroll', 'revslider');?></span></div><!--
 			--><div id="gst_layer_5" class="callEvent layer_submodule_trigger openmodaltrigger" data-evt="openLayerActions"><i class="material-icons">touch_app</i><span class="gso_title">Actions</span></div><!--
-			--><div id="gst_layer_13" data-select="#gst_layer_13" data-unselect=".layer_submodule_trigger" class="layer_submodule_trigger opensettingstrigger" data-collapse="true" data-forms='["#form_layer_responsiveness"]'><i class="material-icons">photo_size_select_large</i><span data-stickycolor="blue"  class="gso_title"><?php _e('Responsivity', 'revslider');?></span></div><!--
+			--><div id="gst_layer_13" data-select="#gst_layer_13" data-unselect=".layer_submodule_trigger" class="layer_submodule_trigger opensettingstrigger" data-collapse="true" data-forms='["#form_layer_visibility"]'><i class="material-icons">photo_size_select_large</i><span data-stickycolor="blue"  class="gso_title"><?php _e('Visibility', 'revslider');?></span></div><!--
 			--><div id="gst_layer_11" data-select="#gst_layer_11" data-unselect=".layer_submodule_trigger" class="layer_submodule_trigger opensettingstrigger callEvent" data-collapse="true" data-forms='["#form_layer_attributes"]'><i class="material-icons">description</i><span data-stickycolor="blue"  class="gso_title"><?php _e('Attributes', 'revslider');?></span></div><!--
 			--><div id="gst_layer_7" data-select="#gst_layer_7" data-unselect=".layer_submodule_trigger" class="layer_submodule_trigger opensettingstrigger callEvent" data-evt="updateCustomCSSLayerInput" data-collapse="true" data-forms='["#form_layer_customcss"]'><i class="material-icons">code</i><span data-stickycolor="blue"  class="gso_title"><?php _e('Custom CSS', 'revslider');?></span></div><!--
 			--><div id="gst_layer_14" data-select="#gst_layer_14" data-unselect=".layer_submodule_trigger" class="layer_submodule_trigger opensettingstrigger" data-collapse="true" data-forms='["#form_layer_static"]'><i class="material-icons">album</i><span data-stickycolor="blue"  class="gso_title"><?php _e('Static', 'revslider');?></span></div>
@@ -170,20 +170,18 @@ if(!defined('ABSPATH')) exit();
 					<row class="direktrow">
 						<oneshort><div id="minilayerprevimage_wrap" class="miniprevimage_wrap"><i class="material-icons">filter_hdr</i><div id="layer_image_src"></div></div></oneshort>
 						<oneshort>
-							<div id="image_layer_media_library_button" data-evt="updatelayerimagesrc" data-r="media.imageUrl" data-rid="media.imageId" class="getImageFromMediaLibrary basic_action_button longbutton layerinput"><i class="material-icons">style</i><?php _e('Media Library', 'revslider');?></div>
-							<div id="image_layer_object_library_button" data-evt="updatelayerimagesrc" data-r="media.imageUrl" data-rid="media.imageId" class="getImageFromObjectLibrary basic_action_button longbutton layerinput"><i class="material-icons">camera_enhance</i><?php _e('Object Library', 'revslider');?></div>
+							<div id="image_layer_media_library_button" data-evt="updatelayerimagesrc" data-r="media.imageUrl" data-rid="media.imageId" data-sty="behavior.imageSourceType" data-lib="media.imageLib" class="getImageFromMediaLibrary basic_action_button longbutton layerinput"><i class="material-icons">style</i><?php _e('Media Library', 'revslider');?></div>
+							<div id="image_layer_object_library_button" data-evt="updatelayerimagesrc" data-r="media.imageUrl" data-rid="media.imageId" data-sty="behavior.imageSourceType" data-lib="media.imageLib" class="getImageFromObjectLibrary basic_action_button longbutton layerinput"><i class="material-icons">camera_enhance</i><?php _e('Object Library', 'revslider');?></div>
 						</oneshort>
 					</row>
-
 					<div class="div15"></div>
 					<label_a class="singlerow"><?php _e('Lazy Loading', 'revslider');?></label_a><select class="layerinput tos2 nosearchbox easyinit" data-r="behavior.lazyLoad"><option value="auto" selected="selected"><?php _e("Default Setting", 'revslider');?></option><option value="force"><?php _e("Force Lazy Loading", 'revslider');?></option><option value="ignore"><?php _e("Ignore Lazy Loading", 'revslider');?></option></select>
-					<label_a class="singlerow"><?php _e('Source Type', 'revslider');?></label_a><select class="layerinput tos2 nosearchbox easyinit" data-r="behavior.imageSourceType">
-					<option value="auto" selected="selected"><?php _e("Default Setting", 'revslider');?></option>
-						<?php
-foreach ($img_sizes as $imghandle => $imgSize) {
-	echo '<option value="' . $imghandle . '">' . $imgSize . '</option>';
-}
-?></select>
+					
+					<!-- USED LIBRARY TYPE-->
+					<div style="display:none"><label_a class="singlerow"><?php _e('Used Library', 'revslider');?></label_a><select class="layerinput easyinit" data-r="media.imageLib" data-show="#imagelayer_srctype_*val*" data-hide=".imagelayer_srctype_all" data-showprio="show"><option value="">Nothing</option><option value="objectlibrary">Objectlibrary</option><option value="medialibrary">MediaLibrary</option></select></div>					
+					<!-- SIZE / SRC PICKER FOR CURRENT USED LIBRARY TYPE-->
+					<div style="display:none" id="imagelayer_srctype_objectlibrary" class="imagelayer_srctype_all"><label_a class="singlerow"><?php _e('Image Size', 'revslider');?></label_a><select class="layerinput tos2 nosearchbox easyinit" data-evt="getNewImageSize" data-evtparam="image.object" data-r="behavior.imageSourceType"><option value="100" selected="selected"><?php _e("Original", 'revslider');?></option><option value="75" selected="selected"><?php _e("Large", 'revslider');?></option><option value="50" selected="selected"><?php _e("Medium", 'revslider');?></option><option value="25" selected="selected"><?php _e("Small", 'revslider');?></option><option value="10" selected="selected"><?php _e("Extra Small", 'revslider');?></option></select></div>
+					<div style="display:none" id="imagelayer_srctype_medialibrary" class="imagelayer_srctype_all"><label_a class="singlerow"><?php _e('Source Type', 'revslider');?></label_a><select class="layerinput tos2 nosearchbox easyinit" data-evt="getNewImageSize" data-evtparam="image.media" data-r="behavior.imageSourceType"><option value="auto" selected="selected"><?php _e("Default Setting", 'revslider');?></option><?php foreach ($img_sizes as $imghandle => $imgSize) { echo '<option value="' . $imghandle . '">' . $imgSize . '</option>';}?></select></div>
 				</div>
 			</div>
 
@@ -191,7 +189,7 @@ foreach ($img_sizes as $imghandle => $imgSize) {
 			<div id="form_layercontent_content_video" class="form_inner open _shfv_ _shfa_">
 				<div class="form_inner_header"><i class="material-icons">create</i><?php _e('Media Content', 'revslider');?></div>
 				<div class="collapsable">
-					<input class="dontseeme layerinput easyinit callEvent" data-evt="resetVideoPlaceholder" id="layer_video_poster" data-r="media.posterUrl"/>
+					<input class="dontseeme layerinput easyinit callEvent" data-evt="resetVideoPlaceholder" data-triggerinp="#layerpostersrctype" data-triggerinpval="nothing" id="layer_video_poster" data-r="media.posterUrl"/>
 					<div class="_nsfa_">
 						<longoption><i class="material-icons">language</i><label_a ><?php _e('Video from Stream if exist', 'revslider');?></label_a><input type="checkbox" class="easyinit layerinput" data-r="media.videoFromStream"></longoption>
 						<div class="div10"></div>
@@ -257,10 +255,18 @@ foreach ($img_sizes as $imghandle => $imgSize) {
 						<label_a><?php _e('Poster Image', 'revslider');?></label_a><div data-r="media.posterUrl" class="getLayerImageFromVimeo basic_action_button longbutton"><i class="material-icons">ondemand_video</i><?php _e('Vimeo Thumb', 'revslider');?></div>
 					</div>
 
-					<label_a class="layerbg_html5_settings layer_bg_settings"><?php _e('Poster Image', 'revslider');?></label_a><label_a class="layerbg_youtube_settings layerbg_vimeo_settings layer_bg_settings"></label_a><div data-evt="updatelayerimagesrc" data-r="media.posterUrl" data-rid="media.posterId" class="getImageFromMediaLibrary layerinput basic_action_button longbutton"><i class="material-icons">style</i><?php _e('Media Library', 'revslider');?></div>
-					<label_a></label_a><div id="image_videoposter_object_library_button" data-evt="updatelayerimagesrc" data-r="media.posterUrl" data-rid="media.posterId" class="getImageFromObjectLibrary basic_action_button longbutton layerinput"><i class="material-icons">camera_enhance</i><?php _e('Object Library', 'revslider');?></div>
+					<label_a class="layerbg_html5_settings layer_bg_settings"><?php _e('Poster Image', 'revslider');?></label_a><label_a class="layerbg_youtube_settings layerbg_vimeo_settings layer_bg_settings"></label_a><div data-evt="updatelayerimagesrc" data-r="media.posterUrl" data-rid="media.posterId" data-sty="behavior.imageSourceType" data-lib="media.imageLib" class="getImageFromMediaLibrary layerinput basic_action_button longbutton"><i class="material-icons">style</i><?php _e('Media Library', 'revslider');?></div>
+					<label_a></label_a><div id="image_videoposter_object_library_button" data-evt="updatelayerimagesrc" data-r="media.posterUrl" data-rid="media.posterId" data-sty="behavior.imageSourceType" data-lib="media.imageLib" class="getImageFromObjectLibrary basic_action_button longbutton layerinput"><i class="material-icons">camera_enhance</i><?php _e('Object Library', 'revslider');?></div>
 					<!--<label_a></label_a><div id="image_videoposter_stream_button" data-evt="updatelayerimagesrc" data-r="media.posterUrl" data-rid="media.posterId" class="getImageFromStream basic_action_button longbutton layerinput"><i class="material-icons">language</i><?php _e("From Stream", 'revslider');?></div>-->
-					<label_a></label_a><div data-r="media.posterUrl" class="removeLayerPoster basic_action_button layerinput longbutton callEventButton"><i class="material-icons">delete</i><?php _e('Remove Poster', 'revslider');?></div>
+					<label_a></label_a><div data-r="media.posterUrl" data-rid="media.posterId" data-sty="behavior.imageSourceType" data-lib="media.imageLib"  class="removeLayerPoster basic_action_button layerinput longbutton callEventButton"><i class="material-icons">delete</i><?php _e('Remove Poster', 'revslider');?></div>
+					<div class="div10"></div>
+					
+					<!-- USED LIBRARY TYPE-->
+					<div style="display:none"><label_a class="singlerow"><?php _e('Used Library', 'revslider');?></label_a><select class="layerinput easyinit" id="layerpostersrctype" data-r="media.imageLib" data-show="#posterlayer_srctype_*val*" data-hide=".posterlayer_srctype_all" data-showprio="show"><option value="nothing">Nothing</option><option value="">Nothing</option><option value="objectlibrary">Objectlibrary</option><option value="medialibrary">MediaLibrary</option></select></div>					
+					<!-- SIZE / SRC PICKER FOR CURRENT USED LIBRARY TYPE-->
+					<div id="posterlayer_srctype_objectlibrary" class="posterlayer_srctype_all"><label_a class="singlerow"><?php _e('Image Size', 'revslider');?></label_a><select class="layerinput tos2 nosearchbox easyinit" data-evt="getNewImageSize" data-evtparam="poster.object" data-r="behavior.imageSourceType"><option value="100" selected="selected"><?php _e("Original", 'revslider');?></option><option value="75" selected="selected"><?php _e("Large", 'revslider');?></option><option value="50" selected="selected"><?php _e("Medium", 'revslider');?></option><option value="25" selected="selected"><?php _e("Small", 'revslider');?></option><option value="10" selected="selected"><?php _e("Extra Small", 'revslider');?></option></select></div>
+					<div id="posterlayer_srctype_medialibrary" class="posterlayer_srctype_all"><label_a class="singlerow"><?php _e('Source Type', 'revslider');?></label_a><select class="layerinput tos2 nosearchbox easyinit" data-evt="getNewImageSize" data-evtparam="poster.media" data-r="behavior.imageSourceType"><option value="auto" selected="selected"><?php _e("Default Setting", 'revslider');?></option><?php foreach ($img_sizes as $imghandle => $imgSize) { echo '<option value="' . $imghandle . '">' . $imgSize . '</option>';}?></select></div>
+					
 					<div class="div10"></div>
 					<longoption><i class="material-icons">pause</i><label_a><?php _e('Poster in Pause', 'revslider');?></label_a><input type="checkbox" class="easyinit layerinput" data-r="media.posterOnPause"></longoption>
 					<longoption><i class="material-icons">phonelink_erase</i><label_a><?php _e('No Poster on Mobile', 'revslider');?></label_a><input type="checkbox" class="easyinit layerinput" data-r="media.disableOnMobile"></longoption>
@@ -377,27 +383,7 @@ foreach ($img_sizes as $imghandle => $imgSize) {
 
 	<!-- LAYER RESPONSIVENESS -->
 	<div class="form_collector layer_settings_collector" data-type="layersconfig" data-pcontainer="#layer_settings" data-offset="#rev_builder_wrapper">
-		<div id="form_layer_responsiveness"  class="formcontainer form_menu_inside collapsed" data-select="#gst_layer_13" data-unselect=".layer_submodule_trigger">
-			<!--<div class="collectortabwrap"><div id="collectortab_form_layer_position" class="collectortab form_menu_inside" data-forms='["#form_layer_responsiveness"]'><i class="material-icons">zoom_out_map</i><?php _e('Responsive Behavior', 'revslider');?></div></div>		-->
-			<!-- LAYER POSITION basic -->
-			<div id="form_layerposition_basic" class="form_inner open">
-				<div class="form_inner_header"><i class="material-icons">zoom_out_map</i><?php _e('Responsive Behavior', 'revslider');?></div>
-				<div class="collapsable">
-
-					<longoption><i class="material-icons">important_devices</i><label_a><?php _e('Intelligent Inheriting', 'revslider');?></label_a><input type="checkbox"  data-show="#intelligent_buttons_*val*" data-hide=".intelligent_buttons" data-updateviaevt="true" data-evt="intelligentInheritUpdate" id="layer_behavior_intelSize" class="layerinput easyinit callEvent" data-r="behavior.intelligentInherit" /></longoption>
-					<div class="div10"></div>
-					<div id="intelligent_buttons_true" class="intelligent_buttons fullbutton basic_action_button callEventButton" data-evt="resetIntelligentInherits"><i class="material-icons">refresh</i>Inherit All Values from Desktop</div>
-					<div id="intelligent_buttons_false" class="intelligent_buttons fullbutton basic_action_button callEventButton" data-evt="inheritValuesFromDesktop"><i class="material-icons">refresh</i>Reset All Values from Desktop</div>
-					<div class="div5"></div>
-					<longoption><i class="material-icons">launch</i><label_a><?php _e('Resize Between Devices', 'revslider');?></label_a><input type="checkbox"  id="layer_behavior_autoResponsive" class="layerinput easyinit" data-r="behavior.autoResponsive" /></longoption>
-					<div class="_nsfr_ _nsfc_">
-						<longoption><i class="material-icons">picture_in_picture</i><label_a><?php _e('Responsive Offsets', 'revslider');?></label_a><input type="checkbox"  id="layer_behavior_responsiveOffset" class="layerinput easyinit" data-r="behavior.responsiveOffset" /></longoption>
-						<longoption><i class="material-icons">folder_shared</i><label_a><?php _e('Responsive Children', 'revslider');?></label_a><input type="checkbox"  id="layer_behavior_responsiveChilds" class="layerinput easyinit" data-r="behavior.responsiveChilds" /></longoption>
-					</div>
-					<div class="div5"></div>
-				</div>
-			</div>
-
+		<div id="form_layer_visibility"  class="formcontainer form_menu_inside collapsed" data-select="#gst_layer_13" data-unselect=".layer_submodule_trigger">
 			<!-- LAYER CONTENT VISIBILITY -->
 			<div id="form_layercontent_visibility" class="form_inner open">
 				<div class="form_inner_header"><i class="material-icons">visibility</i><?php _e('Visibility', 'revslider');?></div>
@@ -413,6 +399,7 @@ foreach ($img_sizes as $imghandle => $imgSize) {
 
 					<longoption><i class="material-icons">settings_ethernet</i><label_a><?php _e('Hide "Under" Width', 'revslider');?></label_a><input type="checkbox"  id="layer_visibility_hideunder" class="layerinput easyinit" data-r="visibility.hideunder" /></longoption>
 					<longoption><i class="material-icons">center_focus_strong</i><label_a><?php _e('Show if mouse over Slider', 'revslider');?></label_a><input type="checkbox"  id="layer_visibility_showonover" class="layerinput easyinit" data-r="visibility.onlyOnSlideHover" /></longoption>
+					<div class="_lavoc_ _lavoc_individual"><longoption class="carouselavailable standardunavailable sceneunavailable"><i class="material-icons">view_carousel</i><label_a><?php _e('Always Visible on Carousel', 'revslider');?></label_a><input type="checkbox"  id="layer_visibility_oncarousel" class="layerinput easyinit" data-r="visibility.alwaysOnCarousel" /></longoption></div>
 				</div>
 			</div>
 		</div>
@@ -420,35 +407,19 @@ foreach ($img_sizes as $imghandle => $imgSize) {
 
 	<!-- LAYER POSITION CONTAINER -->
 	<div class="form_collector layer_settings_collector" data-type="layersconfig" data-pcontainer="#layer_settings" data-offset="#rev_builder_wrapper">
-		<div id="form_layer_position"  class="formcontainer form_menu_inside collapsed" data-select="#gst_layer_2" data-unselect=".layer_submodule_trigger">
-			<!--<div class="collectortabwrap"><div id="collectortab_form_layer_position" class="collectortab form_menu_inside" data-forms='["#form_layer_position"]'><i class="material-icons">zoom_out_map</i><?php _e('Position & Size', 'revslider');?></div></div>		-->
-			<!--<div class="form_intoaccordion"><i class="material-icons">arrow_drop_down</i></div>-->
-			<ul class="form_menu_level_1">
-				<li data-target="#form_layerposition_basic" class="form_menu_level_1_li selected" id="lpos_l1_0"><?php _e('Position & Size', 'revslider');?></li>
-				<li data-target="#form_layerposition_behavior" class="form_menu_level_1_li selected" id="lpos_l1_1"><?php _e('Behavior', 'revslider');?></li>
-				<li data-target="#form_layerposition_additional" class="form_menu_level_1_li selected" id="lpos_l1_1"><?php _e('Additional', 'revslider');?></li>
-			</ul>
-			<div id="form_layerposition_basic" class="form_inner open _shfc_ _nsfr_ _nsfa_ _nsft_ _nsfb_ _nsfsvg_">
-				<div class="collapsable">
-					<row class="direktrow">
-							<labelhalf><i class="material-icons vmi">sms_failed</i></labelhalf>
-							<contenthalf><div class="function_info"><?php _e('No options available for your current selection.', 'revslider');?></div></contenthalf>
-						</row>
-				</div>
-			</div>
+		<div id="form_layer_position"  class="formcontainer form_menu_inside collapsed" data-select="#gst_layer_2" data-unselect=".layer_submodule_trigger">			
+			
 
 			<!-- LAYER POSITION basic -->
 			<div id="form_layerposition_basic" class="form_inner open _nsfc_">
 				<div class="form_inner_header"><i class="material-icons">zoom_out_map</i><?php _e('Position & Size', 'revslider');?></div>
-				<!--<div class="form_intoaccordion" data-trigger="#lpos_l1_0"><i class="material-icons">arrow_drop_down</i></div>-->
-
 				<div class="collapsable ">
 					<div id="rs-align-buttons" class="_nfr_ _nflic_">
 						<!-- LAYER ALIGN ICON BASED SETTINGS-->
 						<select style="display:none !important" id="layer_pos_halign" data-unselect=".layer_hor_selector" data-select="#layer_hor_*val*" class="layerinput easyinit" data-responsive="true" data-r="position.horizontal.#size#.v" data-triggerinp="#layer_pos_x" data-triggerinpval="0"><option value="left"><?php _e('Left', 'revslider');?></option><option value="center"><?php _e('Center', 'revslider');?></option><option value="right"><?php _e('Right', 'revslider');?></option></select>
 						<select style="display:none !important" id="layer_pos_valign" data-unselect=".layer_ver_selector" data-select="#layer_ver_*val*" class="layerinput easyinit" data-responsive="true" data-r="position.vertical.#size#.v" data-triggerinp="#layer_pos_y" data-triggerinpval="0"><option value="top"><?php _e('Top', 'revslider');?></option><option value="middle"><?php _e('Center', 'revslider');?></option><option value="bottom"><?php _e('Bottom', 'revslider');?></option></select>
 						<row>
-							<onelabel><label_a><?php _e('Aligment', 'revslider');?></label_a></onelabel>
+							<onelabel><label_a><?php _e('Alignment', 'revslider');?></label_a></onelabel>
 							<oneshort><label_icon class="triggerselect ui_leftalign layer_hor_selector" data-select="#layer_pos_halign" data-val="left" id="layer_hor_left"></label_icon><label_icon class="triggerselect ui_centeralign layer_hor_selector" data-select="#layer_pos_halign" data-val="center" id="layer_hor_center"></label_icon><label_icon class="triggerselect ui_rightalign layer_hor_selector" data-select="#layer_pos_halign" data-val="right" id="layer_hor_right"></label_icon></oneshort>
 							<oneshort class="lp10"><label_icon class="triggerselect ui_topalign layer_ver_selector" data-select="#layer_pos_valign" data-val="top" id="layer_ver_top"></label_icon><label_icon class="triggerselect ui_middlealign layer_ver_selector" data-select="#layer_pos_valign" data-val="middle" id="layer_ver_middle"></label_icon><label_icon class="triggerselect ui_bottomalign layer_ver_selector" data-select="#layer_pos_valign" data-val="bottom" id="layer_ver_bottom"></label_icon></oneshort>
 						</row>
@@ -471,7 +442,7 @@ foreach ($img_sizes as $imghandle => $imgSize) {
 					<div class="_nsfc_ _nsfr_ _nsft_ _nsfa_ _nsfb_ _nsfsvg_">
 						<label_a><?php _e('Size Presets', 'revslider');?></label_a><select id="layer_covermode" data-enable=".layersize_wrap " data-disable=".layersize_*val*" class="layerinput tos2 nosearchbox easyinit callEvent" data-updateviaevt="true" data-evt="layerSizePreset" data-r="size.covermode"><option value="custom" selected="selected"><?php _e('Custom Size', 'revslider');?></option><option value="fullwidth"><?php _e('Full Width', 'revslider');?></option><option value="fullheight"><?php _e('Full Height', 'revslider');?></option><option value="cover"><?php _e('Stretch', 'revslider');?></option><option value="cover-proportional"><?php _e('Cover', 'revslider');?></option></select>
 					</div>
-					<div class="_nflic_">
+					<div class="_nflic_ _nvojcm_">
 						<label_a><?php _e('Layer Align', 'revslider');?></label_a>
 						<div class="radiooption">
 							<div><input name="layer_within_align" class="layerinput easyinit" data-r="behavior.baseAlign" type="radio" value="grid"><label_sub><?php _e('Layer Area', 'revslider');?></label_sub></div>
@@ -480,8 +451,6 @@ foreach ($img_sizes as $imghandle => $imgSize) {
 					</div>
 				</div>
 			</div>
-
-
 
 			<!-- LAYER POSITION ADDITIONAL -->
 			<div id="form_layerposition_additional" class="form_inner open _nsfc_">
@@ -501,6 +470,24 @@ foreach ($img_sizes as $imghandle => $imgSize) {
 				</div>
 			</div>
 
+			<div id="form_layerposition_advanced" class="form_inner open">
+				<div class="form_inner_header"><i class="material-icons">photo_size_select_large</i><?php _e('Responsive Behavior', 'revslider');?></div>
+				<div class="collapsable">
+
+					<longoption><i class="material-icons">important_devices</i><label_a><?php _e('Intelligent Inheriting', 'revslider');?></label_a><input type="checkbox"  data-show="#intelligent_buttons_*val*" data-hide=".intelligent_buttons" data-updateviaevt="true" data-evt="intelligentInheritUpdate" id="layer_behavior_intelSize" class="layerinput easyinit callEvent" data-r="behavior.intelligentInherit" /></longoption>
+					<div class="div10"></div>
+					<div id="intelligent_buttons_true" class="intelligent_buttons fullbutton basic_action_button callEventButton" data-evt="resetIntelligentInherits"><i class="material-icons">refresh</i>Inherit All Values from Desktop</div>
+					<div id="intelligent_buttons_false" class="intelligent_buttons fullbutton basic_action_button callEventButton" data-evt="inheritValuesFromDesktop"><i class="material-icons">refresh</i>Reset All Values from Desktop</div>
+					<div class="div5"></div>
+					<longoption><i class="material-icons">launch</i><label_a><?php _e('Resize Between Devices', 'revslider');?></label_a><input type="checkbox"  id="layer_behavior_autoResponsive" class="layerinput easyinit" data-r="behavior.autoResponsive" /></longoption>
+					<div class="_nsfr_ _nsfc_">
+						<longoption><i class="material-icons">picture_in_picture</i><label_a><?php _e('Responsive Offsets', 'revslider');?></label_a><input type="checkbox"  id="layer_behavior_responsiveOffset" class="layerinput easyinit" data-r="behavior.responsiveOffset" /></longoption>
+						<longoption><i class="material-icons">folder_shared</i><label_a><?php _e('Responsive Children', 'revslider');?></label_a><input type="checkbox"  id="layer_behavior_responsiveChilds" class="layerinput easyinit" data-r="behavior.responsiveChilds" /></longoption>
+					</div>
+					<div class="div5"></div>
+				</div>
+			</div>
+
 		</div>
 	</div><!-- END OF LAYER POSITION CONTAINER -->
 
@@ -513,6 +500,16 @@ foreach ($img_sizes as $imghandle => $imgSize) {
 				<li data-target="#form_layerstyle_font" class="form_menu_level_1_li selected" id="lstyle_l1_1"><?php _e('Font', 'revslider');?></li>
 				<li data-target="#form_layerstyle_bg" class="form_menu_level_1_li" id="lstyle_l1_2"><?php _e('Background', 'revslider');?></li>
 			</ul>
+
+			<div id="form_layerstyle_lineheight" class="form_inner open _shfc_">
+				<div class="form_inner_header"><i class="material-icons">title</i><?php _e('Line Height', 'revslider');?></div>
+				<div class="collapsable">
+					<row class="directrow __idle__">
+						<onelong><label_icon class="ui_lineheight"></label_icon><input data-evt="updateLayerPosition" class="layerinput valueduekeyboard smallinput easyinit callEvent" data-allowed="px"  data-numeric="true" data-responsive="true" data-r="idle.lineHeight.#size#.v" data-max="500" type="text" id="layer_line_height_idle_all"></onelong>
+						<oneshort></oneshort>
+					</row>
+				</div>
+			</div>
 			<!-- LAYER STYLE FONT -->
 			<div id="form_layerstyle_font" class="form_inner open _shft_">
 				<div class="form_inner_header"><i class="material-icons">title</i><?php _e('Font & Icon', 'revslider');?></div>
@@ -567,19 +564,34 @@ foreach ($img_sizes as $imghandle => $imgSize) {
 			</div>
 
 			<!-- LAYER STYLE BACKGROUND -->
-			<div id="form_layerstyle_bg" class="form_inner open">
+			<div id="form_layerstyle_bg" class="form_inner open _nsfv_">
 				<div class="form_inner_header"><i class="material-icons">color_lens</i><?php _e('Background', 'revslider');?></div>
-				<div class="collapsable">
+				<div class="collapsable">					
 					<div class="__idle__"><label_a><?php _e('BG Color', 'revslider');?></label_a><input type="text" data-editing="Layer BG Color" name="layerBGColor" id="layerBGColor" class="my-color-field layerinput easyinit" data-visible="true" data-r="idle.backgroundColor" value="transparent"></div>
 					<div class="_ltsel_bgcolor"><label_a><?php _e('BG in Frame', 'revslider');?></label_a><input type="text" data-editing="Frame BG Color Animation" name="frameBGColorAnimationDouble" id="frameBGColorAnimationDouble" class="my-color-field layerinput easyinit" data-visible="true" data-r="#frame#.bgcolor.backgroundColor" value="transparent"></div>
 					<div class="div15"></div>
-					<row class="direktrow __idle__ _nsfi_">
-						<onelong><label_a><?php _e('BG Image', 'revslider');?></label_a><div class="miniprevimage_wrap"><i class="material-icons">filter_hdr</i><div id="layer_bg_image" data-showadvbg="#layer_bg_adv_settings"></div></div></onelong>
+					<row class="direktrow __idle__ _nsfi_ _nsfv_">						
+						<onelong><label_a><?php _e('BG Image', 'revslider');?></label_a><div class="miniprevimage_wrap"><i class="material-icons">filter_hdr</i><div id="layer_bg_image" data-showadvbg="#layer_bg_adv_settings"></div><div data-evt="updatelayerbgimage" data-r="idle.backgroundImage" data-rid="idle.backgroundImageId" data-lib="idle.bgimagelib" data-default="" class="resettodefault basic_action_button callEventButton layerinput onlyicon"><i class="material-icons">close</i></div></div></onelong>
 						<oneshort>
-							<div data-evt="updatelayerbgimage" data-r="idle.backgroundImage" data-rid="idle.backgroundImageId" class="getImageFromMediaLibrary basic_action_button callEventButton layerinput"><i class="material-icons">folder</i><?php _e('Select', 'revslider');?></div>
-							<div data-evt="updatelayerbgimage" data-r="idle.backgroundImage" data-rid="idle.backgroundImageId" data-default="" class="resettodefault basic_action_button callEventButton layerinput"><i class="material-icons">delete</i><?php _e('Remove', 'revslider');?></div>
+							<div data-evt="updatelayerbgimage" data-r="idle.backgroundImage" data-rid="idle.backgroundImageId" data-lib="idle.bgimagelib" data-sty="behavior.imageSourceType" class="getImageFromMediaLibrary basic_action_button callEventButton layerinput"><i class="material-icons">style</i><?php _e('Media', 'revslider');?></div>
+							<div data-evt="updatelayerbgimage" data-r="idle.backgroundImage" data-rid="idle.backgroundImageId" data-lib="idle.bgimagelib" data-sty="behavior.imageSourceType" class="getImageFromObjectLibrary basic_action_button callEventButton layerinput"><i class="material-icons">camera_enhance</i><?php _e('Object', 'revslider');?></div>							
 						</oneshort>
 					</row>
+
+
+					<!-- USED LIBRARY TYPE-->
+					<div style="display:none"><label_a class="singlerow"><?php _e('Used Library', 'revslider');?></label_a><select class="layerinput easyinit" data-r="idle.bgimagelib" data-show="#layerbg_srctype_*val*" data-hide=".layerbg_srctype_all" data-showprio="show"><option value="">Nothing</option><option value="objectlibrary">Objectlibrary</option><option value="medialibrary">MediaLibrary</option></select></div>
+
+					<!-- SIZE / SRC PICKER FOR CURRENT USED LIBRARY TYPE-->
+					<div id="layerbg_srctype_objectlibrary" class="layerbg_srctype_all"><label_a class="singlerow"><?php _e('Image Size', 'revslider');?></label_a><select class="layerinput tos2 nosearchbox easyinit" data-evt="getNewImageSize" data-evtparam="bg.object" data-r="behavior.imageSourceType"><option value="100" selected="selected"><?php _e("Original", 'revslider');?></option><option value="75" selected="selected"><?php _e("Large", 'revslider');?></option><option value="50" selected="selected"><?php _e("Medium", 'revslider');?></option><option value="25" selected="selected"><?php _e("Small", 'revslider');?></option><option value="10" selected="selected"><?php _e("Extra Small", 'revslider');?></option></select></div>
+					<div id="layerbg_srctype_medialibrary" class="layerbg_srctype_all"><label_a class="singlerow"><?php _e('Source Type', 'revslider');?></label_a><select class="layerinput tos2 nosearchbox easyinit" data-evt="getNewImageSize" data-evtparam="bg.media" data-r="behavior.imageSourceType"><option value="auto" selected="selected"><?php _e("Default Setting", 'revslider');?></option><?php foreach ($img_sizes as $imghandle => $imgSize) { echo '<option value="' . $imghandle . '">' . $imgSize . '</option>';}?></select></div>
+
+					
+									
+
+
+
+
 					<div id="layer_bg_adv_settings">
 						<div class="div15"></div>
 						<select style="display:none !important" id="layer_bgimage_pos" data-unselect=".layer_bg_position_selector" data-select="#layer_bg_position_*val*"  class="layerinput easyinit"  data-r="idle.backgroundPosition"><option value="left center"><?php _e('left center', 'revslider');?></option><option value="left bottom"><?php _e('left bottom', 'revslider');?></option><option value="left top"><?php _e('left top', 'revslider');?></option><option value="center top"><?php _e('center top', 'revslider');?></option><option value="center center"><?php _e('center center', 'revslider');?></option><option value="center bottom"><?php _e('center bottom', 'revslider');?></option>																				<option value="right top"><?php _e('right top', 'revslider');?></option><option value="right center"><?php _e('right center', 'revslider');?></option><option value="right bottom"><?php _e('right bottom', 'revslider');?></option></select>
@@ -605,11 +617,20 @@ foreach ($img_sizes as $imghandle => $imgSize) {
 									</div>
 							</onelong>
 							<oneshort>
-								<label_icon class="ui_fit"></label_icon><select id="layer_bgimage_fit" data-theme="minl120" class="layerinput tos2 nosearchbox easyinit" data-r="idle.backgroundSize" ><option value="cover">cover</option><option value="contain">contain</option><option value="auto">auto</option></select>
+								<label_icon class="ui_fit"></label_icon><select id="layer_bgimage_fit" data-theme="minl120" class="layerinput tos2 nosearchbox easyinit" data-r="idle.backgroundSize" data-show=".bgIdleSize_*val*" data-hide=".bgIdleSize_perpix"><option value="cover">cover</option><option value="contain">contain</option><option value="auto">auto</option><option value="percentage">%</option><option value="pixel">px</option></select>
 								<label_icon class="ui_repeat"></label_icon><select id="layer_bgimage_repeat" data-theme="minl120" class="layerinput tos2 nosearchbox easyinit" data-r="idle.backgroundRepeat" ><option value="no-repeat">no-repeat</option><option value="repeat">repeat</option><option value="repeat-x">repeat-x</option><option value="repeat-y">repeat-y</option></select>
+								<div class="bgIdleSize_percentage bgIdleSize_perpix"><label_a>%</label_a><input class="layerinput valueduekeyboard smallinput easyinit" data-allowed=""  data-responsive="false" data-numeric="true" data-r="idle.backgroundSizePerc" data-min="0" data-max="2000" type="text"></div>
+								<div class="bgIdleSize_pixel bgIdleSize_perpix"><label_a>PX</label_a><input class="layerinput valueduekeyboard smallinput easyinit" data-allowed=""  data-responsive="false" data-numeric="true" data-r="idle.backgroundSizePix" data-min="0" data-max="2000" type="text"></div>
 							</oneshort>
 						</row>
 					</div>
+					<!-- STREAM BASED IMAGE BG -->
+					<div class="__idle__ _nsfi_ _nsfv_">						
+						<div class="div25"></div>
+						<longoption><i class="material-icons">language</i><label_a ><?php _e('Image from Stream if exist', 'revslider');?></label_a><input type="checkbox" class="easyinit layerinput callEvent" data-showhide="#layerbg_srctype_streamlibrary" data-showhidedep="true" data-evt="updatelayerbgimage" data-r="idle.bgFromStream"></longoption>
+						<div class="div5"></div>
+						<div id="layerbg_srctype_streamlibrary"><label_a class="singlerow"><?php _e('Stream Size', 'revslider');?></label_a><select class="layerinput tos2 nosearchbox easyinit"  data-r="behavior.streamSourceType"><option value="auto" selected="selected"><?php _e("Default Setting", 'revslider');?></option><?php foreach ($img_sizes as $imghandle => $imgSize) { echo '<option value="' . $imghandle . '">' . $imgSize . '</option>';}?></select></div>						
+					</div>	
 				</div>
 			</div>
 
@@ -700,7 +721,7 @@ foreach ($img_sizes as $imghandle => $imgSize) {
 						<onelong><label_icon class="ui_rotatez"></label_icon><input  class="layerinput valueduekeyboard smallinput easyinit" data-numeric="true" data-allowed="deg" data-r="idle.rotationZ" data-min="-3600" data-max="3600" type="text"></onelong>
 						<oneshort><label_icon class="ui_opacity"></label_icon><input  class="layerinput valueduekeyboard smallinput easyinit" data-numeric="true" data-allowed="" data-r="idle.opacity" data-min="0" data-max="1" data-steps="0.05" type="text"></oneshort>
 					</row>
-
+					
 				</div>
 			</div><!-- END OF BOX SHADOW SETTING -->
 
@@ -948,82 +969,107 @@ foreach ($img_sizes as $imghandle => $imgSize) {
 			<div class="form_inner open">
 				<div class="form_inner_header"><i class="material-icons">mouse</i><?php _e('Hover', 'revslider');?></div>
 				<div class="collapsable">
-
-					<row class="directrow">
-						<onelong><label_a><?php _e('Enabled', 'revslider');?></label_a><input type="checkbox"  data-showhide="#copyhoversettings" data-showhidedep="true" id="layer_usehover" class="layerinput easyinit" data-evt="copyhoversettings" data-evtparam="checkiffirst" data-r="hover.usehover"/></onelong>
-						<oneshort><div id="copyhoversettings" data-evt="copyhoversettings" data-helpkey="resethover" class="basic_action_button rightbutton autosize callEventButton"><?php _e('Reset Style', 'revslider');?></div></oneshort>
-					</row>
 					<label_a><?php _e('Cursor', 'revslider');?></label_a><select class="layerinput tos2 nosearchbox easyinit" id="layer_css_cursor" data-r="idle.cursor"><option value="auto" selected="selected">Auto</option><option value="default">Default</option><option value="crosshair">Crosshair</option><option value="pointer">Pointer</option><option value="move">Move</option><option value="text">Text</option><option value="wait">Wait</option><option value="help">Help</option><option value="zoom-in">Zoom-in</option><option value="zoom-out">Zoom-out</option></select><span class="linebreak"></span>
 					<label_a><?php _e('Pointer Event', 'revslider');?></label_a><select class="layerinput tos2 nosearchbox easyinit" id="layer_css_pointerevent" data-r="hover.pointerEvents"><option value="auto" selected="selected">Auto</option><option value="none">None</option></select>
-					<row class="directrow">
-						<onelong><label_a><?php _e('Mask', 'revslider');?></label_a><input type="checkbox" id="layer_usehovermask" class="layerinput easyinit" data-r="hover.usehovermask"/></onelong>
-						<oneshort></oneshort>
-					</row>
+					<label_a><?php _e('Animation', 'revslider');?></label_a><select class="layerinput tos2 nosearchbox easyinit" id="layer_use_hover" data-r="hover.usehover" data-show=".copyhoversettings*val*" data-hide=".copyhoversettings" data-showprio="show" id="layer_usehover" class="layerinput easyinit" data-evt="copyhoversettings" data-evtparam="checkiffirst" data-r="hover.usehover"><option value="true"><?php _e('Enabled', 'revslider');?></option><option value="desktop"><?php _e('Only on Desktop', 'revslider');?></option><option value="false"><?php _e('Disabled', 'revslider');?></option></select></onelong>					
 				</div>
 			</div>
+			<div class="copyhoversettings copyhoversettingstrue copyhoversettingsdesktop">
+				<!-- LAYER HOVER TRANSFORM -->
+				<div class="form_inner open">
+					<div class="form_inner_header"><i class="material-icons">mouse</i><?php _e('Animation', 'revslider');?></div>
+					<div class="collapsable">
+						<row class="directrow">
+							<onelong><label_icon class="ui_duration"></label_icon><input class="layerinput valueduekeyboard smallinput easyinit" data-numeric="true" data-allowed="ms" data-r="hover.speed" type="text"></onelong>
+							<oneshort></oneshort>
+						</row>
+						<label_icon class="ui_easing_in singlerow"></label_icon><select id="layer_hover_appear_ease" class="layerinput tos2 nosearchbox easyinit easingSelect" data-r="hover.ease"></select>
+						<label_a><?php _e('zIndex', 'revslider');?></label_a><input class="layerinput valueduekeyboard smallinput easyinit input_with_presets" id="layer_hover_zindex" data-numeric="true" data-allowed="auto" data-presets_text="Auto!1!100!500!1000" data-presets_val="auto!1!100!500!1000" data-r="hover.zIndex" data-history="auto" type="text">
+						<label_icon class="ui_opacity singlerow"></label_icon><input  class="layerinput valueduekeyboard smallinput easyinit" data-numeric="true" data-allowed="" data-r="hover.opacity" data-min="0" data-max="1" data-steps="0.05" type="text">
+						<row class="direktrow">
+							<onelong><label_icon class="ui_scalex"></label_icon><input  class="layerinput valueduekeyboard smallinput easyinit" data-numeric="true" data-allowed="" data-r="hover.scaleX" data-min="0" data-max="500" type="text"></onelong>
+							<oneshort><label_icon class="ui_scaley"></label_icon><input  class="layerinput valueduekeyboard smallinput easyinit" data-numeric="true" data-allowed="" data-r="hover.scaleY" data-min="0" data-max="500" type="text"></oneshort>
+						</row>
+						<row class="direktrow">
+							<onelong><label_icon class="ui_skewx"></label_icon><input  class="layerinput valueduekeyboard smallinput easyinit" data-numeric="true" data-allowed="" data-r="hover.skewX" data-min="-500" data-max="500" type="text"></onelong>
+							<oneshort><label_icon class="ui_skewy"></label_icon><input  class="layerinput valueduekeyboard smallinput easyinit" data-numeric="true" data-allowed="" data-r="hover.skewY" data-min="-500" data-max="500" type="text"></oneshort>
+						</row>
 
-			<!-- LAYER HOVER TRANSFORM -->
-			<div class="form_inner open">
-				<div class="form_inner_header"><i class="material-icons">mouse</i><?php _e('Hover Transform', 'revslider');?></div>
-				<div class="collapsable">
-					<row class="directrow">
-						<onelong><label_icon class="ui_duration"></label_icon><input class="layerinput valueduekeyboard smallinput easyinit" data-numeric="true" data-allowed="ms" data-r="hover.speed" type="text"></onelong>
-						<oneshort></oneshort>
-					</row>
-					<label_icon class="ui_easing_in singlerow"></label_icon><select id="layer_hover_appear_ease" class="layerinput tos2 nosearchbox easyinit easingSelect" data-r="hover.ease"></select>
-					<label_a><?php _e('zIndex', 'revslider');?></label_a><input class="layerinput valueduekeyboard smallinput easyinit input_with_presets" id="layer_hover_zindex" data-numeric="true" data-allowed="auto" data-presets_text="Auto!1!100!500!1000" data-presets_val="auto!1!100!500!1000" data-r="hover.zIndex" data-history="auto" type="text">
-					<label_icon class="ui_opacity singlerow"></label_icon><input  class="layerinput valueduekeyboard smallinput easyinit" data-numeric="true" data-allowed="" data-r="hover.opacity" data-min="0" data-max="1" data-steps="0.05" type="text">
-					<row class="direktrow">
-						<onelong><label_icon class="ui_scalex"></label_icon><input  class="layerinput valueduekeyboard smallinput easyinit" data-numeric="true" data-allowed="" data-r="hover.scaleX" data-min="0" data-max="500" type="text"></onelong>
-						<oneshort><label_icon class="ui_scaley"></label_icon><input  class="layerinput valueduekeyboard smallinput easyinit" data-numeric="true" data-allowed="" data-r="hover.scaleY" data-min="0" data-max="500" type="text"></oneshort>
-					</row>
-					<row class="direktrow">
-						<onelong><label_icon class="ui_skewx"></label_icon><input  class="layerinput valueduekeyboard smallinput easyinit" data-numeric="true" data-allowed="" data-r="hover.skewX" data-min="-500" data-max="500" type="text"></onelong>
-						<oneshort><label_icon class="ui_skewy"></label_icon><input  class="layerinput valueduekeyboard smallinput easyinit" data-numeric="true" data-allowed="" data-r="hover.skewY" data-min="-500" data-max="500" type="text"></oneshort>
-					</row>
+						<row class="direktrow">
+							<onelong><label_icon class="ui_rotatex"></label_icon><input class="layerinput valueduekeyboard smallinput easyinit" data-numeric="true" data-allowed="deg" data-r="hover.rotationX" data-min="-3600" data-max="3600" type="text"></onelong>
+							<oneshort><label_icon class="ui_rotatey"></label_icon><input class="layerinput valueduekeyboard smallinput easyinit" data-numeric="true" data-allowed="deg" data-r="hover.rotationY" data-min="-3600" data-max="3600" type="text"></oneshort>
+						</row>
+						<row class="direktrow">
+							<onelong><label_icon class="ui_rotatez"></label_icon><input  class="layerinput valueduekeyboard smallinput easyinit" data-numeric="true" data-allowed="deg" data-r="hover.rotationZ" data-min="-3600" data-max="3600" type="text"></onelong>
+							<oneshort></oneshort>
+						</row>
 
-					<row class="direktrow">
-						<onelong><label_icon class="ui_rotatex"></label_icon><input class="layerinput valueduekeyboard smallinput easyinit" data-numeric="true" data-allowed="deg" data-r="hover.rotationX" data-min="-3600" data-max="3600" type="text"></onelong>
-						<oneshort><label_icon class="ui_rotatey"></label_icon><input class="layerinput valueduekeyboard smallinput easyinit" data-numeric="true" data-allowed="deg" data-r="hover.rotationY" data-min="-3600" data-max="3600" type="text"></oneshort>
-					</row>
-					<row class="direktrow">
-						<onelong><label_icon class="ui_rotatez"></label_icon><input  class="layerinput valueduekeyboard smallinput easyinit" data-numeric="true" data-allowed="deg" data-r="hover.rotationZ" data-min="-3600" data-max="3600" type="text"></onelong>
-						<oneshort></oneshort>
-					</row>
-
-					<row class="direktrow">
-						<onelong><label_icon class="ui_origox"></label_icon><input class="layerinput valueduekeyboard smallinput easyinit" data-numeric="true" data-allowed="px,%" data-r="hover.originX" data-min="-3600" data-max="3600" type="text"></onelong>
-						<oneshort><label_icon class="ui_origoy"></label_icon><input class="layerinput valueduekeyboard smallinput easyinit" data-numeric="true" data-allowed="px,%" data-r="hover.originY" data-min="-3600" data-max="3600" type="text"></oneshort>
-					</row>
-					<row class="direktrow">
-						<onelong><label_icon class="ui_origoz"></label_icon><input class="layerinput valueduekeyboard smallinput easyinit" data-numeric="true" data-allowed="px,%" data-r="hover.originZ" data-min="-3600" data-max="3600" type="text"></onelong>
-						<oneshort><label_icon class="ui_perspective"></label_icon><input id="le_frame_hover_perspective" class="layerinput valueduekeyboard smallinput easyinit" data-numeric="true" data-allowed="px" data-r="hover.transformPerspective" type="text"></oneshort>
-
-					</row>
-
+						<row class="direktrow">
+							<onelong><label_icon class="ui_origox"></label_icon><input class="layerinput valueduekeyboard smallinput easyinit" data-numeric="true" data-allowed="px,%" data-r="hover.originX" data-min="-3600" data-max="3600" type="text"></onelong>
+							<oneshort><label_icon class="ui_origoy"></label_icon><input class="layerinput valueduekeyboard smallinput easyinit" data-numeric="true" data-allowed="px,%" data-r="hover.originY" data-min="-3600" data-max="3600" type="text"></oneshort>
+						</row>
+						<row class="direktrow">
+							<onelong><label_icon class="ui_origoz"></label_icon><input class="layerinput valueduekeyboard smallinput easyinit" data-numeric="true" data-allowed="px,%" data-r="hover.originZ" data-min="-3600" data-max="3600" type="text"></onelong>
+							<oneshort><div class="global_perspective_settings global_perspecitve_local_settings"><label_icon class="ui_perspective"></label_icon><input id="le_frame_hover_perspective" class="layerinput valueduekeyboard smallinput easyinit" data-numeric="true" data-allowed="px" data-r="hover.transformPerspective" type="text"></div></oneshort>
+						</row>
+						<label_a><?php _e('Mask', 'revslider');?></label_a><input type="checkbox" id="layer_usehovermask" class="layerinput easyinit" data-r="hover.usehovermask"/>
+					</div>
 				</div>
-			</div>
 
-			<!-- LAYER HOVER STYLE TEXT -->
-			<div class="form_inner open _shft_">
-				<div class="form_inner_header"><i class="material-icons">title</i><?php _e('Font Hover Style', 'revslider');?></div>
-				<div class="collapsable">
-					<!-- TEXT HOVER STYLE -->
-					<label_a><?php _e('Text Color', 'revslider');?></label_a><input type="text" data-editing="Layer Hover Text Color" data-mode="single" name="layerTextColorHover" id="layerTextColorHover" class="my-color-field layerinput easyinit" data-visible="true" data-r="hover.color" value="transparent">
-					<div class="div5"></div>
-					<row class="directrow">
-						<onelong><label_icon class="ui_textdecoration"></label_icon><select id="layer_textdecoration_hover" class="layerinput tos2 nosearchbox easyinit" data-r="hover.textDecoration"><option selected="selected" value="none">None</option><option value="underline"><?php _e('Underline', 'revslider');?></option><option value="overline"><?php _e('Overline', 'revslider');?></option><option value="line-through"><?php _e('Line-through', 'revslider');?></option></select></onelong>
-						<oneshort></oneshort>
-					</row>
+				<!-- LAYER HOVER STYLE TEXT -->
+				<div class="form_inner open">
+					<div class="form_inner_header"><i class="material-icons">title</i><?php _e('Style', 'revslider');?></div>
+					<div class="collapsable">
+						<div class="_shft_ _shfb_ _shoft_ _shofb_">
+							<!-- TEXT HOVER STYLE -->
+							<label_a><?php _e('Text Color', 'revslider');?></label_a><input type="text" data-editing="Layer Hover Text Color" data-mode="single" name="layerTextColorHover" id="layerTextColorHover" class="my-color-field layerinput easyinit" data-visible="true" data-r="hover.color" value="transparent">
+							<div class="div5"></div>
+							<row class="directrow">
+								<onelong><label_icon class="ui_textdecoration"></label_icon><select id="layer_textdecoration_hover" class="layerinput tos2 nosearchbox easyinit" data-r="hover.textDecoration"><option selected="selected" value="none">None</option><option value="underline"><?php _e('Underline', 'revslider');?></option><option value="overline"><?php _e('Overline', 'revslider');?></option><option value="line-through"><?php _e('Line-through', 'revslider');?></option></select></onelong>
+								<oneshort></oneshort>
+							</row>
+						</div>
+										
+						<label_a><?php _e('BG Color', 'revslider');?></label_a><input type="text" data-editing="Layer BG Color on Hover" name="layerBGColor" id="layerBGColorHover" class="my-color-field layerinput easyinit" data-visible="true" data-r="hover.backgroundColor" value="transparent">
+						<div class="div5"></div>
+						<label_a><?php _e('Border Color', 'revslider');?></label_a><input type="text" data-mode="single" data-editing="Layer Border Color" name="layerBorderColor" id="layerBorderColorHover" class="my-color-field layerinput easyinit" data-visible="true" data-r="hover.borderColor" value="transparent"><div class="linebreak"></div>
+						<div class="div5"></div>
+						<label_a><?php _e('Border Style', 'revslider');?></label_a><select id="hover_layer_border_style" class="layerinput tos2 nosearchbox easyinit" data-r="hover.borderStyle" data-show=".border_style_advanced_hover" data-hide="#border_style_*val*_hover" data-showprio="hide" ><option value="none"><?php _e('None', 'revslider');?></option><option value="solid"><?php _e('Solid', 'revslider');?></option><option value="dashed"><?php _e('Dashed', 'revslider');?></option><option value="dotted"><?php _e('Dotted', 'revslider');?></option><option value="double"><?php _e('Double', 'revslider');?></option></select>
+						<div class="div10"></div>
+						<div id="border_style_none_hover" class="border_style_advanced_hover" >
+							<row class="directrow">
+								<oneabsolute><div id="hover_layer_borderlock_iconswitch" class="icon_switcher" data-ref="#hover_layer_border_lock"><i class="material-icons icon_state_off">lock_open</i><i class="material-icons icon_state_on">lock_outline</i><input class="easyinit layerinput callEvent" id="hover_layer_border_lock" data-updateviaevt="true" data-evt="lockBorderHover" data-setclasson="#hover_layer_borderlock_iconswitch" data-class="icsw_on" type="checkbox" data-r="hover.borderWidthLock"></div></oneabsolute>
+								<onelong><label_icon class="ui_border_top"></label_icon><input class="layerinput valueduekeyboard smallinput easyinit callEvent" data-updateviaevt="true" data-evt="updateBorderInputHover" data-evtparam="0" data-allowed="px"  data-numeric="true" data-r="hover.borderWidth.0" data-min="-500" data-max="500" type="text"></onelong>
+								<oneshort><label_icon class="ui_border_right"></label_icon><input class="layerinput valueduekeyboard smallinput easyinit callEvent" data-updateviaevt="true" data-evt="updateBorderInputHover" data-evtparam="1" data-allowed="px"  data-numeric="true" data-r="hover.borderWidth.1" data-min="-500" data-max="500" type="text"></oneshort>
+							</row>
+							<row>
+								<onelong><label_icon class="ui_border_bottom"></label_icon><input class="layerinput valueduekeyboard smallinput easyinit callEvent" data-updateviaevt="true" data-evt="updateBorderInputHover" data-evtparam="2" data-allowed="px"  data-numeric="true" data-r="hover.borderWidth.2" data-min="-500" data-max="500" type="text"></onelong>
+								<oneshort><label_icon class="ui_border_left"></label_icon><input class="layerinput valueduekeyboard smallinput easyinit callEvent" data-updateviaevt="true" data-evt="updateBorderInputHover" data-evtparam="3" data-allowed="px"  data-numeric="true" data-r="hover.borderWidth.3" data-min="-500" data-max="500" type="text"></oneshort>
+							</row>
+						</div>
+						<row class="directrow">
+							<oneabsolute><div id="hover_layer_borderRadiuslock_iconswitch" class="icon_switcher" data-ref="#hover_layer_borderRadius_lock"><i class="material-icons icon_state_off">lock_open</i><i class="material-icons icon_state_on">lock_outline</i><input class="easyinit layerinput callEvent" id="hover_layer_borderRadius_lock" data-updateviaevt="true" data-evt="lockBorderRadiusHover" data-setclasson="#hover_layer_borderRadiuslock_iconswitch" data-class="icsw_on" type="checkbox" data-r="hover.borderRadiusLock"></div></oneabsolute>
+							<onelong><label_icon class="ui_bradius_topleft"></label_icon><input class="layerinput valueduekeyboard smallinput easyinit callEvent" data-updateviaevt="true" data-evt="updateBorderRadiusInputHover" data-evtparam="0" data-allowed="px,%"  data-numeric="true" data-r="hover.borderRadius.v.0" data-min="-500" data-max="500" type="text"></onelong>
+							<oneshort><label_icon class="ui_bradius_topright"></label_icon><input class="layerinput valueduekeyboard smallinput easyinit callEvent" data-updateviaevt="true" data-evt="updateBorderRadiusInputHover" data-evtparam="1" data-allowed="px,%"  data-numeric="true" data-r="hover.borderRadius.v.1" data-min="-500" data-max="500" type="text"></oneshort>
+						</row>
+						<row class="directrow">
+							<onelong><label_icon class="ui_bradius_bottomleft"></label_icon><input class="layerinput valueduekeyboard smallinput easyinit callEvent" data-updateviaevt="true" data-evt="updateBorderRadiusInputHover" data-evtparam="3" data-allowed="px,%"  data-numeric="true" data-r="hover.borderRadius.v.3" data-min="-500" data-max="500" type="text"></onelong>
+							<oneshort><label_icon class="ui_bradius_bottomright"></label_icon><input class="layerinput valueduekeyboard smallinput easyinit callEvent" data-updateviaevt="true" data-evt="updateBorderRadiusInputHover" data-evtparam="2" data-allowed="px,%"  data-numeric="true" data-r="hover.borderRadius.v.2" data-min="-500" data-max="500" type="text"></oneshort>
+						</row>
+						<div class="div15"></div>
+						<div data-evt="copyhoversettings" data-helpkey="resethover" class="basic_action_button rightbutton longbutton callEventButton"><?php _e('Reset Style', 'revslider');?></div>
+						<div class="tp-clearfix"></div>
+					</div>
 				</div>
-			</div>
-			<!-- LAYER HOVER STYLE TEXT -->
-			<div class="form_inner open _shfsvg_">
-				<div class="form_inner_header"><i class="material-icons">gesture</i><?php _e('SVG Hover Style', 'revslider');?></div>
-				<div class="collapsable">
-					<!-- SVG HOVER STYLE -->
+
+				<div class="form_inner open _shfsvg_">
+					<div class="form_inner_header"><i class="material-icons">title</i><?php _e('Style', 'revslider');?></div>
+					<div class="collapsable">						
+						<!-- SVG HOVER STYLE -->
 						<label_a><?php _e('SVG Color', 'revslider');?></label_a><input type="text" data-editing="SVG Hover Color" data-mode="single" name="layerSVGColorHover" id="layerSVGColorHover" class="my-color-field layerinput easyinit" data-visible="true" data-r="hover.svg.color" value="transparent">
+						<div class="div5"></div>
 						<label_a><?php _e('Stroke Color', 'revslider');?></label_a><input type="text" data-editing="Stroke Hover Color" data-mode="single" name="layerStrokeColorHover" id="layerStrokeColorHover" class="my-color-field layerinput easyinit" data-visible="true" data-r="hover.svg.strokeColor" value="transparent">
+						<div class="div5"></div>
 						<row class="directrow">
 							<onelong><label_icon class="ui_strokewidth"></label_icon><input class="layerinput valueduekeyboard smallinput easyinit" data-allowed="px"  data-numeric="true" data-r="hover.svg.strokeWidth" data-min="-1" data-max="500" type="text"></onelong>
 							<oneshort><label_icon class="ui_strokedasharray"></label_icon><input class="layerinput valueduekeyboard smallinput easyinit" data-r="hover.svg.strokeDashArray" type="text"></oneshort>
@@ -1031,62 +1077,24 @@ foreach ($img_sizes as $imghandle => $imgSize) {
 						<row class="directrow">
 							<onelong><label_icon class="ui_strokedashoffset"></label_icon><input class="layerinput valueduekeyboard smallinput easyinit" data-allowed="px"  data-numeric="true" data-r="hover.svg.strokeDashOffset" data-min="0" data-max="500" type="text"></onelong>
 							<oneshort></oneshort>
-						</row>
-				</div>
-			</div>
-
-			<!-- HOVER BACKGROUND -->
-			<div class="form_inner open">
-				<div class="form_inner_header"><i class="material-icons">color_lens</i><?php _e('Background Hover', 'revslider');?></div>
-				<div class="collapsable">
-					<label_a><?php _e('BG Color', 'revslider');?></label_a><input type="text" data-editing="Layer BG Color on Hover" name="layerBGColor" id="layerBGColorHover" class="my-color-field layerinput easyinit" data-visible="true" data-r="hover.backgroundColor" value="transparent">
-				</div>
-			</div>
-
-			<!-- HOVER BORDER RADIUS THINGS -->
-			<div class="form_inner open">
-				<div class="form_inner_header"><i class="material-icons">rounded_corner</i><?php _e('Border Hover', 'revslider');?></div>
-				<div class="collapsable">
-					<label_a><?php _e('Border Color', 'revslider');?></label_a><input type="text" data-mode="single" data-editing="Layer Border Color" name="layerBorderColor" id="layerBorderColorHover" class="my-color-field layerinput easyinit" data-visible="true" data-r="hover.borderColor" value="transparent"><div class="linebreak"></div>
-					<div class="div5"></div>
-					<label_a><?php _e('Border Style', 'revslider');?></label_a><select id="hover_layer_border_style" class="layerinput tos2 nosearchbox easyinit" data-r="hover.borderStyle" data-show=".border_style_advanced_hover" data-hide="#border_style_*val*_hover" data-showprio="hide" ><option value="none"><?php _e('None', 'revslider');?></option><option value="solid"><?php _e('Solid', 'revslider');?></option><option value="dashed"><?php _e('Dashed', 'revslider');?></option><option value="dotted"><?php _e('Dotted', 'revslider');?></option><option value="double"><?php _e('Double', 'revslider');?></option></select>
-					<div class="div10"></div>
-					<div id="border_style_none_hover" class="border_style_advanced_hover" >
-						<row class="directrow">
-							<oneabsolute><div id="hover_layer_borderlock_iconswitch" class="icon_switcher" data-ref="#hover_layer_border_lock"><i class="material-icons icon_state_off">lock_open</i><i class="material-icons icon_state_on">lock_outline</i><input class="easyinit layerinput callEvent" id="hover_layer_border_lock" data-updateviaevt="true" data-evt="lockBorderHover" data-setclasson="#hover_layer_borderlock_iconswitch" data-class="icsw_on" type="checkbox" data-r="hover.borderWidthLock"></div></oneabsolute>
-							<onelong><label_icon class="ui_border_top"></label_icon><input class="layerinput valueduekeyboard smallinput easyinit callEvent" data-updateviaevt="true" data-evt="updateBorderInputHover" data-evtparam="0" data-allowed="px"  data-numeric="true" data-r="hover.borderWidth.0" data-min="-500" data-max="500" type="text"></onelong>
-							<oneshort><label_icon class="ui_border_right"></label_icon><input class="layerinput valueduekeyboard smallinput easyinit callEvent" data-updateviaevt="true" data-evt="updateBorderInputHover" data-evtparam="1" data-allowed="px"  data-numeric="true" data-r="hover.borderWidth.1" data-min="-500" data-max="500" type="text"></oneshort>
-						</row>
-						<row>
-							<onelong><label_icon class="ui_border_bottom"></label_icon><input class="layerinput valueduekeyboard smallinput easyinit callEvent" data-updateviaevt="true" data-evt="updateBorderInputHover" data-evtparam="2" data-allowed="px"  data-numeric="true" data-r="hover.borderWidth.2" data-min="-500" data-max="500" type="text"></onelong>
-							<oneshort><label_icon class="ui_border_left"></label_icon><input class="layerinput valueduekeyboard smallinput easyinit callEvent" data-updateviaevt="true" data-evt="updateBorderInputHover" data-evtparam="3" data-allowed="px"  data-numeric="true" data-r="hover.borderWidth.3" data-min="-500" data-max="500" type="text"></oneshort>
-						</row>
+						</row>						
 					</div>
-					<row class="directrow">
-						<oneabsolute><div id="hover_layer_borderRadiuslock_iconswitch" class="icon_switcher" data-ref="#hover_layer_borderRadius_lock"><i class="material-icons icon_state_off">lock_open</i><i class="material-icons icon_state_on">lock_outline</i><input class="easyinit layerinput callEvent" id="hover_layer_borderRadius_lock" data-updateviaevt="true" data-evt="lockBorderRadiusHover" data-setclasson="#hover_layer_borderRadiuslock_iconswitch" data-class="icsw_on" type="checkbox" data-r="hover.borderRadiusLock"></div></oneabsolute>
-						<onelong><label_icon class="ui_bradius_topleft"></label_icon><input class="layerinput valueduekeyboard smallinput easyinit callEvent" data-updateviaevt="true" data-evt="updateBorderRadiusInputHover" data-evtparam="0" data-allowed="px,%"  data-numeric="true" data-r="hover.borderRadius.v.0" data-min="-500" data-max="500" type="text"></onelong>
-						<oneshort><label_icon class="ui_bradius_topright"></label_icon><input class="layerinput valueduekeyboard smallinput easyinit callEvent" data-updateviaevt="true" data-evt="updateBorderRadiusInputHover" data-evtparam="1" data-allowed="px,%"  data-numeric="true" data-r="hover.borderRadius.v.1" data-min="-500" data-max="500" type="text"></oneshort>
-					</row>
-					<row class="directrow">
-						<onelong><label_icon class="ui_bradius_bottomleft"></label_icon><input class="layerinput valueduekeyboard smallinput easyinit callEvent" data-updateviaevt="true" data-evt="updateBorderRadiusInputHover" data-evtparam="3" data-allowed="px,%"  data-numeric="true" data-r="hover.borderRadius.v.3" data-min="-500" data-max="500" type="text"></onelong>
-						<oneshort><label_icon class="ui_bradius_bottomright"></label_icon><input class="layerinput valueduekeyboard smallinput easyinit callEvent" data-updateviaevt="true" data-evt="updateBorderRadiusInputHover" data-evtparam="2" data-allowed="px,%"  data-numeric="true" data-r="hover.borderRadius.v.2" data-min="-500" data-max="500" type="text"></oneshort>
-					</row>
 				</div>
-			</div>
 
-			<!-- LAYER FILTER HOVERS-->
-			<div id="form_layerstyle_css_hover" class="form_inner open">
-				<div class="form_inner_header"><i class="material-icons">blur_linear</i><?php _e('Filter Hover', 'revslider');?></div>
-					<div class="collapsable">
+				<!-- LAYER FILTER HOVERS-->
+				<div id="form_layerstyle_css_hover" class="form_inner open">
+					<div class="form_inner_header"><i class="material-icons">blur_linear</i><?php _e('Filter', 'revslider');?></div>
+						<div class="collapsable">
 
-						<row class="direktrow">
-							<onelong><label_icon class="ui_blur"></label_icon><input class="layerinput valueduekeyboard smallinput easyinit" data-numeric="true" data-allowed="px" data-min="0" data-max="500" data-r="hover.filter.blur" type="text"></onelong>
-							<oneshort></oneshort>
-						</row>
-						<row class="direktrow">
-							<onelong><label_icon class="ui_brightness"></label_icon><input class="layerinput valueduekeyboard smallinput easyinit" data-numeric="true" data-allowed="%" data-min="0" data-max="10000" data-r="hover.filter.brightness" type="text"></onelong>
-							<oneshort><label_icon class="ui_grayscale"></label_icon><input class="layerinput valueduekeyboard smallinput easyinit" data-numeric="true" data-allowed="%" data-min="0" data-max="100" data-r="hover.filter.grayscale" type="text"></oneshort>
-						</row>
+							<row class="direktrow">
+								<onelong><label_icon class="ui_blur"></label_icon><input class="layerinput valueduekeyboard smallinput easyinit" data-numeric="true" data-allowed="px" data-min="0" data-max="500" data-r="hover.filter.blur" type="text"></onelong>
+								<oneshort></oneshort>
+							</row>
+							<row class="direktrow">
+								<onelong><label_icon class="ui_brightness"></label_icon><input class="layerinput valueduekeyboard smallinput easyinit" data-numeric="true" data-allowed="%" data-min="0" data-max="10000" data-r="hover.filter.brightness" type="text"></onelong>
+								<oneshort><label_icon class="ui_grayscale"></label_icon><input class="layerinput valueduekeyboard smallinput easyinit" data-numeric="true" data-allowed="%" data-min="0" data-max="100" data-r="hover.filter.grayscale" type="text"></oneshort>
+							</row>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -1167,12 +1175,12 @@ foreach ($img_sizes as $imghandle => $imgSize) {
 							</row>
 						</div>
 
-						<div class="show_on_frame_0">
+						<!--<div class="show_on_frame_0">
 							<row class="direktrow">
 								<onelong><label_a><?php _e('Force Prepare', 'revslider');?></label_a><input class="layerinput smallinput easyinit" type="checkbox" data-r="timeline.forcePrepare"/></onelong>
 								<oneshort></oneshort>
-							</row>
-						</div>
+							</row>								
+						</div>-->
 
 						<div class="show_on_frame_999">
 							<row class="direktrow">
@@ -1210,7 +1218,7 @@ foreach ($img_sizes as $imghandle => $imgSize) {
 							</row>
 							<row class="direktrow">
 								<onelong><label_icon class="ui_z"></label_icon><input id="le_frame_z" class="layerinput valueduekeyboard smallinput easyinit input_with_presets" data-numeric="true" data-allowed="px,random,cycle,inherit" data-r="#frame#.transform.z"  data-presets_text="$C$px!$I$Inherit!$R$Random {min,max}!$CY$Cycles [val|val|val]" data-presets_val="50px!inherit!{-100,100}![-50|50]" type="text"></onelong>
-								<oneshort><label_icon class="ui_perspective"></label_icon><input id="le_frame_perspective" class="layerinput valueduekeyboard smallinput easyinit" data-numeric="true" data-allowed="px" data-r="#frame#.transform.transformPerspective" type="text"></oneshort>
+								<oneshort><div class="global_perspective_settings global_perspecitve_local_settings"><label_icon class="ui_perspective"></label_icon><input id="le_frame_perspective" class="layerinput valueduekeyboard smallinput easyinit" data-numeric="true" data-allowed="px" data-r="#frame#.transform.transformPerspective" type="text"></div></oneshort>
 							</row>
 							<div class="div10"></div>
 							<row class="direktrow">

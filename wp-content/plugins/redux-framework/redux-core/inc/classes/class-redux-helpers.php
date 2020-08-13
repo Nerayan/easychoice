@@ -220,7 +220,7 @@ if ( ! class_exists( 'Redux_Helpers', false ) ) {
 		 * @return bool
 		 */
 		public static function is_local_host() {
-			return ( isset( Redux_Core::$server['REMOTE_ADDR'] ) && ( '127.0.0.1' === Redux_Core::$server['REMOTE_ADDR'] || 'localhost' === Redux_Core::$server['REMOTE_ADDR'] || '::1' === Redux_Core::$server['SERVER_ADDR'] ) ) ? true : false;
+			return ( isset( Redux_Core::$server['REMOTE_ADDR'] ) && ( '127.0.0.1' === Redux_Core::$server['REMOTE_ADDR'] || 'localhost' === Redux_Core::$server['REMOTE_ADDR'] || isset( Redux_Core::$server['SERVER_ADDR'] ) && '::1' === Redux_Core::$server['SERVER_ADDR'] ) ) ? true : false;
 		}
 
 		/**
@@ -411,8 +411,8 @@ if ( ! class_exists( 'Redux_Helpers', false ) ) {
 					continue;
 				}
 				if ( false !== strpos( $part, '/' ) ) {
-					$chunk                               = explode( '/', $part );
-					$software[ strtolower( $chunk[0] ) ] = $chunk[1];
+					$chunk = explode( '/', $part );
+					$software[ Redux_Core::strtolower( $chunk[0] ) ] = $chunk[1];
 				}
 			}
 			$data['server']     = Redux_Core::$server['SERVER_SOFTWARE'];
@@ -704,7 +704,10 @@ if ( ! class_exists( 'Redux_Helpers', false ) ) {
 		 * @return string
 		 */
 		public static function get_hash() {
-			return md5( network_site_url() . '-' . Redux_Core::$server['REMOTE_ADDR'] );
+			$remote_addr = isset( Redux_Core::$server['REMOTE_ADDR'] )
+				? Redux_Core::$server['REMOTE_ADDR']
+				: '127.0.0.1';
+			return md5( network_site_url() . '-' . $remote_addr );
 		}
 
 		/**
@@ -903,10 +906,9 @@ if ( ! class_exists( 'Redux_Helpers', false ) ) {
 		 * @return mixed
 		 */
 		public static function localize( $localize ) {
-			$redux            = Redux::instance( $localize['args']['opt_name'] );
-			$nonce            = wp_create_nonce( 'redux-ads-nonce' );
-			$base             = admin_url( 'admin-ajax.php' ) . '?t=' . $redux->core_thread . '&action=redux_p&nonce=' . $nonce . '&url=';
-			$localize['rAds'] = self::r_url_fix( $base, $redux->args['opt_name'] );
+			$redux = Redux::instance( $localize['args']['opt_name'] );
+			$nonce = wp_create_nonce( 'redux-ads-nonce' );
+			$base  = admin_url( 'admin-ajax.php' ) . '?t=' . $redux->core_thread . '&action=redux_p&nonce=' . $nonce . '&url=';
 
 			return $localize;
 		}

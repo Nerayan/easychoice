@@ -23,8 +23,9 @@ defined( 'ABSPATH' ) || exit;
 
 require_once dirname( __FILE__ ) . '/class-redux-core.php';
 
-Redux_Core::$version    = '4.0.6';
+Redux_Core::$version    = '4.1.14';
 Redux_Core::$redux_path = dirname( __FILE__ );
+Redux_Core::$server     = filter_input_array( INPUT_SERVER, $_SERVER ); // phpcs:ignore WordPress.Security.EscapeOutput
 Redux_Core::instance();
 
 // Don't duplicate me!
@@ -98,6 +99,8 @@ if ( ! class_exists( 'ReduxFramework', false ) ) {
 			self::$_url        = Redux_Core::$url;
 			self::$_upload_dir = Redux_Core::$upload_dir;
 			self::$_upload_url = Redux_Core::$upload_url;
+			self::$_as_plugin  = Redux_Core::$as_plugin;
+			self::$_is_plugin  = Redux_Core::$is_plugin;
 		}
 
 		/**
@@ -362,6 +365,24 @@ if ( ! class_exists( 'ReduxFramework', false ) ) {
 		public $hidden_perm_sections = array();
 
 		/**
+		 * Deprecated shim for v3 as plugin check.
+		 *
+		 * @var bool
+		 *
+		 * @deprecated 4.0.0
+		 */
+		public static $_as_plugin = false;  // phpcs:ignore PSR2.Classes.PropertyDeclaration
+
+		/**
+		 * Deprecated shim for v3 as plugin check.
+		 *
+		 * @var bool
+		 *
+		 * @deprecated 4.0.0
+		 */
+		public static $_is_plugin = false;  // phpcs:ignore PSR2.Classes.PropertyDeclaration
+
+		/**
 		 * Cloning is forbidden.
 		 *
 		 * @since 4.0.0
@@ -393,13 +414,20 @@ if ( ! class_exists( 'ReduxFramework', false ) ) {
 			}
 
 			if ( ! isset( Redux::$init[ $args['opt_name'] ] ) ) {
-				// For those not using the new API as they should...
-				Redux::set_sections( $args['opt_name'], $sections );
+				// Let's go back to the Redux API instead of having it run directly.
+				Redux_Functions_Ex::record_caller( $args['opt_name'] );
 				Redux::set_args( $args['opt_name'], $args );
+				if ( ! empty( $sections ) ) {
+					Redux::set_sections( $args['opt_name'], $sections );
+				}
 				$sections = Redux::construct_sections( $args['opt_name'] );
 				$args     = Redux::construct_args( $args['opt_name'] );
 				Redux::set_defaults( $args['opt_name'] );
 				Redux::$init[ $args['opt_name'] ] = 1;
+			}
+
+			if ( empty( $args ) ) {
+				return;
 			}
 
 			$args             = new Redux_Args( $this, $args );
@@ -448,7 +476,7 @@ if ( ! class_exists( 'ReduxFramework', false ) ) {
 
 				// Grab database values.
 				$this->options_defaults_class = new Redux_Options_Defaults();
-				$this->options_class          = new Redux_Options( $this );
+				$this->options_class          = new Redux_Options_Constructor( $this );
 				$this->options_class->get();
 
 				$this->output_class  = new Redux_Output( $this );
@@ -525,7 +553,7 @@ if ( ! class_exists( 'ReduxFramework', false ) ) {
 		public function _default_values() { // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
 			if ( ! isset( $this->options_class ) ) {
 				$this->options_defaults_class = new Redux_Options_Defaults();
-				$this->options_class          = new Redux_Options( $this );
+				$this->options_class          = new Redux_Options_Constructor( $this );
 			}
 
 			return $this->options_class->default_values();
@@ -581,6 +609,18 @@ if ( ! class_exists( 'ReduxFramework', false ) ) {
 		 * @return array
 		 */
 		public function get_default_values( $key, $array_key = false ) {
+			return $this->options_defaults_class->default_values( $key, $array_key );
+		}
+
+		/**
+		 * SHIM: get_default_value
+		 *
+		 * @param string $key Key value.
+		 * @param bool   $array_key Flag to determine array status.
+		 *
+		 * @return array
+		 */
+		public function get_default_value( $key, $array_key = false ) {
 			return $this->options_defaults_class->default_values( $key, $array_key );
 		}
 

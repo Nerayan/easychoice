@@ -127,10 +127,12 @@ class SaleModeQuery
         self::sendResponse($xml);
 
         Logger::logProtocol('order query send result');
+        Logger::saveLastResponseInfo('orders content');
 
         // with 3.1 - 1c maybe not send request success
         // https://dev.1c-bitrix.ru/api_help/sale/algorithms/doc_from_site.php
-        if (self::resolveVersion() === '3.1') {
+        // ignore manual query
+        if (!isset($_GET['manual-1c-import']) && self::resolveVersion() === '3.1') {
             $settings = get_option(Bootstrap::OPTIONS_KEY);
 
             $settings['send_orders_last_success_export'] = str_replace(' ', 'T', date_i18n('Y-m-d H:i'));
@@ -299,6 +301,7 @@ class SaleModeQuery
         self::sendResponse(self::getStartedXmlObject($version));
 
         Logger::logProtocol('order unload not enabled');
+        Logger::saveLastResponseInfo('empty orders content');
         Logger::endProcessingRequestLogProtocolEntry();
 
         exit();
@@ -377,38 +380,59 @@ class SaleModeQuery
                 $sku = $product->get_sku();
             }
 
-            $exportProduct = [
-                'id' => $item['variation_id'] ? $item['variation_id'] : $item['product_id'],
-                'productId' => $item['product_id'],
-                'variationId' => $item['variation_id'],
-                '_id_1c' => get_post_meta(
-                    $item['variation_id'] ? $item['variation_id'] : $item['product_id'],
-                    '_id_1c',
-                    true
-                ),
-                'quantity' => $item['qty'],
-                'name' => htmlspecialchars($item['name']),
-                'priceInOrder' => $item['line_total'] / $item['qty'],
-                'lineTotal' => $item['line_total'],
-                'sku' => $sku,
-                'attributes' => []
-            ];
-
             if (
-                empty($exportProduct['_id_1c']) &&
-                $product instanceof \WC_Product &&
-                $item['variation_id'] &&
-                !empty($settings['send_orders_use_variation_characteristics_from_site']) &&
-                $product->get_attribute_summary()
+                !empty($settings['send_orders_combine_data_variation_as_main_product']) &&
+                $item['variation_id']
             ) {
-                $attributes = explode(', ', $product->get_attribute_summary());
-
-                foreach ($attributes as $attribute) {
-                    $exportProduct['attributes'][] = explode(': ', $attribute);
+                if (!isset($products[$item['product_id']])) {
+                    $products[$item['product_id']] = [
+                        'id' => $item['product_id'],
+                        'productId' => $item['product_id'],
+                        'variationId' => '',
+                        '_id_1c' => get_post_meta($item['product_id'], '_id_1c', true),
+                        'quantity' => (float) $item['qty'],
+                        'name' => htmlspecialchars(get_post_field('post_title', $item['product_id'])),
+                        'lineTotal' => (float) $item['line_total'],
+                        'sku' => $sku,
+                        'attributes' => []
+                    ];
+                } else {
+                    $products[$item['product_id']]['quantity'] += (float) $item['qty'];
+                    $products[$item['product_id']]['lineTotal'] += (float) $item['line_total'];
                 }
-            }
+            } else {
+                $exportProduct = [
+                    'id' => $item['variation_id'] ? $item['variation_id'] : $item['product_id'],
+                    'productId' => $item['product_id'],
+                    'variationId' => $item['variation_id'],
+                    '_id_1c' => get_post_meta(
+                        $item['variation_id'] ? $item['variation_id'] : $item['product_id'],
+                        '_id_1c',
+                        true
+                    ),
+                    'quantity' => $item['qty'],
+                    'name' => htmlspecialchars($item['name']),
+                    'lineTotal' => $item['line_total'],
+                    'sku' => $sku,
+                    'attributes' => []
+                ];
 
-            $products[] = $exportProduct;
+                if (
+                    empty($exportProduct['_id_1c']) &&
+                    $product instanceof \WC_Product &&
+                    $item['variation_id'] &&
+                    !empty($settings['send_orders_use_variation_characteristics_from_site']) &&
+                    $product->get_attribute_summary()
+                ) {
+                    $attributes = explode(', ', $product->get_attribute_summary());
+
+                    foreach ($attributes as $attribute) {
+                        $exportProduct['attributes'][] = explode(': ', $attribute);
+                    }
+                }
+
+                $products[$item['variation_id'] ? $item['variation_id'] : $item['product_id']] = $exportProduct;
+            }
         }
 
         foreach ($products as $product) {
@@ -462,7 +486,7 @@ class SaleModeQuery
                 $base->addAttribute('МеждународноеСокращение', 'PCE');
             }
 
-            $productXml->addChild('ЦенаЗаЕдиницу', $product['priceInOrder']);
+            $productXml->addChild('ЦенаЗаЕдиницу', $product['lineTotal'] / $product['quantity']);
             $productXml->addChild('Количество', $product['quantity']);
             $productXml->addChild('Сумма', $product['lineTotal']);
 

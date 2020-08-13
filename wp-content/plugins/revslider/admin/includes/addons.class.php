@@ -11,7 +11,7 @@ class RevSliderAddons extends RevSliderFunctions { //before: Rev_addon_Admin
 	//private $addon_version_required = '2.0.0'; //this holds the globally needed addon version for the current RS version
 	
 	private $addon_version_required = array(
-		'revslider-whiteboard-addon' => '2.0.0',
+		'revslider-whiteboard-addon' => '2.2.0',
 		'revslider-backup-addon' => '2.0.0',
 		'revslider-gallery-addon' => '2.0.0',
 		'revslider-rel-posts-addon' => '2.0.0',
@@ -68,8 +68,6 @@ class RevSliderAddons extends RevSliderFunctions { //before: Rev_addon_Admin
 		
 		return $addons;
 	}
-	
-	
 
 	/**
 	 * check if any addon is below version x (for RS6.0 this is version 2.0)
@@ -100,7 +98,6 @@ class RevSliderAddons extends RevSliderFunctions { //before: Rev_addon_Admin
 		return $update;
 	}
 	
-	
 	/**
 	 * Install Add-On/Plugin
 	 *
@@ -123,7 +120,6 @@ class RevSliderAddons extends RevSliderFunctions { //before: Rev_addon_Admin
 		return $activate;
 	}
 	
-	
 	/**
 	 * Download Add-On/Plugin
 	 *
@@ -144,7 +140,7 @@ class RevSliderAddons extends RevSliderFunctions { //before: Rev_addon_Admin
 		
 		$done	= false;
 		$count	= 0;
-		$rattr = array(
+		$rattr	= array(
 			'code'		=> urlencode($code),
 			'version'	=> urlencode(RS_REVISION),
 			'product'	=> urlencode(RS_PLUGIN_SLUG),
@@ -166,10 +162,10 @@ class RevSliderAddons extends RevSliderFunctions { //before: Rev_addon_Admin
 		
 		if(!$get || wp_remote_retrieve_response_code($get) != 200){
 		}else{
-			$upload_dir		= wp_upload_dir();
-			$file			= $upload_dir['basedir']. '/revslider/templates/' . $plugin_slug . '.zip';
-			@mkdir(dirname($file));
-			$ret			= @file_put_contents($file, $get['body']);
+			$upload_dir	= wp_upload_dir();
+			$file		= $upload_dir['basedir']. '/revslider/templates/' . $plugin_slug . '.zip';
+			@mkdir(dirname($file), 0777, true);
+			$ret		= @file_put_contents($file, $get['body']);
 
 			WP_Filesystem();
 
@@ -207,7 +203,6 @@ class RevSliderAddons extends RevSliderFunctions { //before: Rev_addon_Admin
 		return false;
 	}
 	
-	
 	/**
 	 * Activates Installed Add-On/Plugin
 	 *
@@ -228,7 +223,6 @@ class RevSliderAddons extends RevSliderFunctions { //before: Rev_addon_Admin
 		return true;
 	}
 
-	
 	/**
 	 * Deactivates Installed Add-On/Plugin
 	 *
@@ -237,14 +231,9 @@ class RevSliderAddons extends RevSliderFunctions { //before: Rev_addon_Admin
 	public function deactivate_addon($addon){
 		// Verify that the incoming request is coming with the security nonce
 		$result = deactivate_plugins($addon);
-		if(is_wp_error($result)){
-			// Process Error
-			return false;
-		}
-		return true;
+		return (is_wp_error($result)) ? false : true;
 	}
 }
 
-class Rev_addon_Admin extends RevSliderAddons {
-}
+class Rev_addon_Admin extends RevSliderAddons {}
 ?>

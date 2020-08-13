@@ -42,7 +42,14 @@ class GetInArchiveTemp
         $this->createArchive(Helper::getTempPath(), $file);
 
         header('Content-Type: application/zip');
-        header('Content-Disposition: attachment; filename="' . 'temp_' . date('Y-m-d_H:i:s') . '.zip' . '"');
+        header(
+            'Content-Disposition: attachment; filename="'
+            . 'temp_('
+            . ITGALAXY_WC_1C_PLUGIN_VERSION
+            . ')_'
+            . date('Y-m-d_H:i:s')
+            . '.zip"'
+        );
         header('Content-Length: ' . filesize($file));
 
         readfile($file);

@@ -1,6 +1,7 @@
 <?php
 namespace Itgalaxy\Wc\Exchange1c\ExchangeProcess\DataResolvers;
 
+use Itgalaxy\Wc\Exchange1c\ExchangeProcess\Helpers\ProductAttributeHelper;
 use Itgalaxy\Wc\Exchange1c\ExchangeProcess\Helpers\Term;
 
 class ProductAttributes
@@ -66,20 +67,18 @@ class ProductAttributes
                 }
 
                 if (!$optionTermID) {
-                    $term = Term::insertProductAttributeValue(
+                    $term = ProductAttributeHelper::insertValue(
                         (string) $property->Значение,
                         $attribute['taxName'],
                         $uniqId1c
                     );
 
-                    if (!is_wp_error($term)) {
-                        $optionTermID = $term['term_id'];
+                    $optionTermID = $term['term_id'];
 
-                        // default meta value by ordering
-                        update_term_meta($optionTermID, 'order_' . $attribute['taxName'], 0);
+                    // default meta value by ordering
+                    update_term_meta($optionTermID, 'order_' . $attribute['taxName'], 0);
 
-                        Term::update1cId($optionTermID, $uniqId1c);
-                    }
+                    Term::update1cId($optionTermID, $uniqId1c);
                 }
             }
 

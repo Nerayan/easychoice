@@ -39,7 +39,7 @@ require_once(RS_PLUGIN_PATH . 'admin/views/modals-copyright.php');
 
 <div id="wp_overlay"></div>
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
-<div id="builderView">
+<div id="builderView" class="_TPRB_">
 
 	<!-- REVOLUTION BUILDER TOP LEVEL WRAPPER -->
 	<div id="rb_tlw">
@@ -203,8 +203,7 @@ require_once(RS_PLUGIN_PATH . 'admin/views/modals-copyright.php');
 								<div id="screen_selecotr_ss_m" class="screen_selector ss_m no_rm callEvent" data-evt="screenSelectorChanged"  data-screenicon="phone_android" data-triggerinp="#screenselector" data-triggerinpval="m"><i class="material-icons">phone_android</i><?php _e('Mobile', 'revslider');?><input type="checkbox" id="sr_custom_m_opt" class="sliderinput" data-evt="device_area_availibity" data-r="size.custom.m"></div>
 							</div>
 						</div><!--
-						--><div class="toolbar_btn help_wrap"><i class="toptoolbaricon material-icons">help_outline</i></div><!--
-						--><div class="toolbar_btn tooltip_wrap"><i class="toptoolbaricon material-icons">comment</i></div><!--
+						--><div class="toolbar_btn help_wrap"><i class="toptoolbaricon material-icons">help_outline</i></div><!--<div class="toolbar_btn tooltip_wrap"><i class="toptoolbaricon material-icons">comment</i></div>--><!--
 						--><div id="quick_style_trigger" class="toolbar_btn quick_style_wrap"><i class="toptoolbaricon material-icons">invert_colors</i></div>		<!--<span class="toolbar_btn_txt"><?php _e('Quick Style', 'revslider');?></span>-->
 					</div>
 				</div><!-- END OF MAIN HORIZONTAL TOOLBAR -->
@@ -221,6 +220,7 @@ require_once(RS_PLUGIN_PATH . 'admin/views/modals-copyright.php');
 
 								<!-- SLIDER "UL" -->
 								<div id="rev_slider_ul" data-multiplemark="false" data-forms='["#form_sliderlayout"]'>
+									<canvas id="gridcanvas"></canvas>
 									<div id="rev_slider_ul_inner">
 
 										<!-- SLIDER OVERLAY -->
@@ -298,6 +298,7 @@ require_once(RS_PLUGIN_PATH . 'admin/views/modals-copyright.php');
 					<div id="settings_sticky_left" class="main_mode_submode left blue">Editor View</div>
 					<div id="settings_sticky_right" class="main_mode_submode right">Layer options</div>
 				</div>
+				<div id="optimizeslider" class="rs-save-preview"><i class="material-icons">flash_on</i><?php _e('Optimize File Sizes', 'revslider');?></div>
 				<div id="save_slider" class="rs-save-preview"><i class="material-icons">save</i><?php _e('Save', 'revslider');?></div>
 				<div id="preview_slider" data-mode="editor" class="rs-save-preview" ><i class="material-icons">search</i><?php _e('Preview', 'revslider');?></div>
 			</div>
