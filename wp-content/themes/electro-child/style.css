@@ -19,7 +19,8 @@
 .wp-block-separator,
 .wishlist-title .show-title-form,
 .yith-wcwl-wishlistexistsbrowse,
-.yith-wcwl-add-button {
+.yith-wcwl-add-button,
+.shop_attributes{
 	display: none;
 }
 

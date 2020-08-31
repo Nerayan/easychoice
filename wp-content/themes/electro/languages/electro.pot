@@ -2,11 +2,11 @@
 # This file is distributed under the GNU General Public License v2 or later.=!>
 msgid ""
 msgstr ""
-"Project-Id-Version: Electro 2.5.8\n"
+"Project-Id-Version: Electro 2.5.9\n"
 "Report-Msgid-Bugs-To: "
 "https://themeforest.net/item/electro-electronics-store-woocommerce-theme/157"
 "20624/support/\n"
-"POT-Creation-Date: 2020-07-24 11:46:03+00:00\n"
+"POT-Creation-Date: 2020-08-26 05:48:15+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
