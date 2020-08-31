@@ -16,7 +16,7 @@ return [
 	"id" => "image-sizes",
 	"name" => "Image Sizes",
 	"description" => "Tool for managing image sizes.",
-	"class" => "ILAB\\MediaCloud\\Tools\\ImageSizes\\ImageSizeTool",
+	"class" => "MediaCloud\\Plugin\\Tools\\ImageSizes\\ImageSizeTool",
 	"exclude" => true,
 	"dependencies" => [],
 	"env" => "ILAB_MEDIA_IMAGESIZES_ENABLED",  // this is always enabled btw

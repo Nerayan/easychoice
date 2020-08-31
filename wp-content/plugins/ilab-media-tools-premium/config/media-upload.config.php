@@ -16,10 +16,15 @@ return [
 	"id" => "media-upload",
 	"name" => "Direct Uploads",
 	"description" => "Provides an easy to use tool for uploading media directly to Amazon S3, Minio or Google Cloud Storage.",
-	"class" => "ILAB\\MediaCloud\\Tools\\MediaUpload\\UploadTool",
+	"class" => "MediaCloud\\Plugin\\Tools\\MediaUpload\\UploadTool",
 	"dependencies" => ["storage"],
 	"env" => "ILAB_MEDIA_UPLOAD_ENABLED",
-
+	"incompatiblePlugins" => [
+		"WP Media Folder" => [
+			"plugin" => "wp-media-folder/wp-media-folder.php",
+			"description" => "WP Media Folder generally works, however when you perform direct uploads with the Media Library it will look like uploads failed as they will disappear from the Media Library after the upload completes.  However, reloading the Media Library will show your uploaded files just fine.  It's purely a cosmetic issue."
+		],
+	],
 	"settings" => [
 		"options-page" => "media-tools-direct-upload",
 		"options-group" => "ilab-media-direct-upload",

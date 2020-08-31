@@ -11,10 +11,9 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 // **********************************************************************
 
-namespace ILAB\MediaCloud\Tools\Optimizer\Driver\TinyPNG;
+namespace MediaCloud\Plugin\Tools\Optimizer\Driver\TinyPNG;
 
-use ILAB\MediaCloud\Tools\Optimizer\OptimizerToolSettings;
-use ILAB\MediaCloud\Tools\ToolSettings;
+use MediaCloud\Plugin\Tools\Optimizer\OptimizerToolSettings;
 
 /**
  * Class OptimizerToolSettings

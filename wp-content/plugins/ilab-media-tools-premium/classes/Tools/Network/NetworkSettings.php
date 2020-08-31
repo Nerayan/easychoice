@@ -11,13 +11,9 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 // **********************************************************************
 
-namespace ILAB\MediaCloud\Tools\Network;
+namespace MediaCloud\Plugin\Tools\Network;
 
-use ILAB\MediaCloud\Tools\Tool;
-use ILAB\MediaCloud\Tools\ToolSettings;
-use ILAB\MediaCloud\Tools\ToolsManager;
-use function ILAB\MediaCloud\Utilities\arrayPath;
-use ILAB\MediaCloud\Utilities\View;
+use MediaCloud\Plugin\Tools\ToolSettings;
 
 if (!defined( 'ABSPATH')) { header( 'Location: /'); die; }
 

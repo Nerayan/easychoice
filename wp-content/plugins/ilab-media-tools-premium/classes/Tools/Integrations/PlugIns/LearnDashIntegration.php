@@ -11,9 +11,9 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 // **********************************************************************
 
-namespace ILAB\MediaCloud\Tools\Integrations\PlugIns;
+namespace MediaCloud\Plugin\Tools\Integrations\PlugIns;
 
-use ILAB\MediaCloud\Utilities\Logging\Logger;
+use MediaCloud\Plugin\Utilities\Logging\Logger;
 
 if (!defined( 'ABSPATH')) { header( 'Location: /'); die; }
 

@@ -20,6 +20,7 @@ class SaleModeQuery
         $orders = self::getOrders();
 
         Logger::logProtocol('count orders', count($orders));
+        Logger::logProtocol('list order ids', $orders);
 
         if (count($orders) > 0) {
             $currency = self::getCurrency();
@@ -319,6 +320,8 @@ class SaleModeQuery
         $xml->addAttribute('ВерсияСхемы', $version);
         $xml->addAttribute('ДатаФормирования', date('Y-m-d H:i', current_time('timestamp', 0)));
 
+        Logger::logProtocol('response scheme version - ' . $version);
+
         return $xml;
     }
 
@@ -373,7 +376,12 @@ class SaleModeQuery
         $products = [];
 
         foreach ($order->get_items() as $item) {
-            $product = $order->get_product_from_item($item);
+            if (version_compare(WC_VERSION, '4.4', '<')) {
+                $product = $order->get_product_from_item($item);
+            } else {
+                $product = $item->get_product();
+            }
+
             $sku = '';
 
             if ($product instanceof \WC_Product && $product->get_sku()) {

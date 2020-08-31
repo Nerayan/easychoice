@@ -16,7 +16,7 @@ return [
 	"id" => "browser",
 	"name" => "Storage Browser",
 	"description" => "Tool for browsing cloud storage.",
-	"class" => "ILAB\\MediaCloud\\Tools\\Browser\\BrowserTool",
+	"class" => "MediaCloud\\Plugin\\Tools\\Browser\\BrowserTool",
 	"exclude" => true,
 	"dependencies" => [],
 	"env" => "ILAB_MEDIA_STORAGE_BROWSER_ENABLED",  // this is always enabled btw

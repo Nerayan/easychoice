@@ -16,13 +16,17 @@ return [
     "id" => "storage",
     "name" => "Cloud Storage",
 	"description" => "Automatically uploads media to Amazon S3, Google Cloud Storage, Backblaze, DigitalOcean Spaces and others.",
-	"class" => "ILAB\\MediaCloud\\Tools\\Storage\\StorageTool",
+	"class" => "MediaCloud\\Plugin\\Tools\\Storage\\StorageTool",
 	"env" => "ILAB_MEDIA_S3_ENABLED",
 	"dependencies" => [],
     "related" => ["media-upload", "crop"],
     "dynamic-config-option" => "mcloud-storage-provider",
     "compatibleImageOptimizers" => include 'image-optimizers.config.php',
     "incompatiblePlugins" => [
+	    "Autoptimize" => [
+		    "function" => "autoptimize",
+		    "description" => "Media Cloud generally works well with Autoptimize, however after updating Media Cloud settings you may need to delete autoptimize's cache for those settings to work."
+	    ],
 	    "Photo Gallery" => [
 		    "plugin" => "photo-gallery/photo-gallery.php",
 		    "description" => "If someone were to ask me for a statement about this photo gallery plug-in, the only thing I could say that would be remotely positive is that it doesn't work with Media Cloud.  We'll just leave it at that."
@@ -43,12 +47,12 @@ return [
 	    ],
     ],
 	"CLI" => [
-		"\\ILAB\\MediaCloud\\Tools\\Storage\\CLI\\StorageCommands"
+		"\\MediaCloud\\Plugin\\Tools\\Storage\\CLI\\StorageCommands"
 	],
 	"storageDrivers" => [
 		's3' => [
 			'name' => 'Amazon S3',
-			'class' => "\\ILAB\\MediaCloud\\Storage\\Driver\\S3\\S3Storage",
+			'class' => "\\MediaCloud\\Plugin\\Tools\\Storage\\Driver\\S3\\S3Storage",
 			'config' => '/storage/s3.config.php',
 			'help' => [
 				[ 'title' => 'Setup Wizard', 'wizard' => 's3' ],
@@ -58,7 +62,7 @@ return [
 		],
 		'google' => [
 			'name' => 'Google Cloud Storage',
-			'class' => "\\ILAB\\MediaCloud\\Storage\\Driver\\GoogleCloud\\GoogleStorage",
+			'class' => "\\MediaCloud\\Plugin\\Tools\\Storage\\Driver\\GoogleCloud\\GoogleStorage",
 			'config' => '/storage/google.config.php',
 			'help' => [
 				[ 'title' => 'Setup Wizard', 'wizard' => 'google' ],
@@ -67,7 +71,7 @@ return [
 		],
 		'do' => [
 			'name' => 'DigitalOcean Spaces',
-			'class' => "\\ILAB\\MediaCloud\\Storage\\Driver\\S3\\DigitalOceanStorage",
+			'class' => "\\MediaCloud\\Plugin\\Tools\\Storage\\Driver\\S3\\DigitalOceanStorage",
 			'config' => '/storage/do.config.php',
 			'help' => [
 				[ 'title' => 'Setup Wizard', 'wizard' => 'do' ],
@@ -76,7 +80,7 @@ return [
 		],
 		'dreamhost' => [
 			'name' => 'DreamHost Cloud Storage',
-			'class' => "\\ILAB\\MediaCloud\\Storage\\Driver\\S3\\DreamHostStorage",
+			'class' => "\\MediaCloud\\Plugin\\Tools\\Storage\\Driver\\S3\\DreamHostStorage",
 			'config' => '/storage/dreamhost.config.php',
 			'help' => [
 				[ 'title' => 'Setup Wizard', 'wizard' => 'dreamhost' ],
@@ -85,7 +89,7 @@ return [
 		],
 		'minio' => [
 			'name' => 'Minio',
-			'class' => "\\ILAB\\MediaCloud\\Storage\\Driver\\S3\\MinioStorage",
+			'class' => "\\MediaCloud\\Plugin\\Tools\\Storage\\Driver\\S3\\MinioStorage",
 			'config' => '/storage/minio.config.php',
 			'help' => [
 				[ 'title' => 'Setup Wizard', 'wizard' => 'minio' ]
@@ -93,7 +97,7 @@ return [
 		],
 		'wasabi' => [
 			'name' => 'Wasabi',
-			'class' => "\\ILAB\\MediaCloud\\Storage\\Driver\\S3\\WasabiStorage",
+			'class' => "\\MediaCloud\\Plugin\\Tools\\Storage\\Driver\\S3\\WasabiStorage",
 			'config' => '/storage/wasabi.config.php',
 			'help' => [
 				[ 'title' => 'Setup Wizard', 'wizard' => 'wasabi' ],
@@ -102,15 +106,23 @@ return [
 		],
 		'other-s3' => [
 			'name' => 'Other S3 Compatible Service',
-			'class' => "\\ILAB\\MediaCloud\\Storage\\Driver\\S3\\OtherS3Storage",
+			'class' => "\\MediaCloud\\Plugin\\Tools\\Storage\\Driver\\S3\\OtherS3Storage",
 			'config' => '/storage/other-s3.config.php',
 			'help' => [
 				[ 'title' => 'Setup Wizard', 'wizard' => 'other-s3' ],
 			]
 		],
+		'backblaze-s3' => [
+			'name' => 'Backblaze S3 Compatible',
+			'class' => \MediaCloud\Plugin\Tools\Storage\Driver\S3\BackblazeS3Storage::class,
+			'config' => '/storage/backblaze-s3.config.php',
+			'help' => [
+				[ 'title' => 'Setup Wizard', 'wizard' => 'backblaze-s3' ]
+			]
+		],
 		'backblaze' => [
-			'name' => 'Backblaze',
-			'class' => \ILAB\MediaCloud\Storage\Driver\Backblaze\BackblazeStorage::class,
+			'name' => 'Backblaze (Deprecated)',
+			'class' => \MediaCloud\Plugin\Tools\Storage\Driver\Backblaze\BackblazeStorage::class,
 			'config' => '/storage/backblaze.config.php',
 			'help' => [
 				[ 'title' => 'Setup Wizard', 'wizard' => 'backblaze' ],

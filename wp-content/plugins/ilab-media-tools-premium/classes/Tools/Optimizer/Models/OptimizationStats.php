@@ -11,14 +11,14 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 // **********************************************************************
 
-namespace ILAB\MediaCloud\Tools\Optimizer\Models;
+namespace MediaCloud\Plugin\Tools\Optimizer\Models;
 
-use ILAB\MediaCloud\Tools\Optimizer\OptimizerToolSettings;
-use ILAB\MediaCloud\Utilities\Environment;
+use MediaCloud\Plugin\Tools\Optimizer\OptimizerToolSettings;
+use MediaCloud\Plugin\Utilities\Environment;
 
 /**
  * Class OptimizationStats
- * @package ILAB\MediaCloud\Tools\Optimizer\Models
+ * @package MediaCloud\Plugin\Tools\Optimizer\Models
  *
  * @property-read int $totalBytes
  * @property-read int $optimizedBytes

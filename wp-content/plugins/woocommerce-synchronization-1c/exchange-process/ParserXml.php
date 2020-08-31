@@ -500,6 +500,26 @@ class ParserXml
                                             continue;
                                         }
 
+                                        // maybe removed variation
+                                        $removed = apply_filters(
+                                            'itglx_wc1c_variation_offer_is_removed',
+                                            false,
+                                            $element,
+                                            $productEntry['ID'],
+                                            $productEntry['post_parent']
+                                        );
+
+                                        if ($removed) {
+                                            if (!empty($productEntry['ID'])) {
+                                                Product::removeVariation($productEntry['ID'], $productEntry['post_parent']);
+                                            }
+
+                                            $_SESSION['IMPORT_1C_PROCESS']['allCurrentOffers'][] = (string) $element->Ид;
+
+                                            unset($element);
+                                            continue;
+                                        }
+
                                         /*
                                          * it may be useful to change or add data for the main logic, if it is not possible
                                          * to do this in 1C, for example, for configuration "Розница", if the characteristics are

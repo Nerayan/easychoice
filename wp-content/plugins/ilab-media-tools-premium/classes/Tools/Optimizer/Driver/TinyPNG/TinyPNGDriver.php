@@ -11,13 +11,10 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 // **********************************************************************
 
-namespace ILAB\MediaCloud\Tools\Optimizer\Driver\TinyPNG;
+namespace MediaCloud\Plugin\Tools\Optimizer\Driver\TinyPNG;
 
-use ILAB\MediaCloud\Tools\Optimizer\Models\OptimizerResultsInterface;
-use ILAB\MediaCloud\Tools\Optimizer\OptimizerInterface;
-use ILAB\MediaCloud\Utilities\Logging\Logger;
-use Tinify\Tinify;
-use function ILAB\MediaCloud\Utilities\anyEmpty;
+use MediaCloud\Plugin\Tools\Optimizer\OptimizerInterface;
+use MediaCloud\Plugin\Utilities\Logging\Logger;
 
 class TinyPNGDriver implements OptimizerInterface {
 	/** @var TinyPNGSettings  */
@@ -121,8 +118,8 @@ class TinyPNGDriver implements OptimizerInterface {
 	public function optimizeFile($filepath, $cloudInfo = null, $sizeName = null) {
 		Logger::info("Optimizing URL: $filepath", [], __METHOD__, __LINE__);
 
-		\Tinify\setKey($this->settings->apiKey);
-		$tinyPNG = \Tinify\fromFile($filepath);
+		\MediaCloud\Vendor\Tinify\setKey($this->settings->apiKey);
+		$tinyPNG = \MediaCloud\Vendor\Tinify\fromFile($filepath);
 
 		return $this->processUpload($tinyPNG, $filepath, $cloudInfo, $sizeName);
 	}
@@ -133,8 +130,8 @@ class TinyPNGDriver implements OptimizerInterface {
 	public function optimizeUrl($url, $filepath, $cloudInfo = null, $sizeName = null) {
 		Logger::info("Optimizing URL: $url", [], __METHOD__, __LINE__);
 
-		\Tinify\setKey($this->settings->apiKey);
-		$tinyPNG = \Tinify\fromUrl($url);
+		\MediaCloud\Vendor\Tinify\setKey($this->settings->apiKey);
+		$tinyPNG = \MediaCloud\Vendor\Tinify\fromUrl($url);
 
 		return $this->processUpload($tinyPNG, $filepath, $cloudInfo, $sizeName);
 	}

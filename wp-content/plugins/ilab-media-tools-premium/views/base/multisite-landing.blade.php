@@ -1,12 +1,12 @@
-<?php /** @var \ILAB\MediaCloud\Tools\ToolsManager $manager */ ?>
+<?php /** @var \MediaCloud\Plugin\Tools\ToolsManager $manager */ ?>
 @extends('../templates/sub-page')
 
 <?php
-        /** @var \ILAB\MediaCloud\Tools\Network\NetworkSettings $settings */
-        $settings = \ILAB\MediaCloud\Tools\Network\NetworkSettings::instance();
+        /** @var \MediaCloud\Plugin\Tools\Network\NetworkSettings $settings */
+        $settings = \MediaCloud\Plugin\Tools\Network\NetworkSettings::instance();
 
-        /** @var \ILAB\MediaCloud\Tasks\Task[] $tasks */
-        $tasks = \ILAB\MediaCloud\Tasks\TaskManager::registeredTasks();
+        /** @var \MediaCloud\Plugin\Tasks\Task[] $tasks */
+        $tasks = \MediaCloud\Plugin\Tasks\TaskManager::registeredTasks();
 ?>
 
 @section('main')

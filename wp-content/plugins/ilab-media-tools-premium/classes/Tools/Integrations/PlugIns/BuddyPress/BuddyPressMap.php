@@ -11,17 +11,17 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 // **********************************************************************
 
-namespace ILAB\MediaCloud\Tools\Integrations\PlugIns\BuddyPress;
+namespace MediaCloud\Plugin\Tools\Integrations\PlugIns\BuddyPress;
 
-use ILAB\MediaCloud\Storage\StorageGlobals;
-use ILAB\MediaCloud\Tasks\TaskSchedule;
-use ILAB\MediaCloud\Tools\Imgix\ImgixTool;
-use ILAB\MediaCloud\Tools\Storage\StorageTool;
-use ILAB\MediaCloud\Tools\ToolsManager;
+use MediaCloud\Plugin\Tools\Storage\StorageGlobals;
+use MediaCloud\Plugin\Tasks\TaskSchedule;
+use MediaCloud\Plugin\Tools\Imgix\ImgixTool;
+use MediaCloud\Plugin\Tools\Storage\StorageTool;
+use MediaCloud\Plugin\Tools\ToolsManager;
 
 /**
  * Maps buddy press member avatar and cover image URLs
- * @package ILAB\MediaCloud\Tools\Integrations\PlugIns\BuddyPress
+ * @package MediaCloud\Plugin\Tools\Integrations\PlugIns\BuddyPress
  */
 final class BuddyPressMap {
 	const DB_VERSION = '1.0.0';
@@ -102,7 +102,7 @@ final class BuddyPressMap {
 	 * @param array $s3Info
 	 *
 	 * @return string|null
-	 * @throws \ILAB\MediaCloud\Storage\StorageException
+	 * @throws \MediaCloud\Plugin\Tools\Storage\StorageException
 	 */
 	private static function generateUrl($s3Info) {
 		$imgixEnabled = apply_filters('media-cloud/imgix/enabled', false);
@@ -149,7 +149,7 @@ final class BuddyPressMap {
 	 * @param string $objectKey
 	 *
 	 * @return string|null
-	 * @throws \ILAB\MediaCloud\Storage\StorageException
+	 * @throws \MediaCloud\Plugin\Tools\Storage\StorageException
 	 */
 	public static function mapURL($url, $objectKey = null) {
 		if (!empty($objectKey) && isset(static::$objectCache[$objectKey])) {
@@ -211,7 +211,7 @@ final class BuddyPressMap {
 	 * @param array $s3Info
 	 *
 	 * @return string|null
-	 * @throws \ILAB\MediaCloud\Storage\StorageException
+	 * @throws \MediaCloud\Plugin\Tools\Storage\StorageException
 	 */
 	public static function updateMap($url, $objectKey, $filePath, $s3Info) {
 		if (!static::verifyInstalled()) {

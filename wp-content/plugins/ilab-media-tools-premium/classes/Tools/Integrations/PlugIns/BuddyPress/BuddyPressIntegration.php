@@ -11,15 +11,15 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 // **********************************************************************
 
-namespace ILAB\MediaCloud\Tools\Integrations\PlugIns\BuddyPress;
+namespace MediaCloud\Plugin\Tools\Integrations\PlugIns\BuddyPress;
 
-use ILAB\MediaCloud\Storage\StorageException;
-use ILAB\MediaCloud\Storage\StorageGlobals;
-use ILAB\MediaCloud\Storage\StorageManager;
-use ILAB\MediaCloud\Storage\StorageToolSettings;
-use ILAB\MediaCloud\Tasks\TaskManager;
-use ILAB\MediaCloud\Tools\Storage\StorageTool;
-use ILAB\MediaCloud\Tools\ToolsManager;
+use MediaCloud\Plugin\Tools\Storage\StorageException;
+use MediaCloud\Plugin\Tools\Storage\StorageGlobals;
+use MediaCloud\Plugin\Tools\Storage\StorageManager;
+use MediaCloud\Plugin\Tools\Storage\StorageToolSettings;
+use MediaCloud\Plugin\Tasks\TaskManager;
+use MediaCloud\Plugin\Tools\Storage\StorageTool;
+use MediaCloud\Plugin\Tools\ToolsManager;
 
 if (!defined( 'ABSPATH')) { header( 'Location: /'); die; }
 

@@ -79,7 +79,8 @@ class CatalogModeImport
                     strpos($baseName, 'offers') !== false ||
                     strpos($baseName, 'rests') !== false // scheme 3.1
                 ) {
-                    unset($_SESSION['IMPORT_1C_PROCESS']);
+                    $_SESSION['IMPORT_1C_PROCESS'] = [];
+                    $_SESSION['IMPORT_1C_PROCESS']['currentCategorys1c'] = [];
                 }
             } else {
                 // manual import auto progress

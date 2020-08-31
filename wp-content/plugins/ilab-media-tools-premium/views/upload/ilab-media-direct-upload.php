@@ -20,7 +20,7 @@
 		<?php else : ?>
             <div class="upload-ui">
                 <img class="media-cloud-upload-logo" style="margin: 0 auto 20px auto;" src="<?php echo ILAB_PUB_IMG_URL.'/icon-cloud.svg'?>">
-                <h2 class="upload-instructions drop-instructions"><?php _e( 'Drop files anywhere to upload directly to '.\ILAB\MediaCloud\Storage\StorageToolSettings::driver() ); ?></h2>
+                <h2 class="upload-instructions drop-instructions"><?php _e( 'Drop files anywhere to upload directly to '.\MediaCloud\Plugin\Tools\Storage\StorageToolSettings::driver() ); ?></h2>
                 <p class="upload-instructions drop-instructions"><?php _ex( 'or', 'Uploader: Drop files here - or - Select Files' ); ?></p>
                 <button type="button" class="browser button button-hero"><?php _e( 'Select Files' ); ?></button>
             </div>

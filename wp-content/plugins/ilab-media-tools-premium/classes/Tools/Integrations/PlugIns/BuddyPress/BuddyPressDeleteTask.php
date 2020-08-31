@@ -14,10 +14,10 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 // **********************************************************************
 
-namespace ILAB\MediaCloud\Tools\Integrations\PlugIns\BuddyPress;
+namespace MediaCloud\Plugin\Tools\Integrations\PlugIns\BuddyPress;
 
-use ILAB\MediaCloud\Tasks\Task;
-use ILAB\MediaCloud\Utilities\Logging\Logger;
+use MediaCloud\Plugin\Tasks\Task;
+use MediaCloud\Plugin\Utilities\Logging\Logger;
 
 if (!defined('ABSPATH')) { header('Location: /'); die; }
 

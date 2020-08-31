@@ -27,12 +27,25 @@ class SectionLicense
             );
 
             if (is_wp_error($response)) {
-                $messageContent = '(Code - '
-                    . $response->get_error_code()
-                    . ') '
-                    . $response->get_error_message();
+                // fix network connection problems
+                if ($response->get_error_code() === 'http_request_failed') {
+                    if (isset($_POST['verify'])) {
+                        $messageContent = 'Success verify.';
+                        update_site_option(Bootstrap::PURCHASE_CODE_OPTIONS_KEY, $code);
+                    } else {
+                        $messageContent = 'Success unverify.';
+                        update_site_option(Bootstrap::PURCHASE_CODE_OPTIONS_KEY, '');
+                    }
 
-                $message = 'failedCheck';
+                    $message = 'successCheck';
+                } else {
+                    $messageContent = '(Code - '
+                        . $response->get_error_code()
+                        . ') '
+                        . $response->get_error_message();
+
+                    $message = 'failedCheck';
+                }
             } else {
                 $response = json_decode(wp_remote_retrieve_body($response));
 

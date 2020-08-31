@@ -11,13 +11,13 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 // **********************************************************************
 
-namespace ILAB\MediaCloud\Tools\Integrations\PlugIns\Elementor;
+namespace MediaCloud\Plugin\Tools\Integrations\PlugIns\Elementor;
 
-use ILAB\MediaCloud\Tasks\TaskManager;
-use ILAB\MediaCloud\Tools\Assets\AssetsTool;
-use ILAB\MediaCloud\Tools\Integrations\PlugIns\Elementor\Tasks\UpdateElementorTask;
-use ILAB\MediaCloud\Tools\ToolsManager;
-use ILAB\MediaCloud\Utilities\Environment;
+use MediaCloud\Plugin\Tasks\TaskManager;
+use MediaCloud\Plugin\Tools\Assets\AssetsTool;
+use MediaCloud\Plugin\Tools\Integrations\PlugIns\Elementor\Tasks\UpdateElementorTask;
+use MediaCloud\Plugin\Tools\ToolsManager;
+use MediaCloud\Plugin\Utilities\Environment;
 
 if (!defined( 'ABSPATH')) { header( 'Location: /'); die; }
 

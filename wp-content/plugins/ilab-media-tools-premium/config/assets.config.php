@@ -16,7 +16,7 @@ return [
 	"id" => "assets",
 	"name" => "Assets",
 	"description" => "Store and serve your theme and WordPress assets from cloud storage.",
-	"class" => "ILAB\\MediaCloud\\Tools\\Assets\\AssetsTool",
+	"class" => "MediaCloud\\Plugin\\Tools\\Assets\\AssetsTool",
 	"dependencies" => ['storage'],
 	"env" => "ILAB_MEDIA_ASSETS_ENABLED",
 	"actions" => [
@@ -27,6 +27,12 @@ return [
 		"reset-assets-cache" => [
 			"name" => "Reset Cache",
 			"method" => "resetCache"
+		],
+	],
+	"incompatiblePlugins" => [
+		"Autoptimize" => [
+			"function" => "autoptimize",
+			"description" => "Autoptimize's CSS and JavaScript combining features do not work with the assets feature in Media Cloud.  Consider turning off assets in Media Cloud."
 		],
 	],
 	"settings" => [

@@ -11,10 +11,9 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 // **********************************************************************
 
-namespace ILAB\MediaCloud\Tools\Optimizer\Driver\ShortPixel;
+namespace MediaCloud\Plugin\Tools\Optimizer\Driver\ShortPixel;
 
-use ILAB\MediaCloud\Tools\Optimizer\OptimizerToolSettings;
-use ILAB\MediaCloud\Tools\ToolSettings;
+use MediaCloud\Plugin\Tools\Optimizer\OptimizerToolSettings;
 
 /**
  * Class OptimizerToolSettings

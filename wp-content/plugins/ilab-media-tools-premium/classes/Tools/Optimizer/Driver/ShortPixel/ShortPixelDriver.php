@@ -11,13 +11,11 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 // **********************************************************************
 
-namespace ILAB\MediaCloud\Tools\Optimizer\Driver\ShortPixel;
+namespace MediaCloud\Plugin\Tools\Optimizer\Driver\ShortPixel;
 
-use GPBMetadata\Google\Api\Log;
-use ILAB\MediaCloud\Tools\Optimizer\Models\OptimizerResultsInterface;
-use ILAB\MediaCloud\Tools\Optimizer\OptimizerInterface;
-use ILAB\MediaCloud\Utilities\Logging\Logger;
-use function ILAB\MediaCloud\Utilities\anyEmpty;
+use MediaCloud\Plugin\Tools\Optimizer\OptimizerInterface;
+use MediaCloud\Plugin\Utilities\Logging\Logger;
+use MediaCloud\Vendor\ShortPixel\ShortPixel;
 
 class ShortPixelDriver implements OptimizerInterface {
 	/** @var ShortPixelSettings  */
@@ -111,7 +109,7 @@ class ShortPixelDriver implements OptimizerInterface {
 		$filedir = pathinfo($filepath, PATHINFO_DIRNAME);
 		$filename = pathinfo($filepath, PATHINFO_BASENAME);
 
-		\ShortPixel\setKey($this->settings->apiKey);
+		\MediaCloud\Vendor\ShortPixel\setKey($this->settings->apiKey);
 
 		$result = \ShortPixel\fromFile($filepath)
 			->optimize($params['lossy'])
@@ -136,12 +134,12 @@ class ShortPixelDriver implements OptimizerInterface {
 		$filedir = pathinfo($filepath, PATHINFO_DIRNAME);
 		$filename = pathinfo($filepath, PATHINFO_BASENAME);
 
-		\ShortPixel\setKey($this->settings->apiKey);
+		\MediaCloud\Vendor\ShortPixel\setKey($this->settings->apiKey);
 		$tries = 1;
 		$result = null;
 		while($tries <= 5) {
 			try {
-				$result = \ShortPixel\fromUrls([$url])
+				$result = \MediaCloud\Vendor\ShortPixel\fromUrls([$url])
 					->optimize($params['lossy'])
 					->keepExif($params['keep_exif'])
 					->toFiles($filedir, ['optim-'.$filename]);
@@ -177,8 +175,8 @@ class ShortPixelDriver implements OptimizerInterface {
 	}
 
 	public function accountStats() {
-		\ShortPixel\setKey($this->settings->apiKey);
-		$result = \ShortPixel\ShortPixel::getClient()->apiStatus($this->settings->apiKey);
+		\MediaCloud\Vendor\ShortPixel\setKey($this->settings->apiKey);
+		$result = \MediaCloud\Vendor\ShortPixel\ShortPixel::getClient()->apiStatus($this->settings->apiKey);
 		if (count($result) > 0) {
 			return new ShortPixelAccountStatus($result[0]);
 		}

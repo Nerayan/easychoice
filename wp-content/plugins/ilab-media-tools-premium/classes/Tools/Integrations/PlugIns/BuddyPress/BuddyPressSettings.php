@@ -11,9 +11,10 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 // **********************************************************************
 
-namespace ILAB\MediaCloud\Tools\Integrations\PlugIns\BuddyPress;
+namespace MediaCloud\Plugin\Tools\Integrations\PlugIns\BuddyPress;
 
-use ILAB\MediaCloud\Tools\ToolSettings;
+use MediaCloud\Plugin\Tools\ToolSettings;
+
 /**
  * @property bool enabled
  * @property bool deleteUploads

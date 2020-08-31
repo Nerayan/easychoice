@@ -35,7 +35,10 @@ Once completed, visit your plugins page.
 
 == Changelog ==
 
-= 1.70.2 =
+= 1.70.5 =
+Fixed: maybe empty group progress.
+Chore: compatibility check with WC 4.4
+Chore: added new filter `itglx_wc1c_variation_offer_is_removed`.
 Fixed: generate unique attribute name.
 Chore: compatibility check with WP 5.5
 Feature: ability to search for an existing category by name, before creating a new one.

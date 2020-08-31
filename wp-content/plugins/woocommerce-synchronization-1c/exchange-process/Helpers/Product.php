@@ -586,17 +586,39 @@ class Product
 
         if (!empty($variationIds)) {
             foreach ($variationIds as $variationId) {
-                // https://developer.wordpress.org/reference/functions/wp_delete_post/
-                wp_delete_post($variationId, true);
+                self::removeVariation($variationId, $productId);
             }
         }
-
-        delete_transient('wc_product_children_' . $productId);
 
         Logger::logChanges(
             '(product) Removed product variations, ID - ' . $productId,
             [get_post_meta($productId, '_id_1c', true)]
         );
+    }
+
+    public static function removeVariation($variationId, $productId = 0)
+    {
+        // https://developer.wordpress.org/reference/functions/has_post_thumbnail/
+        if (has_post_thumbnail($variationId)) {
+            // https://developer.wordpress.org/reference/functions/wp_delete_attachment/
+            // https://developer.wordpress.org/reference/functions/get_post_thumbnail_id/
+            wp_delete_attachment(get_post_thumbnail_id($variationId), true);
+
+            // https://developer.wordpress.org/reference/functions/delete_post_thumbnail/
+            delete_post_thumbnail($variationId);
+
+            Logger::logChanges(
+                '(image) Removed thumbnail for variation ID - ' . $variationId,
+                [get_post_meta($variationId, '_id_1c', true)]
+            );
+        }
+
+        // https://developer.wordpress.org/reference/functions/wp_delete_post/
+        wp_delete_post($variationId, true);
+
+        if ($productId) {
+            delete_transient('wc_product_children_' . $productId);
+        }
     }
 
     public static function removeProduct($productId)

@@ -11,7 +11,7 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 // **********************************************************************
 
-namespace ILAB\MediaCloud\Tools\Optimizer\Models;
+namespace MediaCloud\Plugin\Tools\Optimizer\Models;
 
 interface OptimizerResultsInterface {
 	/**

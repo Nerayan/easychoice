@@ -11,10 +11,10 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 // **********************************************************************
 
-namespace ILAB\MediaCloud\Tools\Optimizer\Driver\KrakenIO;
+namespace MediaCloud\Plugin\Tools\Optimizer\Driver\KrakenIO;
 
-use ILAB\MediaCloud\Tools\Optimizer\Models\OptimizerResultsInterface;
-use function ILAB\MediaCloud\Utilities\arrayPath;
+use MediaCloud\Plugin\Tools\Optimizer\Models\OptimizerResultsInterface;
+use function MediaCloud\Plugin\Utilities\arrayPath;
 
 class KrakenIOResults implements OptimizerResultsInterface {
 	private $error = false;

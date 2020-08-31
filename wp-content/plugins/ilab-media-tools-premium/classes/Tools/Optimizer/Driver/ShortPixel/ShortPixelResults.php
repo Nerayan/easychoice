@@ -11,9 +11,9 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 // **********************************************************************
 
-namespace ILAB\MediaCloud\Tools\Optimizer\Driver\ShortPixel;
+namespace MediaCloud\Plugin\Tools\Optimizer\Driver\ShortPixel;
 
-use ILAB\MediaCloud\Tools\Optimizer\Models\OptimizerResultsInterface;
+use MediaCloud\Plugin\Tools\Optimizer\Models\OptimizerResultsInterface;
 
 class ShortPixelResults implements OptimizerResultsInterface {
 	private $error = false;

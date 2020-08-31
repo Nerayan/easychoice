@@ -10,18 +10,18 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 // **********************************************************************
 
-namespace ILAB\MediaCloud\Tools;
+namespace MediaCloud\Plugin\Tools;
 
-use ILAB\MediaCloud\Tasks\TaskManager;
-use ILAB\MediaCloud\Tools\Network\NetworkTool;
-use ILAB\MediaCloud\Utilities\Environment;
-use ILAB\MediaCloud\Utilities\LicensingManager;
-use ILAB\MediaCloud\Utilities\NoticeManager;
-use ILAB\MediaCloud\Utilities\Tracker;
-use ILAB\MediaCloud\Utilities\View;
-use function ILAB\MediaCloud\Utilities\arrayPath;
-use function ILAB\MediaCloud\Utilities\json_response;
-use ILAB\MediaCloud\Wizard\SetupWizard;
+use MediaCloud\Plugin\Tasks\TaskManager;
+use MediaCloud\Plugin\Tools\Network\NetworkTool;
+use MediaCloud\Plugin\Utilities\Environment;
+use MediaCloud\Plugin\Utilities\LicensingManager;
+use MediaCloud\Plugin\Utilities\NoticeManager;
+use MediaCloud\Plugin\Utilities\Tracker;
+use MediaCloud\Plugin\Utilities\View;
+use function MediaCloud\Plugin\Utilities\arrayPath;
+use function MediaCloud\Plugin\Utilities\json_response;
+use MediaCloud\Plugin\Wizard\SetupWizard;
 
 if (!defined( 'ABSPATH')) { header( 'Location: /'); die; }
 
@@ -657,7 +657,9 @@ final class ToolsManager {
 
 
 		global $new_whitelist_options;
-		$new_whitelist_options = apply_filters('whitelist_options', $new_whitelist_options);
+		global $wp_version;
+		$whitelistFilter = version_compare($wp_version, '5.5', '>=') ? 'allowed_options' : 'whitelist_options';
+		$new_whitelist_options = apply_filters($whitelistFilter, $new_whitelist_options);
 		$options = $new_whitelist_options[$page_slug];
 
 		foreach ( $options as $option ) {

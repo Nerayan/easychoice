@@ -11,13 +11,13 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 // **********************************************************************
 
-namespace ILAB\MediaCloud\Tools\Integrations\PlugIns;
+namespace MediaCloud\Plugin\Tools\Integrations\PlugIns;
 
-use ILAB\MediaCloud\Storage\StorageToolSettings;
-use ILAB\MediaCloud\Tools\Imgix\ImgixTool;
-use ILAB\MediaCloud\Tools\Storage\StorageTool;
-use ILAB\MediaCloud\Tools\ToolsManager;
-use function ILAB\MediaCloud\Utilities\gen_uuid;
+use MediaCloud\Plugin\Tools\Storage\StorageToolSettings;
+use MediaCloud\Plugin\Tools\Imgix\ImgixTool;
+use MediaCloud\Plugin\Tools\Storage\StorageTool;
+use MediaCloud\Plugin\Tools\ToolsManager;
+use function MediaCloud\Plugin\Utilities\gen_uuid;
 
 if (!defined( 'ABSPATH')) { header( 'Location: /'); die; }
 

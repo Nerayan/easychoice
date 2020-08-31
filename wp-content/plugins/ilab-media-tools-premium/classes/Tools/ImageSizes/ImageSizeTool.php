@@ -11,15 +11,15 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 // **********************************************************************
 
-namespace ILAB\MediaCloud\Tools\ImageSizes;
+namespace MediaCloud\Plugin\Tools\ImageSizes;
 
-use ILAB\MediaCloud\Tools\Tool;
-use ILAB\MediaCloud\Tools\ToolsManager;
-use ILAB\MediaCloud\Utilities\NoticeManager;
-use ILAB\MediaCloud\Utilities\Tracker;
-use ILAB\MediaCloud\Utilities\View;
-use function ILAB\MediaCloud\Utilities\gen_uuid;
-use function ILAB\MediaCloud\Utilities\json_response;
+use MediaCloud\Plugin\Tools\Tool;
+use MediaCloud\Plugin\Tools\ToolsManager;
+use MediaCloud\Plugin\Utilities\NoticeManager;
+use MediaCloud\Plugin\Utilities\Tracker;
+use MediaCloud\Plugin\Utilities\View;
+use function MediaCloud\Plugin\Utilities\gen_uuid;
+use function MediaCloud\Plugin\Utilities\json_response;
 
 if (!defined( 'ABSPATH')) { header( 'Location: /'); die; }
 

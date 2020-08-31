@@ -11,14 +11,14 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 // **********************************************************************
 
-namespace ILAB\MediaCloud\Tools\Integrations\PlugIns;
+namespace MediaCloud\Plugin\Tools\Integrations\PlugIns;
 
-use ILAB\MediaCloud\Storage\StorageToolSettings;
-use ILAB\MediaCloud\Tools\DynamicImages\DynamicImagesTool;
-use ILAB\MediaCloud\Tools\Storage\StorageTool;
-use ILAB\MediaCloud\Tools\ToolsManager;
-use ILAB\MediaCloud\Utilities\Environment;
-use ILAB\MediaCloud\Utilities\Prefixer;
+use MediaCloud\Plugin\Tools\Storage\StorageToolSettings;
+use MediaCloud\Plugin\Tools\DynamicImages\DynamicImagesTool;
+use MediaCloud\Plugin\Tools\Storage\StorageTool;
+use MediaCloud\Plugin\Tools\ToolsManager;
+use MediaCloud\Plugin\Utilities\Environment;
+use MediaCloud\Plugin\Utilities\Prefixer;
 use WP_Thumb;
 
 if (!defined( 'ABSPATH')) { header( 'Location: /'); die; }
@@ -52,7 +52,7 @@ class FooGalleryIntegration {
 	 *
 	 * @return mixed
 	 *
-	 * @throws \ILAB\MediaCloud\Storage\StorageException
+	 * @throws \MediaCloud\Plugin\Tools\Storage\StorageException
 	 */
 	function resize($original_image_src, $args, $thumbnail_object, $level = 0) {
 		$sizes = get_post_meta($thumbnail_object->ID, 'mcloud_foo_thumbs', true);
@@ -99,7 +99,7 @@ class FooGalleryIntegration {
 	/**
 	 * @param WP_Thumb $thumb
 	 *
-	 * @throws \ILAB\MediaCloud\Storage\StorageException
+	 * @throws \MediaCloud\Plugin\Tools\Storage\StorageException
 	 */
 	function uploadCachedFile($thumb) {
 		$wpUploadDir = wp_upload_dir();

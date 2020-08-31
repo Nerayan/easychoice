@@ -5,11 +5,11 @@ Plugin Name: Media Cloud (Premium)
 Plugin URI: https://github.com/interfacelab/ilab-media-tools
 Description: Automatically upload media to Amazon S3 and integrate with Imgix, a real-time image processing CDN.  Boosts site performance and simplifies workflows.
 Author: interfacelab
-Version: 4.0.9
+Version: 4.1.0
 Author URI: http://interfacelab.io
 
-@fs_ignore /vendor/, /public/, /external/
-@fs_premium_only /classes/Tools/Assets, /classes/Tools/Optimizer, /classes/Tools/Browser, /classes/Tools/Storage/Tasks/MigrateTask.php, /classes/Tools/Storage/Tasks/UpdateGutenbergTask.php, /classes/Tools/Storage/Tasks/RegenerateThumbnailTask.php, /classes/Tools/Integrations, /classes/Tools/Glide, /classes/Tools/ImageSizes, /classes/Tools/MediaUpload, /classes/Tools/Network, /classes/Tools/Mux/MuxToolProSettings.php, /classes/Tools/Mux/Tasks/MigrateToMuxTask.php, /classes/Vision/Driver/GoogleCloudVision, /config/optimizer, /config/assets.config.php, /config/integrations.config.php, /config/browser.config.php, /config/optimizer.config.php, /config/glide.config.php, /config/image-sizes.config.php, /config/media-upload.config.php, /config/video-encoding.pro.config.php, /config/network.config.php, /config/vision/google.config.php, /views/upload, /views/storage/browser.blade.php, /views/storage/browser-header.blade.php, /views/storage/browser-table.blade.php, /views/integrations, /views/image-sizes, /views/base/multisite-landing.blade.php
+@fs_ignore /lib/, /vendor/, /public/, /external/
+@fs_premium_only /classes/Tools/Assets, /classes/Tools/Optimizer, /classes/Tools/Browser, /classes/Tools/Storage/Tasks/MigrateTask.php, /classes/Tools/Storage/Tasks/UpdateGutenbergTask.php, /classes/Tools/Storage/Tasks/RegenerateThumbnailTask.php, /classes/Tools/Integrations, /classes/Tools/ImageSizes, /classes/Tools/MediaUpload, /classes/Tools/Network, /classes/Tools/Video/Driver/Mux/MuxToolProSettings.php, /classes/Tools/Video/Driver/Mux/Tasks/MigrateToMuxTask.php, /classes/Tools/Vision/Driver/GoogleCloudVision, /config/optimizer, /config/assets.config.php, /config/integrations.config.php, /config/browser.config.php, /config/optimizer.config.php, /config/glide.config.php, /config/image-sizes.config.php, /config/media-upload.config.php, /config/video-encoding.pro.config.php, /config/network.config.php, /config/vision/google.config.php, /views/upload, /views/storage/browser.blade.php, /views/storage/browser-header.blade.php, /views/storage/browser-table.blade.php, /views/integrations, /views/image-sizes, /views/base/multisite-landing.blade.php
 */
 // Copyright (c) 2016 Interfacelab LLC. All rights reserved.
 //
@@ -97,7 +97,7 @@ if ( defined( 'MEDIA_CLOUD_VERSION' ) ) {
 }
 
 // Version Defines
-define( 'MEDIA_CLOUD_VERSION', '4.0.9' );
+define( 'MEDIA_CLOUD_VERSION', '4.1.0' );
 define( 'MEDIA_CLOUD_INFO_VERSION', '4.0.2' );
 define( 'MCLOUD_IS_BETA', false );
 // Directory defines
@@ -106,6 +106,7 @@ define( 'ILAB_CONFIG_DIR', ILAB_TOOLS_DIR . '/config' );
 define( 'ILAB_HELPERS_DIR', ILAB_TOOLS_DIR . '/helpers' );
 define( 'ILAB_CLASSES_DIR', ILAB_TOOLS_DIR . '/classes' );
 define( 'ILAB_VENDOR_DIR', ILAB_TOOLS_DIR . '/vendor' );
+define( 'ILAB_LIB_DIR', ILAB_TOOLS_DIR . '/lib' );
 define( 'ILAB_VIEW_DIR', ILAB_TOOLS_DIR . '/views' );
 define( 'ILAB_PLUGIN_NAME', plugin_basename( __FILE__ ) );
 define( 'ILAB_PUB_IMG_DIR', ILAB_TOOLS_DIR . '/public/img' );
@@ -118,6 +119,9 @@ define( 'ILAB_PUB_CSS_URL', $plug_url . 'public/css' );
 define( 'ILAB_PUB_IMG_URL', $plug_url . 'public/img' );
 define( 'ILAB_BLOCKS_URL', $plug_url . 'public/blocks/' );
 // Composer
+if ( file_exists( ILAB_LIB_DIR . '/autoload.php' ) ) {
+    require_once ILAB_LIB_DIR . '/autoload.php';
+}
 if ( file_exists( ILAB_VENDOR_DIR . '/autoload.php' ) ) {
     require_once ILAB_VENDOR_DIR . '/autoload.php';
 }
@@ -182,21 +186,21 @@ if ( function_exists( 'media_cloud_licensing' ) ) {
     media_cloud_licensing()->add_action(
         'after_account_connection',
         function ( $user, $install ) {
-        \ILAB\MediaCloud\Tools\ToolsManager::AccountConnected();
+        \MediaCloud\Plugin\Tools\ToolsManager::AccountConnected();
     },
         1000,
         2
     );
-    media_cloud_licensing()->add_action( 'after_uninstall', [ "\\ILAB\\MediaCloud\\Tools\\ToolsManager", 'uninstall' ] );
+    media_cloud_licensing()->add_action( 'after_uninstall', [ "\\MediaCloud\\Plugin\\Tools\\ToolsManager", 'uninstall' ] );
     // Signal that SDK was initiated.
     do_action( 'media_cloud_licensing_loaded' );
 }
 
 add_action( 'plugins_loaded', function () {
-    \ILAB\MediaCloud\Tools\ToolsManager::Boot();
+    \MediaCloud\Plugin\Tools\ToolsManager::Boot();
 } );
-register_activation_hook( __FILE__, [ "\\ILAB\\MediaCloud\\Tools\\ToolsManager", 'activate' ] );
-register_deactivation_hook( __FILE__, [ "\\ILAB\\MediaCloud\\Tools\\ToolsManager", 'deactivate' ] );
+register_activation_hook( __FILE__, [ "\\MediaCloud\\Plugin\\Tools\\ToolsManager", 'activate' ] );
+register_deactivation_hook( __FILE__, [ "\\MediaCloud\\Plugin\\Tools\\ToolsManager", 'deactivate' ] );
 add_action( 'admin_init', function () {
     if ( !wp_doing_ajax() && !media_cloud_licensing()->is_activation_mode() ) {
         
@@ -204,7 +208,7 @@ add_action( 'admin_init', function () {
             delete_option( 'mcloud_show_wizard' );
             
             if ( media_cloud_licensing()->is_network_active() ) {
-                \ILAB\MediaCloud\Utilities\Environment::UpdateNetworkMode( true );
+                \MediaCloud\Plugin\Utilities\Environment::UpdateNetworkMode( true );
                 exit( wp_redirect( network_admin_url( 'admin.php?page=media-cloud-wizard' ) ) );
             } else {
                 exit( wp_redirect( admin_url( 'admin.php?page=media-cloud-wizard' ) ) );

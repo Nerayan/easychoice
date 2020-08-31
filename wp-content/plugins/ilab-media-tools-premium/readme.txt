@@ -5,7 +5,7 @@ Requires at least: 4.9
 Tested up to: 5.5
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
-Stable tag: 4.0.8
+Stable tag: 4.1.0
 Requires PHP: 7.1
 
 Automatically store media on Amazon S3, Google Cloud Storage, DigitalOcean Spaces + others. Serve CSS/JS assets through CDNs.  Integrate with Imgix.
@@ -104,6 +104,38 @@ Imgix is a content delivery network with a twist.  In addition to distributing y
 
 
 == Changelog ==
+
+= 4.1.0 =
+
+* All third party libraries Media Cloud is using have been re-namespaced to avoid errors and issues with any other plugins using the same libraries.
+* IMPORTANT: The old Backblaze driver is being deprecated, use the Backblaze S3 Compatible driver instead.  The old one will be removed in the next version.
+* Added Backblaze S3 Compatible cloud storage driver.  If you are currently using Backblaze, you should migrate to this asap.
+* If you are installing via composer and relied on any libraries that Media Cloud was using, you will need to install that package with composer yourself in your own project
+* You can now install the premium version via composer.  Log into https://users.freemius.com/ for instructions on how.
+* Re-namespaced the plugin code.  If you were using `ILAB\MediaCloud\` anywhere, it's now 'MediaCloud\Plugin\'
+* Fixed random "Rekognition requires Amazon S3 Cloud Storage" error notifications
+* Fixed computer vision tags being applied to alt, caption and description
+* Added ability to download video with mux player
+* Mux javascript and CSS is only included if video encoding is enabled
+* Video encoding no longer requires cloud storage to work
+* Mux icon displays in media library when cloud storage is turned off
+* Fix for Mux secure key generation
+* Fix for Mux filmstrip generation failing
+* Fixed Migrate to Mux task
+
+
+= 4.0.11 =
+
+* Fix for deprecated `whitelist_options` filter in WP 5.5.
+* Fix for uploads not occuring when using EWWW image optimizer and other image optimizers.
+* Media Cloud will now warn you if your cloud storage isn't configured for CORS when performing direct uploads
+* Fix for ACL error with Wasabi
+* Added warning about Autoptimize compatibility
+* You can now track Media Cloud development on its public trello board: https://trello.com/b/O0iNw6GL/media-cloud-development
+
+= 4.0.10 =
+
+* Fix for attachment tasks when running from the command line (thanks @yanmorinokamca)
 
 = 4.0.9 =
 

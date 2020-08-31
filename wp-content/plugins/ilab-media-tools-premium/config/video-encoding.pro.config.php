@@ -16,9 +16,8 @@ return [
     "id" => "video-encoding",
     "name" => "Video Encoding",
 	"description" => "Video encoding, hosting and live streaming via <a href='https://mux.com/' target='_blank'>Mux</a>.",
-	"class" => "ILAB\\MediaCloud\\Tools\\Mux\\MuxTool",
+	"class" => "MediaCloud\\Plugin\\Tools\\Video\\Driver\\Mux\\MuxTool",
 	"dependencies" => [
-		"storage"
 	],
 	"env" => "MCLOUD_MUX_ENABLED",
 	"settings" => [
@@ -150,6 +149,24 @@ return [
 						"description" => "When enabled, the player will override the web browser's native handling of HLS.  This really only effects Safari.",
 						"type" => "checkbox",
 						"default" => true,
+						"conditions" => [
+							"media-cloud-mux-player" => ["videojs"]
+						]
+					],
+					"media-cloud-mux-player-allow-download" => [
+						"title" => "Allow Video Download",
+						"description" => "When enabled, the player will allow users to download the MP4 representation that MUX generates.",
+						"type" => "checkbox",
+						"default" => false,
+						"conditions" => [
+							"media-cloud-mux-player" => ["videojs"]
+						]
+					],
+					"media-cloud-mux-player-allow-download-original" => [
+						"title" => "Allow Original Video Download",
+						"description" => "When enabled, the player will allow users to download the original source video file.",
+						"type" => "checkbox",
+						"default" => false,
 						"conditions" => [
 							"media-cloud-mux-player" => ["videojs"]
 						]

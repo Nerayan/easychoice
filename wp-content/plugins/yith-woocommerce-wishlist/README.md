@@ -151,21 +151,9 @@ Yes, of course you can. To avoid Wishlist page to show product prices, you can h
 
 ## Changelog
 
-### 3.0.11 - Released on 08 June 2020
+### 3.0.13 - Released on 17 August 2020
 
-* New: support for WooCommerce 4.2
-* Update: plugin framework
-* Tweak: added WordPress among blocked bot user agents
-* Tweak: make sure to finalize session when possible
-* Tweak: added link to product in wishlist mobile template
-* Fix: Prevent error if default wishlist doesn't exists
-* Fix: correctly applied yith_wcwl_is_wishlist_responsive filter to yith_wcwl_is_mobile function
-* Fix: avoid to use cache that cannot be invalidated (stop caching queries results, use cache for user wishlists)
-* Fix: clear_caches method wasnt properly cleaning cache for guest users
-* Dev: added yith_wcwl_add_to_wishlist_icon_html filter
-* Dev: added yith_wcwl_add_to_wishlist_heading_icon_html filter
-* Dev: added yith_wcwl_add_to_wishlist_data trigger, to allow third party code change data submitted with ATW ajax call
-
+* Fix: moved check over Ajax Loading option on first wishlist init only, to avoid problems when dynamically loading ATW on variable products
 
 ## Support
 

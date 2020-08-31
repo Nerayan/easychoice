@@ -11,10 +11,10 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 // **********************************************************************
 
-namespace ILAB\MediaCloud\Tools\Optimizer\Driver\ShortPixel;
+namespace MediaCloud\Plugin\Tools\Optimizer\Driver\ShortPixel;
 
-use ILAB\MediaCloud\Tools\Optimizer\OptimizerAccountStatus;
-use ILAB\MediaCloud\Tools\Optimizer\OptimizerConsts;
+use MediaCloud\Plugin\Tools\Optimizer\OptimizerAccountStatus;
+use MediaCloud\Plugin\Tools\Optimizer\OptimizerConsts;
 
 class ShortPixelAccountStatus implements OptimizerAccountStatus {
 	private $stats = null;

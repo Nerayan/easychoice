@@ -11,20 +11,18 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 // **********************************************************************
 
-namespace ILAB\MediaCloud\Tools\Optimizer\Models;
-use ILAB\MediaCloud\Model\Model;
-use ILAB\MediaCloud\Storage\StorageGlobals;
-use ILAB\MediaCloud\Tools\Mux\MuxAPI;
-use ILAB\MediaCloud\Tools\Mux\MuxToolSettings;
-use ILAB\MediaCloud\Tools\Optimizer\OptimizerTool;
-use ILAB\MediaCloud\Tools\Storage\StorageTool;
-use ILAB\MediaCloud\Tools\ToolsManager;
-use ILAB\MediaCloud\Utilities\Logging\Logger;
-use function ILAB\MediaCloud\Utilities\arrayPath;
+namespace MediaCloud\Plugin\Tools\Optimizer\Models;
+use MediaCloud\Plugin\Model\Model;
+use MediaCloud\Plugin\Tools\Storage\StorageGlobals;
+use MediaCloud\Plugin\Tools\Optimizer\OptimizerTool;
+use MediaCloud\Plugin\Tools\Storage\StorageTool;
+use MediaCloud\Plugin\Tools\ToolsManager;
+use MediaCloud\Plugin\Utilities\Logging\Logger;
+use function MediaCloud\Plugin\Utilities\arrayPath;
 
 /**
  * Class MuxAsset
- * @package ILAB\MediaCloud\Tools\Mux\Models
+ * @package MediaCloud\Plugin\Tools\Video\Driver\Mux\Models
  *
  * @property string $optimizerId
  * @property int $createdAt

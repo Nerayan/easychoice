@@ -11,9 +11,9 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 // **********************************************************************
 
-namespace ILAB\MediaCloud\Tools\Browser;
+namespace MediaCloud\Plugin\Tools\Browser;
 
-use ILAB\MediaCloud\Tools\ToolSettings;
+use MediaCloud\Plugin\Tools\ToolSettings;
 
 /**
  * @property bool multisiteHide

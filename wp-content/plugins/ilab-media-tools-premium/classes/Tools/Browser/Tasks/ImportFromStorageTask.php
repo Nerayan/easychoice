@@ -11,15 +11,14 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 // **********************************************************************
 
-namespace ILAB\MediaCloud\Tools\Browser\Tasks;
+namespace MediaCloud\Plugin\Tools\Browser\Tasks;
 
-use ILAB\MediaCloud\Storage\StorageToolSettings;
-use ILAB\MediaCloud\Tasks\Task;
-use ILAB\MediaCloud\Tools\Storage\StorageTool;
-use ILAB\MediaCloud\Tools\ToolsManager;
-use function ILAB\MediaCloud\Utilities\arrayPath;
-use ILAB\MediaCloud\Utilities\Logging\Logger;
-use Mimey\MimeTypes;
+use MediaCloud\Plugin\Tasks\Task;
+use MediaCloud\Plugin\Tools\Storage\StorageTool;
+use MediaCloud\Plugin\Tools\ToolsManager;
+use MediaCloud\Plugin\Utilities\Logging\Logger;
+use MediaCloud\Vendor\Mimey\MimeTypes;
+use function MediaCloud\Plugin\Utilities\arrayPath;
 
 class ImportFromStorageTask extends Task {
 
@@ -154,7 +153,7 @@ class ImportFromStorageTask extends Task {
 	 * @param array $selectedItems
 	 *
 	 * @return bool
-	 * @throws \ILAB\MediaCloud\Storage\StorageException
+	 * @throws \MediaCloud\Plugin\Tools\Storage\StorageException
 	 */
 	public function prepare($options = [], $selectedItems = []) {
 		$this->options = $options;

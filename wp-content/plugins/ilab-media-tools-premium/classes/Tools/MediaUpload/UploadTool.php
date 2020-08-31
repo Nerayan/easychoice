@@ -11,20 +11,20 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 // **********************************************************************
 
-namespace ILAB\MediaCloud\Tools\MediaUpload;
+namespace MediaCloud\Plugin\Tools\MediaUpload;
 
-use ILAB\MediaCloud\Storage\StorageToolSettings;
-use ILAB\MediaCloud\Tools\Storage\StorageTool;
-use ILAB\MediaCloud\Tools\Tool;
-use ILAB\MediaCloud\Tools\ToolsManager;
-use ILAB\MediaCloud\Utilities\Logging\Logger;
-use function ILAB\MediaCloud\Utilities\gen_uuid;
-use ILAB\MediaCloud\Utilities\NoticeManager;
-use ILAB\MediaCloud\Utilities\Prefixer;
-use ILAB\MediaCloud\Utilities\VideoProbe;
-use ILAB\MediaCloud\Utilities\View;
-use function ILAB\MediaCloud\Utilities\arrayPath;
-use function ILAB\MediaCloud\Utilities\json_response;
+use MediaCloud\Plugin\Tools\Storage\StorageToolSettings;
+use MediaCloud\Plugin\Tools\Storage\StorageTool;
+use MediaCloud\Plugin\Tools\Tool;
+use MediaCloud\Plugin\Tools\ToolsManager;
+use MediaCloud\Plugin\Utilities\Logging\Logger;
+use MediaCloud\Plugin\Utilities\NoticeManager;
+use MediaCloud\Plugin\Utilities\Prefixer;
+use MediaCloud\Plugin\Utilities\VideoProbe;
+use MediaCloud\Plugin\Utilities\View;
+use function MediaCloud\Plugin\Utilities\arrayPath;
+use function MediaCloud\Plugin\Utilities\gen_uuid;
+use function MediaCloud\Plugin\Utilities\json_response;
 
 if(!defined('ABSPATH')) {
 	header('Location: /');

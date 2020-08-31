@@ -11,14 +11,15 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 // **********************************************************************
 
-namespace ILAB\MediaCloud\Tools\Optimizer\Driver\KrakenIO;
+namespace MediaCloud\Plugin\Tools\Optimizer\Driver\KrakenIO;
 
-use ILAB\MediaCloud\Tools\Optimizer\Models\OptimizationStats;
-use ILAB\MediaCloud\Tools\Optimizer\Models\PendingOptimization;
-use ILAB\MediaCloud\Tools\Optimizer\OptimizerInterface;
-use ILAB\MediaCloud\Utilities\Logging\Logger;
-use function ILAB\MediaCloud\Utilities\anyEmpty;
-use function ILAB\MediaCloud\Utilities\arrayPath;
+use MediaCloud\Plugin\Tools\Optimizer\Models\OptimizationStats;
+use MediaCloud\Plugin\Tools\Optimizer\Models\PendingOptimization;
+use MediaCloud\Plugin\Tools\Optimizer\OptimizerInterface;
+use MediaCloud\Plugin\Utilities\Logging\Logger;
+use MediaCloud\Vendor\Kraken\Kraken;
+use function MediaCloud\Plugin\Utilities\anyEmpty;
+use function MediaCloud\Plugin\Utilities\arrayPath;
 
 class KrakenIODriver implements OptimizerInterface {
 	/** @var KrakenIOSettings  */
@@ -144,7 +145,7 @@ class KrakenIODriver implements OptimizerInterface {
 
 		while($tries <= 5) {
 			Logger::info("Optimizing file $filepath for size $sizeName - try $tries of 5", [], __METHOD__, __LINE__);
-			$kraken = new \Kraken($this->settings->apiKey, $this->settings->apiSecret);
+			$kraken = new Kraken($this->settings->apiKey, $this->settings->apiSecret);
 			$result = $kraken->upload($params);
 			Logger::info("Finished optimizing file $filepath for size $sizeName", [], __METHOD__, __LINE__);
 
@@ -174,7 +175,7 @@ class KrakenIODriver implements OptimizerInterface {
 		$params['url'] = $url;
 
 		Logger::info("Optimizing url $url for size $sizeName", [], __METHOD__, __LINE__);
-		$kraken = new \Kraken($this->settings->apiKey, $this->settings->apiSecret);
+		$kraken = new Kraken($this->settings->apiKey, $this->settings->apiSecret);
 
 		$tries = 1;
 
@@ -233,7 +234,7 @@ class KrakenIODriver implements OptimizerInterface {
 
 
 	public function accountStats() {
-		$kraken = new \Kraken($this->settings->apiKey, $this->settings->apiSecret);
+		$kraken = new Kraken($this->settings->apiKey, $this->settings->apiSecret);
 		$result = $kraken->status();
 
 		return new KrakenIOAccountStatus($result);

@@ -11,15 +11,15 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 // **********************************************************************
 
-namespace ILAB\MediaCloud\Tools\Assets\Tasks;
+namespace MediaCloud\Plugin\Tools\Assets\Tasks;
 
-use ILAB\MediaCloud\Tasks\Task;
-use ILAB\MediaCloud\Tools\Assets\AssetsTool;
-use ILAB\MediaCloud\Tools\Assets\AssetsToolSettings;
-use ILAB\MediaCloud\Tools\Storage\StorageTool;
-use ILAB\MediaCloud\Tools\ToolsManager;
-use function ILAB\MediaCloud\Utilities\arrayPath;
-use ILAB\MediaCloud\Utilities\Logging\Logger;
+use MediaCloud\Plugin\Tasks\Task;
+use MediaCloud\Plugin\Tools\Assets\AssetsTool;
+use MediaCloud\Plugin\Tools\Assets\AssetsToolSettings;
+use MediaCloud\Plugin\Tools\Storage\StorageTool;
+use MediaCloud\Plugin\Tools\ToolsManager;
+use MediaCloud\Plugin\Utilities\Logging\Logger;
+use function MediaCloud\Plugin\Utilities\arrayPath;
 
 class UploadAssetsTask extends Task {
 	//region Properties

@@ -646,8 +646,9 @@ class WooCommerce extends Instance
 	 * @access public
 	 * @param WC_Product $product
 	 */
-	public function purge_product($product)
-	{
+	public function purge_product($product) {
+		do_action( 'litespeed_debug', '[3rd] Woo Purge [pid]' . $product->get_id() );
+
 		$config = apply_filters( 'litespeed_conf', self::O_UPDATE_INTERVAL ) ;
 		if ( is_null($config) ) {
 			$config = self::O_PQS_CS ;
@@ -657,6 +658,7 @@ class WooCommerce extends Instance
 			$this->backend_purge($product->get_id()) ;
 		}
 		elseif ( $config !== self::O_PQS_CS && $product->is_in_stock() ) {
+			do_action( 'litespeed_debug', '[3rd] Woo No purge needed [option] ' . $config );
 			return ;
 		}
 		elseif ( $config !== self::O_PS_CN && ! $product->is_in_stock() ) {
@@ -766,14 +768,13 @@ class WooCommerce extends Instance
 	 * @since 1.6.3 Removed static
 	 * @since  3.0 new API
 	 */
-	private function _option_append()
-	{
+	private function _option_append() {
+		// Append option save value filter
+		do_action( 'litespeed_conf_multi_switch', self::O_UPDATE_INTERVAL, 3 ); // This need to be before conf_append
+
 		do_action( 'litespeed_conf_append', self::O_UPDATE_INTERVAL, false );
 		do_action( 'litespeed_conf_append', self::O_SHOP_FRONT_TTL, true );
 		do_action( 'litespeed_conf_append', self::O_WOO_CACHE_CART, true );
-
-		// Append option save value filter
-		do_action( 'litespeed_conf_multi_switch', self::O_UPDATE_INTERVAL, 3 );
 	}
 
 	/**

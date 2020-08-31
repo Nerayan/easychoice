@@ -11,13 +11,11 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 // **********************************************************************
 
-namespace ILAB\MediaCloud\Tools\Optimizer\Driver\Imagify;
+namespace MediaCloud\Plugin\Tools\Optimizer\Driver\Imagify;
 
-use ILAB\MediaCloud\Tools\Optimizer\Models\OptimizerResultsInterface;
-use ILAB\MediaCloud\Tools\Optimizer\OptimizerInterface;
-use Imagify\Optimizer;
-use wpCloud\StatelessMedia\Imagify;
-use function ILAB\MediaCloud\Utilities\anyEmpty;
+use MediaCloud\Plugin\Tools\Optimizer\OptimizerInterface;
+use MediaCloud\Vendor\Imagify\Optimizer;
+use MediaCloud\Vendor\wpCloud\StatelessMedia\Imagify;
 
 class ImagifyDriver implements OptimizerInterface {
 	/** @var ImagifySettings  */

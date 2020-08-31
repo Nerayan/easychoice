@@ -11,15 +11,15 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 // **********************************************************************
 
-namespace ILAB\MediaCloud\Tools\Integrations\PlugIns\NextGenGallery;
+namespace MediaCloud\Plugin\Tools\Integrations\PlugIns\NextGenGallery;
 
-use ILAB\MediaCloud\Storage\StorageToolSettings;
-use ILAB\MediaCloud\Tasks\TaskSchedule;
-use ILAB\MediaCloud\Tools\DynamicImages\DynamicImagesTool;
-use ILAB\MediaCloud\Tools\Storage\Tasks\DeleteUploadsTask;
-use ILAB\MediaCloud\Tools\ToolsManager;
-use ILAB\MediaCloud\Utilities\Environment;
-use ILAB\MediaCloud\Utilities\Prefixer;
+use MediaCloud\Plugin\Tools\Storage\StorageToolSettings;
+use MediaCloud\Plugin\Tasks\TaskSchedule;
+use MediaCloud\Plugin\Tools\DynamicImages\DynamicImagesTool;
+use MediaCloud\Plugin\Tools\Storage\Tasks\DeleteUploadsTask;
+use MediaCloud\Plugin\Tools\ToolsManager;
+use MediaCloud\Plugin\Utilities\Environment;
+use MediaCloud\Plugin\Utilities\Prefixer;
 
 final class NextGenGalleryUtilities {
 	const DB_VERSION = '1.0.0';

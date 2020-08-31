@@ -1,13 +1,13 @@
 <?php
 
 
-namespace ILAB\MediaCloud\Tools\MediaUpload;
+namespace MediaCloud\Plugin\Tools\MediaUpload;
 
-use ILAB\MediaCloud\Tools\ToolSettings;
+use MediaCloud\Plugin\Tools\ToolSettings;
 
 /**
  * Class UploadToolSettings
- * @package ILAB\MediaCloud\Tools\MediaUpload
+ * @package MediaCloud\Plugin\Tools\MediaUpload
  *
  * @property bool $integrationMode
  * @property int $maxUploads

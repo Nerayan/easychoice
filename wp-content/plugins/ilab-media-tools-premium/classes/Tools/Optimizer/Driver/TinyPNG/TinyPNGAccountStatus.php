@@ -11,10 +11,10 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 // **********************************************************************
 
-namespace ILAB\MediaCloud\Tools\Optimizer\Driver\TinyPNG;
+namespace MediaCloud\Plugin\Tools\Optimizer\Driver\TinyPNG;
 
-use ILAB\MediaCloud\Tools\Optimizer\OptimizerAccountStatus;
-use ILAB\MediaCloud\Tools\Optimizer\OptimizerConsts;
+use MediaCloud\Plugin\Tools\Optimizer\OptimizerAccountStatus;
+use MediaCloud\Plugin\Tools\Optimizer\OptimizerConsts;
 
 class TinyPNGAccountStatus implements OptimizerAccountStatus {
 	private $stats = null;

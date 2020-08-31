@@ -1,0 +1,23 @@
+msgid "Новая почта"
+msgstr ""
+
+msgid "Укажите отделение доставки"
+msgstr ""
+
+msgid "Выберите область"
+msgstr ""
+
+msgid "Выберите город"
+msgstr ""
+
+msgid "Выберите отделение"
+msgstr ""
+
+msgid "Нужна адресная доставка"
+msgstr ""
+
+msgid "Введите адрес"
+msgstr ""
+
+msgid "Ничего не найдено"
+msgstr ""

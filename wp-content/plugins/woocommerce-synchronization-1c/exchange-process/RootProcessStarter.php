@@ -30,6 +30,8 @@ class RootProcessStarter
             session_start();
         }
 
+        \register_shutdown_function([$this, 'shutdownPhp']);
+
         Logger::startProcessingRequestLogProtocolEntry();
 
         try {
@@ -78,6 +80,7 @@ class RootProcessStarter
 
         if (!self::$exchangeFileAbsolutePath) {
             $filename = trim(str_replace('\\', '/', trim($_GET['filename'])), "/");
+            $filename = apply_filters('itglx_wc1c_exchange_filename_parameter', $filename);
             $filename = Helper::getTempPath() . '/' . $filename;
 
             self::$exchangeFileAbsolutePath = $filename;
@@ -99,6 +102,18 @@ class RootProcessStarter
         // escape ok
 
         Logger::saveLastResponseInfo('success - ' . $message);
+    }
+
+    public function shutdownPhp()
+    {
+        $error = error_get_last();
+
+        if (!isset($error['type']) || $error['type'] !== E_ERROR) {
+            return;
+        }
+
+        self::failureResponse($error['message']);
+        Logger::logProtocol('failure', $error);
     }
 
     private function sentHeaders()
@@ -220,6 +235,7 @@ class RootProcessStarter
          */
 
         $filename = trim(str_replace('\\', '/', trim($_GET['filename'])), "/");
+        $filename = apply_filters('itglx_wc1c_exchange_filename_parameter', $filename);
         $filename = Helper::getTempPath() . '/' . $filename;
 
         if (!file_exists(dirname($filename))) {

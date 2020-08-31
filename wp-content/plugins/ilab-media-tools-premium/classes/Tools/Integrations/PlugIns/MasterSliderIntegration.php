@@ -11,11 +11,11 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 // **********************************************************************
 
-namespace ILAB\MediaCloud\Tools\Integrations\PlugIns;
+namespace MediaCloud\Plugin\Tools\Integrations\PlugIns;
 
-use ILAB\MediaCloud\Tools\DynamicImages\DynamicImagesTool;
-use ILAB\MediaCloud\Utilities\Environment;
-use function ILAB\MediaCloud\Utilities\arrayPath;
+use MediaCloud\Plugin\Tools\DynamicImages\DynamicImagesTool;
+use MediaCloud\Plugin\Utilities\Environment;
+use function MediaCloud\Plugin\Utilities\arrayPath;
 
 if (!defined( 'ABSPATH')) { header( 'Location: /'); die; }
 

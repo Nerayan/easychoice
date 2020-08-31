@@ -11,19 +11,19 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 // **********************************************************************
 
-namespace ILAB\MediaCloud\Tools\Integrations\PlugIns;
+namespace MediaCloud\Plugin\Tools\Integrations\PlugIns;
 
-use ILAB\MediaCloud\Storage\StorageConstants;
-use ILAB\MediaCloud\Storage\StorageToolSettings;
-use ILAB\MediaCloud\Tools\DynamicImages\DynamicImagesTool;
-use ILAB\MediaCloud\Tools\Storage\StorageTool;
-use ILAB\MediaCloud\Tools\ToolsManager;
-use ILAB\MediaCloud\Utilities\Environment;
-use ILAB\MediaCloud\Utilities\NoticeManager;
-use ILAB\MediaCloud\Utilities\Prefixer;
-use IvoPetkov\HTML5DOMDocument;
-use IvoPetkov\HTML5DOMElement;
-use IvoPetkov\HTML5DOMNodeList;
+use MediaCloud\Plugin\Tools\Storage\StorageConstants;
+use MediaCloud\Plugin\Tools\Storage\StorageToolSettings;
+use MediaCloud\Plugin\Tools\DynamicImages\DynamicImagesTool;
+use MediaCloud\Plugin\Tools\Storage\StorageTool;
+use MediaCloud\Plugin\Tools\ToolsManager;
+use MediaCloud\Plugin\Utilities\Environment;
+use MediaCloud\Plugin\Utilities\NoticeManager;
+use MediaCloud\Plugin\Utilities\Prefixer;
+use MediaCloud\Vendor\IvoPetkov\HTML5DOMDocument;
+use MediaCloud\Vendor\IvoPetkov\HTML5DOMElement;
+use MediaCloud\Vendor\IvoPetkov\HTML5DOMNodeList;
 
 if (!defined( 'ABSPATH')) { header( 'Location: /'); die; }
 

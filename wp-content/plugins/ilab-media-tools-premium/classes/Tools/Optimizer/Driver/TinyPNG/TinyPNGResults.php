@@ -11,10 +11,10 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 // **********************************************************************
 
-namespace ILAB\MediaCloud\Tools\Optimizer\Driver\TinyPNG;
+namespace MediaCloud\Plugin\Tools\Optimizer\Driver\TinyPNG;
 
-use ILAB\MediaCloud\Tools\Optimizer\Models\OptimizerResultsInterface;
-use function ILAB\MediaCloud\Utilities\arrayPath;
+use MediaCloud\Plugin\Tools\Optimizer\Models\OptimizerResultsInterface;
+use function MediaCloud\Plugin\Utilities\arrayPath;
 
 class TinyPNGResults implements OptimizerResultsInterface {
 	private $error = false;

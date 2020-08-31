@@ -197,7 +197,6 @@ class ParserXml31
                             continue;
                         }
 
-
                         $productEntry = [
                             'ID' => $product
                         ];
@@ -343,6 +342,26 @@ class ParserXml31
                                     continue;
                                 }
 
+                                // maybe removed variation
+                                $removed = apply_filters(
+                                    'itglx_wc1c_variation_offer_is_removed',
+                                    false,
+                                    $element,
+                                    $productEntry['ID'],
+                                    $productEntry['post_parent']
+                                );
+
+                                if ($removed) {
+                                    if (!empty($productEntry['ID'])) {
+                                        Product::removeVariation($productEntry['ID'], $productEntry['post_parent']);
+                                    }
+
+                                    $_SESSION['IMPORT_1C_PROCESS']['allCurrentOffers'][] = (string) $element->Ид;
+
+                                    unset($element);
+                                    continue;
+                                }
+
                                 // resolve main variation data
                                 if (
                                     isset($element->ЗначенияСвойств) &&
@@ -467,11 +486,16 @@ class ParserXml31
                     $_SESSION['IMPORT_1C']['offers_parse'] = true;
                 }
 
-                // maybe unvariable
-                $ready = ProductUnvariable::process();
+                $baseName = basename(RootProcessStarter::getCurrentExchangeFileAbsPath());
 
-                if (!$ready) {
-                    return false;
+                // rests are the last processing file in protocol - is the stock data
+                if (strpos($baseName, 'rests') !== false) {
+                    // maybe unvariable
+                    $ready = ProductUnvariable::process();
+
+                    if (!$ready) {
+                        return false;
+                    }
                 }
 
                 $ready = SetVariationAttributeToProducts::process();

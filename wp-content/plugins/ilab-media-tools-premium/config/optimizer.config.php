@@ -16,7 +16,7 @@ return [
 	"id" => "optimizer",
 	"name" => "Image Optimization",
 	"description" => "Image optimization.",
-	"class" => "ILAB\\MediaCloud\\Tools\\Optimizer\\OptimizerTool",
+	"class" => "MediaCloud\\Plugin\\Tools\\Optimizer\\OptimizerTool",
 	"dynamic-config-option" => "mcloud-optimizer-provider",
 	"dependencies" => [
 		"storage",
@@ -26,7 +26,7 @@ return [
 	"optimizationDrivers" => [
 		'kraken' => [
 			'name' => 'Kraken.io',
-			'class' => \ILAB\MediaCloud\Tools\Optimizer\Driver\KrakenIO\KrakenIODriver::class,
+			'class' => \MediaCloud\Plugin\Tools\Optimizer\Driver\KrakenIO\KrakenIODriver::class,
 			'config' => '/optimizer/kraken.config.php',
 			'help' => [
 				[ 'title' => 'Sign Up For Kraken.io Account', 'external_url' => 'https://kraken.io/pricing?utm=media-cloud' ],
@@ -34,7 +34,7 @@ return [
 		],
 		'shortpixel' => [
 			'name' => 'ShortPixel',
-			'class' => \ILAB\MediaCloud\Tools\Optimizer\Driver\ShortPixel\ShortPixelDriver::class,
+			'class' => \MediaCloud\Plugin\Tools\Optimizer\Driver\ShortPixel\ShortPixelDriver::class,
 			'config' => '/optimizer/shortpixel.config.php',
 			'help' => [
 				[ 'title' => 'Sign Up For ShortPixel Account', 'external_url' => 'https://shortpixel.com/free-sign-up?utm=media-cloud' ],
@@ -42,7 +42,7 @@ return [
 		],
 		'imagify' => [
 			'name' => 'Imagify',
-			'class' => \ILAB\MediaCloud\Tools\Optimizer\Driver\Imagify\ImagifyDriver::class,
+			'class' => \MediaCloud\Plugin\Tools\Optimizer\Driver\Imagify\ImagifyDriver::class,
 			'config' => '/optimizer/imagify.config.php',
 			'help' => [
 				[ 'title' => 'Sign Up For Imagify Account', 'external_url' => 'https://imagify.io/optimizer/?utm=media-cloud' ],
@@ -50,7 +50,7 @@ return [
 		],
 		'tinypng' => [
 			'name' => 'TinyPNG',
-			'class' => \ILAB\MediaCloud\Tools\Optimizer\Driver\TinyPNG\TinyPNGDriver::class,
+			'class' => \MediaCloud\Plugin\Tools\Optimizer\Driver\TinyPNG\TinyPNGDriver::class,
 			'config' => '/optimizer/tinypng.config.php',
 			'help' => [
 				[ 'title' => 'Sign Up For TinyPNG Account', 'external_url' => 'https://tinypng.com/developers' ],
@@ -65,7 +65,7 @@ return [
 			"mcloud-optimizer-stats" => [
 				"title" => "Optimization Statistics",
 				"custom" => true,
-				"callback" => [\ILAB\MediaCloud\Tools\Optimizer\OptimizerTool::class, 'renderStats'],
+				"callback" => [\MediaCloud\Plugin\Tools\Optimizer\OptimizerTool::class, 'renderStats'],
 				"options" => [
 					"mcloud-optimizer-stats" => [
 						"type" => "custom",

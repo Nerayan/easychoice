@@ -153,13 +153,13 @@ class ProductImages
             }
         // the current data does not contain information about the image, but it was before, so it should be deleted
         } elseif ($oldImages) {
-            self::removeImages($oldImages, $productEntry['ID']);
-
             Logger::logChanges(
                 '(image) Removed images (the current data does not contain information) for ID - '
                 . $productEntry['ID'],
                 [get_post_meta($productEntry['ID'], '_id_1c', true)]
             );
+
+            self::removeImages($oldImages, $productEntry);
         }
 
         return false;
@@ -195,13 +195,15 @@ class ProductImages
         return $attachID;
     }
 
-    private static function removeImages($oldImages, $productID)
+    private static function removeImages($oldImages, $productEntry)
     {
-        update_post_meta($productID, '_old_images', []);
-        update_post_meta($productID, '_thumbnail_id', '');
+        $settings = get_option(Bootstrap::OPTIONS_KEY);
+
+        update_post_meta($productEntry['ID'], '_old_images', []);
+        update_post_meta($productEntry['ID'], '_thumbnail_id', '');
 
         if (count($oldImages) > 1) {
-            update_post_meta($productID, '_product_image_gallery', '');
+            update_post_meta($productEntry['ID'], '_product_image_gallery', '');
         }
 
         // delete a known set of images
@@ -209,6 +211,23 @@ class ProductImages
             $attachID = self::findImageByMeta($oldImage);
 
             if ($attachID) {
+                Logger::logChanges(
+                    '(image) Removed image for ID - ' . $productEntry['ID'],
+                    [$attachID]
+                );
+
+                // clean category thumbnail if removed
+                if (
+                    !empty($settings['set_category_thumbnail_by_product']) &&
+                    !empty($productEntry['categoryID'])
+                ) {
+                    foreach ($productEntry['categoryID'] as $termID) {
+                        if ((int) $attachID === (int) get_term_meta((int) $termID, 'thumbnail_id', true)) {
+                            update_term_meta((int) $termID, 'thumbnail_id', '');
+                        }
+                    }
+                }
+
                 wp_delete_attachment($attachID, true);
             }
         }

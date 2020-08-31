@@ -11,15 +11,15 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 // **********************************************************************
 
-namespace ILAB\MediaCloud\Tools\Integrations\PlugIns\Elementor\Tasks;
+namespace MediaCloud\Plugin\Tools\Integrations\PlugIns\Elementor\Tasks;
 
 
 use Elementor\Plugin;
-use ILAB\MediaCloud\Tasks\Task;
-use ILAB\MediaCloud\Tools\ToolsManager;
-use function ILAB\MediaCloud\Utilities\arrayPath;
-use ILAB\MediaCloud\Utilities\Logging\Logger;
-use function ILAB\MediaCloud\Utilities\isKeyedArray;
+use MediaCloud\Plugin\Tasks\Task;
+use MediaCloud\Plugin\Tools\ToolsManager;
+use MediaCloud\Plugin\Utilities\Logging\Logger;
+use function MediaCloud\Plugin\Utilities\arrayPath;
+use function MediaCloud\Plugin\Utilities\isKeyedArray;
 
 class UpdateElementorTask extends Task {
 	//region Static Task Properties

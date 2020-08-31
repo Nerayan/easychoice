@@ -11,15 +11,13 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 // **********************************************************************
 
-namespace ILAB\MediaCloud\Tools\Optimizer\Tasks;
+namespace MediaCloud\Plugin\Tools\Optimizer\Tasks;
 
-use ILAB\MediaCloud\Tasks\Task;
-use ILAB\MediaCloud\Tools\Optimizer\Models\BackgroundOptimization;
-use ILAB\MediaCloud\Tools\Optimizer\Models\PendingOptimization;
-use ILAB\MediaCloud\Tools\Optimizer\OptimizerTool;
-use ILAB\MediaCloud\Tools\Storage\StorageTool;
-use ILAB\MediaCloud\Tools\ToolsManager;
-use ILAB\MediaCloud\Utilities\Logging\Logger;
+use MediaCloud\Plugin\Tasks\Task;
+use MediaCloud\Plugin\Tools\Optimizer\Models\BackgroundOptimization;
+use MediaCloud\Plugin\Tools\Optimizer\OptimizerTool;
+use MediaCloud\Plugin\Tools\ToolsManager;
+use MediaCloud\Plugin\Utilities\Logging\Logger;
 
 class BackgroundOptimizeTask extends Task {
 	//region Static Task Properties

@@ -11,13 +11,13 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 // **********************************************************************
 
-namespace ILAB\MediaCloud\Tools\Integrations\PlugIns\NextGenGallery\Tasks;
+namespace MediaCloud\Plugin\Tools\Integrations\PlugIns\NextGenGallery\Tasks;
 
 
 use C_Photocrati_Transient_Manager;
-use ILAB\MediaCloud\Tasks\Task;
-use ILAB\MediaCloud\Tools\Integrations\PlugIns\NextGenGallery\NextGenGalleryUtilities;
-use ILAB\MediaCloud\Utilities\Logging\Logger;
+use MediaCloud\Plugin\Tasks\Task;
+use MediaCloud\Plugin\Tools\Integrations\PlugIns\NextGenGallery\NextGenGalleryUtilities;
+use MediaCloud\Plugin\Utilities\Logging\Logger;
 
 class MigrateNextGenTask extends Task {
 	//region Static Task Properties

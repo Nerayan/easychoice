@@ -11,9 +11,9 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 // **********************************************************************
 
-namespace ILAB\MediaCloud\Tools\Optimizer\Driver\Imagify;
+namespace MediaCloud\Plugin\Tools\Optimizer\Driver\Imagify;
 
-use ILAB\MediaCloud\Tools\Optimizer\Models\OptimizerResultsInterface;
+use MediaCloud\Plugin\Tools\Optimizer\Models\OptimizerResultsInterface;
 
 class ImagifyResults implements OptimizerResultsInterface {
 	private $error = false;

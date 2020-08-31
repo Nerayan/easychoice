@@ -1,0 +1,38 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: WC Ukr Shipping\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: ru\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.3\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
+
+msgid "Новая почта"
+msgstr "Нова пошта"
+
+msgid "Укажите отделение доставки"
+msgstr "Вкажіть відділення доставки"
+
+msgid "Выберите область"
+msgstr "Оберіть область"
+
+msgid "Выберите город"
+msgstr "Оберіть місто"
+
+msgid "Выберите отделение"
+msgstr "Оберіть відділення"
+
+msgid "Нужна адресная доставка"
+msgstr "Потрібна адресна доставка"
+
+msgid "Введите адрес"
+msgstr "Введіть адресу"
+
+msgid "Ничего не найдено"
+msgstr "Нічого не здайдено"

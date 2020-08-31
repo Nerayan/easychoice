@@ -11,7 +11,7 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 // **********************************************************************
 
-namespace ILAB\MediaCloud\Tools\Optimizer;
+namespace MediaCloud\Plugin\Tools\Optimizer;
 
 final class OptimizerConsts {
 	const SKIPPED = 0;

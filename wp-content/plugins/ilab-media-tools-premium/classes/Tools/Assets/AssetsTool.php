@@ -11,18 +11,18 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 // **********************************************************************
 
-namespace ILAB\MediaCloud\Tools\Assets;
+namespace MediaCloud\Plugin\Tools\Assets;
 
-use ILAB\MediaCloud\Tasks\TaskManager;
-use ILAB\MediaCloud\Tools\Storage\StorageTool;
-use ILAB\MediaCloud\Tools\Assets\Tasks\UploadAssetsTask;
-use ILAB\MediaCloud\Tools\Tool;
-use ILAB\MediaCloud\Tools\ToolsManager;
-use ILAB\MediaCloud\Utilities\Logging\Logger;
-use ILAB\MediaCloud\Utilities\NoticeManager;
-use function ILAB\MediaCloud\Utilities\arrayPath;
-use function ILAB\MediaCloud\Utilities\json_response;
-use Mimey\MimeTypes;
+use MediaCloud\Plugin\Tasks\TaskManager;
+use MediaCloud\Plugin\Tools\Assets\Tasks\UploadAssetsTask;
+use MediaCloud\Plugin\Tools\Storage\StorageTool;
+use MediaCloud\Plugin\Tools\Tool;
+use MediaCloud\Plugin\Tools\ToolsManager;
+use MediaCloud\Plugin\Utilities\Logging\Logger;
+use MediaCloud\Plugin\Utilities\NoticeManager;
+use MediaCloud\Vendor\Mimey\MimeTypes;
+use function MediaCloud\Plugin\Utilities\arrayPath;
+use function MediaCloud\Plugin\Utilities\json_response;
 
 if (!defined( 'ABSPATH')) { header( 'Location: /'); die; }
 

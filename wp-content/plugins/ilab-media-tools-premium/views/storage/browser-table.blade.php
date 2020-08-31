@@ -1,4 +1,4 @@
-<?php /** @var \ILAB\MediaCloud\Cloud\Storage\StorageFile[] $files */ ?>
+<?php /** @var \MediaCloud\Plugin\Cloud\Storage\StorageFile[] $files */ ?>
 <?php /** @var bool $hideCheckBoxes */ ?>
 <?php /** @var bool $hideActions */ ?>
 <table>

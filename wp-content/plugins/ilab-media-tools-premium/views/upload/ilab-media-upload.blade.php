@@ -2,7 +2,7 @@
 
 @section('main')
 <div class="wrap">
-	<p>Drag and drop media onto this page to upload them directly to {{\ILAB\MediaCloud\Storage\StorageToolSettings::currentDriverName()}}, bypassing uploading to WordPress.</p>
+	<p>Drag and drop media onto this page to upload them directly to {{\MediaCloud\Plugin\Tools\Storage\StorageToolSettings::currentDriverName()}}, bypassing uploading to WordPress.</p>
 	<div id="ilab-video-upload-target">
 		<div class="ilab-upload-directions">Drag and drop to upload.</div>
 	</div>

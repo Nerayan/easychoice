@@ -11,9 +11,7 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 // **********************************************************************
 
-namespace ILAB\MediaCloud\Tools\Optimizer\Models\Data;
-
-use ILAB\MediaCloud\Utilities\Logging\Logger;
+namespace MediaCloud\Plugin\Tools\Optimizer\Models\Data;
 
 final class OptimizerData {
 	const DB_VERSION = '1.0.2';

@@ -58,6 +58,15 @@ if ( ! class_exists( 'Redux_Framework_Plugin', false ) ) {
 		private static $instance;
 
 		/**
+		 * Crash flag.
+		 *
+		 * @access      private
+		 * @var         \Redux_Framework_Plugin $crash Crash flag if inside a crash.
+		 * @since       4.1.15
+		 */
+		public static $crash = false;
+
+		/**
 		 * Get active instance
 		 *
 		 * @access      public
@@ -65,7 +74,7 @@ if ( ! class_exists( 'Redux_Framework_Plugin', false ) ) {
 		 * @return      self::$instance The one true Redux_Framework_Plugin
 		 */
 		public static function instance() {
-			$path = WP_PLUGIN_DIR . 'redux-framework/redux-framework.php';
+			$path = REDUX_PLUGIN_FILE;
 
 			if ( function_exists( 'get_plugin_data' ) && file_exists( $path ) ) {
 				$data = get_plugin_data( $path );
@@ -82,9 +91,13 @@ if ( ! class_exists( 'Redux_Framework_Plugin', false ) ) {
 
 			if ( ! self::$instance ) {
 				self::$instance = new self();
-				self::$instance->get_redux_options();
-				self::$instance->includes();
-				self::$instance->hooks();
+				if ( class_exists( 'ReduxFramework' ) ) {
+					self::$instance->load_first();
+				} else {
+					self::$instance->get_redux_options();
+					self::$instance->includes();
+					self::$instance->hooks();
+				}
 			}
 
 			return self::$instance;
@@ -183,6 +196,7 @@ if ( ! class_exists( 'Redux_Framework_Plugin', false ) ) {
 		 * @return      void
 		 */
 		private function hooks() {
+			add_action( 'activated_plugin', array( $this, 'load_first' ) );
 			add_action( 'wp_loaded', array( $this, 'options_toggle_check' ) );
 
 			// Activate plugin when new blog is added.
@@ -193,8 +207,8 @@ if ( ! class_exists( 'Redux_Framework_Plugin', false ) ) {
 
 			// Edit plugin metalinks.
 			add_filter( 'plugin_row_meta', array( $this, 'plugin_metalinks' ), null, 2 );
-
-			add_action( 'activated_plugin', array( $this, 'load_first' ) );
+			add_filter( 'network_admin_plugin_action_links', array( $this, 'add_settings_link' ), 1, 2 );
+			add_filter( 'plugin_action_links', array( $this, 'add_settings_link' ), 1, 2 );
 
 			// phpcs:ignore WordPress.NamingConventions.ValidHookName
 			do_action( 'redux/plugin/hooks', $this );
@@ -204,6 +218,10 @@ if ( ! class_exists( 'Redux_Framework_Plugin', false ) ) {
 		 * Pushes Redux to top of plugin load list, so it initializes before any plugin that may use it.
 		 */
 		public function load_first() {
+			if ( ! class_exists( 'Redux_Functions_Ex' ) ) {
+				require_once dirname( __FILE__ ) . '/redux-core/inc/classes/class-redux-functions-ex.php';
+			}
+
 			$plugin_dir = Redux_Functions_Ex::wp_normalize_path( WP_PLUGIN_DIR ) . '/';
 			$self_file  = Redux_Functions_Ex::wp_normalize_path( __FILE__ );
 
@@ -300,6 +318,7 @@ if ( ! class_exists( 'Redux_Framework_Plugin', false ) ) {
 			}
 
 			delete_option( 'ReduxFrameworkPlugin' );
+			Redux_Enable_Gutenberg::cleanup_options( 'redux-framework' ); // Auto disable Gutenberg and all that.
 		}
 
 		/**
@@ -434,6 +453,90 @@ if ( ! class_exists( 'Redux_Framework_Plugin', false ) ) {
 			}
 		}
 
+
+		/**
+		 * Add a settings link to the Redux entry in the plugin overview screen
+		 *
+		 * @param array  $links Links array.
+		 * @param string $file Plugin filename/slug.
+		 *
+		 * @return array
+		 * @see   filter:plugin_action_links
+		 * @since 1.0
+		 */
+		public function add_settings_link( $links, $file ) {
+
+			if ( strpos( REDUX_PLUGIN_FILE, $file ) === false ) {
+				return $links;
+			}
+
+			if ( ! class_exists( 'Redux_Pro' ) ) {
+				$links[] = sprintf(
+					'<a href="%s" target="_blank">%s</a>',
+					esc_url( $this->get_site_utm_url( '', 'upgrade' ) ),
+					sprintf(
+						'<span style="font-weight: bold;">%s</span>',
+						__( 'Go Pro', 'redux-framework' )
+					)
+				);
+			}
+
+			return $links;
+		}
+
+		/**
+		 * Get the url where the Admin Columns website is hosted
+		 *
+		 * @param string $path Path to add to url.
+		 *
+		 * @return string
+		 */
+		private function get_site_url( $path = '' ) {
+			$url = 'https://redux.io';
+
+			if ( ! empty( $path ) ) {
+				$url .= '/' . trim( $path, '/' ) . '/';
+			}
+
+			return $url;
+		}
+
+		/**
+		 * Url with utm tags
+		 *
+		 * @param string $path Path on site.
+		 * @param string $utm_medium Medium var.
+		 * @param string $utm_content Content var.
+		 * @param bool   $utm_campaign Campaign var.
+		 *
+		 * @return string
+		 */
+		public function get_site_utm_url( $path, $utm_medium, $utm_content = null, $utm_campaign = false ) {
+			$url = self::get_site_url( $path );
+
+			if ( ! $utm_campaign ) {
+				$utm_campaign = 'plugin-installation';
+			}
+
+			$args = array(
+				// Referrer: plugin.
+				'utm_source'   => 'plugin-installation',
+
+				// Specific promotions or sales.
+				'utm_campaign' => $utm_campaign,
+
+				// Marketing medium: banner, documentation or email.
+				'utm_medium'   => $utm_medium,
+
+				// Used for differentiation of medium.
+				'utm_content'  => $utm_content,
+			);
+
+			$args = array_map( 'sanitize_key', array_filter( $args ) );
+
+			return add_query_arg( $args, $url );
+		}
+
 		/**
 		 * Edit plugin metalinks
 		 *
@@ -448,6 +551,7 @@ if ( ! class_exists( 'Redux_Framework_Plugin', false ) ) {
 		public function plugin_metalinks( $links, $file ) {
 			if ( strpos( $file, 'redux-framework.php' ) !== false && is_plugin_active( $file ) ) {
 				$links[] = '<a href="' . esc_url( admin_url( add_query_arg( array( 'page' => 'redux-framework' ), 'tools.php' ) ) ) . '">' . esc_html__( 'What is this?', 'redux-framework' ) . '</a>';
+				$links[] = '<a href="' . esc_url( admin_url( add_query_arg( array( 'post_type' => 'page' ), 'post-new.php' ) ) ) . '#redux_templates=1">' . esc_html__( 'Template Library', 'redux-framework' ) . '</a>';
 			}
 
 			return $links;

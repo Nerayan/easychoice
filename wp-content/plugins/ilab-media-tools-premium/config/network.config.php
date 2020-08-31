@@ -16,7 +16,7 @@ return [
     "id" => "network",
     "name" => "Network",
     "description" => "Settings for WordPress Multisite Network.",
-    "class" => "ILAB\\MediaCloud\\Tools\\Network\\NetworkTool",
+    "class" => "MediaCloud\\Plugin\\Tools\\Network\\NetworkTool",
     "dependencies" => [],
     "env" => "ILAB_MEDIA_CLOUD_NETWORK_ENABLED",
     "settings" => [

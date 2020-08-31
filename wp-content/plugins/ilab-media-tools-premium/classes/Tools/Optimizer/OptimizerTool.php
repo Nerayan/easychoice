@@ -11,27 +11,27 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 // **********************************************************************
 
-namespace ILAB\MediaCloud\Tools\Optimizer;
+namespace MediaCloud\Plugin\Tools\Optimizer;
 
-use ILAB\MediaCloud\Storage\StorageGlobals;
-use ILAB\MediaCloud\Storage\StorageInterface;
-use ILAB\MediaCloud\Storage\StorageToolSettings;
-use ILAB\MediaCloud\Tasks\TaskManager;
-use ILAB\MediaCloud\Tasks\TaskSchedule;
-use ILAB\MediaCloud\Tools\MediaUpload\UploadToolSettings;
-use ILAB\MediaCloud\Tools\Optimizer\Models\BackgroundOptimization;
-use ILAB\MediaCloud\Tools\Optimizer\Models\Data\BackgroundData;
-use ILAB\MediaCloud\Tools\Optimizer\Models\OptimizationStats;
-use ILAB\MediaCloud\Tools\Optimizer\Models\Data\OptimizerData;
-use ILAB\MediaCloud\Tools\Optimizer\Models\PendingOptimization;
-use ILAB\MediaCloud\Tools\Optimizer\Tasks\BackgroundOptimizeTask;
-use ILAB\MediaCloud\Tools\Storage\StorageTool;
-use ILAB\MediaCloud\Tools\Tool;
-use ILAB\MediaCloud\Tools\ToolsManager;
-use ILAB\MediaCloud\Utilities\Logging\Logger;
-use ILAB\MediaCloud\Utilities\NoticeManager;
-use ILAB\MediaCloud\Utilities\View;
-use function ILAB\MediaCloud\Utilities\arrayPath;
+use MediaCloud\Plugin\Tools\Storage\StorageGlobals;
+use MediaCloud\Plugin\Tools\Storage\StorageInterface;
+use MediaCloud\Plugin\Tools\Storage\StorageToolSettings;
+use MediaCloud\Plugin\Tasks\TaskManager;
+use MediaCloud\Plugin\Tasks\TaskSchedule;
+use MediaCloud\Plugin\Tools\MediaUpload\UploadToolSettings;
+use MediaCloud\Plugin\Tools\Optimizer\Models\BackgroundOptimization;
+use MediaCloud\Plugin\Tools\Optimizer\Models\Data\BackgroundData;
+use MediaCloud\Plugin\Tools\Optimizer\Models\Data\OptimizerData;
+use MediaCloud\Plugin\Tools\Optimizer\Models\OptimizationStats;
+use MediaCloud\Plugin\Tools\Optimizer\Models\PendingOptimization;
+use MediaCloud\Plugin\Tools\Optimizer\Tasks\BackgroundOptimizeTask;
+use MediaCloud\Plugin\Tools\Storage\StorageTool;
+use MediaCloud\Plugin\Tools\Tool;
+use MediaCloud\Plugin\Tools\ToolsManager;
+use MediaCloud\Plugin\Utilities\Logging\Logger;
+use MediaCloud\Plugin\Utilities\NoticeManager;
+use MediaCloud\Plugin\Utilities\View;
+use function MediaCloud\Plugin\Utilities\arrayPath;
 
 class OptimizerTool extends Tool {
 	/** @var null|OptimizerToolSettings */
