@@ -149,7 +149,7 @@ if ( ! function_exists( 'electro_header_icons' ) ) {
 function startTableAttribute() {
 	echo '<table class="custom-attributes"><tbody>';
 }
-add_action('woocommerce_after_single_product_summary', 'startTableAttribute', 10);
+add_action('woocommerce_after_single_product_summary', 'startTableAttribute', 61);
 
 function productModel() {
 	global $product;
@@ -344,25 +344,25 @@ function stranaRegistratsiiBrenda() {
 }
 
 // Определяем место вывода атрибута
-add_action('woocommerce_after_single_product_summary', 'manufacturer', 11);
-add_action('woocommerce_after_single_product_summary', 'sovmestimyyBrand', 11);
-add_action('woocommerce_after_single_product_summary', 'productModel', 11);
-add_action('woocommerce_after_single_product_summary', 'caseSize', 11);
-add_action('woocommerce_after_single_product_summary', 'memorySize', 11);
-add_action('woocommerce_after_single_product_summary', 'formFactor', 11);
-add_action('woocommerce_after_single_product_summary', 'kleevoySloy', 11);
-add_action('woocommerce_after_single_product_summary', 'material', 11);
-add_action('woocommerce_after_single_product_summary', 'nalichiyeRamki', 11);
-add_action('woocommerce_after_single_product_summary', 'tip', 11);
-add_action('woocommerce_after_single_product_summary', 'vid', 11);
-add_action('woocommerce_after_single_product_summary', 'dlina', 11);
-add_action('woocommerce_after_single_product_summary', 'сvet', 11);
-add_action('woocommerce_after_single_product_summary', 'garantia', 11);
-add_action('woocommerce_after_single_product_summary', 'stranaProizvoditel', 11);
-add_action('woocommerce_after_single_product_summary', 'stranaregistratsiibrenda', 11);
+add_action('woocommerce_after_single_product_summary', 'manufacturer', 62);
+add_action('woocommerce_after_single_product_summary', 'sovmestimyyBrand', 62);
+add_action('woocommerce_after_single_product_summary', 'productModel', 62);
+add_action('woocommerce_after_single_product_summary', 'caseSize', 62);
+add_action('woocommerce_after_single_product_summary', 'memorySize', 62);
+add_action('woocommerce_after_single_product_summary', 'formFactor', 62);
+add_action('woocommerce_after_single_product_summary', 'kleevoySloy', 62);
+add_action('woocommerce_after_single_product_summary', 'material', 62);
+add_action('woocommerce_after_single_product_summary', 'nalichiyeRamki', 62);
+add_action('woocommerce_after_single_product_summary', 'tip', 62);
+add_action('woocommerce_after_single_product_summary', 'vid', 62);
+add_action('woocommerce_after_single_product_summary', 'dlina', 62);
+add_action('woocommerce_after_single_product_summary', 'сvet', 62);
+add_action('woocommerce_after_single_product_summary', 'garantia', 62);
+add_action('woocommerce_after_single_product_summary', 'stranaProizvoditel', 62);
+add_action('woocommerce_after_single_product_summary', 'stranaregistratsiibrenda', 62);
 
 // Закрываем таблицу для атрибутов
 function endTableAttribute() {
 	echo '</tbody></table>';
 }
-add_action('woocommerce_after_single_product_summary', 'endTableAttribute', 12);
+add_action('woocommerce_after_single_product_summary', 'endTableAttribute', 63);
