@@ -148,7 +148,7 @@ if ( ! function_exists( 'electro_header_icons' ) ) {
 function startTableAttribute() {
 	echo '<table class="custom-attributes"><tbody>';
 }
-add_action('woocommerce_after_single_product_summary', 'startTableAttribute', 12);
+add_action('woocommerce_after_single_product_summary', 'startTableAttribute', 10);
 
 function productModel() {
 	global $product;
@@ -349,7 +349,7 @@ add_action('woocommerce_after_single_product_summary', 'stranaregistratsiibrenda
 function endTableAttribute() {
 	echo '</tbody></table>';
 }
-add_action('woocommerce_after_single_product_summary', 'endTableAttribute', 12);
+add_action('woocommerce_after_single_product_summary', 'endTableAttribute', 10);
 
 // dont display products without image
 add_action( 'woocommerce_product_query', 'custom_pre_get_posts_query' );
