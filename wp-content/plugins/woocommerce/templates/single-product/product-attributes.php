@@ -31,6 +31,6 @@ if ( ! $product_attributes ) {
 		</tr>
 	<?php endforeach; ?>
 	<?php 
-		echo productModel()
+		fsdfsdfdsfsfd
 	?>
 </table>
