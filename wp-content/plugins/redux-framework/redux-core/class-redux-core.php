@@ -245,9 +245,13 @@ if ( ! class_exists( 'Redux_Core', false ) ) {
 			// Activate insights.
 			self::$insights = self::$appsero->insights();
 
-			$metadata = array();
-			if ( defined( 'RDX_MOKAMA' ) ) {
-				self::$insights->add_extra( array( 'mokama' => RDX_MOKAMA ) );
+			if ( class_exists( 'Redux_Pro' ) ) {
+				self::$insights->add_extra(
+					array(
+						'pro'    => Redux_Pro::$version,
+						'mokama' => Redux_Helpers::mokama(),
+					)
+				);
 			}
 
 			self::$insights->hide_notice()->init();
@@ -321,6 +325,7 @@ if ( ! class_exists( 'Redux_Core', false ) ) {
 			require_once dirname( __FILE__ ) . '/inc/classes/class-redux-functions-ex.php';
 			require_once dirname( __FILE__ ) . '/inc/classes/class-redux-helpers.php';
 			require_once dirname( __FILE__ ) . '/inc/classes/class-redux-enable-gutenberg.php';
+			require_once dirname( __FILE__ ) . '/inc/classes/class-redux-instances.php';
 			Redux_Functions_Ex::register_class_path( 'Redux', dirname( __FILE__ ) . '/inc/classes' );
 			Redux_Functions_Ex::register_class_path( 'Redux', dirname( __FILE__ ) . '/inc/welcome' );
 			spl_autoload_register( array( $this, 'register_classes' ) );
