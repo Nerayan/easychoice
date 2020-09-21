@@ -434,7 +434,7 @@ exports.push([module.i, "#redux-templatesImportCollectionBtn {\n  vertical-align
 
 exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js")(false);
 // Module
-exports.push([module.i, ".redux-templates-modal-wrapper {\n  /* ReduxTemplatesPremiumBox */ }\n  .redux-templates-modal-wrapper .redux-templates-modal-body {\n    flex: 1 1 auto;\n    padding-left: 30px;\n    padding-right: 30px;\n    box-sizing: border-box;\n    background: #fff; }\n    .redux-templates-modal-wrapper .redux-templates-modal-body h5 {\n      font-size: 1.1em;\n      font-weight: 600; }\n    .redux-templates-modal-wrapper .redux-templates-modal-body ul {\n      list-style-position: inside;\n      list-style-type: disc; }\n      .redux-templates-modal-wrapper .redux-templates-modal-body ul.redux-templates-import-wizard-missing-dependency li {\n        line-height: 1.8; }\n    .redux-templates-modal-wrapper .redux-templates-modal-body .error {\n      color: #f00; }\n      .redux-templates-modal-wrapper .redux-templates-modal-body .error i {\n        color: inherit; }\n      .redux-templates-modal-wrapper .redux-templates-modal-body .error.installError {\n        text-align: center; }\n  .redux-templates-modal-wrapper .redux-templates-import-wizard-spinner-wrapper {\n    position: absolute;\n    width: calc(100% - 60px);\n    height: 100%;\n    flex: 1 1 auto;\n    align-items: center;\n    justify-content: center;\n    display: flex;\n    flex-direction: column; }\n    .redux-templates-modal-wrapper .redux-templates-import-wizard-spinner-wrapper .text-transition {\n      text-align: center;\n      font-size: 18px;\n      color: #555d66;\n      margin-bottom: 20px; }\n  .redux-templates-modal-wrapper .redux-templates-import-progress {\n    font-size: 1.1em;\n    text-align: center; }\n    .redux-templates-modal-wrapper .redux-templates-import-progress li {\n      list-style: none; }\n      .redux-templates-modal-wrapper .redux-templates-import-progress li.success i {\n        color: #46b450; }\n      .redux-templates-modal-wrapper .redux-templates-import-progress li.info i {\n        color: #00a0d2; }\n  .redux-templates-modal-wrapper .redux-templates-import-progress {\n    width: 50%;\n    margin: 10px auto; }\n    .redux-templates-modal-wrapper .redux-templates-import-progress li {\n      display: flex;\n      justify-content: space-between; }\n  .redux-templates-modal-wrapper .section-box.premium-box {\n    margin: 35px auto;\n    text-align: center; }\n    .redux-templates-modal-wrapper .section-box.premium-box h3 {\n      font-size: 1.5em;\n      line-height: 1.1em;\n      margin-top: 0px; }\n    .redux-templates-modal-wrapper .section-box.premium-box p {\n      font-size: calc(13px + 0.2vw); }\n    .redux-templates-modal-wrapper .section-box.premium-box ul {\n      width: 50%;\n      margin: 0 auto;\n      text-align: left;\n      list-style-type: disc;\n      list-style-position: inside; }\n    .redux-templates-modal-wrapper .section-box.premium-box .redux-templates-upgrade-button {\n      border: none;\n      border-radius: 4px;\n      cursor: pointer;\n      opacity: 1;\n      background: #24b0a6;\n      transition: opacity 0.2s ease-in-out;\n      box-shadow: none !important;\n      color: #fff;\n      text-decoration: none;\n      padding: 0.75em 1.25em;\n      display: block;\n      margin: 30px auto 0 auto;\n      max-width: 200px;\n      text-align: center;\n      font-size: 1em; }\n      .redux-templates-modal-wrapper .section-box.premium-box .redux-templates-upgrade-button:hover {\n        color: #fff;\n        opacity: 0.85;\n        box-shadow: none !important;\n        background: #19837c; }\n  .redux-templates-modal-wrapper .redux-templates-importmodal-content {\n    flex: 1;\n    display: flex;\n    flex-direction: column; }\n\n.text-transition {\n  width: 100% !important;\n  text-align: center; }\n  .text-transition .text-transition_inner > div {\n    font-size: 1.1rem; }\n", ""]);
+exports.push([module.i, ".redux-templates-modal-wrapper {\n  /* ReduxTemplatesPremiumBox */ }\n  .redux-templates-modal-wrapper .redux-templates-modal-body {\n    flex: 1 1 auto;\n    padding-left: 30px;\n    padding-right: 30px;\n    box-sizing: border-box;\n    background: #fff; }\n    .redux-templates-modal-wrapper .redux-templates-modal-body h5 {\n      font-size: 1.1em;\n      font-weight: 600; }\n    .redux-templates-modal-wrapper .redux-templates-modal-body ul {\n      list-style-position: inside;\n      list-style-type: disc; }\n      .redux-templates-modal-wrapper .redux-templates-modal-body ul.redux-templates-import-wizard-missing-dependency li {\n        line-height: 1.8; }\n    .redux-templates-modal-wrapper .redux-templates-modal-body .error {\n      color: #f00; }\n      .redux-templates-modal-wrapper .redux-templates-modal-body .error i {\n        color: inherit; }\n      .redux-templates-modal-wrapper .redux-templates-modal-body .error.installError {\n        text-align: center; }\n  .redux-templates-modal-wrapper .redux-templates-import-wizard-spinner-wrapper {\n    position: absolute;\n    width: calc(100% - 60px);\n    height: 100%;\n    flex: 1 1 auto;\n    align-items: center;\n    justify-content: center;\n    display: flex;\n    flex-direction: column; }\n    .redux-templates-modal-wrapper .redux-templates-import-wizard-spinner-wrapper .text-transition {\n      text-align: center;\n      font-size: 18px;\n      color: #555d66;\n      margin-bottom: 20px; }\n  .redux-templates-modal-wrapper .redux-templates-import-progress {\n    font-size: 1.1em;\n    text-align: center; }\n    .redux-templates-modal-wrapper .redux-templates-import-progress li {\n      list-style: none; }\n      .redux-templates-modal-wrapper .redux-templates-import-progress li.success i {\n        color: #46b450; }\n      .redux-templates-modal-wrapper .redux-templates-import-progress li.info i {\n        color: #00a0d2; }\n  .redux-templates-modal-wrapper .redux-templates-import-progress {\n    width: 50%;\n    margin: 10px auto; }\n    .redux-templates-modal-wrapper .redux-templates-import-progress li {\n      display: flex;\n      justify-content: space-between; }\n  .redux-templates-modal-wrapper .section-box.premium-box {\n    margin: 35px auto;\n    text-align: center; }\n    .redux-templates-modal-wrapper .section-box.premium-box input {\n      display: block;\n      width: 100%;\n      box-shadow: 0 0 0 transparent;\n      transition: box-shadow 0.1s linear;\n      border-radius: 2px;\n      line-height: normal;\n      display: block;\n      padding: 16px 48px 16px 16px;\n      background: #f3f4f5;\n      border: none;\n      width: 100%;\n      height: 40px;\n      font-size: 13px;\n      text-align: center; }\n      .redux-templates-modal-wrapper .section-box.premium-box input::-webkit-input-placeholder {\n        /* WebKit browsers */\n        color: #606a73;\n        font-style: italic;\n        opacity: 1; }\n      .redux-templates-modal-wrapper .section-box.premium-box input:-moz-placeholder {\n        /* Mozilla Firefox 4 to 18 */\n        color: #606a73;\n        font-style: italic;\n        opacity: 1; }\n      .redux-templates-modal-wrapper .section-box.premium-box input::-moz-placeholder {\n        /* Mozilla Firefox 19+ */\n        color: #606a73;\n        font-style: italic;\n        opacity: 1; }\n      .redux-templates-modal-wrapper .section-box.premium-box input:-ms-input-placeholder {\n        /* Internet Explorer 10+ */\n        color: #606a73;\n        font-style: italic;\n        opacity: 1; }\n      .redux-templates-modal-wrapper .section-box.premium-box input:focus {\n        border-color: #007cba;\n        border-color: var(--wp-admin-theme-color);\n        background: #fff;\n        box-shadow: 0 0 0 1.5px #007cba;\n        box-shadow: 0 0 0 1.5px var(--wp-admin-theme-color);\n        outline: 2px solid transparent; }\n    .redux-templates-modal-wrapper .section-box.premium-box h3 {\n      font-size: 1.5em;\n      line-height: 1.1em;\n      margin-top: 0px; }\n    .redux-templates-modal-wrapper .section-box.premium-box p {\n      font-size: calc(13px + 0.2vw); }\n    .redux-templates-modal-wrapper .section-box.premium-box ul {\n      width: 50%;\n      margin: 0 auto;\n      text-align: left;\n      list-style-type: disc;\n      list-style-position: inside; }\n    .redux-templates-modal-wrapper .section-box.premium-box .redux-templates-upgrade-button {\n      border: none;\n      border-radius: 4px;\n      cursor: pointer;\n      opacity: 1;\n      background: #24b0a6;\n      transition: opacity 0.2s ease-in-out;\n      box-shadow: none !important;\n      color: #fff;\n      text-decoration: none;\n      padding: 0.75em 1.25em;\n      display: block;\n      margin: 30px auto 0 auto;\n      max-width: 250px;\n      text-align: center;\n      font-size: 1em; }\n      .redux-templates-modal-wrapper .section-box.premium-box .redux-templates-upgrade-button:hover {\n        color: #fff;\n        opacity: 0.85;\n        box-shadow: none !important;\n        background: #19837c; }\n    .redux-templates-modal-wrapper .section-box.premium-box .subscription_key_button {\n      margin-top: 40px; }\n      .redux-templates-modal-wrapper .section-box.premium-box .subscription_key_button button {\n        background: #f8f8f8;\n        border: 1px solid #ddd; }\n    .redux-templates-modal-wrapper .section-box.premium-box .redux-pro-activate-button {\n      border: none;\n      border-radius: 4px;\n      cursor: pointer;\n      opacity: 1;\n      background: #24b0a6;\n      transition: opacity 0.2s ease-in-out;\n      box-shadow: none !important;\n      color: #fff;\n      text-decoration: none;\n      padding: 0.75em 1.25em;\n      display: block;\n      margin: 30px auto 0 auto;\n      max-width: 250px;\n      text-align: center;\n      font-size: 1em; }\n      .redux-templates-modal-wrapper .section-box.premium-box .redux-pro-activate-button i {\n        margin-right: 10px; }\n      .redux-templates-modal-wrapper .section-box.premium-box .redux-pro-activate-button:hover {\n        color: #fff;\n        opacity: 0.85;\n        box-shadow: none !important;\n        background: #19837c; }\n  .redux-templates-modal-wrapper .redux-templates-importmodal-content {\n    flex: 1;\n    display: flex;\n    flex-direction: column; }\n\n.text-transition {\n  width: 100% !important;\n  text-align: center; }\n  .text-transition .text-transition_inner > div {\n    font-size: 1.1rem; }\n", ""]);
 
 
 
@@ -4219,6 +4219,44 @@ function TabHeader(props) {
 
 /***/ }),
 
+/***/ "./redux-templates/src/components/template-change/index.js":
+/*!*****************************************************************!*\
+  !*** ./redux-templates/src/components/template-change/index.js ***!
+  \*****************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
+const compose = wp.compose.compose;
+const withSelect = wp.data.withSelect;
+
+
+function TemplateChange(props) {
+  const template = props.template;
+  Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(() => {
+    if (template.includes('redux-templates_')) {
+      document.body.className += ' redux-template';
+    } else {
+      document.querySelector('body').classList.remove('redux-template');
+    }
+  }, [template]);
+  return wp.element.createElement("div", null);
+}
+
+/* harmony default export */ __webpack_exports__["default"] = (compose([withSelect(select => {
+  const _select = select('core/editor'),
+        getEditedPostAttribute = _select.getEditedPostAttribute;
+
+  return {
+    template: getEditedPostAttribute('template')
+  };
+})])(TemplateChange));
+
+/***/ }),
+
 /***/ "./redux-templates/src/components/template-list-subheader/images/view-few.svg":
 /*!************************************************************************************!*\
   !*** ./redux-templates/src/components/template-list-subheader/images/view-few.svg ***!
@@ -4416,7 +4454,7 @@ function TemplateListSubHeader(props) {
       marginRight: '10px',
       verticalAlign: 'middle'
     }
-  }, '0' === redux_templates.left && wp.element.createElement(React.Fragment, null, sprintf(__('You\'ve imported %d/%d Templates', redux_templates.i18n), 5 - redux_templates.left, 5)), '0' !== redux_templates.left && wp.element.createElement(React.Fragment, null, sprintf(__('Trial: %d/%d Imports Remaining', redux_templates.i18n), redux_templates.left, 5))), wp.element.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__["Button"], {
+  }, redux_templates.left <= 0 && wp.element.createElement(React.Fragment, null, sprintf(__('Trial Ended: %d/%d Imported', redux_templates.i18n), 5 - redux_templates.left, 5)), redux_templates.left > 0 && wp.element.createElement(React.Fragment, null, sprintf(__('Trial: %d/%d Imports Remaining', redux_templates.i18n), redux_templates.left, 5))), wp.element.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__["Button"], {
     isPrimary: true,
     isSmall: true,
     icon: _redux_templates_icons__WEBPACK_IMPORTED_MODULE_6__["redux"],
@@ -6834,8 +6872,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _challenge__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./challenge */ "./redux-templates/src/challenge/index.js");
 /* harmony import */ var _modal_manager__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./modal-manager */ "./redux-templates/src/modal-manager/index.js");
 /* harmony import */ var _modal_library__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./modal-library */ "./redux-templates/src/modal-library/index.js");
-/* harmony import */ var _custom_css__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./custom-css */ "./redux-templates/src/custom-css/index.js");
-/* harmony import */ var _components_welcome_guide__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./components/welcome-guide */ "./redux-templates/src/components/welcome-guide/index.js");
+/* harmony import */ var _components_welcome_guide__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./components/welcome-guide */ "./redux-templates/src/components/welcome-guide/index.js");
+/* harmony import */ var _components_template_change__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./components/template-change */ "./redux-templates/src/components/template-change/index.js");
+/* harmony import */ var _custom_css__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./custom-css */ "./redux-templates/src/custom-css/index.js");
 /**
  * Library Button
  */
@@ -6848,6 +6887,7 @@ __webpack_require__.r(__webpack_exports__);
 /**
  * External dependencies
  */
+
 
 
 
@@ -6889,7 +6929,8 @@ Object(_wordpress_dom_ready__WEBPACK_IMPORTED_MODULE_0__["default"])(() => {
 
     Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__["render"])(wp.element.createElement(_challenge__WEBPACK_IMPORTED_MODULE_11__["default"], null), challengeWrapperDiv);
     Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__["render"])(wp.element.createElement(_challenge_tooltip_TooltipBox__WEBPACK_IMPORTED_MODULE_9__["default"], null), challengeDiv);
-    Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__["render"])(wp.element.createElement(_components_welcome_guide__WEBPACK_IMPORTED_MODULE_15__["default"], null), challengeDiv);
+    Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__["render"])(wp.element.createElement(_components_welcome_guide__WEBPACK_IMPORTED_MODULE_14__["default"], null), challengeDiv);
+    Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__["render"])(wp.element.createElement(_components_template_change__WEBPACK_IMPORTED_MODULE_15__["default"], null), challengeDiv);
     Object(_stores_helper__WEBPACK_IMPORTED_MODULE_10__["handlingLocalStorageData"])();
   }, 500);
 });
@@ -7417,10 +7458,10 @@ function ProPluginStep(props) {
 
 /***/ }),
 
-/***/ "./redux-templates/src/modal-import-wizard/ReduxTeamplatesActivateBox.js":
-/*!*******************************************************************************!*\
-  !*** ./redux-templates/src/modal-import-wizard/ReduxTeamplatesActivateBox.js ***!
-  \*******************************************************************************/
+/***/ "./redux-templates/src/modal-import-wizard/ReduxTemplatesActivateBox.js":
+/*!******************************************************************************!*\
+  !*** ./redux-templates/src/modal-import-wizard/ReduxTemplatesActivateBox.js ***!
+  \******************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -7458,6 +7499,170 @@ function ReduxTemplatesActivateBox({
 
 /***/ }),
 
+/***/ "./redux-templates/src/modal-import-wizard/ReduxTemplatesPremiumActivate.js":
+/*!**********************************************************************************!*\
+  !*** ./redux-templates/src/modal-import-wizard/ReduxTemplatesPremiumActivate.js ***!
+  \**********************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return ReduxTemplatesPremiumActivate; });
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
+
+function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+const _wp$i18n = wp.i18n,
+      __ = _wp$i18n.__,
+      sprintf = _wp$i18n.sprintf;
+const useState = wp.element.useState;
+const _wp = wp,
+      apiFetch = _wp.apiFetch;
+function ReduxTemplatesPremiumActivate(props) {
+  const _useState = useState(null),
+        _useState2 = _slicedToArray(_useState, 2),
+        installing = _useState2[0],
+        setInstalling = _useState2[1];
+
+  const _useState3 = useState(__('Enter your API key to activate and install your copy of Redux Pro.', redux_templates.i18n)),
+        _useState4 = _slicedToArray(_useState3, 2),
+        status = _useState4[0],
+        setStatus = _useState4[1];
+
+  const _useState5 = useState(''),
+        _useState6 = _slicedToArray(_useState5, 2),
+        statusType = _useState6[0],
+        setStatusType = _useState6[1];
+
+  const _useState7 = useState(atob(redux_templates.key)),
+        _useState8 = _slicedToArray(_useState7, 2),
+        proKey = _useState8[0],
+        setProKey = _useState8[1];
+
+  const toPluginStep = props.toPluginStep;
+
+  const installReduxPlugin = async () => {
+    if (!redux_templates.supported_plugins['redux-framework'].plugin) {
+      setStatus(__('Installing the redux-framework plugin.', redux_templates.i18n));
+      await apiFetch({
+        path: 'redux/v1/templates/plugin-install?slug=redux-framework'
+      }).then(res => {
+        if (res.success) {
+          installReduxPro();
+        } else {
+          setStatus(__('Install of Redux Pro failed, please try again.', redux_templates.i18n));
+          setInstalling(null);
+        }
+      }).catch(res => {
+        setStatus(__('There seems to be an API issue. Please contact Redux support or try again.', redux_templates.i18n));
+        setInstalling(null);
+      });
+    } else {
+      installReduxPro();
+    }
+  };
+
+  const installReduxPro = async () => {
+    if (!redux_templates.supported_plugins['redux-pro'].version) {
+      setStatus(__('Installing Redux Pro.', redux_templates.i18n));
+      await apiFetch({
+        path: 'redux/v1/templates/plugin-install?slug=redux-pro&redux_pro=1'
+      }).then(res => {
+        if (res.success) {
+          setStatus(__('Redux Pro successfully installed!', redux_templates.i18n));
+          redux_templates.mokama = true;
+          delete redux_templates.left;
+          toPluginStep();
+        } else {
+          setStatus(__('Install of Redux Pro failed, please try again.', redux_templates.i18n));
+        }
+      }).catch(res => {
+        setStatus(__('There seems to be an API issue. Please contact Redux support or try again.', redux_templates.i18n));
+        setInstalling(null);
+      });
+    } else {
+      redux_templates.mokama = true;
+      delete redux_templates.left;
+      toPluginStep();
+    }
+  };
+
+  const activateKey = async () => {
+    setInstalling(true);
+    setStatus(__('Validating license key.', redux_templates.i18n));
+    await apiFetch({
+      path: 'redux/v1/templates/license?key=' + proKey
+    }).then(res => {
+      if (res.success) {
+        setStatus(__('API key activated, installing Redux Pro.', redux_templates.i18n));
+        installReduxPlugin();
+      } else {
+        if (res.msg) {
+          setStatus(res.msg);
+        } else {
+          setStatus(__('License key failed to activate. Please try again.', redux_templates.i18n));
+        }
+
+        setInstalling(null);
+      }
+    }).catch(res => {
+      setStatus(__('There seems to be an API issue. Please contact Redux support or try again.', redux_templates.i18n));
+      setInstalling(null);
+    });
+  };
+
+  const updateProKey = e => {
+    setProKey(e.target.value);
+  };
+
+  return wp.element.createElement("div", {
+    className: "redux-templates-modal-body"
+  }, wp.element.createElement("div", {
+    className: "section-box premium-box"
+  }, wp.element.createElement("h3", null, __('Activate Redux Pro', redux_templates.i18n)), wp.element.createElement("div", {
+    className: statusType
+  }, status), wp.element.createElement("p", null, wp.element.createElement("input", {
+    type: "text",
+    placeholder: __('Enter your subscription key', redux_templates.i18n),
+    value: proKey,
+    onChange: updateProKey,
+    disabled: installing !== null
+  })), wp.element.createElement("p", {
+    className: "subscription_key"
+  }, wp.element.createElement("button", {
+    className: "redux-pro-activate-button",
+    "aria-label": "Activate my key",
+    disabled: installing !== null,
+    onClick: () => activateKey()
+  }, installing !== null && wp.element.createElement("i", {
+    className: "fas fa-spinner fa-pulse"
+  }), wp.element.createElement("span", null, __('Activate & Install Pro', redux_templates.i18n)))), wp.element.createElement("p", {
+    style: {
+      fontSize: '1.1em',
+      paddingTop: '10px'
+    }
+  }, wp.element.createElement("small", null, wp.element.createElement("em", {
+    dangerouslySetInnerHTML: {
+      __html: redux_templates.tos.replace(__('Register', redux_templates.i18n), __('Activate', redux_templates.i18n))
+    }
+  }), " ", wp.element.createElement("br", null), wp.element.createElement("span", {
+    dangerouslySetInnerHTML: {
+      __html: sprintf(__('Visit the <a href="%s" target="_blank">account dashboard</a> to recover your subscription key.', redux_templates.i18n), 'https://redux.io/account/?utm_source=plugin-installation&utm_campaign=import_wizard&utm_medium=appsero&utm_content=activate_pro')
+    }
+  })))));
+}
+
+/***/ }),
+
 /***/ "./redux-templates/src/modal-import-wizard/ReduxTemplatesPremiumBox.js":
 /*!*****************************************************************************!*\
   !*** ./redux-templates/src/modal-import-wizard/ReduxTemplatesPremiumBox.js ***!
@@ -7470,16 +7675,29 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return ReduxTemplatesPremiumBox; });
 const __ = wp.i18n.__;
 function ReduxTemplatesPremiumBox(props) {
+  const toProActivateStep = props.toProActivateStep;
+
+  const onNextStep = () => {
+    toProActivateStep();
+  };
+
   return wp.element.createElement("div", {
     className: "redux-templates-modal-body"
   }, wp.element.createElement("div", {
     className: "section-box premium-box"
-  }, wp.element.createElement("h3", null, __('Upgrade to Redux Pro', redux_templates.i18n)), wp.element.createElement("p", null, __('Thanks for giving our library a try! Upgrade to Redux Pro to unlock even more designs and to continue using our library.', redux_templates.i18n)), wp.element.createElement("ul", null, wp.element.createElement("li", null, wp.element.createElement("strong", null, redux_templates.stats.sections), " ", __('Section Templates', redux_templates.i18n)), wp.element.createElement("li", null, wp.element.createElement("strong", null, redux_templates.stats.pages), " ", __('Full Page Templates', redux_templates.i18n)), wp.element.createElement("li", null, wp.element.createElement("strong", null, redux_templates.stats.collections), " ", __('Template Kits', redux_templates.i18n)), wp.element.createElement("li", null, wp.element.createElement("strong", null, __('And so much more!', redux_templates.i18n)))), wp.element.createElement("p", null, wp.element.createElement("a", {
+  }, wp.element.createElement("h3", null, __('Upgrade to Redux Pro', redux_templates.i18n)), wp.element.createElement("p", null, __('Thanks for giving our library a try! Upgrade to Redux Pro to unlock even more designs and to continue using our library.', redux_templates.i18n)), wp.element.createElement("p", null, wp.element.createElement("a", {
     href: redux_templates.u + 'import_wizard',
     className: "redux-templates-upgrade-button",
     title: "{__('Redux Pro', redux_templates.i18n)}",
     target: "_blank"
-  }, __('Upgrade Now', redux_templates.i18n)))));
+  }, __('Upgrade Now Just $49', redux_templates.i18n)), wp.element.createElement("small", null, wp.element.createElement("em", null, "Limited time only"))), wp.element.createElement("p", {
+    className: "subscription_key_button"
+  }, wp.element.createElement("button", {
+    type: "button",
+    className: "components-button",
+    "aria-label": "I have a subscription key",
+    onClick: () => onNextStep()
+  }, "I have a subscription key"))));
 }
 
 /***/ }),
@@ -7498,12 +7716,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _OptionStep__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./OptionStep */ "./redux-templates/src/modal-import-wizard/OptionStep.js");
 /* harmony import */ var _ImportingStep__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./ImportingStep */ "./redux-templates/src/modal-import-wizard/ImportingStep.js");
 /* harmony import */ var _ReduxTemplatesPremiumBox__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./ReduxTemplatesPremiumBox */ "./redux-templates/src/modal-import-wizard/ReduxTemplatesPremiumBox.js");
-/* harmony import */ var _ReduxTeamplatesActivateBox__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./ReduxTeamplatesActivateBox */ "./redux-templates/src/modal-import-wizard/ReduxTeamplatesActivateBox.js");
-/* harmony import */ var _redux_templates_stores_dependencyHelper__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ~redux-templates/stores/dependencyHelper */ "./redux-templates/src/stores/dependencyHelper.js");
-/* harmony import */ var _modals_scss__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../modals.scss */ "./redux-templates/src/modals.scss");
-/* harmony import */ var _modals_scss__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(_modals_scss__WEBPACK_IMPORTED_MODULE_7__);
-/* harmony import */ var _style_scss__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./style.scss */ "./redux-templates/src/modal-import-wizard/style.scss");
-/* harmony import */ var _style_scss__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(_style_scss__WEBPACK_IMPORTED_MODULE_8__);
+/* harmony import */ var _ReduxTemplatesPremiumActivate__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./ReduxTemplatesPremiumActivate */ "./redux-templates/src/modal-import-wizard/ReduxTemplatesPremiumActivate.js");
+/* harmony import */ var _ReduxTemplatesActivateBox__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./ReduxTemplatesActivateBox */ "./redux-templates/src/modal-import-wizard/ReduxTemplatesActivateBox.js");
+/* harmony import */ var _redux_templates_stores_dependencyHelper__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ~redux-templates/stores/dependencyHelper */ "./redux-templates/src/stores/dependencyHelper.js");
+/* harmony import */ var _modals_scss__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../modals.scss */ "./redux-templates/src/modals.scss");
+/* harmony import */ var _modals_scss__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(_modals_scss__WEBPACK_IMPORTED_MODULE_8__);
+/* harmony import */ var _style_scss__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./style.scss */ "./redux-templates/src/modal-import-wizard/style.scss");
+/* harmony import */ var _style_scss__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(_style_scss__WEBPACK_IMPORTED_MODULE_9__);
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -7535,11 +7754,13 @@ const _wp = wp,
 
 
 
+
 const PRO_STEP = 0;
 const PLUGIN_STEP = 1;
 const OPTION_STEP = 2;
 const IMPORT_STEP = 3;
-const REDUX_PRO_STEP = -1;
+const REDUX_PRO_STEP = -10;
+const REDUX_PRO_ACTIVATE_STEP = -9;
 const REDUX_ACTIVATE_STEP = 999;
 const tourPlugins = ['qubely', 'kioken-blocks'];
 
@@ -7587,32 +7808,33 @@ function ImportWizard(props) {
 
       const leftTry = isNaN(redux_templates.left) === false ? parseInt(redux_templates.left) : 0;
 
-      if (redux_templates.mokama !== '1' && leftTry < 1) {
-        //setCurrentStep(REDUX_ACTIVATE_STEP);
-        setCurrentStep(REDUX_PRO_STEP);
-        return;
+      if (!!redux_templates.mokama === false && leftTry < 1 && currentStep !== REDUX_PRO_ACTIVATE_STEP) {
+        if (currentStep !== REDUX_ACTIVATE_STEP) {
+          setCurrentStep(REDUX_PRO_STEP);
+          return;
+        }
       }
       /* Redux pro check */
 
 
-      if (Object(_redux_templates_stores_dependencyHelper__WEBPACK_IMPORTED_MODULE_6__["requiresReduxPro"])(importingTemplate)) {
-        setCurrentStep(REDUX_PRO_STEP);
+      if (Object(_redux_templates_stores_dependencyHelper__WEBPACK_IMPORTED_MODULE_7__["requiresReduxPro"])(importingTemplate)) {
+        if (currentStep !== REDUX_PRO_ACTIVATE_STEP) setCurrentStep(REDUX_PRO_STEP);
         return;
       } // Start with Pro step
       // When all OK with Pro Step, move to Plugin Step, on the way, prepare reduxProMergedPlugins.
 
 
-      if (importingTemplate && currentStep === PRO_STEP && Object(_redux_templates_stores_dependencyHelper__WEBPACK_IMPORTED_MODULE_6__["requiresPro"])(importingTemplate) === false) {
+      if (importingTemplate && currentStep === PRO_STEP && Object(_redux_templates_stores_dependencyHelper__WEBPACK_IMPORTED_MODULE_7__["requiresPro"])(importingTemplate) === false) {
         setCurrentStep(PLUGIN_STEP);
 
-        if (Object(_redux_templates_stores_dependencyHelper__WEBPACK_IMPORTED_MODULE_6__["isReduxProInstalled"])()) {
+        if (Object(_redux_templates_stores_dependencyHelper__WEBPACK_IMPORTED_MODULE_7__["isReduxProInstalled"])()) {
           setMissingPlugins([].concat(importingTemplate.proDependenciesMissing, importingTemplate.installDependenciesMissing).filter(plugin => plugin));
         } else {
           setMissingPlugins(importingTemplate.installDependenciesMissing.filter(plugin => plugin));
         }
       }
 
-      if (importingTemplate && currentStep === PLUGIN_STEP && Object(_redux_templates_stores_dependencyHelper__WEBPACK_IMPORTED_MODULE_6__["requiresInstall"])(importingTemplate) === false) if (isPostEmpty === false) setCurrentStep(OPTION_STEP);else setCurrentStep(IMPORT_STEP);
+      if (importingTemplate && currentStep === PLUGIN_STEP && Object(_redux_templates_stores_dependencyHelper__WEBPACK_IMPORTED_MODULE_7__["requiresInstall"])(importingTemplate) === false) if (isPostEmpty === false) setCurrentStep(OPTION_STEP);else setCurrentStep(IMPORT_STEP);
       if (importingTemplate && currentStep === OPTION_STEP && isPostEmpty === true) setCurrentStep(IMPORT_STEP);
 
       if (importingTemplate && currentStep === IMPORT_STEP && importing === false) {
@@ -7628,7 +7850,7 @@ function ImportWizard(props) {
         }
       }
     }
-  }, [importingTemplate, currentStep, activateDialogDisplay]); // Activate dialog disply
+  }, [importingTemplate, currentStep, activateDialogDisplay]); // Activate dialog display
 
   useEffect(() => {
     if (activateDialogDisplay === true) {
@@ -7645,6 +7867,14 @@ function ImportWizard(props) {
   const toNextStep = () => {
     if (isChallengeOpen) return;
     setCurrentStep(currentStep + 1);
+  };
+
+  const toPluginStep = () => {
+    setCurrentStep(PRO_STEP);
+  };
+
+  const toProActivateStep = () => {
+    setCurrentStep(REDUX_PRO_ACTIVATE_STEP);
   };
 
   const onCloseWizard = () => {
@@ -7693,7 +7923,7 @@ function ImportWizard(props) {
     className: 'fas fa-times'
   }))), wp.element.createElement("div", {
     className: "redux-templates-importmodal-content"
-  }, currentStep === PRO_STEP && Object(_redux_templates_stores_dependencyHelper__WEBPACK_IMPORTED_MODULE_6__["requiresPro"])(importingTemplate) && wp.element.createElement(_ProPluginsStep__WEBPACK_IMPORTED_MODULE_1__["default"], {
+  }, currentStep === PRO_STEP && Object(_redux_templates_stores_dependencyHelper__WEBPACK_IMPORTED_MODULE_7__["requiresPro"])(importingTemplate) && wp.element.createElement(_ProPluginsStep__WEBPACK_IMPORTED_MODULE_1__["default"], {
     missingPros: importingTemplate.proDependenciesMissing,
     onCloseWizard: onCloseWizard
   }), currentStep === PLUGIN_STEP && wp.element.createElement(_InstallPluginStep__WEBPACK_IMPORTED_MODULE_0__["default"], {
@@ -7703,10 +7933,14 @@ function ImportWizard(props) {
   }), currentStep === OPTION_STEP && wp.element.createElement(_OptionStep__WEBPACK_IMPORTED_MODULE_2__["default"], {
     toNextStep: toNextStep,
     onCloseWizard: onCloseWizard
-  }), currentStep === IMPORT_STEP && wp.element.createElement(_ImportingStep__WEBPACK_IMPORTED_MODULE_3__["default"], null), currentStep === REDUX_ACTIVATE_STEP && wp.element.createElement(_ReduxTeamplatesActivateBox__WEBPACK_IMPORTED_MODULE_5__["default"], {
+  }), currentStep === IMPORT_STEP && wp.element.createElement(_ImportingStep__WEBPACK_IMPORTED_MODULE_3__["default"], null), currentStep === REDUX_ACTIVATE_STEP && wp.element.createElement(_ReduxTemplatesActivateBox__WEBPACK_IMPORTED_MODULE_6__["default"], {
     onActivateRedux: activateReduxTracking,
     activating: activating
-  }), currentStep === REDUX_PRO_STEP && wp.element.createElement(_ReduxTemplatesPremiumBox__WEBPACK_IMPORTED_MODULE_4__["default"], null), isInstalledDependencies && wp.element.createElement("iframe", {
+  }), currentStep === REDUX_PRO_ACTIVATE_STEP && wp.element.createElement(_ReduxTemplatesPremiumActivate__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    toPluginStep: toPluginStep
+  }), currentStep === REDUX_PRO_STEP && wp.element.createElement(_ReduxTemplatesPremiumBox__WEBPACK_IMPORTED_MODULE_4__["default"], {
+    toProActivateStep: toProActivateStep
+  }), isInstalledDependencies && wp.element.createElement("iframe", {
     src: "./",
     width: "0",
     height: "0"
@@ -8113,6 +8347,7 @@ function DependencyFilter(props) {
         activeItemType = props.activeItemType,
         loading = props.loading,
         wholePlugins = props.wholePlugins,
+        thirdPartyPlugins = props.thirdPartyPlugins,
         dependencyFilterRule = props.dependencyFilterRule;
   const setDependencyFilters = props.setDependencyFilters,
         selectDependencies = props.selectDependencies,
@@ -8140,8 +8375,8 @@ function DependencyFilter(props) {
       float: 'right'
     }
   }, wp.element.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__["Tooltip"], {
-    text: __('Find templates which contain blocks from any of the selected plugins.', redux_templates.i18n),
-    position: "top right"
+    text: __('Templates which contain blocks from any of the selected plugins.', redux_templates.i18n),
+    position: "top center"
   }, wp.element.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__["Button"], {
     isSmall: true,
     isPrimary: dependencyFilterRule === false,
@@ -8149,8 +8384,8 @@ function DependencyFilter(props) {
     onClick: () => setDependencyFilterRule(false),
     disabled: activeItemType === 'collection'
   }, __('Any', redux_templates.i18n))), wp.element.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__["Tooltip"], {
-    text: __('Find templates that only contain blocks from the selected plugins.', redux_templates.i18n),
-    position: "top right"
+    text: __('Templates that only contain blocks from the selected plugins.', redux_templates.i18n),
+    position: "top center"
   }, wp.element.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__["Button"], {
     isSmall: true,
     isSecondary: dependencyFilterRule === false,
@@ -8161,31 +8396,23 @@ function DependencyFilter(props) {
     className: "redux-templates-select-actions"
   }, wp.element.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__["Tooltip"], {
     text: __('Select All', redux_templates.i18n),
-    position: "top right"
+    position: "top center"
   }, wp.element.createElement("a", {
     href: "#",
     onClick: () => selectDependencies('all')
   }, __('All', redux_templates.i18n))), wp.element.createElement("span", null, "\xA0 / \xA0"), wp.element.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__["Tooltip"], {
-    text: __('Native Blocks Only', redux_templates.i18n),
-    position: "top right"
-  }, wp.element.createElement("a", {
-    href: "#",
-    onClick: () => selectDependencies('none')
-  }, __('None', redux_templates.i18n))), wp.element.createElement("span", null, "\xA0 / \xA0"), wp.element.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__["Tooltip"], {
     text: __('Installed Dependencies', redux_templates.i18n),
-    position: "top right"
+    position: "top center"
   }, wp.element.createElement("a", {
     href: "#",
     onClick: () => selectDependencies('installed')
   }, __('Installed', redux_templates.i18n))), wp.element.createElement("span", null, "\xA0 / \xA0"), wp.element.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__["Tooltip"], {
-    text: __('Reset Dependencies', redux_templates.i18n),
-    position: "top right"
+    text: __('Native Blocks Only', redux_templates.i18n),
+    position: "top center"
   }, wp.element.createElement("a", {
     href: "#",
-    onClick: () => selectDependencies('default')
-  }, wp.element.createElement("i", {
-    className: "fas fa-undo"
-  }))), wp.element.createElement(_redux_templates_challenge_tooltip_ChallengeDot__WEBPACK_IMPORTED_MODULE_0__["default"], {
+    onClick: () => selectDependencies('none')
+  }, __('None', redux_templates.i18n))), wp.element.createElement(_redux_templates_challenge_tooltip_ChallengeDot__WEBPACK_IMPORTED_MODULE_0__["default"], {
     step: 2
   })), wp.element.createElement("ul", {
     className: "redux-templates-sidebar-dependencies"
@@ -8199,7 +8426,7 @@ function DependencyFilter(props) {
     onChange: toggleNoneChecked
   }), wp.element.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__["Tooltip"], {
     text: __('Only default WordPress blocks used.', redux_templates.i18n),
-    position: "right"
+    position: "top center"
   }, wp.element.createElement("span", {
     style: {
       float: 'right',
@@ -8210,8 +8437,36 @@ function DependencyFilter(props) {
   })))), Object.keys(dependencyFilters).filter(pluginKey => wholePlugins.indexOf(pluginKey) !== -1 || pluginKey === _redux_templates_stores_helper__WEBPACK_IMPORTED_MODULE_4__["REDUXTEMPLATES_PRO_KEY"]).sort((a, b) => {
     const pluginInstanceA = Object(_redux_templates_stores_dependencyHelper__WEBPACK_IMPORTED_MODULE_3__["pluginInfo"])(a);
     const pluginInstanceB = Object(_redux_templates_stores_dependencyHelper__WEBPACK_IMPORTED_MODULE_3__["pluginInfo"])(b);
-    if (pluginInstanceA.name < pluginInstanceB.name) return -1;
-    if (pluginInstanceA.name > pluginInstanceB.name) return 1;
+    if (!pluginInstanceB.name || pluginInstanceA.name < pluginInstanceB.name) return -1;
+    if (!pluginInstanceA.name || pluginInstanceA.name > pluginInstanceB.name) return 1;
+    return 0;
+  }).map(pluginKey => wp.element.createElement(_dependencyFilterRow__WEBPACK_IMPORTED_MODULE_2__["default"], {
+    key: pluginKey,
+    pluginKey: pluginKey
+  }))), wp.element.createElement("div", {
+    role: "group",
+    className: "components-button-group",
+    style: {
+      float: 'right'
+    }
+  }, wp.element.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__["Tooltip"], {
+    text: __('Third-party premium plugins required.', redux_templates.i18n),
+    position: "top center"
+  }, wp.element.createElement("span", {
+    style: {
+      float: 'right',
+      marginRight: '15px',
+      cursor: 'pointer'
+    }
+  }, wp.element.createElement("i", {
+    className: "fa fa-info-circle"
+  })))), wp.element.createElement("h3", null, "Third-Party Premium"), wp.element.createElement("ul", {
+    class: "redux-templates-sidebar-dependencies"
+  }, thirdPartyPlugins.sort((a, b) => {
+    const pluginInstanceA = Object(_redux_templates_stores_dependencyHelper__WEBPACK_IMPORTED_MODULE_3__["pluginInfo"])(a);
+    const pluginInstanceB = Object(_redux_templates_stores_dependencyHelper__WEBPACK_IMPORTED_MODULE_3__["pluginInfo"])(b);
+    if (!pluginInstanceB.name || pluginInstanceA.name < pluginInstanceB.name) return -1;
+    if (!pluginInstanceA.name || pluginInstanceA.name > pluginInstanceB.name) return 1;
     return 0;
   }).map(pluginKey => wp.element.createElement(_dependencyFilterRow__WEBPACK_IMPORTED_MODULE_2__["default"], {
     key: pluginKey,
@@ -8236,12 +8491,14 @@ function DependencyFilter(props) {
         getLoading = _select.getLoading,
         getActiveItemType = _select.getActiveItemType,
         getWholePlugins = _select.getWholePlugins,
+        getThirdPartyPlugins = _select.getThirdPartyPlugins,
         getDependencyFilterRule = _select.getDependencyFilterRule;
 
   return {
     loading: getLoading(),
     dependencyFilters: getDependencyFiltersStatistics(),
     wholePlugins: getWholePlugins(),
+    thirdPartyPlugins: getThirdPartyPlugins(),
     dependencyFilterRule: getDependencyFilterRule(),
     activeItemType: getActiveItemType()
   };
@@ -8394,7 +8651,7 @@ function DependencyFilterRow(props) {
     checked: isChecked,
     onChange: toggleChecked
   }), pluginInstanceURL ? wp.element.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__["Tooltip"], {
-    position: 'top right',
+    position: 'top center',
     text: __('Visit Plugin Website', redux_templates.i18n)
   }, wp.element.createElement("span", null, wp.element.createElement("a", {
     href: pluginInstanceURL,
@@ -8402,7 +8659,7 @@ function DependencyFilterRow(props) {
   }, wp.element.createElement("i", {
     className: "fas fa-external-link-alt"
   })))) : null, pluginClassname.includes('missing-dependency') && wp.element.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__["Tooltip"], {
-    position: 'top right',
+    position: 'top center',
     text: __('Not Installed', redux_templates.i18n)
   }, wp.element.createElement("span", {
     className: "redux-icon-wrapper"
@@ -9584,35 +9841,25 @@ function SidebarContent(props) {
     className: "redux-templates-pro-badge"
   }, __('Premium', redux_templates.i18n)) : ''), wp.element.createElement("h5", {
     className: "theme-hash"
+  }, wp.element.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_0__["Tooltip"], {
+    position: 'top center',
+    text: __('Copy the template identifier', redux_templates.i18n)
   }, wp.element.createElement("div", {
-    className: "button-container"
+    className: "button-container",
+    onClick: copyHash
   }, wp.element.createElement("span", {
-    className: "button button-secondary the-copy",
-    onClick: copyHash,
-    title: __('Copy Identifier', redux_templates.i18n)
+    className: "button button-secondary the-copy"
   }, wp.element.createElement("i", {
     className: "fa fa-copy",
     "aria-hidden": "true"
   })), wp.element.createElement("span", {
-    onClick: copyHash,
-    className: "button button-secondary the-hash",
-    title: __('Identifier', redux_templates.i18n)
+    className: "button button-secondary the-hash"
   }, hash.substring(0, 7)), copied && wp.element.createElement("span", {
     className: "copied hideMe"
-  }, wp.element.createElement("br", null), __('copied', redux_templates.i18n))))), blocks && blocks.length > 0 && wp.element.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_0__["PanelBody"], {
-    title: __('Blocks Used', redux_templates.i18n),
-    icon: _wordpress_icons__WEBPACK_IMPORTED_MODULE_1__["more"],
-    initialOpen: false
-  }, wp.element.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_0__["PanelRow"], {
-    className: "redux-block-pills"
-  }, wp.element.createElement("ul", null, blocks.map((block, i) => {
-    return wp.element.createElement("li", {
-      key: i
-    }, wp.element.createElement("span", null, block));
-  })))), installDependencies && installDependencies.length > 0 && wp.element.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_0__["PanelBody"], {
+  }, wp.element.createElement("br", null), __('copied', redux_templates.i18n)))))), installDependencies && installDependencies.length > 0 && wp.element.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_0__["PanelBody"], {
     title: __('Required Plugins', redux_templates.i18n),
     icon: _wordpress_icons__WEBPACK_IMPORTED_MODULE_1__["more"],
-    initialOpen: false
+    initialOpen: true
   }, wp.element.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_0__["PanelRow"], {
     className: "requirements-list-div"
   }, wp.element.createElement("div", {
@@ -9654,7 +9901,17 @@ function SidebarContent(props) {
     }, wp.element.createElement("i", {
       className: "fas fa-external-link-alt"
     })))) : null);
-  }))))), 'redux' !== source && wp.element.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_0__["PanelBody"], {
+  }))))), blocks && blocks.length > 0 && wp.element.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_0__["PanelBody"], {
+    title: __('Blocks Used', redux_templates.i18n),
+    icon: _wordpress_icons__WEBPACK_IMPORTED_MODULE_1__["more"],
+    initialOpen: true
+  }, wp.element.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_0__["PanelRow"], {
+    className: "redux-block-pills"
+  }, wp.element.createElement("ul", null, blocks.map((block, i) => {
+    return wp.element.createElement("li", {
+      key: i
+    }, wp.element.createElement("span", null, block));
+  })))), 'redux' !== source && wp.element.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_0__["PanelBody"], {
     title: __('Template Details', redux_templates.i18n),
     icon: _wordpress_icons__WEBPACK_IMPORTED_MODULE_1__["more"],
     initialOpen: false
@@ -11420,7 +11677,7 @@ const requiresReduxPro = data => {
   if (!data) return false;
   const missingDependencies = [].concat(data.installDependenciesMissing, data.proDependenciesMissing);
   return missingDependencies.reduce((acc, curKey) => {
-    if (curKey === 'redux-pro') return true;
+    if (isReduxProInstalled() === false && curKey === 'redux-pro') return true;
     return acc || isPluginReduxProMerged(curKey) && isReduxProInstalled() === false; // main logic, above were execpetion handling
   }, false);
 };
@@ -11443,7 +11700,7 @@ const isTemplatePremium = (data, activeDependencyFilter) => {
 };
 const isReduxProInstalled = () => {
   const reduxProPluginInstance = redux_templates.supported_plugins['redux-framework'];
-  return reduxProPluginInstance && reduxProPluginInstance.hasOwnProperty('is_pro');
+  return !!redux_templates.mokama == true || reduxProPluginInstance && reduxProPluginInstance.hasOwnProperty('is_pro');
 };
 
 /***/ }),
@@ -11452,7 +11709,7 @@ const isReduxProInstalled = () => {
 /*!***********************************************!*\
   !*** ./redux-templates/src/stores/filters.js ***!
   \***********************************************/
-/*! exports provided: applyCategoryFilter, applySearchFilter, applyHashFilter, applyPriceFilter, applyDependencyFilters, valueOfDependencyFilter */
+/*! exports provided: applyCategoryFilter, applySearchFilter, applyHashFilter, applyPriceFilter, applyDependencyFilters, valueOfDependencyFilter, flattenPageData */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -11463,6 +11720,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "applyPriceFilter", function() { return applyPriceFilter; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "applyDependencyFilters", function() { return applyDependencyFilters; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "valueOfDependencyFilter", function() { return valueOfDependencyFilter; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "flattenPageData", function() { return flattenPageData; });
 /* harmony import */ var _dependencyHelper__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./dependencyHelper */ "./redux-templates/src/stores/dependencyHelper.js");
 /* harmony import */ var _helper__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./helper */ "./redux-templates/src/stores/helper.js");
 
@@ -11577,6 +11835,22 @@ const valueOfDependencyFilter = dependencyFilter => {
 
 const truthyDependencyFiltersList = dependencyFilters => {
   return Object.keys(dependencyFilters).filter(key => dependencyFilters[key].value === true);
+};
+
+const flattenPageData = pageData => {
+  const currentPageData = [];
+
+  if (Array.isArray(pageData) === false) {
+    for (let key in pageData) {
+      Array.isArray(pageData[key]) && pageData[key].map(value => {
+        currentPageData.push(value);
+      });
+    }
+
+    return currentPageData;
+  }
+
+  return pageData;
 };
 
 /***/ }),
@@ -11706,9 +11980,18 @@ const categorizeData = list => {
     data
   };
 };
+/* Parse section data */
+// - convert `sections` object to array
+// - make fullPluginsList from dependency, like ['redux-pro', 'qubely', 'getwid', ...]
+// -- filter wholePlugins from fullPluginsList
+// -- filter thirdPartyPlugins from fullPluginsList
+// - categorize the plugin information and save it to local storage
+
 const parseSectionData = sections => {
   const librarySectionData = convertObjectToArray(sections);
-  const wholePlugins = lodash_uniq__WEBPACK_IMPORTED_MODULE_1___default()(lodash_flattenDeep__WEBPACK_IMPORTED_MODULE_6___default()(lodash_map__WEBPACK_IMPORTED_MODULE_5___default()(librarySectionData, 'dependencies')));
+  const fullPluginsList = lodash_uniq__WEBPACK_IMPORTED_MODULE_1___default()(lodash_flattenDeep__WEBPACK_IMPORTED_MODULE_6___default()(lodash_map__WEBPACK_IMPORTED_MODULE_5___default()(librarySectionData, 'dependencies')));
+  const wholePlugins = fullPluginsList.filter(pluginKey => !isThirdPartyPlugin(pluginKey));
+  const thirdPartyPlugins = fullPluginsList.filter(pluginKey => isThirdPartyPlugin(pluginKey));
   const toBeReturned = categorizeData(librarySectionData);
   const categoriesList = toBeReturned.categories.map(category => {
     return {
@@ -11718,12 +12001,15 @@ const parseSectionData = sections => {
   });
   setWithExpiry('section_categories_list', categoriesList, EXIPRY_TIME);
   return _objectSpread(_objectSpread({}, toBeReturned), {}, {
-    wholePlugins
+    wholePlugins,
+    thirdPartyPlugins
   });
 };
 const parsePageData = pages => {
   const libraryPageData = convertObjectToArray(pages);
-  const wholePlugins = lodash_uniq__WEBPACK_IMPORTED_MODULE_1___default()(lodash_flattenDeep__WEBPACK_IMPORTED_MODULE_6___default()(lodash_map__WEBPACK_IMPORTED_MODULE_5___default()(libraryPageData, 'dependencies')));
+  const fullPluginsList = lodash_uniq__WEBPACK_IMPORTED_MODULE_1___default()(lodash_flattenDeep__WEBPACK_IMPORTED_MODULE_6___default()(lodash_map__WEBPACK_IMPORTED_MODULE_5___default()(libraryPageData, 'dependencies')));
+  const wholePlugins = fullPluginsList.filter(pluginKey => !isThirdPartyPlugin(pluginKey));
+  const thirdPartyPlugins = fullPluginsList.filter(pluginKey => isThirdPartyPlugin(pluginKey));
   const toBeReturned = categorizeData(libraryPageData);
   const categoriesList = toBeReturned.categories.map(category => {
     return {
@@ -11733,7 +12019,8 @@ const parsePageData = pages => {
   });
   setWithExpiry('page_categories_list', categoriesList, EXIPRY_TIME);
   return _objectSpread(_objectSpread({}, toBeReturned), {}, {
-    wholePlugins
+    wholePlugins,
+    thirdPartyPlugins
   });
 };
 const parseCollectionData = library => {
@@ -11753,12 +12040,15 @@ const parseCollectionData = library => {
 
     return collection;
   });
-  const wholePlugins = lodash_uniq__WEBPACK_IMPORTED_MODULE_1___default()(lodash_flattenDeep__WEBPACK_IMPORTED_MODULE_6___default()(lodash_map__WEBPACK_IMPORTED_MODULE_5___default()(libraryCollectionData, 'dependencies')));
+  const fullPluginsList = lodash_uniq__WEBPACK_IMPORTED_MODULE_1___default()(lodash_flattenDeep__WEBPACK_IMPORTED_MODULE_6___default()(lodash_map__WEBPACK_IMPORTED_MODULE_5___default()(libraryCollectionData, 'dependencies')));
+  const wholePlugins = fullPluginsList.filter(pluginKey => !isThirdPartyPlugin(pluginKey));
+  const thirdPartyPlugins = fullPluginsList.filter(pluginKey => isThirdPartyPlugin(pluginKey));
   return _objectSpread(_objectSpread({}, categorizeData(libraryCollectionData)), {}, {
     dependencyFilters: _objectSpread({
       [NONE_KEY]: true
     }, library.dependencies),
-    wholePlugins
+    wholePlugins,
+    thirdPartyPlugins
   });
 }; // one of important function
 // get collection children data upon clicking on collection in collections tab
@@ -11967,6 +12257,11 @@ const saveChallengeStep = step => {
   localStorage.setItem('reduxChallengeStep', step);
 };
 
+const isThirdPartyPlugin = pluginKey => {
+  const pluginInstance = Object(_dependencyHelper__WEBPACK_IMPORTED_MODULE_8__["getPluginInstance"])(pluginKey);
+  return pluginInstance.free_slug && !pluginInstance.redux_pro && !pluginInstance.version;
+};
+
 /***/ }),
 
 /***/ "./redux-templates/src/stores/index.js":
@@ -12075,7 +12370,8 @@ const getDependencyFilters = state => {
 };
 
 const getAllDependencFilters = state => {
-  return state[state.activeItemType || 'section'].wholePlugins.reduce((acc, cur) => {
+  const activeState = state[state.activeItemType || 'section'];
+  return [...activeState.wholePlugins, ...activeState.thirdPartyPlugins].reduce((acc, cur) => {
     return _objectSpread(_objectSpread({}, acc), {}, {
       [cur]: {
         value: false
@@ -12085,7 +12381,7 @@ const getAllDependencFilters = state => {
 };
 
 const getDependencyFiltersStatistics = state => {
-  const pageData = getPageData(state, false);
+  const pageData = Object(_filters__WEBPACK_IMPORTED_MODULE_9__["flattenPageData"])(getOriginalPageData(state));
   const dependentPluginsArray = lodash_uniq__WEBPACK_IMPORTED_MODULE_7___default()(lodash_flattenDeep__WEBPACK_IMPORTED_MODULE_6___default()(lodash_map__WEBPACK_IMPORTED_MODULE_5___default()(pageData, 'dependencies')));
   let dependencyFilters = getDependencyFilters(state);
   Object.keys(dependencyFilters).forEach(plugin => {
@@ -12127,6 +12423,10 @@ registerStore('redux-templates/sectionslist', {
 
     getWholePlugins(state) {
       return state.activeItemType !== 'saved' ? Object(_helper__WEBPACK_IMPORTED_MODULE_10__["getCurrentState"])(state).wholePlugins : null;
+    },
+
+    getThirdPartyPlugins(state) {
+      return state.activeItemType !== 'saved' ? Object(_helper__WEBPACK_IMPORTED_MODULE_10__["getCurrentState"])(state).thirdPartyPlugins : null;
     },
 
     // get categories from currentState, sortBy alphabetically, with the count of pageData within the current category
@@ -12331,6 +12631,7 @@ const initialState = {
     dependencyFilterRule: Object(_helper__WEBPACK_IMPORTED_MODULE_0__["getWithExpiry"])('section_filterRule', true),
     searchContext: '',
     wholePlugins: [],
+    thirdPartyPlugins: [],
     sortBy: Object(_helper__WEBPACK_IMPORTED_MODULE_0__["getWithExpiry"])('section_sort', 'name'),
     currentPage: Object(_helper__WEBPACK_IMPORTED_MODULE_0__["getWithExpiry"])('section_page', 0)
   },
@@ -12343,6 +12644,7 @@ const initialState = {
     dependencyFilterRule: Object(_helper__WEBPACK_IMPORTED_MODULE_0__["getWithExpiry"])('page_filterRule', true),
     searchContext: '',
     wholePlugins: [],
+    thirdPartyPlugins: [],
     sortBy: Object(_helper__WEBPACK_IMPORTED_MODULE_0__["getWithExpiry"])('page_sort', 'name'),
     currentPage: Object(_helper__WEBPACK_IMPORTED_MODULE_0__["getWithExpiry"])('page_page', 0)
   },
@@ -12355,6 +12657,7 @@ const initialState = {
     dependencyFilterRule: false,
     searchContext: '',
     wholePlugins: [],
+    thirdPartyPlugins: [],
     activeCollection: null,
     sortBy: Object(_helper__WEBPACK_IMPORTED_MODULE_0__["getWithExpiry"])('collection_sort', 'name'),
     currentPage: Object(_helper__WEBPACK_IMPORTED_MODULE_0__["getWithExpiry"])('collection_page', 0)
@@ -12641,13 +12944,13 @@ const reducer = (state = initialState, action) => {
 
       const filtered = types.reduce((acc, cur) => {
         // save to the local storage as well
-        Object(_helper__WEBPACK_IMPORTED_MODULE_0__["setWithExpiry"])(cur + '_plugin', atomHandler(state[cur].wholePlugins), EXIPRY_TIME);
+        Object(_helper__WEBPACK_IMPORTED_MODULE_0__["setWithExpiry"])(cur + '_plugin', _objectSpread(_objectSpread({}, state[cur].dependencyFilters), atomHandler(state[cur].wholePlugins)), EXIPRY_TIME);
         return _objectSpread(_objectSpread({}, acc), {}, {
           [cur]: _objectSpread(_objectSpread({}, state[cur]), {}, {
             searchContext: '',
             dependencyFilterRule: cur !== 'collection',
             // We must always use false for collection to get template kits to work.
-            dependencyFilters: atomHandler(state[cur].wholePlugins)
+            dependencyFilters: _objectSpread(_objectSpread({}, state[cur].dependencyFilters), atomHandler(state[cur].wholePlugins))
           })
         });
       }, {});
