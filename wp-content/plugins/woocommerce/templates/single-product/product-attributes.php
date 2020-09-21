@@ -30,22 +30,4 @@ if ( ! $product_attributes ) {
 			<td class="woocommerce-product-attributes-item__value"><?php echo wp_kses_post( $product_attribute['value'] ); ?></td>
 		</tr>
 	<?php endforeach; ?>
-	<?php
-		add_action('woocommerce_after_single_product_summary', 'manufacturer', 10);
-		add_action('woocommerce_after_single_product_summary', 'sovmestimyyBrand', 10);
-		add_action('woocommerce_after_single_product_summary', 'productModel', 10);
-		add_action('woocommerce_after_single_product_summary', 'caseSize', 10);
-		add_action('woocommerce_after_single_product_summary', 'memorySize', 10);
-		add_action('woocommerce_after_single_product_summary', 'formFactor', 10);
-		add_action('woocommerce_after_single_product_summary', 'kleevoySloy', 10);
-		add_action('woocommerce_after_single_product_summary', 'material', 10);
-		add_action('woocommerce_after_single_product_summary', 'nalichiyeRamki', 10);
-		add_action('woocommerce_after_single_product_summary', 'tip', 10);
-		add_action('woocommerce_after_single_product_summary', 'vid', 10);
-		add_action('woocommerce_after_single_product_summary', 'dlina', 10);
-		add_action('woocommerce_after_single_product_summary', 'сvet', 10);
-		add_action('woocommerce_after_single_product_summary', 'garantia', 10);
-		add_action('woocommerce_after_single_product_summary', 'stranaProizvoditel', 10);
-		add_action('woocommerce_after_single_product_summary', 'stranaregistratsiibrenda', 10);
-	?>
 </table>
