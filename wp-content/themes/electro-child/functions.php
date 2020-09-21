@@ -104,7 +104,6 @@ function custom_listing_template() {
     return $listing_template;
 }
 
-
 // VIEW HISTORY IN HEADER
 
 function wpb_widgets_init() {
@@ -149,7 +148,7 @@ if ( ! function_exists( 'electro_header_icons' ) ) {
 function startTableAttribute() {
 	echo '<table class="custom-attributes"><tbody>';
 }
-add_action('woocommerce_after_single_product_summary', 'startTableAttribute', 10);
+add_action('woocommerce_after_single_product_summary', 'startTableAttribute', 12);
 
 function productModel() {
 	global $product;
@@ -162,7 +161,6 @@ function productModel() {
 		endforeach;
 	}
 }
-
 function caseSize() {
 	global $product;
 	$attribute_names = get_the_terms($product->get_id(), 'pa_razmer-korpusa');
@@ -174,7 +172,6 @@ function caseSize() {
 		endforeach;
 	}
 }
-
 function manufacturer() {
 	global $product;
 	$attribute_names = get_the_terms($product->get_id(), 'pa_proizvoditel');
@@ -186,7 +183,6 @@ function manufacturer() {
 		endforeach;
 	}
 }
-
 function memorySize() {
 	global $product;
 	$attribute_names = get_the_terms($product->get_id(), 'pa_obyom-pamyati');
@@ -198,7 +194,6 @@ function memorySize() {
 		endforeach;
 	}
 }
-
 function sovmestimyyBrand() {
 	global $product;
 	$attribute_names = get_the_terms($product->get_id(), 'pa_sovmestimyybrend');
@@ -210,7 +205,6 @@ function sovmestimyyBrand() {
 		endforeach;
 	}
 }
-
 function formFactor() {
 	global $product;
 	$attribute_names = get_the_terms($product->get_id(), 'pa_formfactor');
@@ -222,7 +216,6 @@ function formFactor() {
 		endforeach;
 	}
 }
-
 function kleevoySloy() {
 	global $product;
 	$attribute_names = get_the_terms($product->get_id(), 'pa_kleyevoy-sloy');
@@ -234,7 +227,6 @@ function kleevoySloy() {
 		endforeach;
 	}
 }
-
 function material() {
 	global $product;
 	$attribute_names = get_the_terms($product->get_id(), 'pa_material');
@@ -246,7 +238,6 @@ function material() {
 		endforeach;
 	}
 }
-
 function nalichiyeRamki() {
 	global $product;
 	$attribute_names = get_the_terms($product->get_id(), 'pa_nalichiye-ramki');
@@ -258,7 +249,6 @@ function nalichiyeRamki() {
 		endforeach;
 	}
 }
-
 function tip() {
 	global $product;
 	$attribute_names = get_the_terms($product->get_id(), 'pa_tip');
@@ -270,7 +260,6 @@ function tip() {
 		endforeach;
 	}
 }
-
 function vid() {
 	global $product;
 	$attribute_names = get_the_terms($product->get_id(), 'pa_vid');
@@ -282,7 +271,6 @@ function vid() {
 		endforeach;
 	}
 }
-
 function dlina() {
 	global $product;
 	$attribute_names = get_the_terms($product->get_id(), 'pa_dlina');
@@ -294,7 +282,6 @@ function dlina() {
 		endforeach;
 	}
 }
-
 function сvet() {
 	global $product;
 	$attribute_names = get_the_terms($product->get_id(), 'pa_сvet');
@@ -306,7 +293,6 @@ function сvet() {
 		endforeach;
 	}
 }
-
 function garantia() {
 	global $product;
 	$attribute_names = get_the_terms($product->get_id(), 'pa_garantia');
@@ -318,7 +304,6 @@ function garantia() {
 		endforeach;
 	}
 }
-
 function stranaProizvoditel() {
 	global $product;
 	$attribute_names = get_the_terms($product->get_id(), 'pa_stranaproizvoditeltovara');
@@ -330,7 +315,6 @@ function stranaProizvoditel() {
 		endforeach;
 	}
 }
-
 function stranaRegistratsiiBrenda() {
 	global $product;
 	$attribute_names = get_the_terms($product->get_id(), 'pa_stranaregistratsiibrenda');
@@ -365,4 +349,16 @@ add_action('woocommerce_after_single_product_summary', 'stranaregistratsiibrenda
 function endTableAttribute() {
 	echo '</tbody></table>';
 }
-add_action('woocommerce_after_single_product_summary', 'endTableAttribute', 11);
+add_action('woocommerce_after_single_product_summary', 'endTableAttribute', 12);
+
+// dont display products without image
+add_action( 'woocommerce_product_query', 'custom_pre_get_posts_query' );
+function custom_pre_get_posts_query( $query ) {
+
+    $query->set( 'meta_query', array( array(
+       'key' => '_thumbnail_id',
+       'value' => '0',
+       'compare' => '>'
+    )));
+
+}
