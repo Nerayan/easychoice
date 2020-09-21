@@ -344,25 +344,25 @@ function stranaRegistratsiiBrenda() {
 }
 
 // Определяем место вывода атрибута
-// add_action('woocommerce_after_single_product_summary', 'manufacturer', 11);
-// add_action('woocommerce_after_single_product_summary', 'sovmestimyyBrand', 11);
-// add_action('woocommerce_after_single_product_summary', 'productModel', 11);
-// add_action('woocommerce_after_single_product_summary', 'caseSize', 11);
-// add_action('woocommerce_after_single_product_summary', 'memorySize', 11);
-// add_action('woocommerce_after_single_product_summary', 'formFactor', 11);
-// add_action('woocommerce_after_single_product_summary', 'kleevoySloy', 11);
-// add_action('woocommerce_after_single_product_summary', 'material', 11);
-// add_action('woocommerce_after_single_product_summary', 'nalichiyeRamki', 11);
-// add_action('woocommerce_after_single_product_summary', 'tip', 11);
-// add_action('woocommerce_after_single_product_summary', 'vid', 11);
-// add_action('woocommerce_after_single_product_summary', 'dlina', 11);
-// add_action('woocommerce_after_single_product_summary', 'сvet', 11);
-// add_action('woocommerce_after_single_product_summary', 'garantia', 11);
-// add_action('woocommerce_after_single_product_summary', 'stranaProizvoditel', 11);
-// add_action('woocommerce_after_single_product_summary', 'stranaregistratsiibrenda', 11);
+add_action('woocommerce_after_single_product_summary', 'manufacturer', 11);
+add_action('woocommerce_after_single_product_summary', 'sovmestimyyBrand', 11);
+add_action('woocommerce_after_single_product_summary', 'productModel', 11);
+add_action('woocommerce_after_single_product_summary', 'caseSize', 11);
+add_action('woocommerce_after_single_product_summary', 'memorySize', 11);
+add_action('woocommerce_after_single_product_summary', 'formFactor', 11);
+add_action('woocommerce_after_single_product_summary', 'kleevoySloy', 11);
+add_action('woocommerce_after_single_product_summary', 'material', 11);
+add_action('woocommerce_after_single_product_summary', 'nalichiyeRamki', 11);
+add_action('woocommerce_after_single_product_summary', 'tip', 11);
+add_action('woocommerce_after_single_product_summary', 'vid', 11);
+add_action('woocommerce_after_single_product_summary', 'dlina', 11);
+add_action('woocommerce_after_single_product_summary', 'сvet', 11);
+add_action('woocommerce_after_single_product_summary', 'garantia', 11);
+add_action('woocommerce_after_single_product_summary', 'stranaProizvoditel', 11);
+add_action('woocommerce_after_single_product_summary', 'stranaregistratsiibrenda', 11);
 
 // Закрываем таблицу для атрибутов
 function endTableAttribute() {
 	echo '</tbody></table>';
 }
-add_action('woocommerce_after_single_product_summary', 'endTableAttribute', 12);
+add_action('woocommerce_after_single_product_summary', 'endTableAttribute', 11);
