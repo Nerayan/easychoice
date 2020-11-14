@@ -2,6 +2,10 @@
 
 namespace kirillbdev\WCUkrShipping\Helpers;
 
+if ( ! defined('ABSPATH')) {
+    exit;
+}
+
 class HtmlHelper
 {
 	/**

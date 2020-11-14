@@ -21,8 +21,10 @@
 
 		<?php
 		/**
-		 * @hooked electro_footer_widgets - 10
-		 * @hooked electro_credit - 20
+		 * @hooked electro_footer_widgets        - 10
+		 * @hooked electro_footer_divider        - 20
+		 * @hooked electro_footer_bottom_widgets - 30
+		 * @hooked electro_copyright_bar         - 40
 		 */
 		do_action( 'electro_footer' ); ?>
 

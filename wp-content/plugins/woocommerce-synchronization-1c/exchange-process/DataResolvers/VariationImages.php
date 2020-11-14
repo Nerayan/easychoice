@@ -7,7 +7,7 @@ class VariationImages
 {
     public static function process($element, $variationID, $postAuthor = 0)
     {
-        $dirName = Helper::getTempPath() . '/';
+        $dirName = apply_filters('itglx_wc1c_root_image_directory', Helper::getTempPath() . '/');
         $oldImages = get_post_meta($variationID, '_old_images', true);
 
         if (!is_array($oldImages)) {
@@ -26,10 +26,10 @@ class VariationImages
             // delete images that do not exist in the current set
             foreach ($oldImages as $oldImage) {
                 $attachID = self::findImageByMeta($oldImage);
-                $imageSrcPath = str_replace('//', '/', $dirName . $oldImage);
+                $imageSrcPath = self::imageSrcResultPath($dirName, $oldImage);
                 $removeImage = false;
 
-                if ($attachID && !in_array($oldImage, $images)) {
+                if ($attachID && !in_array($oldImage, $images, true)) {
                     $removeImage = true;
                 } elseif (
                     $attachID &&
@@ -57,7 +57,7 @@ class VariationImages
                 if ($attachID && !is_wp_error($attachID)) {
                     $attachmentIds[] = $attachID;
                 } else {
-                    $imageSrcPath = str_replace('//', '/', $dirName . $image);
+                    $imageSrcPath = self::imageSrcResultPath($dirName, $image);
 
                     if (file_exists($imageSrcPath)) {
                         $attachID = self::resolveImage($image, $imageSrcPath, $variationID, $postAuthor);
@@ -132,12 +132,21 @@ class VariationImages
 
         $attachID = $wpdb->get_var(
             $wpdb->prepare(
-                "SELECT `post_id` FROM `{$wpdb->postmeta}` WHERE `meta_value` = %s AND `meta_key` = %s",
+                "SELECT `meta`.`post_id` FROM `{$wpdb->postmeta}` as `meta`
+                 INNER JOIN `{$wpdb->posts}` as `posts` ON `meta`.`post_id` = `posts`.`ID`
+                 WHERE `meta`.`meta_value` = %s AND `meta`.`meta_key` = %s",
                 (string) $value,
                 (string) $key
             )
         );
 
         return $attachID;
+    }
+
+    private static function imageSrcResultPath($rootImagePath, $imageRelativePath)
+    {
+        $imageSrcPath = $rootImagePath . apply_filters('itglx_wc1c_image_path_from_xml', $imageRelativePath);
+
+        return str_replace('//', '/', $imageSrcPath);
     }
 }

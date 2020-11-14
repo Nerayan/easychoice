@@ -11,13 +11,13 @@ msgstr ""
 "Language: ru\n"
 "Project-Id-Version: Themes - Twenty Sixteen\n"
 
-#. Theme Name of the theme
-msgid "Twenty Sixteen"
-msgstr "Twenty Sixteen"
-
 #. Description of the theme
 msgid "Twenty Sixteen is a modernized take on an ever-popular WordPress layout — the horizontal masthead with an optional right sidebar that works perfectly for blogs and websites. It has custom color options with beautiful default color schemes, a harmonious fluid grid using a mobile-first approach, and impeccable polish in every detail. Twenty Sixteen will make your WordPress look beautiful everywhere."
 msgstr "Twenty Sixteen — современная версия популярного дизайна для WordPress. Горизонтальный заголовок с дополнительной правой панелью идеально подходит для блогов и сайтов. В теме есть произвольная настройка цветов с красивыми встроенными схемами и гармоничная растяжимая сетка с ориентацией на мобильные устройства, внимание уделено даже мельчайшим деталям. С Twenty Sixteen ваш сайт будет прекрасно выглядеть на любых экранах."
+
+#. Theme Name of the theme
+msgid "Twenty Sixteen"
+msgstr "Twenty Sixteen"
 
 #: functions.php:204
 msgid "Bright Red"
@@ -64,16 +64,16 @@ msgid "Dark Gray"
 msgstr "Темно-серая"
 
 #. translators: %s: Post title.
+#: template-parts/content.php:29 inc/template-tags.php:195
+msgid "Continue reading<span class=\"screen-reader-text\"> \"%s\"</span>"
+msgstr "Читать далее<span class=\"screen-reader-text\"> «%s»</span>"
+
+#. translators: %s: Post title.
 #: image.php:88 template-parts/content-page.php:39
 #: template-parts/content.php:53 template-parts/content-search.php:28
 #: template-parts/content-search.php:43 template-parts/content-single.php:47
 msgid "Edit<span class=\"screen-reader-text\"> \"%s\"</span>"
 msgstr "Изменить<span class=\"screen-reader-text\"> «%s»</span>"
-
-#. translators: %s: Post title.
-#: template-parts/content.php:29 inc/template-tags.php:195
-msgid "Continue reading<span class=\"screen-reader-text\"> \"%s\"</span>"
-msgstr "Читать далее<span class=\"screen-reader-text\"> «%s»</span>"
 
 #: inc/customizer.php:347
 msgid "Red"
@@ -100,13 +100,13 @@ msgctxt "label"
 msgid "Search for:"
 msgstr "Искать:"
 
-#: footer.php:17
-msgid "Footer Primary Menu"
-msgstr "Основное меню подвала"
-
 #: footer.php:30
 msgid "Footer Social Links Menu"
 msgstr "Меню социальных ссылок в подвале"
+
+#: footer.php:17
+msgid "Footer Primary Menu"
+msgstr "Основное меню подвала"
 
 #: functions.php:269
 msgid "Add widgets here to appear in your sidebar."
@@ -146,13 +146,13 @@ msgstr "Автор:"
 msgid "Previous post:"
 msgstr "Предыдущая запись:"
 
-#: single.php:39
-msgid "Next post:"
-msgstr "Следующая запись:"
-
 #: single.php:41
 msgid "Previous"
 msgstr "Назад"
+
+#: single.php:39
+msgid "Next post:"
+msgstr "Следующая запись:"
 
 #: single.php:38
 msgid "Next"
@@ -183,15 +183,15 @@ msgctxt "Used before publish date."
 msgid "Posted on"
 msgstr "Опубликовано"
 
-#: inc/template-tags.php:40
-msgctxt "Used before post format."
-msgid "Format"
-msgstr "Формат"
-
 #. translators: %s: Post title.
 #: inc/template-tags.php:53
 msgid "Leave a comment<span class=\"screen-reader-text\"> on %s</span>"
 msgstr "Добавить комментарий<span class=\"screen-reader-text\"> к записи %s</span>"
+
+#: inc/template-tags.php:40
+msgctxt "Used before post format."
+msgid "Format"
+msgstr "Формат"
 
 #: inc/template-tags.php:26
 msgctxt "Used before post author name."
@@ -210,30 +210,25 @@ msgstr "Серый"
 msgid "Dark"
 msgstr "Тёмный"
 
-#: inc/customizer.php:242
-msgid "Secondary Text Color"
-msgstr "Цвет второстепенного текста"
-
 #: inc/customizer.php:317
 msgid "Default"
 msgstr "По умолчанию"
+
+#: inc/customizer.php:242
+msgid "Secondary Text Color"
+msgstr "Цвет второстепенного текста"
 
 #: inc/customizer.php:221
 msgid "Main Text Color"
 msgstr "Основной цвет текста"
 
-#: inc/customizer.php:176
-msgid "Page Background Color"
-msgstr "Цвет фона страницы"
-
 #: inc/customizer.php:200
 msgid "Link Color"
 msgstr "Цвет ссылок"
 
-#: single.php:31 image.php:107
-msgctxt "Parent post link"
-msgid "<span class=\"meta-nav\">Published in</span><span class=\"post-title\">%title</span>"
-msgstr "<span class=\"meta-nav\">Опубликовано в</span><span class=\"post-title\">%title</span>"
+#: inc/customizer.php:176
+msgid "Page Background Color"
+msgstr "Цвет фона страницы"
 
 #: inc/customizer.php:153
 msgid "Base Color Scheme"
@@ -243,6 +238,11 @@ msgstr "Основная цветовая схема"
 #: inc/back-compat.php:42 inc/back-compat.php:56 inc/back-compat.php:75
 msgid "Twenty Sixteen requires at least WordPress version 4.4. You are running version %s. Please upgrade and try again."
 msgstr "Тема Twenty Sixteen требует WordPress версии 4.4 или выше. У вас версия %s. Пожалуйста, обновите WordPress и попробуйте ещё раз."
+
+#: single.php:31 image.php:107
+msgctxt "Parent post link"
+msgid "<span class=\"meta-nav\">Published in</span><span class=\"post-title\">%title</span>"
+msgstr "<span class=\"meta-nav\">Опубликовано в</span><span class=\"post-title\">%title</span>"
 
 #: image.php:77
 msgctxt "Used before full size attachment link."
@@ -270,13 +270,18 @@ msgstr "Меню"
 msgid "Skip to content"
 msgstr "Перейти к содержимому"
 
+#: functions.php:420
+msgid "collapse child menu"
+msgstr "свернуть дочернее меню"
+
 #: functions.php:419
 msgid "expand child menu"
 msgstr "раскрыть дочернее меню"
 
-#: functions.php:420
-msgid "collapse child menu"
-msgstr "свернуть дочернее меню"
+#: functions.php:338
+msgctxt "Inconsolata font: on or off"
+msgid "on"
+msgstr "off"
 
 #: functions.php:330
 msgctxt "Montserrat font: on or off"
@@ -288,22 +293,17 @@ msgctxt "Merriweather font: on or off"
 msgid "on"
 msgstr "off"
 
-#: functions.php:281 functions.php:293
-msgid "Appears at the bottom of the content on posts and pages."
-msgstr "Отображается под содержимым на страницах и записях."
-
 #: functions.php:291
 msgid "Content Bottom 2"
 msgstr "Под содержимым 2"
 
+#: functions.php:281 functions.php:293
+msgid "Appears at the bottom of the content on posts and pages."
+msgstr "Отображается под содержимым на страницах и записях."
+
 #: functions.php:279
 msgid "Content Bottom 1"
 msgstr "Под содержимым 1"
-
-#: functions.php:338
-msgctxt "Inconsolata font: on or off"
-msgid "on"
-msgstr "off"
 
 #: functions.php:267
 msgid "Sidebar"

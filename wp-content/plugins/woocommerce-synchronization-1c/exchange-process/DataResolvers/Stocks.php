@@ -1,10 +1,18 @@
 <?php
 namespace Itgalaxy\Wc\Exchange1c\ExchangeProcess\DataResolvers;
 
+use Itgalaxy\Wc\Exchange1c\Includes\Bootstrap;
+
 class Stocks
 {
     public static function process(&$reader)
     {
+        $settings = get_option(Bootstrap::OPTIONS_KEY);
+
+        if (!empty($settings['skip_product_stocks'])) {
+            return;
+        }
+
         // run once per exchange
         if (isset($_SESSION['IMPORT_1C']['stocks_parse'])) {
             return;

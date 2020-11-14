@@ -161,4 +161,15 @@ class Helper
             'status' => $status
         ];
     }
+
+    public static function isVerify()
+    {
+        $value = get_site_option(Bootstrap::PURCHASE_CODE_OPTIONS_KEY);
+
+        if (!empty($value)) {
+            return true;
+        }
+
+        return false;
+    }
 }

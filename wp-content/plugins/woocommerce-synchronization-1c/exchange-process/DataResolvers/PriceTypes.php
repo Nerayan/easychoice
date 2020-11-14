@@ -1,10 +1,19 @@
 <?php
 namespace Itgalaxy\Wc\Exchange1c\ExchangeProcess\DataResolvers;
 
+use Itgalaxy\Wc\Exchange1c\Includes\Bootstrap;
+use Itgalaxy\Wc\Exchange1c\Includes\Logger;
+
 class PriceTypes
 {
     public static function process(&$reader)
     {
+        $settings = get_option(Bootstrap::OPTIONS_KEY);
+
+        if (!empty($settings['skip_product_prices'])) {
+            return;
+        }
+
         // run once per exchange
         if (isset($_SESSION['IMPORT_1C']['price_types_parse'])) {
             return;
@@ -40,6 +49,8 @@ class PriceTypes
                 'currency' => (string) $element->Валюта
             ];
         }
+
+        Logger::logChanges('(price types) according to current data in xml', $prices);
 
         if (count($prices)) {
             update_option('all_prices_types', $prices);

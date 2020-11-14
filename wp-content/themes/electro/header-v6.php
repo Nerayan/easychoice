@@ -32,6 +32,8 @@ remove_action( 'electro_before_content',    'electro_navbar',           10 );
      */
     do_action( 'electro_before_header' ); ?>
 
+    <?php if ( ! function_exists( 'elementor_theme_do_location' ) || ! elementor_theme_do_location( 'header' ) ) : ?>
+
     <header id="masthead" class="site-header stick-this header-v6">
         <div class="container <?php echo esc_attr( has_electro_mobile_header() ? electro_desktop_header_responsive_class() : '' );  ?>">
             <?php
@@ -48,6 +50,8 @@ remove_action( 'electro_before_content',    'electro_navbar',           10 );
         do_action( 'electro_after_header' ); ?>
 
     </header><!-- #masthead -->
+
+    <?php endif; ?>
 
     <?php
     /**

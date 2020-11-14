@@ -2,6 +2,10 @@
 
 namespace kirillbdev\WCUkrShipping\DB;
 
+if ( ! defined('ABSPATH')) {
+    exit;
+}
+
 class OptionsRepository
 {
   /**

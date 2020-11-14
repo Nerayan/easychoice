@@ -1,5 +1,9 @@
 <?php
 
+if ( ! defined('ABSPATH')) {
+    exit;
+}
+
 \spl_autoload_register(function ($class) {
   if (stripos($class, 'kirillbdev\WCUkrShipping') !== 0) {
     return;

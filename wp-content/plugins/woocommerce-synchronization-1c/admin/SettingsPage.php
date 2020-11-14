@@ -118,7 +118,7 @@ class SettingsPage
             <?php
             echo sprintf(
                 '%1$s <a href="%2$s" target="_blank">%3$s</a>. %4$s.',
-                esc_html__('Plugin documentation: ', 'itgalaxy-woocommerce-1c'),
+                esc_html__('Plugin documentation:', 'itgalaxy-woocommerce-1c'),
                 esc_url(
                     'https://itgalaxy.company/software/wordpress-woocommerce-1c-%d0%bf%d1%80%d0%b5%d0%b4%d0%bf%d1%80'
                     . '%d0%b8%d1%8f%d1%82%d0%b8%d0%b5-%d0%be%d0%b1%d0%bc%d0%b5%d0%bd-%d0%b4%d0%b0%d0%bd%d0%bd%d1%8b%d0'
@@ -127,6 +127,18 @@ class SettingsPage
                 ),
                 esc_html__('open', 'itgalaxy-woocommerce-1c'),
                 esc_html__('Or open the folder `documentation` in the plugin and open index.html', 'itgalaxy-woocommerce-1c')
+            );
+            ?>
+            <hr>
+            <?php
+            echo sprintf(
+                '%1$s <a href="%2$s" target="_blank">%3$s</a>.',
+                esc_html__(
+                    'You can also get additional information on various aspects of unloading:',
+                    'itgalaxy-woocommerce-1c'
+                ),
+                esc_url('https://itgalaxy.company/category/%d0%be%d0%b1%d0%bc%d0%b5%d0%bd-%d1%81-1%d1%81/'),
+                esc_html__('here', 'itgalaxy-woocommerce-1c')
             );
             ?>
             <hr>

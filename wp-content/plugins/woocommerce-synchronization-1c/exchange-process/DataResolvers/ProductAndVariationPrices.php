@@ -9,6 +9,14 @@ class ProductAndVariationPrices
     public static function resolvePrices($element, $rate)
     {
         $settings = get_option(Bootstrap::OPTIONS_KEY);
+
+        if (!empty($settings['skip_product_prices'])) {
+            return [
+                'regular' => '',
+                'all' => []
+            ];
+        }
+
         $allPriceTypes = get_option('all_prices_types', []);
         $basePriceType = isset($settings['price_type_1'])
             ? $settings['price_type_1']
@@ -61,6 +69,11 @@ class ProductAndVariationPrices
     public static function setPrices($resolvePrices, $productId, $parentProductID = 0)
     {
         $settings = get_option(Bootstrap::OPTIONS_KEY);
+
+        if (!empty($settings['skip_product_prices'])) {
+            return;
+        }
+
         $priceWorkRule = !empty($settings['price_work_rule']) ? $settings['price_work_rule'] : 'regular';
         $removeSalePrice = !empty($settings['remove_sale_price']) ? (int) $settings['remove_sale_price'] : '';
         $priceValue = (float) $resolvePrices['regular'];
@@ -81,6 +94,8 @@ class ProductAndVariationPrices
                     [$priceValue, get_post_meta($productId, '_id_1c', true)]
                 );
             }
+
+            do_action('itglx_wc1c_product_or_variation_has_empty_price', $productId, $parentProductID);
 
             return;
         }

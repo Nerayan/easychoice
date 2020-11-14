@@ -5,22 +5,6 @@
  * @package electro
  */
 
-/**
- * Assign the Electro version to a var
- */
-$theme 				= wp_get_theme();
-$electro_version 	= $theme['Version'];
-
-/**
- * Set the content width based on the theme's design and stylesheet.
- *
- * @see mc_content_width()
- *
- */
-if ( ! isset( $content_width ) ) {
-	$content_width = 1170; /* pixels */
-}
-
 if ( ! function_exists( 'electro_content_width' ) ) {
 	/**
 	 * Adjust content_width value for image attachment template.
@@ -296,7 +280,7 @@ if ( ! function_exists( 'electro_register_widgets' ) ) {
 		include_once get_template_directory() . '/inc/widgets/class-electro-posts-carousel-widget.php';
 		register_widget( 'Electro_Posts_Carousel_Widget' );
 
-		if ( is_woocommerce_activated() ) {
+		if ( apply_filters( 'electro/woocommerce/enable_widgets', true ) && is_woocommerce_activated() ) {
 
 			// Electro Display Product Filter Widget
 			include_once get_template_directory() . '/inc/widgets/class-electro-product-filter-widget.php';
@@ -403,6 +387,26 @@ if ( ! function_exists( 'electro_register_required_plugins' ) ) {
 			),
 
 			array(
+                'name'                  => 'MAS Brands for WooCommerce',
+                'slug'                  => 'mas-woocommerce-brands',
+                'required'              => false,
+                'version'               => '1.0.3',
+                'force_activation'      => false,
+                'force_deactivation'    => false,
+                'external_url'          => '',
+            ),
+
+            array(
+                'name'                  => 'MAS Static Content',
+                'slug'                  => 'mas-static-content',
+                'required'              => false,
+                'version'               => '1.0.3',
+                'force_activation'      => false,
+                'force_deactivation'    => false,
+                'external_url'          => '',
+            ),
+
+			array(
 				'name'					=> 'One Click Demo Import',
 				'slug'					=> 'one-click-demo-import',
 				'required'				=> false,
@@ -417,16 +421,6 @@ if ( ! function_exists( 'electro_register_required_plugins' ) ) {
 				'slug'					=> 'redux-framework',
 				'required'				=> false,
 				'version'				=> '3.6.18',
-				'force_activation'		=> false,
-				'force_deactivation'	=> false,
-				'external_url'			=> '',
-			),
-
-			array(
-				'name'					=> 'Regenerate Thumbnails',
-				'slug'					=> 'regenerate-thumbnails',
-				'required'				=> false,
-				'version'				=> '3.1.3',
 				'force_activation'		=> false,
 				'force_deactivation'	=> false,
 				'external_url'			=> '',

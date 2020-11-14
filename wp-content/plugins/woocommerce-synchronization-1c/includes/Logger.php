@@ -7,8 +7,11 @@ use Monolog\Logger as MonologLogger;
 
 class Logger
 {
-    public static $format = '[%datetime% | %ip% | %user% | %method% | %query%] %channel%.%level_name%: '
-        . "%message% %context% %extra%\n";
+    public static $format = '[%datetime% | %request_id%] %channel%.%level_name%: '
+        . "%message% %context%\n";
+
+    public static $formatStartEnd = '[%datetime% | %ip% | %user% | %method% | %query%] %channel%.%level_name%: '
+    . "%message% %context%\n";
 
     public static $log;
 
@@ -36,6 +39,42 @@ class Logger
         }
     }
 
+    public static function logStartEnd($message, $data = [])
+    {
+        $settings = get_option(Bootstrap::OPTIONS_KEY);
+
+        if (
+            !empty($settings['enable_logs_protocol']) &&
+            is_writable(self::getLogPath())
+        ) {
+            if (empty($_SESSION['logSynchronizeProcessFile'])) {
+                // prepare and set log file path
+                self::setLogFilePathToSession(
+                    self::generateLogFilePath()
+                );
+            }
+
+            try {
+                $log = new MonologLogger('wc1c');
+
+                $handler = new StreamHandler($_SESSION['logSynchronizeProcessFile'], MonologLogger::INFO);
+                $handler->setFormatter(new LineFormatter(self::$formatStartEnd));
+
+                $log->pushHandler($handler);
+
+                $log->pushProcessor(function ($entry) {
+                    return self::addClientData($entry);
+                });
+
+                $log->info($message, (array) $data);
+
+                unset($log);
+            } catch (\Exception $exception) {
+                // nothing
+            }
+        }
+    }
+
     public static function startProcessingRequestLogProtocolEntry()
     {
         $option = \get_option(Bootstrap::OPTION_INFO_KEY, []);
@@ -48,12 +87,18 @@ class Logger
 
         \update_option(Bootstrap::OPTION_INFO_KEY, $option);
 
-        self::logProtocol('START PROCESSING REQUEST', self::getMemoryUsage());
+        if (!isset($_SESSION['exchange_id'])) {
+            $_SESSION['exchange_id'] = uniqid();
+        }
+
+        $_SESSION['request_id'] = uniqid();
+
+        self::logStartEnd('START PROCESSING REQUEST', self::getStartEndRequestData());
     }
 
     public static function endProcessingRequestLogProtocolEntry()
     {
-        self::logProtocol('END PROCESSING REQUEST', self::getMemoryUsage());
+        self::logStartEnd('END PROCESSING REQUEST', self::getStartEndRequestData());
     }
 
     public static function saveLastResponseInfo($message)
@@ -193,22 +238,39 @@ class Logger
 
     private static function addClientData($record)
     {
-        $record['ip'] = $_SERVER['REMOTE_ADDR'];
+        $ip = '';
+
+        if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+            $ip = $_SERVER['HTTP_CLIENT_IP'];
+        } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+            $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+        } elseif (!empty($_SERVER['REMOTE_ADDR'])) {
+            $ip = $_SERVER['REMOTE_ADDR'];
+        }
+
+        $record['ip'] = $ip;
         $record['method'] = $_SERVER['REQUEST_METHOD'];
         $record['query'] = $_SERVER['QUERY_STRING'];
         $record['user'] = isset($_SERVER['PHP_AUTH_USER']) ? $_SERVER['PHP_AUTH_USER'] : 'non user';
+        $record['request_id'] = '';
+
+        if (isset($_SESSION['exchange_id'])) {
+            $record['request_id'] = $_SESSION['exchange_id'] . '.' . $_SESSION['request_id'];
+        }
 
         return $record;
     }
 
-    private static function getMemoryUsage()
+    private static function getStartEndRequestData()
     {
         $usage = round(memory_get_usage() / 1024 / 1024, 2);
         $peak = round(memory_get_peak_usage() / 1024 / 1024, 2);
 
         return [
+            'Request' => $_SESSION['exchange_id'] . '.' . $_SESSION['request_id'],
             'Usage, mb' => (string) $usage,
-            'Peak, mb' => (string) $peak
+            'Peak, mb' => (string) $peak,
+            'Site' => \site_url()
         ];
     }
 }

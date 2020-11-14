@@ -13,6 +13,7 @@
 
 namespace MediaCloud\Plugin\Tools\Storage;
 
+use MediaCloud\Plugin\Tasks\TaskReporter;
 use MediaCloud\Plugin\Tools\Storage\FileInfo;
 use MediaCloud\Plugin\Tools\Storage\StorageConstants;
 use MediaCloud\Plugin\Tools\Storage\StorageException;
@@ -30,7 +31,9 @@ use MediaCloud\Plugin\Tools\Storage\Tasks\DeleteUploadsTask;
 use MediaCloud\Plugin\Tools\Storage\Tasks\MigrateFromOtherTask;
 use MediaCloud\Plugin\Tools\Storage\Tasks\MigrateTask;
 use MediaCloud\Plugin\Tools\Storage\Tasks\RegenerateThumbnailTask;
+use MediaCloud\Plugin\Tools\Storage\Tasks\SyncLocalTask;
 use MediaCloud\Plugin\Tools\Storage\Tasks\UnlinkTask;
+use MediaCloud\Plugin\Tools\Storage\Tasks\VerifyLibraryTask;
 use MediaCloud\Plugin\Tools\Tool;
 use MediaCloud\Plugin\Tools\ToolsManager;
 use MediaCloud\Plugin\Utilities\Environment;
@@ -39,6 +42,7 @@ use MediaCloud\Plugin\Utilities\NoticeManager;
 use MediaCloud\Plugin\Utilities\Prefixer;
 use MediaCloud\Plugin\Utilities\View;
 use MediaCloud\Vendor\GuzzleHttp\Client;
+use MediaCloud\Vendor\GuzzleHttp\Exception\RequestException;
 use MediaCloud\Vendor\Smalot\PdfParser\Parser;
 use function MediaCloud\Plugin\Utilities\arrayPath;
 use function MediaCloud\Plugin\Utilities\gen_uuid;
@@ -293,6 +297,8 @@ class StorageTool extends Tool {
 
 			TaskManager::registerTask(CleanUploadsTask::class);
 			TaskManager::registerTask(DeleteUploadsTask::class);
+			TaskManager::registerTask(VerifyLibraryTask::class);
+			TaskManager::registerTask(SyncLocalTask::class);
 
 		    foreach($this->toolInfo['compatibleImageOptimizers'] as $key => $plugin) {
                 if (is_plugin_active($plugin)) {
@@ -1257,6 +1263,23 @@ class StorageTool extends Tool {
 			$keys = array_keys($this->uploadedDocs);
 			$keyList = implode(' , ', $keys);
 			Logger::info('addAttachment - Have keys: '.$keyList, [], __METHOD__, __LINE__);
+
+			// front end upload
+			if (!isset($GLOBALS['current_screen']) && !is_customize_preview()) {
+			    $uploadDir = wp_get_upload_dir();
+			    $fullPath = trailingslashit($uploadDir['basedir']).$file;
+			    $mimeType = get_post_mime_type($post_id);
+
+			    $data = $this->handleUpload([
+                    'file' => $fullPath,
+                    'type' => $mimeType
+                ]);
+
+			    if (!empty($data['s3'])) {
+				    add_post_meta($post_id, 'ilab_s3_info', $data);
+				    do_action('media-cloud/storage/uploaded-attachment', $post_id, $file, $data);
+                }
+            }
 		}
 	}
 
@@ -1587,7 +1610,7 @@ class StorageTool extends Tool {
         }
 
 	    $type = typeFromMeta($meta);
-	    $privacy = arrayPath($meta, 's3/privacy', null);
+	    $privacy = arrayPath($meta, 's3/privacy', 'authenticated-read');
 	    $doSign = ($this->client->usesSignedURLs($type) || (($privacy === 'authenticated-read') && is_admin()));
 	    if ($doSign) {
 	        if (($privacy === 'authenticated-read') && is_admin()) {
@@ -3349,49 +3372,79 @@ TEMPLATE;
 		    return $editors;
 	    });
 
-	    @set_time_limit(120);
+	    @set_time_limit(0);
 
-	    $fullsizepath = null;
-	    if (function_exists('wp_get_original_image_path')) {
-	        $fullsizepath = wp_get_original_image_path($postId);
-        }
+	    $originalImagePath = $fullsizepath = wp_get_original_image_path($postId, true);
+	    $originalImageBasePath = pathinfo($originalImagePath, PATHINFO_DIRNAME);
+	    @mkdir($originalImageBasePath, 0755, true);
 
-	    if (empty($fullsizepath)) {
-		    $fullsizepath = get_attached_file($postId);
+	    $hasOriginalImage = !empty($fullsizepath);
+
+	    if (empty($fullsizepath) || !file_exists($fullsizepath)) {
+		    $scaledImagePath = $fullsizepath = get_attached_file($postId, true);
+		    $scaledImageBasePath = pathinfo($originalImagePath, PATHINFO_DIRNAME);
+		    @mkdir($scaledImageBasePath, 0755, true);
+	    }
+
+	    $mimeType = get_post_mime_type($postId);
+	    $meta = get_post_meta($postId, '_wp_attachment_metadata', true);
+	    $httpClient = new Client();
+
+	    if (!file_exists($fullsizepath) && isset($meta['s3'])) {
+	        $processed = false;
+            if ($hasOriginalImage) {
+                $originalImageKey = arrayPath($meta, 'original_image_s3/key');
+                if (!empty($originalImageKey)) {
+	                $privacy = arrayPath($meta, 'original_image_s3/privacy', 'authenticated-read');
+	                try {
+		                $doSign = ($this->client->usesSignedURLs($mimeType) || ($privacy === 'authenticated-read'));
+		                $url = ($doSign) ? $this->client->presignedUrl($originalImageKey, $this->client->signedURLExpirationForType($mimeType)) : $this->client->url($originalImageKey, $mimeType);
+
+		                try {
+			                $httpClient->get($url, ['sink' => $originalImagePath]);
+			                $processed = file_exists($originalImagePath);
+			                if ($processed) {
+				                $fullsizepath = $originalImagePath;
+			                }
+		                } catch (RequestException $ex) {
+		                    Logger::error("Error downloading original image: ".$ex->getMessage(), [], __METHOD__, __LINE__);
+		                }
+	                } catch (\Exception $ex) {
+		                Logger::error("Error downloading original image: ".$ex->getMessage(), [], __METHOD__, __LINE__);
+	                }
+                }
+            }
+
+            if (!$processed) {
+	            $imageKey = arrayPath($meta, 's3/key');
+	            if (!empty($imageKey)) {
+		            $privacy = arrayPath($meta, 's3/privacy', 'authenticated-read');
+		            try {
+			            $doSign = ($this->client->usesSignedURLs($mimeType) || ($privacy === 'authenticated-read'));
+			            $url = ($doSign) ? $this->client->presignedUrl($imageKey, $this->client->signedURLExpirationForType($mimeType)) : $this->client->url($imageKey, $mimeType);
+
+			            try {
+			                $filename = pathinfo($scaledImagePath, PATHINFO_FILENAME);
+			                $scaledImagePath = str_replace($filename, str_replace('-scaled', '', $filename), $scaledImagePath);
+				            $httpClient->get($url, ['sink' => $scaledImagePath]);
+				            $processed = file_exists($scaledImagePath);
+				            if ($processed) {
+					            $fullsizepath = $originalImagePath;
+				            }
+			            } catch (RequestException $ex) {
+				            Logger::error("Error downloading resized image: ".$ex->getMessage(), [], __METHOD__, __LINE__);
+			            }
+		            } catch (\Exception $ex) {
+			            Logger::error("Error downloading resized image: ".$ex->getMessage(), [], __METHOD__, __LINE__);
+		            }
+	            }
+            }
 	    }
 
         if (!file_exists($fullsizepath)) {
-            if (function_exists('_load_image_to_edit_path')) {
-                $fullsizepath = _load_image_to_edit_path($postId);
-            } else {
-                Logger::warning("The function '_load_image_to_edit_path' does not exist, using internal implementation.", [], __METHOD__, __LINE__);
-                $fullsizepath = $this->loadImageToEditPath($postId);
-                Logger::warning("$postId => $fullsizepath", [], __METHOD__, __LINE__);
-            }
+            return "No original or resized image exists on cloud storage.";
         }
 
-	    if (!file_exists($fullsizepath)) {
-		    if (strpos($fullsizepath, 'http') === 0) {
-			    $path = parse_url($fullsizepath, PHP_URL_PATH);
-			    $pathParts = explode('/', $path);
-			    $file = array_pop($pathParts);
-
-			    $uploadDirInfo = wp_upload_dir();
-
-			    $filepath = $uploadDirInfo['path'].'/'.$file;
-			    Logger::startTiming("Downloading fullsize '$fullsizepath' to '$filepath'", [], __METHOD__, __LINE__);
-			    file_put_contents($filepath, ilab_file_get_contents($fullsizepath));
-			    Logger::endTiming("Finished downloading fullsize '$fullsizepath' to '$filepath'", [], __METHOD__, __LINE__);
-
-			    if (!file_exists($filepath)) {
-			        return "File '$fullsizepath' could not be downloaded.";
-                }
-
-			    $fullsizepath = $filepath;
-		    } else {
-		        return "Local file '$fullsizepath' does not exist and is not a URL.";
-		    }
-	    }
 
 	    $shouldPreserve = $this->preserveFilePaths;
 
@@ -3593,8 +3646,12 @@ TEMPLATE;
 		$filename = array_pop($fileParts);
 		$url = $this->client->url($fileInfo->key());
 
+		$providerClass = get_class($this->client);
+		$providerId = $providerClass::identifier();
+
 		$s3Info = [
 			'url' => $url,
+            'provider' => $providerId,
 			'mime-type' => $fileInfo->mimeType(),
 			'bucket' => $this->client->bucket(),
 			'privacy' => StorageToolSettings::privacy($fileInfo->mimeType()),
@@ -4168,7 +4225,7 @@ Optimizer;
     //endregion
 
     //region Importing From Cloud
-	private function doImportFile($key, $thumbs, $scaled = null) {
+	private function doImportFile($key, $thumbs, $scaled = null, &$newPostId = null) {
 
 		$dir = wp_upload_dir();
 		$base = trailingslashit($dir['basedir']);
@@ -4311,6 +4368,7 @@ Optimizer;
 			}
         }
 
+		$newPostId = $postId;
 		wp_update_attachment_metadata($postId, $meta);
 		remove_filter('media-cloud/storage/upload-master', [$this, 'uploadMaster']);
 
@@ -4367,36 +4425,62 @@ Optimizer;
 		return $postId;
 	}
 
-	private function doImportDynamicFile($key, $thumbs, $scaled = null) {
+	private function doImportDynamicFile($key, $thumbs, $scaled = null, &$newPostId = null) {
 		$info = $this->client()->info($key);
 		$postId = $this->findPostId($info, $key);
 
 		if (!empty($postId)) {
+		    $newPostId = $postId;
 			$this->importExistingAttachmentFromStorage($postId, $info, $thumbs, $scaled);
 		} else {
-		    $this->importAttachmentFromStorage($info, $thumbs, $scaled);
+		    $result = $this->importAttachmentFromStorage($info, $thumbs, $scaled);
+		    $newPostId = arrayPath($result, 'id', null);
         }
 
 		return true;
 	}
 
-	public function importFileFromStorage($key, $thumbs, $importOnly, $preservePaths, $scaled = null) {
+	/**
+	 * @param string $key
+	 * @param array $thumbs
+	 * @param bool $importOnly
+	 * @param string $preservePaths
+	 * @param null $scaled
+	 * @param null|TaskReporter $reporter
+	 *
+	 * @return bool
+	 */
+	public function importFileFromStorage($key, $thumbs, $importOnly, $preservePaths, $scaled = null, $reporter = null) {
 	    $oldPreserve = $this->preserveFilePaths;
 
 	    $this->preserveFilePaths = ($preservePaths) ? 'preserve' : 'replace';
 
+	    $error = 'Success';
 		try {
 			if ($importOnly) {
-				$success = $this->doImportDynamicFile($key, $thumbs, $scaled);
+				$success = $this->doImportDynamicFile($key, $thumbs, $scaled, $newPostId);
 			} else {
-				$success = $this->doImportFile($key, $thumbs, $scaled);
+				$success = $this->doImportFile($key, $thumbs, $scaled, $newPostId);
 			}
 		} catch (\Exception $ex) {
+		    $error = $ex->getMessage();
 			Logger::error($ex->getMessage(), [], __METHOD__, __LINE__);
 			$success = false;
 		}
 
 		$this->preserveFilePaths = $oldPreserve;
+
+		if (!empty($reporter)) {
+		    $reporter->add([
+                $newPostId,
+                $key,
+                empty($thumbs) ? 0 : count($thumbs),
+                empty($thumbs) ? '' : implode("\n", $thumbs),
+                empty($importOnly) ? 'false' : 'true',
+                $scaled,
+                $error
+            ]);
+		}
 
 		return $success;
     }
@@ -4757,4 +4841,418 @@ MIGRATED;
 		return !empty($new_url);
 	}
 	//endregion
+
+    //region Verification
+	/**
+	 * @param int $postId
+	 * @param TaskReporter $reporter
+	 * @param \Closure $infoCallback
+	 */
+    public function verifyPost($postId, $reporter, $infoCallback) {
+	    $client = new Client();
+
+	    $allSizes = ilab_get_image_sizes();
+	    $sizeKeys = array_keys($allSizes);
+	    $sizeKeys = array_sort($sizeKeys);
+	    $sizesData = [];
+	    foreach($sizeKeys as $key) {
+		    $sizesData[$key] = null;
+	    }
+
+
+	    $reportLine = [$postId];
+
+	    $mimeType = get_post_mime_type($postId);
+	    $reportLine[] = $mimeType;
+
+	    $metaFromAttachment = true;
+	    $meta = get_post_meta($postId, '_wp_attachment_metadata', true);
+	    if (empty($meta) || empty($meta['s3'])) {
+		    $metaFromAttachment = false;
+		    $meta = get_post_meta($postId, 'ilab_s3_info', true);
+	    }
+
+	    if (empty($meta) || empty($meta['s3'])) {
+		    $reportLine[] = 'Missing';
+		    $reporter->add($reportLine);
+		    $infoCallback("Missing S3 metadata.", true);
+		    return;
+	    }
+
+	    $provider = arrayPath($meta, 's3/provider', null);
+	    if (!empty($provider) && ($provider != StorageToolSettings::driver())) {
+		    $reportLine[] = 'Wrong provider';
+		    $reporter->add($reportLine);
+		    $infoCallback("S3 provider mismatch, is '{$provider}' expecting '".StorageToolSettings::driver()."'.", true);
+		    return;
+	    }
+
+	    $providerWorked = 0;
+	    if (empty($provider)) {
+		    $reportLine[] = 'S3 info exists, but provider is missing, trying with current provider';
+	    } else {
+		    $reportLine[] = 'S3 Info Exists';
+	    }
+
+
+	    $infoCallback("Checking attachment url ... ");
+	    $attachmentUrl = wp_get_attachment_url($postId);
+	    try {
+		    $res = $client->get($attachmentUrl, ['headers' => ['Range' => 'bytes=0-0']]);
+		    $code = $res->getStatusCode();
+	    } catch (RequestException $ex) {
+		    $code = 400;
+		    if ($ex->hasResponse()) {
+			    $code = $ex->getResponse()->getStatusCode();
+		    }
+	    }
+
+	    if (in_array($code, [200, 206])) {
+	        $providerWorked++;
+		    $reportLine[] = $attachmentUrl;
+	    } else {
+		    $reportLine[] = "Missing, code: $code";
+	    }
+
+	    $originalUrl = null;
+	    if (strpos($mimeType, 'image') === 0) {
+		    if (!empty(arrayPath($meta, 'original_image'))) {
+			    $originalKey = arrayPath($meta, 'original_image_s3/key');
+			    if (!empty($originalKey)) {
+				    try {
+					    $privacy = arrayPath($meta, 'original_image_s3/privacy', 'authenticated-read');
+					    $infoCallback("Checking original url ... ");
+					    $doSign = ($this->client->usesSignedURLs($mimeType) || ($privacy === 'authenticated-read'));
+					    $originalUrl = ($doSign) ? $this->client->presignedUrl($originalKey, $this->client->signedURLExpirationForType($mimeType)) : $this->client->url($originalKey, $mimeType);
+
+					    if ($originalUrl == $attachmentUrl) {
+					        $reportLine[] = '';
+					    } else {
+						    try {
+							    $res = $client->get($originalUrl, ['headers' => ['Range' => 'bytes=0-0']]);
+							    $code = $res->getStatusCode();
+						    } catch (RequestException $ex) {
+							    $code = 400;
+							    if ($ex->hasResponse()) {
+								    $code = $ex->getResponse()->getStatusCode();
+							    }
+						    }
+
+						    if (in_array($code, [200, 206])) {
+							    $providerWorked++;
+							    $reportLine[] = $originalUrl;
+						    } else {
+							    $reportLine[] = "Missing, code: $code";
+						    }
+					    }
+				    } catch (\Exception $ex) {
+					    $reportLine[] = "Client error: ".$ex->getMessage();
+				    }
+			    } else {
+				    $reportLine[] = "Missing original image S3 key.";
+			    }
+		    } else {
+			    $reportLine[] = '';
+		    }
+
+		    $sizes = arrayPath($meta, 'sizes');
+		    if (!empty($sizes)) {
+			    $infoCallback("Checking sizes ... ");
+			    foreach($sizes as $sizeKey => $sizeInfo) {
+				    if (empty(arrayPath($sizeInfo, 's3'))) {
+					    $sizesData[$sizeKey] = 'Missing S3 metadata';
+					    continue;
+				    }
+
+				    $sizeS3Key = arrayPath($sizeInfo, 's3/key');
+				    if (empty($sizeS3Key)) {
+					    $sizesData[$sizeKey] = 'Missing S3 key';
+					    continue;
+				    }
+
+				    $privacy = arrayPath($sizeInfo, 's3/privacy', 'authenticated-read');
+				    try {
+					    $doSign = ($this->client->usesSignedURLs($mimeType) || ($privacy === 'authenticated-read'));
+					    $url = ($doSign) ? $this->client->presignedUrl($sizeS3Key, $this->client->signedURLExpirationForType($mimeType)) : $this->client->url($sizeS3Key, $mimeType);
+
+					    if (!empty($url) && (($url == $attachmentUrl) || ($url == $originalUrl))) {
+						    $reportLine[] = '';
+					    } else {
+						    try {
+							    $res = $client->get($url, ['headers' => ['Range' => 'bytes=0-0']]);
+							    $code = $res->getStatusCode();
+						    } catch (RequestException $ex) {
+							    $code = 400;
+							    if ($ex->hasResponse()) {
+								    $code = $ex->getResponse()->getStatusCode();
+							    }
+						    }
+
+						    if (in_array($code, [200, 206])) {
+							    $providerWorked++;
+							    $sizesData[$sizeKey] = $url;
+						    } else {
+							    $sizesData[$sizeKey] = "Missing, code: $code";
+						    }
+					    }
+				    } catch (\Exception $ex) {
+					    $sizesData[$sizeKey] = "Client error: ".$ex->getMessage();
+				    }
+			    }
+
+			    $reportLine = array_merge($reportLine, array_values($sizesData));
+		    }
+	    }
+
+	    if (empty($provider) && ($providerWorked >= 1)) {
+	        $reportLine[] = 'Fixed missing provider.';
+            $meta['s3']['provider'] = StorageToolSettings::driver();
+            if ($metaFromAttachment) {
+	            update_post_meta($postId, '_wp_attachment_metadata', $meta);
+            } else {
+	            update_post_meta($postId, 'ilab_s3_info', $meta);
+            }
+	    }
+
+	    $reporter->add($reportLine);
+    }
+    //endregion
+
+    //region Local Sync
+	/**
+	 * @param int $postId
+	 * @param TaskReporter $reporter
+	 * @param \Closure $infoCallback
+	 */
+	public function syncLocal($postId, $reporter, $infoCallback) {
+		$client = new Client();
+
+		$allSizes = ilab_get_image_sizes();
+		$sizeKeys = array_keys($allSizes);
+		$sizeKeys = array_sort($sizeKeys);
+		$sizesData = [];
+		foreach($sizeKeys as $key) {
+			$sizesData[$key] = null;
+			$sizesData[$key.' Local'] = null;
+		}
+
+		$reportLine = [$postId];
+
+		$mimeType = get_post_mime_type($postId);
+		$reportLine[] = $mimeType;
+
+		$metaFromAttachment = true;
+		$meta = get_post_meta($postId, '_wp_attachment_metadata', true);
+		if (empty($meta) || empty($meta['s3'])) {
+			$metaFromAttachment = false;
+			$meta = get_post_meta($postId, 'ilab_s3_info', true);
+		}
+
+		if (empty($meta) || empty($meta['s3'])) {
+			$reportLine[] = 'Missing';
+			$reporter->add($reportLine);
+			$infoCallback("Missing S3 metadata.", true);
+			return;
+		}
+
+		$provider = arrayPath($meta, 's3/provider', null);
+		if (!empty($provider) && ($provider != StorageToolSettings::driver())) {
+			$reportLine[] = 'Wrong provider';
+			$reporter->add($reportLine);
+			$infoCallback("S3 provider mismatch, is '{$provider}' expecting '".StorageToolSettings::driver()."'.", true);
+			return;
+		}
+
+		$providerWorked = 0;
+		if (empty($provider)) {
+			$reportLine[] = 'S3 info exists, but provider is missing, trying with current provider';
+		} else {
+			$reportLine[] = 'S3 Info Exists';
+		}
+
+		$uploadDir = trailingslashit(wp_upload_dir()['basedir']);
+
+		$attachmentUrl = null;
+		$attachmentKey = arrayPath($meta, 's3/key');
+		if (empty($attachmentKey)) {
+		    $reportLine[] = 'Missing key';
+		    $reportLine[] = '';
+		} else {
+			$infoCallback("Checking attachment url ... ");
+			$attachmentUrl = wp_get_attachment_url($postId);
+			try {
+				$res = $client->get($attachmentUrl, ['headers' => ['Range' => 'bytes=0-0']]);
+				$code = $res->getStatusCode();
+			} catch (RequestException $ex) {
+				$code = 400;
+				if ($ex->hasResponse()) {
+					$code = $ex->getResponse()->getStatusCode();
+				}
+			}
+
+			if (in_array($code, [200, 206])) {
+			    $providerWorked++;
+                $localFile = $uploadDir.$attachmentKey;
+                $localFileDir = pathinfo($localFile, PATHINFO_DIRNAME);
+                if (!file_exists($localFileDir)) {
+                    @mkdir($localFileDir, 0755, true);
+                }
+
+				if (!file_exists($localFileDir)) {
+					$reportLine[] = "Could not create directory.";
+					$reportLine[] = '';
+					return;
+				} else {
+					$client->get($attachmentUrl, ['sink' => $localFile]);
+					$reportLine[] = $attachmentUrl;
+					$reportLine[] = $localFile;
+				}
+			} else {
+				$reportLine[] = "Missing, code: $code";
+				$reportLine[] = '';
+			}
+		}
+
+
+		if (strpos($mimeType, 'image') === 0) {
+			$originalUrl = null;
+
+			if (!empty(arrayPath($meta, 'original_image'))) {
+				$originalKey = arrayPath($meta, 'original_image_s3/key');
+				if (empty($originalKey)) {
+					$reportLine[] = 'Missing key';
+					$reportLine[] = '';
+				} else {
+                    try {
+                        $privacy = arrayPath($meta, 'original_image_s3/privacy', 'authenticated-read');
+                        $infoCallback("Checking original url ... ");
+                        $doSign = ($this->client->usesSignedURLs($mimeType) || ($privacy === 'authenticated-read'));
+	                    $originalUrl = ($doSign) ? $this->client->presignedUrl($originalKey, $this->client->signedURLExpirationForType($mimeType)) : $this->client->url($originalKey, $mimeType);
+
+	                    if ($originalUrl != $attachmentUrl) {
+		                    $reportLine[] = '';
+		                    $reportLine[] = '';
+	                    } else {
+		                    try {
+			                    $res = $client->get($originalUrl, ['headers' => ['Range' => 'bytes=0-0']]);
+			                    $code = $res->getStatusCode();
+		                    } catch (RequestException $ex) {
+			                    $code = 400;
+			                    if ($ex->hasResponse()) {
+				                    $code = $ex->getResponse()->getStatusCode();
+			                    }
+		                    }
+
+		                    if (in_array($code, [200, 206])) {
+			                    $providerWorked++;
+			                    $localFile = $uploadDir.$originalKey;
+			                    $localFileDir = pathinfo($localFile, PATHINFO_DIRNAME);
+			                    if (!file_exists($localFileDir)) {
+				                    @mkdir($localFileDir, 0755, true);
+			                    }
+
+			                    if (!file_exists($localFileDir)) {
+				                    $reportLine[] = "Could not create directory.";
+				                    $reportLine[] = '';
+				                    return;
+			                    } else {
+				                    $client->get($originalUrl, ['sink' => $localFile]);
+				                    $reportLine[] = $originalUrl;
+				                    $reportLine[] = $localFile;
+			                    }
+		                    } else {
+			                    $reportLine[] = "Missing, code: $code";
+			                    $reportLine[] = '';
+		                    }
+	                    }
+                    } catch (\Exception $ex) {
+                        $reportLine[] = "Client error: ".$ex->getMessage();
+                        $reportLine[] = '';
+                    }
+				}
+			} else {
+			    $reportLine[] = '';
+			    $reportLine[] = '';
+			}
+
+			$sizes = arrayPath($meta, 'sizes');
+			if (!empty($sizes)) {
+				$infoCallback("Checking sizes ... ");
+				foreach($sizes as $sizeKey => $sizeInfo) {
+					if (empty(arrayPath($sizeInfo, 's3'))) {
+						$sizesData[$sizeKey] = 'Missing S3 metadata';
+						$sizesData[$sizeKey.' Local'] = '';
+						continue;
+					}
+
+					$sizeS3Key = arrayPath($sizeInfo, 's3/key');
+					if (empty($sizeS3Key)) {
+						$sizesData[$sizeKey] = 'Missing S3 key';
+						$sizesData[$sizeKey.' Local'] = '';
+						continue;
+					}
+
+					$privacy = arrayPath($sizeInfo, 's3/privacy', 'authenticated-read');
+					try {
+						$doSign = ($this->client->usesSignedURLs($mimeType) || ($privacy === 'authenticated-read'));
+						$url = ($doSign) ? $this->client->presignedUrl($sizeS3Key, $this->client->signedURLExpirationForType($mimeType)) : $this->client->url($sizeS3Key, $mimeType);
+
+						if (!empty($url) && (($url == $attachmentUrl) || ($url == $originalUrl))) {
+							$sizesData[$sizeKey] = '';
+							$sizesData[$sizeKey.' Local'] = '';
+						} else {
+							try {
+								$res = $client->get($url, ['headers' => ['Range' => 'bytes=0-0']]);
+								$code = $res->getStatusCode();
+							} catch (RequestException $ex) {
+								$code = 400;
+								if ($ex->hasResponse()) {
+									$code = $ex->getResponse()->getStatusCode();
+								}
+							}
+
+							if (in_array($code, [200, 206])) {
+								$providerWorked++;
+								$localFile = $uploadDir.$sizeS3Key;
+								$localFileDir = pathinfo($localFile, PATHINFO_DIRNAME);
+								if (!file_exists($localFileDir)) {
+									@mkdir($localFileDir, 0755, true);
+								}
+
+								if (!file_exists($localFileDir)) {
+									$sizesData[$sizeKey] = "Could not create directory.";
+									$sizesData[$sizeKey.' Local'] = '';
+									return;
+								} else {
+									$client->get($url, ['sink' => $localFile]);
+									$sizesData[$sizeKey] = $url;
+									$sizesData[$sizeKey.' Local'] = $localFile;
+								}
+							} else {
+								$sizesData[$sizeKey] = "Missing, code: $code";
+							}
+						}
+					} catch (\Exception $ex) {
+						$sizesData[$sizeKey] = "Client error: ".$ex->getMessage();
+						$sizesData[$sizeKey.' Local'] = '';
+					}
+				}
+
+				$reportLine = array_merge($reportLine, array_values($sizesData));
+			}
+		}
+
+		if (empty($provider) && ($providerWorked >= 1)) {
+			$reportLine[] = 'Fixed missing provider.';
+			$meta['s3']['provider'] = StorageToolSettings::driver();
+			if ($metaFromAttachment) {
+				update_post_meta($postId, '_wp_attachment_metadata', $meta);
+			} else {
+				update_post_meta($postId, 'ilab_s3_info', $meta);
+			}
+		}
+
+		$reporter->add($reportLine);
+	}
+    //endregion
 }

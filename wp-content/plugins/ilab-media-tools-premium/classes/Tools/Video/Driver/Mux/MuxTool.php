@@ -46,8 +46,6 @@ class MuxTool extends Tool {
 
 		add_action('media-cloud/tools/register-setting-type', [$this, 'registerMuxSettingTypes'], 10, 5);
 
-		MuxDatabase::init();
-
 		parent::__construct($toolName, $toolInfo, $toolManager);
 
 		$this->initBlocks();
@@ -74,6 +72,8 @@ class MuxTool extends Tool {
 
 	public function setup() {
 		if ($this->enabled()) {
+			MuxDatabase::init();
+
 			$this->shortCode = new MuxShortcode();
 			$this->hooks = new MuxHooks();
 

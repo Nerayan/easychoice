@@ -4,6 +4,7 @@ namespace Itgalaxy\Wc\Exchange1c\Includes;
 use Itgalaxy\Wc\Exchange1c\ExchangeProcess\Filters\CreateProductInDraft;
 use Itgalaxy\Wc\Exchange1c\ExchangeProcess\Filters\FindProductCatId;
 use Itgalaxy\Wc\Exchange1c\ExchangeProcess\Filters\FindProductId;
+use Itgalaxy\Wc\Exchange1c\ExchangeProcess\Filters\FixedSeparatedIdCharacteristicInOfferXmlData;
 use Itgalaxy\Wc\Exchange1c\ExchangeProcess\Filters\ProductIsRemoved;
 use Itgalaxy\Wc\Exchange1c\ExchangeProcess\Filters\SkipProductByXml;
 
@@ -14,6 +15,7 @@ class Bootstrap
     const OPTIONS_KEY = 'wc-itgalaxy-1c-exchange-settings';
     const OPTION_INFO_KEY = 'wc-itgalaxy-1c-exchange-additional-info';
     const PURCHASE_CODE_OPTIONS_KEY = 'wc-itgalaxy-1c-exchange-purchase-code';
+    const CRON = 'wc-itgalaxy-1c-exchange-cron';
 
     public static $plugin = '';
 
@@ -25,7 +27,10 @@ class Bootstrap
 
         self::pluginLifeCycleActionsRegister();
 
-        if (get_option('ITGALAXY_WC_1C_PLUGIN_VERSION') !== ITGALAXY_WC_1C_PLUGIN_VERSION) {
+        if (
+            get_option('ITGALAXY_WC_1C_PLUGIN_VERSION') !== false &&
+            get_option('ITGALAXY_WC_1C_PLUGIN_VERSION') !== ITGALAXY_WC_1C_PLUGIN_VERSION
+        ) {
             self::updateSettings();
         }
 
@@ -46,6 +51,7 @@ class Bootstrap
             FindProductId::getInstance();
             ProductIsRemoved::getInstance();
             SkipProductByXml::getInstance();
+            FixedSeparatedIdCharacteristicInOfferXmlData::getInstance();
 
             // exchange start
             RootProcessStarter::getInstance();
@@ -73,12 +79,6 @@ class Bootstrap
         register_deactivation_hook(
             self::$plugin,
             ['Itgalaxy\Wc\Exchange1c\Includes\Bootstrap', 'pluginDeactivation']
-        );
-
-        // https://developer.wordpress.org/reference/functions/register_uninstall_hook/
-        register_uninstall_hook(
-            self::$plugin,
-            ['Itgalaxy\Wc\Exchange1c\Includes\Bootstrap', 'pluginUninstall']
         );
     }
 
@@ -118,6 +118,8 @@ class Bootstrap
 
     public static function pluginActivation()
     {
+        PluginRequest::call('plugin_activate');
+
         // https://developer.wordpress.org/reference/functions/is_plugin_active/
         if (!is_plugin_active('woocommerce/woocommerce.php')) {
             wp_die(
@@ -181,12 +183,13 @@ class Bootstrap
 
     public static function pluginDeactivation()
     {
-        // Nothing
+        PluginRequest::call('plugin_deactivate');
+        \wp_clear_scheduled_hook(self::CRON);
     }
 
     public static function pluginUninstall()
     {
-        // Nothing
+        PluginRequest::call('plugin_uninstall');
     }
 
     private static function copyRootEntryImportFile()
@@ -207,6 +210,8 @@ class Bootstrap
         global $wpdb;
 
         $dbName = DB_NAME;
+
+        // phpcs:disable
         $columnExists = $wpdb->query(
             "SELECT * FROM information_schema.COLUMNS
                   WHERE TABLE_SCHEMA = '{$dbName}'
@@ -217,9 +222,10 @@ class Bootstrap
         if (!$columnExists) {
             $wpdb->query(
                 "ALTER TABLE {$wpdb->prefix}woocommerce_attribute_taxonomies
-                ADD id_1c varchar(200) NOT NULL"
+                ADD id_1c varchar(191) NOT NULL"
             );
         }
+        // phpcs:enable
     }
 
     private static function addMetaValueIndexes()

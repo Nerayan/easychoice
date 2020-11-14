@@ -23,6 +23,8 @@ use Itgalaxy\Wc\Exchange1c\Admin\RequestProcessing\GetInArchiveLogs;
 use Itgalaxy\Wc\Exchange1c\Admin\RequestProcessing\GetInArchiveTemp;
 
 //other
+use Itgalaxy\Wc\Exchange1c\Admin\Other\AdminNoticeIfHasTrashedProductWithGuid;
+use Itgalaxy\Wc\Exchange1c\Admin\Other\AdminNoticeIfNotVerified;
 use Itgalaxy\Wc\Exchange1c\Admin\Other\VariationHeaderGuidInfo;
 
 if (!defined('ABSPATH')) {
@@ -58,4 +60,6 @@ GetInArchiveLogs::getInstance();
 GetInArchiveTemp::getInstance();
 
 // bind other admin actions
+AdminNoticeIfHasTrashedProductWithGuid::getInstance();
+AdminNoticeIfNotVerified::getInstance();
 VariationHeaderGuidInfo::getInstance();

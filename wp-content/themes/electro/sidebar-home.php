@@ -17,6 +17,8 @@ if ( is_page_template( 'template-homepage-v2.php' ) ) {
 }
 ?>
 
+<?php if ( ! function_exists( 'elementor_theme_do_location' ) || ! elementor_theme_do_location( 'sidebar-home' ) ) : ?>
+
 <div id="sidebar" class="sidebar" role="complementary" <?php if ( !empty( $style_attr ) ) : ?>style="<?php echo esc_attr( $style_attr );?>"<?php endif; ?>>
 <?php
 	if ( is_active_sidebar( 'home-sidebar-widgets' ) ) {
@@ -29,3 +31,5 @@ if ( is_page_template( 'template-homepage-v2.php' ) ) {
 	}
 ?>
 </div><!-- /.sidebar-home -->
+
+<?php endif; ?>

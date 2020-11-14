@@ -9,7 +9,7 @@ class ProductImages
 {
     public static function process($element, $productEntry, $postAuthor = 0)
     {
-        $dirName = Helper::getTempPath() . '/';
+        $dirName = apply_filters('itglx_wc1c_root_image_directory', Helper::getTempPath() . '/');
         $oldImages = get_post_meta($productEntry['ID'], '_old_images', true);
 
         if (!is_array($oldImages)) {
@@ -30,10 +30,10 @@ class ProductImages
             // delete images that do not exist in the current set
             foreach ($oldImages as $oldImage) {
                 $attachID = self::findImageByMeta($oldImage);
-                $imageSrcPath = str_replace('//', '/', $dirName . $oldImage);
+                $imageSrcPath = self::imageSrcResultPath($dirName, $oldImage);
                 $removeImage = false;
 
-                if ($attachID && !in_array($oldImage, $images)) {
+                if ($attachID && !in_array($oldImage, $images, true)) {
                     $removeImage = true;
                 } elseif (
                     $attachID &&
@@ -78,7 +78,7 @@ class ProductImages
                 if ($attachID && !is_wp_error($attachID)) {
                     $attachmentIds[] = $attachID;
                 } else {
-                    $imageSrcPath = str_replace('//', '/', $dirName . $image);
+                    $imageSrcPath = self::imageSrcResultPath($dirName, $image);
 
                     if (file_exists($imageSrcPath)) {
                         $attachID = self::resolveImage($image, $imageSrcPath, $productEntry['ID'], $postAuthor);
@@ -153,6 +153,10 @@ class ProductImages
             }
         // the current data does not contain information about the image, but it was before, so it should be deleted
         } elseif ($oldImages) {
+            if (apply_filters('itglx_wc1c_do_not_delete_images_if_xml_does_not_contain', false, $productEntry['ID'])) {
+                return false;
+            }
+
             Logger::logChanges(
                 '(image) Removed images (the current data does not contain information) for ID - '
                 . $productEntry['ID'],
@@ -167,8 +171,17 @@ class ProductImages
 
     private static function resolveImage($image, $imageSrcPath, $productID, $postAuthor = 0)
     {
+        $settings = get_option(Bootstrap::OPTIONS_KEY);
         $imageSha = sha1_file($imageSrcPath);
         $wpFileType = wp_check_filetype(basename($imageSrcPath), null);
+
+        $postData = [
+            'post_author' => $postAuthor
+        ];
+
+        if (!empty($settings['write_product_name_to_attachment_title'])) {
+            $postData['post_title'] = get_post_field('post_title', $productID);
+        }
 
         $attachID = media_handle_sideload(
             [
@@ -180,13 +193,15 @@ class ProductImages
             ],
             $productID,
             null,
-            [
-                'post_author' => $postAuthor
-            ]
+            $postData
         );
 
         if (!$attachID || is_wp_error($attachID)) {
             return false;
+        }
+
+        if (!empty($settings['write_product_name_to_attachment_attribute_alt'])) {
+            update_post_meta($attachID, '_wp_attachment_image_alt', get_post_field('post_title', $productID));
         }
 
         update_post_meta($attachID, '_1c_image_path', $image);
@@ -239,12 +254,21 @@ class ProductImages
 
         $attachID = $wpdb->get_var(
             $wpdb->prepare(
-                "SELECT `post_id` FROM `{$wpdb->postmeta}` WHERE `meta_value` = %s AND `meta_key` = %s",
+                "SELECT `meta`.`post_id` FROM `{$wpdb->postmeta}` as `meta`
+                 INNER JOIN `{$wpdb->posts}` as `posts` ON `meta`.`post_id` = `posts`.`ID`
+                 WHERE `meta`.`meta_value` = %s AND `meta`.`meta_key` = %s",
                 (string) $value,
                 (string) $key
             )
         );
 
         return $attachID;
+    }
+
+    private static function imageSrcResultPath($rootImagePath, $imageRelativePath)
+    {
+        $imageSrcPath = $rootImagePath . apply_filters('itglx_wc1c_image_path_from_xml', $imageRelativePath);
+
+        return str_replace('//', '/', $imageSrcPath);
     }
 }

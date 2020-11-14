@@ -25,29 +25,33 @@ class PreDeleteTerm
 
     public function actionDeleteTermMeta($termID)
     {
-        if ($termID) {
-            \delete_term_meta($termID, '_id_1c');
+        if (empty($termID)) {
+            return;
         }
+
+        \delete_term_meta($termID, '_id_1c');
     }
 
     public function actionDeleteTerm($termID)
     {
+        if (empty($termID)) {
+            return;
+        }
+
         global $wpdb;
 
-        if ($termID) {
-            if (isset($_SESSION['IMPORT_1C'])) {
-                Logger::logChanges(
-                    '(hook - pre_delete_term) Removed term fired hook `term_id` - ' . $termID,
-                    [get_term_meta($termID, '_id_1c', true)]
-                );
-            }
-
-            $wpdb->query(
-                $wpdb->prepare(
-                    "DELETE FROM `{$wpdb->termmeta}` WHERE `term_id` = %d",
-                    (int) $termID
-                )
+        if (isset($_SESSION['IMPORT_1C'])) {
+            Logger::logChanges(
+                '(hook - pre_delete_term) Removed term fired hook `term_id` - ' . $termID,
+                [get_term_meta($termID, '_id_1c', true)]
             );
         }
+
+        $wpdb->query(
+            $wpdb->prepare(
+                "DELETE FROM `{$wpdb->termmeta}` WHERE `term_id` = %d",
+                (int) $termID
+            )
+        );
     }
 }

@@ -2,11 +2,11 @@
 # This file is distributed under the GNU General Public License v2 or later.=!>
 msgid ""
 msgstr ""
-"Project-Id-Version: Electro 2.5.9\n"
+"Project-Id-Version: Electro 2.6.1\n"
 "Report-Msgid-Bugs-To: "
 "https://themeforest.net/item/electro-electronics-store-woocommerce-theme/157"
 "20624/support/\n"
-"POT-Creation-Date: 2020-08-26 05:48:15+00:00\n"
+"POT-Creation-Date: 2020-10-27 15:15:33+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -49,21 +49,21 @@ msgstr ""
 msgid "268"
 msgstr ""
 
-#: 404.php:16
+#: 404.php:18
 msgid "404!"
 msgstr ""
 
-#: 404.php:17
+#: 404.php:19
 msgid ""
 "Nothing was found at this location. Try searching, or check out the links "
 "below."
 msgstr ""
 
-#: 404.php:36
+#: 404.php:38
 msgid "Product Categories"
 msgstr ""
 
-#: 404.php:41 inc/admin/meta-boxes/class-electro-meta-box-home-v5.php:531
+#: 404.php:43 inc/admin/meta-boxes/class-electro-meta-box-home-v5.php:531
 #: inc/functions/homepages/home-v5.php:150 inc/structure/homepage.php:1402
 #: inc/structure/homepage.php:1565 inc/template-tags/homepages/home-v5.php:344
 msgid "Popular Products"
@@ -3359,6 +3359,22 @@ msgstr ""
 msgid "Check this if you want to hide breadcrumb."
 msgstr ""
 
+#: inc/class-electro.php:45
+msgid "Sidebar Blog"
+msgstr ""
+
+#: inc/class-electro.php:49
+msgid "Sidebar Home"
+msgstr ""
+
+#: inc/class-electro.php:52
+msgid "Sidebar Shop"
+msgstr ""
+
+#: inc/class-electro.php:55
+msgid "Sidebar Store"
+msgstr ""
+
 #: inc/classes/class-electro-breadcrumb.php:99
 msgid "Error 404"
 msgstr ""
@@ -3379,15 +3395,15 @@ msgstr ""
 msgid "Page %d"
 msgstr ""
 
-#: inc/classes/class-tgm-plugin-activation.php:334 inc/functions/setup.php:500
+#: inc/classes/class-tgm-plugin-activation.php:334 inc/functions/setup.php:494
 msgid "Install Required Plugins"
 msgstr ""
 
-#: inc/classes/class-tgm-plugin-activation.php:335 inc/functions/setup.php:501
+#: inc/classes/class-tgm-plugin-activation.php:335 inc/functions/setup.php:495
 msgid "Install Plugins"
 msgstr ""
 
-#: inc/classes/class-tgm-plugin-activation.php:337 inc/functions/setup.php:502
+#: inc/classes/class-tgm-plugin-activation.php:337 inc/functions/setup.php:496
 #. translators: %s: plugin name.
 msgid "Installing Plugin: %s"
 msgstr ""
@@ -3397,11 +3413,11 @@ msgstr ""
 msgid "Updating Plugin: %s"
 msgstr ""
 
-#: inc/classes/class-tgm-plugin-activation.php:340 inc/functions/setup.php:503
+#: inc/classes/class-tgm-plugin-activation.php:340 inc/functions/setup.php:497
 msgid "Something went wrong with the plugin API."
 msgstr ""
 
-#: inc/classes/class-tgm-plugin-activation.php:377 inc/functions/setup.php:512
+#: inc/classes/class-tgm-plugin-activation.php:377 inc/functions/setup.php:506
 #. translators: 1: plugin name(s).
 msgid "Begin installing plugin"
 msgid_plural "Begin installing plugins"
@@ -3420,7 +3436,7 @@ msgid_plural "Begin activating plugins"
 msgstr[0] ""
 msgstr[1] ""
 
-#: inc/classes/class-tgm-plugin-activation.php:392 inc/functions/setup.php:514
+#: inc/classes/class-tgm-plugin-activation.php:392 inc/functions/setup.php:508
 msgid "Return to Required Plugins Installer"
 msgstr ""
 
@@ -3432,7 +3448,7 @@ msgid "Return to the Dashboard"
 msgstr ""
 
 #: inc/classes/class-tgm-plugin-activation.php:394
-#: inc/classes/class-tgm-plugin-activation.php:3244 inc/functions/setup.php:515
+#: inc/classes/class-tgm-plugin-activation.php:3244 inc/functions/setup.php:509
 msgid "Plugin activated successfully."
 msgstr ""
 
@@ -4223,108 +4239,108 @@ msgstr ""
 msgid "Icon Class"
 msgstr ""
 
-#: inc/functions/setup.php:159
+#: inc/functions/setup.php:143
 msgid "Top Bar Left"
 msgstr ""
 
-#: inc/functions/setup.php:160
+#: inc/functions/setup.php:144
 msgid "Top Bar Right"
 msgstr ""
 
-#: inc/functions/setup.php:161
+#: inc/functions/setup.php:145
 msgid "Top Bar Center"
 msgstr ""
 
-#: inc/functions/setup.php:162
+#: inc/functions/setup.php:146
 #: inc/redux-framework/options/header-options.php:230
 msgid "Header Support"
 msgstr ""
 
-#: inc/functions/setup.php:163
+#: inc/functions/setup.php:147
 msgid "Primary Nav"
 msgstr ""
 
-#: inc/functions/setup.php:164
+#: inc/functions/setup.php:148
 msgid "Navbar Primary"
 msgstr ""
 
-#: inc/functions/setup.php:165
+#: inc/functions/setup.php:149
 msgid "Secondary Nav"
 msgstr ""
 
-#: inc/functions/setup.php:166
+#: inc/functions/setup.php:150
 msgid "Departments Menu"
 msgstr ""
 
-#: inc/functions/setup.php:167
+#: inc/functions/setup.php:151
 msgid "All Departments Menu"
 msgstr ""
 
-#: inc/functions/setup.php:168
+#: inc/functions/setup.php:152
 msgid "Blog Menu"
 msgstr ""
 
-#: inc/functions/setup.php:169
+#: inc/functions/setup.php:153
 msgid "Mobile Handheld Department"
 msgstr ""
 
-#: inc/functions/setup.php:173
+#: inc/functions/setup.php:157
 msgid "Off Canvas Menu"
 msgstr ""
 
-#: inc/functions/setup.php:177
+#: inc/functions/setup.php:161
 #: inc/redux-framework/options/mobile-options.php:110
 msgid "Handheld Footer"
 msgstr ""
 
-#: inc/functions/setup.php:195
+#: inc/functions/setup.php:179
 msgid "Home Sidebar"
 msgstr ""
 
-#: inc/functions/setup.php:206
+#: inc/functions/setup.php:190
 msgid "Shop Sidebar"
 msgstr ""
 
-#: inc/functions/setup.php:217
+#: inc/functions/setup.php:201
 msgid "Product Filters"
 msgstr ""
 
-#: inc/functions/setup.php:229
+#: inc/functions/setup.php:213
 msgid "Single Product Sidebar"
 msgstr ""
 
-#: inc/functions/setup.php:241
+#: inc/functions/setup.php:225
 msgid "Blog Sidebar"
 msgstr ""
 
-#: inc/functions/setup.php:252
+#: inc/functions/setup.php:236
 #: inc/redux-framework/options/footer-options.php:50
 msgid "Footer Widgets"
 msgstr ""
 
-#: inc/functions/setup.php:263
+#: inc/functions/setup.php:247
 #: inc/redux-framework/options/footer-options.php:229
 #: inc/redux-framework/options/mobile-options.php:146
 msgid "Footer Bottom Widgets"
 msgstr ""
 
-#: inc/functions/setup.php:274
+#: inc/functions/setup.php:258
 msgid "Mobile Footer Bottom Widgets"
 msgstr ""
 
-#: inc/functions/setup.php:504
+#: inc/functions/setup.php:498
 msgid "This theme requires the following plugin: %1$s."
 msgid_plural "This theme requires the following plugins: %1$s."
 msgstr[0] ""
 msgstr[1] ""
 
-#: inc/functions/setup.php:505
+#: inc/functions/setup.php:499
 msgid "This theme recommends the following plugin: %1$s."
 msgid_plural "This theme recommends the following plugins: %1$s."
 msgstr[0] ""
 msgstr[1] ""
 
-#: inc/functions/setup.php:506
+#: inc/functions/setup.php:500
 msgid ""
 "Sorry, but you do not have the correct permissions to install the %s "
 "plugin. Contact the administrator of this site for help on getting the "
@@ -4336,19 +4352,19 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: inc/functions/setup.php:507
+#: inc/functions/setup.php:501
 msgid "The following required plugin is currently inactive: %1$s."
 msgid_plural "The following required plugins are currently inactive: %1$s."
 msgstr[0] ""
 msgstr[1] ""
 
-#: inc/functions/setup.php:508
+#: inc/functions/setup.php:502
 msgid "The following recommended plugin is currently inactive: %1$s."
 msgid_plural "The following recommended plugins are currently inactive: %1$s."
 msgstr[0] ""
 msgstr[1] ""
 
-#: inc/functions/setup.php:509
+#: inc/functions/setup.php:503
 msgid ""
 "Sorry, but you do not have the correct permissions to activate the %s "
 "plugin. Contact the administrator of this site for help on getting the "
@@ -4360,7 +4376,7 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: inc/functions/setup.php:510
+#: inc/functions/setup.php:504
 msgid ""
 "The following plugin needs to be updated to its latest version to ensure "
 "maximum compatibility with this theme: %1$s."
@@ -4370,7 +4386,7 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: inc/functions/setup.php:511
+#: inc/functions/setup.php:505
 msgid ""
 "Sorry, but you do not have the correct permissions to update the %s plugin. "
 "Contact the administrator of this site for help on getting the plugin "
@@ -4382,13 +4398,13 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: inc/functions/setup.php:513
+#: inc/functions/setup.php:507
 msgid "Activate installed plugin"
 msgid_plural "Activate installed plugins"
 msgstr[0] ""
 msgstr[1] ""
 
-#: inc/functions/setup.php:516
+#: inc/functions/setup.php:510
 msgid "All plugins installed and activated successfully. %s"
 msgstr ""
 
@@ -5637,7 +5653,7 @@ msgstr ""
 msgid "Customer Care"
 msgstr ""
 
-#: inc/structure/footer.php:476 inc/structure/header.php:770
+#: inc/structure/footer.php:476 inc/structure/header.php:749
 #: templates/sections/navbar-search.php:59
 msgid "Search"
 msgstr ""
@@ -5666,15 +5682,15 @@ msgstr ""
 msgid "Secs"
 msgstr ""
 
-#: inc/structure/header.php:229
+#: inc/structure/header.php:208
 msgid "Skip to navigation"
 msgstr ""
 
-#: inc/structure/header.php:230
+#: inc/structure/header.php:209
 msgid "Skip to content"
 msgstr ""
 
-#: inc/structure/header.php:624
+#: inc/structure/header.php:603
 msgid "Close"
 msgstr ""
 
@@ -6939,23 +6955,7 @@ msgctxt "as in: \"version nr unknown\""
 msgid "unknown"
 msgstr ""
 
-#: inc/structure/header.php:158
-#. translators: If there are characters in your language that are not supported
-#. by Open Sans, translate this to 'off'. Do not translate into your own
-#. language.
-msgctxt "Open Sans font: on or off"
-msgid "on"
-msgstr ""
-
-#: inc/structure/header.php:165
-#. translators: To add an additional character subset specific to your
-#. language, translate this to 'greek', 'cyrillic', 'devanagari' or
-#. 'vietnamese'. Do not translate into your own language.
-msgctxt "Add new subset (greek, cyrillic, devanagari, vietnamese)"
-msgid "no-subset"
-msgstr ""
-
-#: inc/structure/header.php:840
+#: inc/structure/header.php:819
 msgctxt "breadcrumb"
 msgid "Home"
 msgstr ""

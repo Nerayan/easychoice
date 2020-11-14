@@ -103,7 +103,7 @@ class ParserXml
                         !isset($_SESSION['IMPORT_1C']['optionsIsParse']) &&
                         $reader->name === 'Свойства' &&
                         $reader->nodeType === \XMLReader::ELEMENT &&
-                        str_replace(' ', '', $reader->readOuterXml()) !== '<Свойства/>'
+                        !$this->isEmptyNodeOptions($reader)
                     ) {
                         GlobalProductAttributes::process($reader);
 
@@ -191,7 +191,10 @@ class ParserXml
                             } else {
                                 // if duplicate product
                                 if (in_array($product, $_SESSION['IMPORT_1C_PROCESS']['allCurrentProducts'])) {
-                                    if ($_SESSION['xmlVersion'] === 2.04 && $resolveOldVariation) {
+                                    if (
+                                        version_compare($_SESSION['xmlVersion'], '2.04', '<=') &&
+                                        $resolveOldVariation
+                                    ) {
                                         $this->resolveOldVariation($element);
                                     }
 
@@ -213,10 +216,9 @@ class ParserXml
                                 'ID' => $product
                             ];
 
-                            $isNewProduct = true;
+                            $isNewProduct = empty($productEntry['ID']);
 
-                            if (!empty($productEntry['ID'])) {
-                                $isNewProduct = false;
+                            if (!$isNewProduct) {
                                 do_action('itglx_wc1c_before_exists_product_info_resolve', $productEntry['ID'], $element);
                             } else {
                                 do_action('itglx_wc1c_before_new_product_info_resolve', $element);
@@ -225,7 +227,7 @@ class ParserXml
                             $productHash = md5(json_encode((array) $element));
 
                             if (
-                                !empty($productEntry['ID']) &&
+                                !$isNewProduct &&
                                 empty($settings['force_update_product']) &&
                                 $productHash == get_post_meta($productEntry['ID'], '_md5', true)
                             ) {
@@ -270,7 +272,10 @@ class ParserXml
                                 continue;
                             }
 
-                            if ($_SESSION['xmlVersion'] === 2.04 && $resolveOldVariation) {
+                            if (
+                                version_compare($_SESSION['xmlVersion'], '2.04', '<=') &&
+                                $resolveOldVariation
+                            ) {
                                 $this->resolveOldVariation($element);
                             }
 
@@ -401,12 +406,6 @@ class ParserXml
                             $_SESSION['IMPORT_1C_PROCESS']['countTermRemove'] = $kol;
                         }
 
-                        global $wp_object_cache;
-
-                        if ($wp_object_cache) {
-                            $wp_object_cache->flush();
-                        }
-
                         $_SESSION['IMPORT_1C_PROCESS']['missingTermsIsRemove'] = true;
                     }
                     /*------------------REMOVAL OF THE CATEGORIES OUT OF FULL EXCHANGE--------------------------*/
@@ -464,6 +463,8 @@ class ParserXml
                                     if (!isset($element->Ид)) {
                                         continue;
                                     }
+
+                                    $element = apply_filters('itglx_wc1c_offer_xml_data', $element);
 
                                     // if duplicate offer
                                     if (in_array((string) $element->Ид, $_SESSION['IMPORT_1C_PROCESS']['allCurrentOffers'])) {
@@ -582,13 +583,27 @@ class ParserXml
                                                 // the old exchange may not contain a stock node when the value is 0
                                                 (!isset($_GET['version']) && isset($element->Наименование) && isset($element->Цены))
                                             ) {
-                                                ProductAndVariationStock::set(
+                                                $ignoreSetStockData = apply_filters(
+                                                    'itglx_wc1c_ignore_offer_set_stock_data',
+                                                    false,
                                                     $productEntry['ID'],
-                                                    ProductAndVariationStock::resolve($element),
                                                     $productEntry['post_parent']
                                                 );
 
-                                                \WC_Product_Variable::sync($productEntry['post_parent']);
+                                                if (!$ignoreSetStockData) {
+                                                    ProductAndVariationStock::set(
+                                                        $productEntry['ID'],
+                                                        ProductAndVariationStock::resolve($element),
+                                                        $productEntry['post_parent']
+                                                    );
+
+                                                    \WC_Product_Variable::sync($productEntry['post_parent']);
+                                                } else {
+                                                    Logger::logChanges(
+                                                        '(variation) ignore set stock data by filter - itglx_wc1c_ignore_offer_set_stock_data',
+                                                        [(string) $element->Ид]
+                                                    );
+                                                }
                                             }
 
                                             do_action(
@@ -641,10 +656,24 @@ class ParserXml
                                                 // the old exchange may not contain a stock node when the value is 0
                                                 (!isset($_GET['version']) && isset($element->Наименование) && isset($element->Цены))
                                             ) {
-                                                ProductAndVariationStock::set(
+                                                $ignoreSetStockData = apply_filters(
+                                                    'itglx_wc1c_ignore_offer_set_stock_data',
+                                                    false,
                                                     $productId,
-                                                    ProductAndVariationStock::resolve($element)
+                                                    null
                                                 );
+
+                                                if (!$ignoreSetStockData) {
+                                                    ProductAndVariationStock::set(
+                                                        $productId,
+                                                        ProductAndVariationStock::resolve($element)
+                                                    );
+                                                } else {
+                                                    Logger::logChanges(
+                                                        '(product) ignore set stock data by filter - itglx_wc1c_ignore_offer_set_stock_data',
+                                                        [(string) $element->Ид]
+                                                    );
+                                                }
                                             }
 
                                             do_action('itglx_wc1c_after_product_offer_resolve', $productId, $element);
@@ -692,33 +721,57 @@ class ParserXml
         return $valid;
     }
 
+    // old format - resolve main variation data
     private function resolveOldVariation($element)
     {
         $parseID = explode('#', (string) $element->Ид);
 
-        // old format - resolve main variation data
-        if (
-            !empty($parseID[1]) && // not empty variation hash
-            isset($element->ХарактеристикиТовара) &&
-            isset($element->ХарактеристикиТовара->ХарактеристикаТовара)
-        ) {
-            VariationCharacteristicsToGlobalProductAttributes::process($element);
-
-            $variationEntry['ID'] = Product::getProductIdByMeta((string) $element->Ид, '_id_1c', true);
-            $variationEntry['post_parent'] = Product::getProductIdByMeta($parseID[0]);
-
-            if (empty($variationEntry['post_parent'])) {
-                Logger::logChanges(
-                    '(variation) Error! Not exists parent product',
-                    [(string) $element->Ид]
-                );
-            }
-
-            Product::mainVariationData(
-                $element,
-                $variationEntry,
-                $this->postAuthor
-            );
+        //empty variation hash
+        if (empty($parseID[1])) {
+            return;
         }
+
+        if (!isset($element->ХарактеристикиТовара) || !isset($element->ХарактеристикиТовара->ХарактеристикаТовара)) {
+            return;
+        }
+
+        $variationEntry = [
+            'post_parent' => Product::getProductIdByMeta($parseID[0])
+        ];
+
+        if (empty($variationEntry['post_parent'])) {
+            Logger::logChanges(
+                '(variation) Error! Not exists parent product',
+                [(string) $element->Ид]
+            );
+
+            return;
+        }
+
+        VariationCharacteristicsToGlobalProductAttributes::process($element);
+
+        $variationEntry['ID'] = Product::getProductIdByMeta((string) $element->Ид, '_id_1c', true);
+
+        Product::mainVariationData(
+            $element,
+            $variationEntry,
+            $this->postAuthor,
+            true
+        );
+    }
+
+    private function isEmptyNodeOptions($reader)
+    {
+        $resolveResult = str_replace(
+            [' xmlns="' . $reader->namespaceURI . '"', ' '],
+            '',
+            $reader->readOuterXml()
+        );
+
+        if ($resolveResult === '<Свойства/>') {
+            return true;
+        }
+
+        return false;
     }
 }

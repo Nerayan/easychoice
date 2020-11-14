@@ -20,7 +20,7 @@ class SectionForExchangeOrders
             'title' => esc_html__('Exchange orders with 1C', 'itgalaxy-woocommerce-1c'),
             'tabs' => [
                 [
-                    'title' => esc_html__('Unloading orders', 'itgalaxy-woocommerce-1c'),
+                    'title' => esc_html__('Main', 'itgalaxy-woocommerce-1c'),
                     'id' => 'unload-orders',
                     'fields' => [
                         'send_orders' => [
@@ -94,7 +94,13 @@ class SectionForExchangeOrders
                                 'Use this setting if you want to exclude orders in some status from unloading.',
                                 'itgalaxy-woocommerce-1c'
                             )
-                        ],
+                        ]
+                    ]
+                ],
+                [
+                    'title' => esc_html__('Unloading orders (additional)', 'itgalaxy-woocommerce-1c'),
+                    'id' => 'unload-orders-additional',
+                    'fields' => [
                         'send_orders_use_product_id_from_site' => [
                             'type' => 'checkbox',
                             'title' => esc_html__(
@@ -113,6 +119,17 @@ class SectionForExchangeOrders
                             'type' => 'checkbox',
                             'title' => esc_html__(
                                 'Combine data on variations and pass it as one line with the main product',
+                                'itgalaxy-woocommerce-1c'
+                            )
+                        ],
+                        'send_orders_set_currency_by_order_data' => [
+                            'type' => 'checkbox',
+                            'title' => esc_html__(
+                                'Specify currency according to order data',
+                                'itgalaxy-woocommerce-1c'
+                            ),
+                            'description' => esc_html__(
+                                'By default the currency is used from the base price type.',
                                 'itgalaxy-woocommerce-1c'
                             )
                         ],

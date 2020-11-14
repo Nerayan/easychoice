@@ -1,30 +1,31 @@
 <?php
 
-if ( ! defined('ABSPATH') ) {
-	exit;
+if (!defined('ABSPATH')) {
+    exit;
 }
 
 class NovaPoshtaShipping extends WC_Shipping_Method
 {
-  public function __construct($instance_id = 0)
-  {
-    parent::__construct($instance_id);
-    $this->id = WC_UKR_SHIPPING_NP_SHIPPING_NAME;
-    $this->method_title = WC_UKR_SHIPPING_NP_SHIPPING_TITLE;
-    $this->method_description = '';
+    public function __construct($instance_id = 0)
+    {
+        parent::__construct($instance_id);
+        $this->id = WC_UKR_SHIPPING_NP_SHIPPING_NAME;
+        $this->method_title = WC_UKR_SHIPPING_NP_SHIPPING_TITLE;
+        $this->method_description = '';
 
-    $this->supports           = array(
-	    'shipping-zones',
-	    'instance-settings',
-	    'instance-settings-modal',
-    );
+        $this->supports = array(
+            'shipping-zones',
+            'instance-settings',
+            'instance-settings-modal',
+        );
 
-    $this->init();
-  }
+        $this->init();
+    }
 
-	public function __get($name) {
-		return $this->$name;
-	}
+    public function __get($name)
+    {
+        return $this->$name;
+    }
 
     /**
      * Init your settings
@@ -34,19 +35,19 @@ class NovaPoshtaShipping extends WC_Shipping_Method
      */
     function init()
     {
-      $this->init_settings();
-      $this->init_form_fields();
+        $this->init_settings();
+        $this->init_form_fields();
 
-      $translator = \kirillbdev\WCUkrShipping\Classes\WCUkrShipping::instance()->singleton('translate_service');
-      $translates = $translator->getTranslates();
+        $translator = \kirillbdev\WCUkrShipping\Classes\WCUkrShipping::instance()->singleton('translate_service');
+        $translates = $translator->getTranslates();
 
-	    $this->title = $translates['method_title'];
+        $this->title = $translates['method_title'];
 
-      // Save settings in admin if you have any defined
-      add_action('woocommerce_update_options_shipping_' . $this->id, array($this, 'process_admin_options'));
+        // Save settings in admin if you have any defined
+        add_action('woocommerce_update_options_shipping_' . $this->id, array($this, 'process_admin_options'));
     }
 
-	/**
+    /**
      * calculate_shipping function.
      *
      * @access public
@@ -55,12 +56,12 @@ class NovaPoshtaShipping extends WC_Shipping_Method
      */
     public function calculate_shipping($package = array())
     {
-      $rate = array(
-        'label' => $this->title,
-        'cost' => get_option('wc_ukr_shipping_np_price', 0),
-        'package' => $package,
-      );
-	    $this->add_rate($rate);
+        $rate = array(
+            'label' => $this->title,
+            'cost' => 0,
+            'package' => $package,
+        );
+        $this->add_rate($rate);
     }
 
     /**

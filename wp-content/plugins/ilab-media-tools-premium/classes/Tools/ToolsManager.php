@@ -478,6 +478,9 @@ final class ToolsManager {
 			}
 		}
 
+		do_action('media-cloud/tools/added-tools', 'media-cloud', $networkMode, $networkAdminMenu);
+		do_action('media-cloud/tools/added-tools-after', 'media-cloud', $networkMode, $networkAdminMenu);
+
 		$hideBatch = Environment::Option('mcloud-network-hide-batch', null, false);
 
 		if(!is_multisite() || !$hideBatch) {

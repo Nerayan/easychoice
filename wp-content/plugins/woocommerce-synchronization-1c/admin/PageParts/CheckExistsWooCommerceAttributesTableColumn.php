@@ -24,7 +24,7 @@ class CheckExistsWooCommerceAttributesTableColumn
                     'For some reason, there is no column `id_1c` in table `woocommerce_attribute_taxonomies` that '
                     . 'should have been added when the plugin was activated. If there are properties in the unload, '
                     . 'this will cause a processing error. You can add it yourself: name - id_1c, type - varchar, '
-                    . 'length 200.',
+                    . 'length 191.',
                     'itgalaxy-woocommerce-1c'
                 )
             );

@@ -23,8 +23,6 @@ class SaleModeQuery
         Logger::logProtocol('list order ids', $orders);
 
         if (count($orders) > 0) {
-            $currency = self::getCurrency();
-
             foreach ($orders as $orderID) {
                 $order = \wc_get_order($orderID);
 
@@ -49,17 +47,19 @@ class SaleModeQuery
                 $document->addChild('Время', $order->get_date_created()->date_i18n('H:i:s'));
                 $document->addChild('ХозОперация', 'Заказ товара');
                 $document->addChild('Роль', 'Продавец');
-                $document->addChild('Валюта', $currency);
+                $document->addChild('Валюта', self::getCurrency($order));
                 $document->addChild('Курс', 1);
                 $document->addChild('Сумма', $orderData['total']);
-                $document->addChild(
-                    'Комментарий',
-                    apply_filters(
-                        'itglx_wc1c_xml_order_comment',
-                        htmlspecialchars($order->get_customer_note()),
-                        $order
-                    )
+
+                $comment =  apply_filters(
+                    'itglx_wc1c_xml_order_comment',
+                    htmlspecialchars($order->get_customer_note()),
+                    $order
                 );
+
+                if ($comment) {
+                    $document->addChild('Комментарий', $comment);
+                }
 
                 // can be used if you want to transfer custom data
                 $moreOrderInfo = apply_filters('itglx_wc1c_xml_order_info_custom', [], $orderID);
@@ -74,6 +74,23 @@ class SaleModeQuery
 
                 if (!function_exists('itglx_wc1c_xml_order_contragent_data')) {
                     $contragent = $contragents->addChild('Контрагент');
+
+                    $contactData = [];
+
+                    if ($order->get_billing_email()) {
+                        $contactData[] = [
+                            'Тип' => 'Почта',
+                            'Значение' => $order->get_billing_email()
+                        ];
+                    }
+
+                    if ($order->get_billing_phone()) {
+                        $contactData[] = [
+                            'Тип' => 'ТелефонРабочий',
+                            'Значение' => htmlspecialchars($order->get_billing_phone()),
+                            'Представление' => htmlspecialchars($order->get_billing_phone())
+                        ];
+                    }
 
                     $contragentData = [
                         'Ид' => $order->get_customer_id(),
@@ -92,17 +109,7 @@ class SaleModeQuery
                             'АдресноеПоле' => self::resolveContragentAddressRegistration($order)
                         ],
                         'Контакты' => [
-                            'Контакт' => [
-                                [
-                                    'Тип' => 'Почта',
-                                    'Значение' => $order->get_billing_email()
-                                ],
-                                [
-                                    'Тип' => 'ТелефонРабочий',
-                                    'Значение' => htmlspecialchars($order->get_billing_phone()),
-                                    'Представление' => htmlspecialchars($order->get_billing_phone())
-                                ]
-                            ]
+                            'Контакт' => $contactData
                         ]
                     ];
 
@@ -243,9 +250,14 @@ class SaleModeQuery
         return $version;
     }
 
-    private static function getCurrency()
+    private static function getCurrency($order)
     {
         $settings = get_option(Bootstrap::OPTIONS_KEY);
+
+        if (!empty($settings['send_orders_set_currency_by_order_data'])) {
+            return $order->get_currency();
+        }
+
         $basePriceType = isset($settings['price_type_1']) ? $settings['price_type_1'] : '';
         $allPriceTypes = get_option('all_prices_types');
 
@@ -479,7 +491,7 @@ class SaleModeQuery
                 }
             }
 
-            $productXml->addChild('Наименование', wp_strip_all_tags(html_entity_decode($product['name'])));
+            $productXml->Наименование = wp_strip_all_tags(html_entity_decode($product['name']));
             $unit = get_post_meta($product['id'], '_unit', true);
 
             if ($unit) {
@@ -494,7 +506,10 @@ class SaleModeQuery
                 $base->addAttribute('МеждународноеСокращение', 'PCE');
             }
 
-            $productXml->addChild('ЦенаЗаЕдиницу', $product['lineTotal'] / $product['quantity']);
+            $productXml->addChild(
+                'ЦенаЗаЕдиницу',
+                $product['quantity'] ? $product['lineTotal'] / $product['quantity'] : 0
+            );
             $productXml->addChild('Количество', $product['quantity']);
             $productXml->addChild('Сумма', $product['lineTotal']);
 
@@ -643,6 +658,10 @@ class SaleModeQuery
         $requisites = $document->addChild('ЗначенияРеквизитов');
 
         foreach ($requisitesArray as $name => $value) {
+            if ($value === '') {
+                continue;
+            }
+
             $requisite = $requisites->addChild('ЗначениеРеквизита');
             $requisite->addChild('Наименование', $name);
             $requisite->addChild('Значение', $value);

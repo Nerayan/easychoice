@@ -144,11 +144,13 @@ class RootProcessStarter
 
     private function checkExistsXmlExtension()
     {
-        if (class_exists('\\XMLReader')) {
-            return;
+        if (!class_exists('\\XMLReader')) {
+            throw new \Exception('Please install/enable `php-xmlreader` extension for PHP');
         }
 
-        throw new \Exception('Please install/enable `php-xml` extension for PHP');
+        if (!function_exists('\\simplexml_load_string')) {
+            throw new \Exception('Please install/enable `php-xml` extension for PHP');
+        }
     }
 
     private function checkEnableExchange()
@@ -156,11 +158,19 @@ class RootProcessStarter
         $settings = get_option(Bootstrap::OPTIONS_KEY);
 
         // exchange enabled
-        if (!empty($settings['enable_exchange'])) {
-            return;
+        if (empty($settings['enable_exchange'])) {
+            throw new \Exception(
+                esc_html__('Error! Setting `Enable exchange` is not enabled.', 'itgalaxy-woocommerce-1c')
+            );
         }
 
-        throw new \Exception(esc_html__('Error! Synchronization is prohibited!', 'itgalaxy-woocommerce-1c'));
+        $value = get_site_option(Bootstrap::PURCHASE_CODE_OPTIONS_KEY);
+
+        if (empty($value)) {
+            throw new \Exception(
+                esc_html__('Please verify the purchase code on the plugin settings page.', 'itgalaxy-woocommerce-1c')
+            );
+        }
     }
 
     private function checkAuth()
@@ -181,7 +191,11 @@ class RootProcessStarter
             empty($_SERVER['PHP_AUTH_PW'])
         ) {
             throw new \Exception(
-                esc_html__('Error! Empty login or password! Maybe not configured php-fpm.', 'itgalaxy-woocommerce-1c')
+                esc_html__(
+                    'Error! Empty login or password! Most likely your PHP is operating in cgi(fcgi) mode and '
+                        . 'processing of the authorization header is configured.',
+                    'itgalaxy-woocommerce-1c'
+                )
             );
         }
 

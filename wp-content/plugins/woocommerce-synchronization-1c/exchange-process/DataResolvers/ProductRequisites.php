@@ -6,6 +6,7 @@ use Itgalaxy\Wc\Exchange1c\Includes\Bootstrap;
 class ProductRequisites
 {
     private static $ignoreRequisites = [
+        'Файл',
         'ОписаниеФайла'
     ];
 
@@ -137,22 +138,41 @@ class ProductRequisites
     private static function resolveVariantPositionData($element, $requisites)
     {
         /*
-         * resolve xml position variant - Товар -> Вес
+         * resolve xml position variant - Товар -> Реквизит
          * example xml structure
-         * position - Товар -> Вес
          *
         <Товар>
             ....
+            <Длина>1</Длина>
+            <Ширина>1</Ширина>
+            <Высота>1</Высота>
             <Вес>1</Вес>
             ....
         </Товар>
         */
-        if (empty($requisites['weight']) && isset($element->Вес)) {
-            $weight = (float) $element->Вес;
 
-            if ($weight > 0) {
-                $requisites['weight'] = $weight;
+        $resolveArray = [
+            'weight' => 'Вес',
+            'length' => 'Длина',
+            'width' => 'Ширина',
+            'height' => 'Высота'
+        ];
+
+        foreach ($resolveArray as $requisitesArrayKey => $xmlNodeName) {
+            if (
+                !empty($requisites[$requisitesArrayKey]) ||
+                !isset($element->$xmlNodeName)
+            ) {
+                continue;
             }
+
+            $value = (float) $element->$xmlNodeName;
+
+            if ($value <= 0) {
+                continue;
+            }
+
+            $requisites[$requisitesArrayKey] = $value;
         }
 
         return $requisites;

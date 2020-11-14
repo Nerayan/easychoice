@@ -208,7 +208,7 @@ class Product
         return $productEntry;
     }
 
-    public static function mainVariationData($element, $productEntry, $postAuthor)
+    public static function mainVariationData($element, $productEntry, $postAuthor, $onlyCharacteristics = false)
     {
         global $wpdb;
 
@@ -280,6 +280,7 @@ class Product
         $_SESSION['IMPORT_1C']['productVariations'][$productEntry['post_parent']][] = $productEntry['ID'];
 
         if (
+            !$onlyCharacteristics &&
             isset($element->ЗначенияСвойств) &&
             isset($element->ЗначенияСвойств->ЗначенияСвойства)
         ) {
@@ -365,12 +366,17 @@ class Product
     public static function resolveVariationOptionsWithId($element, $productEntry)
     {
         $productOptions = get_option('all_product_options');
+        $ignoreAttributeProcessing = apply_filters('itglx_wc1c_attribute_ignore_guid_array', []);
 
         foreach ($element->ЗначенияСвойств->ЗначенияСвойства as $property) {
             if (
                 empty($property->Значение) ||
                 empty($productOptions[(string) $property->Ид])
             ) {
+                continue;
+            }
+
+            if (in_array((string) $property->Ид, $ignoreAttributeProcessing, true)) {
                 continue;
             }
 
@@ -478,6 +484,10 @@ class Product
 
     public static function hide($productID, $withSetStatus = false)
     {
+        if (apply_filters('itglx_wc1c_stop_hide_product_method', false, $productID)) {
+            return;
+        }
+
         if ($withSetStatus) {
             \update_post_meta($productID, '_stock_status', 'outofstock');
             self::updateLookupTable((int) $productID, 'outofstock');
@@ -535,17 +545,21 @@ class Product
 
     public static function removeProductImages($productID)
     {
-        Logger::logChanges(
-            '(image) Removed thumbnail for ID - ' . $productID,
-            [get_post_meta($productID, '_id_1c', true)]
-        );
-
-        // https://developer.wordpress.org/reference/functions/wp_delete_attachment/
         // https://developer.wordpress.org/reference/functions/get_post_thumbnail_id/
-        wp_delete_attachment(get_post_thumbnail_id($productID), true);
+        $thumbnailID = get_post_thumbnail_id($productID);
 
-        // https://developer.wordpress.org/reference/functions/delete_post_thumbnail/
-        delete_post_thumbnail($productID);
+        if ($thumbnailID) {
+            // https://developer.wordpress.org/reference/functions/wp_delete_attachment/
+            wp_delete_attachment($thumbnailID, true);
+
+            // https://developer.wordpress.org/reference/functions/delete_post_thumbnail/
+            delete_post_thumbnail($productID);
+
+            Logger::logChanges(
+                '(image) Removed thumbnail ID - ' . $thumbnailID . ', for product ID - ' . $productID,
+                [get_post_meta($productID, '_id_1c', true)]
+            );
+        }
 
         $images = get_post_meta($productID, '_product_image_gallery', true);
 
@@ -559,6 +573,11 @@ class Product
         foreach ($images as $image) {
             // https://developer.wordpress.org/reference/functions/wp_delete_attachment/
             wp_delete_attachment($image, true);
+
+            Logger::logChanges(
+                '(image) Removed gallery image ID - ' . $image . ', for product ID - ' . $productID,
+                [get_post_meta($productID, '_id_1c', true)]
+            );
         }
 
         update_post_meta($productID, '_product_image_gallery', '');

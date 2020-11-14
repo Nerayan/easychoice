@@ -81,11 +81,12 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 0);
+/******/ 	return __webpack_require__(__webpack_require__.s = 1);
 /******/ })
 /************************************************************************/
 /******/ ([
-/* 0 */
+/* 0 */,
+/* 1 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -93,214 +94,341 @@
 __webpack_require__.r(__webpack_exports__);
 
 // CONCATENATED MODULE: ./src/js/components/select.js
-let SelectComponent = function ($el, params, $) {
-  if ( ! $el) {
-    return;
-  }
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-  this.$ = $;
-  this.$el = $($el);
-  this.params = params || {};
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
-  this._initSelect2();
-  this._initEvents();
-};
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-SelectComponent.prototype._initSelect2 = function () {
-  let $ = this.$,
-      that = this;
+var WCUSSelect = /*#__PURE__*/function () {
+  function WCUSSelect($el, params, $) {
+    _classCallCheck(this, WCUSSelect);
 
-  let params = {
-    sorter: function (data) {
-      data.sort(function (a, b) {
-        let $search = $('.select2-search__field');
-
-        if (0 === $search.length || '' === $search.val()) {
-          return data;
-        }
-
-        let textA = a.text.toLowerCase(),
-          textB = b.text.toLowerCase(),
-          search = $search.val().toLowerCase();
-
-        if (textA.indexOf(search) < textB.indexOf(search)) {
-          return -1;
-        }
-
-        if (textA.indexOf(search) > textB.indexOf(search)) {
-          return 1;
-        }
-
-        return 0;
-      });
-
-      return data;
-    }
-  };
-
-  if (this.params.i10n && this.params.i10n.noResult) {
-    params.language = {
-      noResults: function() {
-        return that.params.i10n.noResult;
-      }
-    };
-  }
-
-  if (typeof $.fn.select2 === 'function') {
-    this.$el.select2(params);
-  }
-};
-
-SelectComponent.prototype._initEvents = function () {
-  let that = this,
-      $ = this.$;
-
-  that.$el.on('change', function () {
-    if ( ! that.params.mirror) {
+    if (!$el) {
       return;
     }
 
-    let $mirror = $('#' + that.params.mirror);
+    this._$ = $;
+    this._$el = $($el);
+    this._params = params || {};
 
-    if ($mirror.length) {
-      $mirror.val(that.$el.val()).trigger('change.select2');
-    }
+    this._initSelect2();
 
-    if (that.params.ajaxAction) {
-      that._loadAjax();
-    }
-  });
-};
-
-SelectComponent.prototype._loadAjax = function () {
-  let that = this,
-      $ = this.$;
-
-  if (that.params.events && that.params.events.beforeRequest) {
-    that.params.events.beforeRequest();
+    this._initEvents();
   }
 
-  window.WCUkrShippingRouter.post(that.params.ajaxAction, that.params.ajaxData(), function (json) {
-    if (that.params.events && that.params.events.response) {
-      that.params.events.response();
-      that._processAjaxResponse(json);
+  _createClass(WCUSSelect, [{
+    key: "setValue",
+    value: function setValue(val) {
+      if (!this._$el) {
+        return;
+      }
+
+      this._$el.val(val).trigger('change.select2');
     }
-  });
-};
-
-SelectComponent.prototype._processAjaxResponse = function (json) {
-  if (json.success) {
-    if ('function' === typeof this.params.responseMapper) {
-      let data = this.params.responseMapper(json.data);
-
-      this._updateHtml(data);
+  }, {
+    key: "getValue",
+    value: function getValue() {
+      return this._$el.val();
     }
-  }
-  else {
-    console.error(json.data);
-  }
-};
+  }, {
+    key: "setOptions",
+    value: function setOptions(options) {
+      var html = '';
 
-SelectComponent.prototype._updateHtml = function (data) {
-  let $ = this.$,
-      html = '';
+      if (this._params.placeholder) {
+        options.unshift({
+          value: '',
+          name: this._params.placeholder
+        });
+      }
 
-  html += '<option value="">' + this.params.targetPlaceholder + '</option>';
+      options.forEach(function (option) {
+        html += "<option value=\"".concat(option.value, "\">").concat(option.name, "</option>");
+      });
+      this.setOptionsHtml(html);
 
-  for (let i = 0; i < data.length; i++) {
-    html += '<option value="' + data[i].value + '">' + data[i].name + '</option>';
-  }
+      if (this._hasMirror()) {
+        this._getMirror().setOptionsHtml(html);
+      }
 
-  this.params.ajaxTarget.forEach(function (target) {
-    if ($('#' + target).length) {
-      $('#' + target).html(html);
+      if (this._params.ajax) {
+        this._params.ajax.target().setOptions([]);
+      }
     }
-  });
-};
+  }, {
+    key: "setOptionsHtml",
+    value: function setOptionsHtml(html) {
+      if (!this._$el) {
+        return;
+      }
+
+      this._$el.html(html);
+    }
+  }, {
+    key: "_initSelect2",
+    value: function _initSelect2() {
+      var that = this;
+
+      if ('function' === typeof this._$.fn.select2) {
+        this._$el.select2({
+          sorter: function sorter(data) {
+            data.sort(function (a, b) {
+              var $search = that._$('.select2-search__field');
+
+              if (0 === $search.length || '' === $search.val()) {
+                return data;
+              }
+
+              var textA = a.text.toLowerCase(),
+                  textB = b.text.toLowerCase(),
+                  search = $search.val().toLowerCase();
+
+              if (textA.indexOf(search) < textB.indexOf(search)) {
+                return -1;
+              }
+
+              if (textA.indexOf(search) > textB.indexOf(search)) {
+                return 1;
+              }
+
+              return 0;
+            });
+            return data;
+          },
+          language: {
+            noResults: function noResults() {
+              return wc_ukr_shipping_globals.i10n.not_found;
+            }
+          }
+        });
+      }
+    }
+  }, {
+    key: "_initEvents",
+    value: function _initEvents() {
+      var that = this;
+
+      that._$el.on('change', function () {
+        if (that._hasMirror()) {
+          that._getMirror().setValue(that.getValue());
+        }
+
+        if (that._params.ajax) {
+          that._getAjaxData();
+        }
+      });
+    }
+  }, {
+    key: "_getAjaxData",
+    value: function _getAjaxData() {
+      var that = this;
+
+      that._trigger('beforeRequest');
+
+      var data = {
+        action: that._params.ajax.action,
+        _token: wc_ukr_shipping_globals.nonce,
+        value: that.getValue()
+      };
+
+      if ('function' === typeof that._params.ajax.params) {
+        data = Object.assign(data, that._params.ajax.params());
+      }
+
+      that._$.ajax({
+        method: 'POST',
+        url: wc_ukr_shipping_globals.ajaxUrl,
+        data: data,
+        dataType: 'json',
+        success: function success(json) {
+          that._trigger('response', {
+            data: json.data
+          });
+
+          if (json.success) {
+            that._params.ajax.target().setOptions(json.data.items);
+          }
+        },
+        error: function error(jqXHR, textStatus, errorThrown) {
+          that._trigger('response');
+
+          console.error("WCUS Error: ".concat(jqXHR.status, " ").concat(jqXHR.statusText));
+        }
+      });
+    }
+  }, {
+    key: "_hasMirror",
+    value: function _hasMirror() {
+      return 'function' === typeof this._params.mirror;
+    }
+  }, {
+    key: "_getMirror",
+    value: function _getMirror() {
+      return this._params.mirror();
+    }
+  }, {
+    key: "_trigger",
+    value: function _trigger(event, params) {
+      if (this._params.events && 'function' === typeof this._params.events[event]) {
+        this._params.events[event](this, params || {});
+      }
+    }
+  }]);
+
+  return WCUSSelect;
+}();
 
 
-// CONCATENATED MODULE: ./src/js/checkout.js
+// CONCATENATED MODULE: ./src/js/checkout/utils.js
+/* harmony default export */ var utils = ({
+  init: function init($) {
+    this._$ = $;
+    this.$differentShipping = this._$('#ship-to-different-address-checkbox');
+  },
+  setLoadingState: function setLoadingState() {
+    this._$('.wc-ukr-shipping-np-fields').addClass('wcus-state-loading');
+  },
+  unsetLoadingState: function unsetLoadingState() {
+    this._$('.wc-ukr-shipping-np-fields').removeClass('wcus-state-loading');
+  },
+  getFieldType: function getFieldType() {
+    if (this.$differentShipping.length && this.$differentShipping.prop('checked')) {
+      return 'shipping';
+    }
+
+    return 'billing';
+  },
+  isCustomAddress: function isCustomAddress() {
+    var type = this.getFieldType();
+    return this._$('#wcus_np_' + type + '_custom_address_active').prop('checked') ? 1 : 0;
+  },
+  getAreaRef: function getAreaRef() {
+    var type = this.getFieldType();
+    return this._$('#wcus_np_' + type + '_area').val();
+  },
+  getCityRef: function getCityRef() {
+    var type = this.getFieldType();
+    return this._$('#wcus_np_' + type + '_city').val();
+  },
+  mergeSelectParams: function mergeSelectParams(params) {
+    var that = this;
+    return Object.assign({
+      events: {
+        beforeRequest: function beforeRequest(select) {
+          that.setLoadingState();
+        },
+        response: function response(select) {
+          that.unsetLoadingState();
+        }
+      },
+      i10n: {
+        noResult: wc_ukr_shipping_globals.i10n.not_found
+      }
+    }, params);
+  }
+});
+// CONCATENATED MODULE: ./src/js/checkout/checkout.js
+
 
 
 
 
 (function ($) {
-  let $shippingBox = $('.wc-ukr-shipping-np-fields'),
-      $differentShipping = document.getElementById('ship-to-different-address-checkbox'),
+  var $differentShipping = document.getElementById('ship-to-different-address-checkbox'),
       currentCountry;
+  utils.init($);
 
-  let setLoadingState = function () {
-    $shippingBox.addClass('wcus-state-loading');
-  };
+  function calculateShipping() {
+    if (!utils.getCityRef()) {
+      return;
+    }
 
-  let unsetLoadingState = function () {
-    $shippingBox.removeClass('wcus-state-loading');
-  };
+    $('#place_order').prop('disabled', true);
+    $.ajax({
+      method: 'POST',
+      url: wc_ukr_shipping_globals.ajaxUrl,
+      data: {
+        action: 'wcus_api_v2_calculate_cost',
+        _token: wc_ukr_shipping_globals.nonce,
+        wcus_ajax: 1,
+        wcus_area_ref: utils.getAreaRef(),
+        wcus_city_ref: utils.getCityRef(),
+        wcus_address_shipping: utils.isCustomAddress(),
+        wcus_payment_method: $('input[name="payment_method"]:checked').val(),
+        wcus_shipping_name: $('#wcus-shipping-name').val()
+      },
+      dataType: 'json',
+      success: function success(json) {
+        $('#place_order').prop('disabled', false);
 
-  let isNovaPoshtaShippingSelected = function () {
-    let currentShipping = $('.shipping_method').length > 1 ?
-      $('.shipping_method:checked').val() :
-      $('.shipping_method').val();
+        if (json.success) {
+          $('#wcus-shipping-cost').html(json.data.shipping);
+          $('#wcus-order-total').html("<strong>".concat(json.data.total, "</strong>"));
+        }
+      },
+      error: function error(jqXHR, textStatus, errorThrown) {
+        $('#place_order').prop('disabled', false);
+        console.error("WCUS Error: ".concat(jqXHR.status, " ").concat(jqXHR.statusText));
+      }
+    });
+  }
 
+  var isNovaPoshtaShippingSelected = function isNovaPoshtaShippingSelected() {
+    var currentShipping = $('.shipping_method').length > 1 ? $('.shipping_method:checked').val() : $('.shipping_method').val();
     return currentShipping && currentShipping.match(/^nova_poshta_shipping.+/i);
   };
 
-  let selectShipping = function () {
+  var selectShipping = function selectShipping() {
     if (currentCountry === 'UA' && isNovaPoshtaShippingSelected()) {
       if ($differentShipping && $differentShipping.checked) {
         $('#wcus_np_shipping_fields').css('display', 'block');
-      }
-      else {
+      } else {
         $('#wcus_np_billing_fields').css('display', 'block');
       }
-    }
-    else {
+    } else {
       $('.wc-ukr-shipping-np-fields').css('display', 'none');
     }
   };
 
   if ($differentShipping) {
     $differentShipping.addEventListener('click', function () {
-      if ( ! isNovaPoshtaShippingSelected()) {
+      if (!isNovaPoshtaShippingSelected()) {
         return;
       }
 
       if (this.checked) {
         $('#wcus_np_shipping_fields').css('display', 'block');
         $('#wcus_np_billing_fields').css('display', 'none');
-      }
-      else {
+      } else {
         $('#wcus_np_shipping_fields').css('display', 'none');
         $('#wcus_np_billing_fields').css('display', 'block');
       }
     });
   }
 
-  let disableDefaultBillingFields = function () {
+  var disableDefaultBillingFields = function disableDefaultBillingFields() {
     if (isNovaPoshtaShippingSelected() && wc_ukr_shipping_globals.disableDefaultBillingFields === 'true') {
       // Billing
       $('#billing_address_1_field').css('display', 'none');
       $('#billing_address_2_field').css('display', 'none');
       $('#billing_city_field').css('display', 'none');
       $('#billing_state_field').css('display', 'none');
-      $('#billing_postcode_field').css('display', 'none');
+      $('#billing_postcode_field').css('display', 'none'); // Shipping
 
-      // Shipping
       $('#shipping_address_1_field').css('display', 'none');
       $('#shipping_address_2_field').css('display', 'none');
       $('#shipping_city_field').css('display', 'none');
       $('#shipping_state_field').css('display', 'none');
       $('#shipping_postcode_field').css('display', 'none');
-    }
-    else {
+    } else {
       // Billing
       $('#billing_address_1_field').css('display', 'block');
       $('#billing_address_2_field').css('display', 'block');
       $('#billing_city_field').css('display', 'block');
       $('#billing_state_field').css('display', 'block');
-      $('#billing_postcode_field').css('display', 'block');
+      $('#billing_postcode_field').css('display', 'block'); // Shipping
 
-      // Shipping
       $('#shipping_address_1_field').css('display', 'block');
       $('#shipping_address_2_field').css('display', 'block');
       $('#shipping_city_field').css('display', 'block');
@@ -309,22 +437,22 @@ SelectComponent.prototype._updateHtml = function (data) {
     }
   };
 
-  let initialize = function () {
-    let $customAddressCheckbox = $('.j-wcus-np-custom-address');
+  var initialize = function initialize() {
+    var $customAddressCheckbox = $('.j-wcus-np-custom-address');
 
-    let showCustomAddress = function () {
+    var showCustomAddress = function showCustomAddress() {
       $('.j-wcus-warehouse-block').slideUp(400);
       $('.j-wcus-np-custom-address-block').slideDown(400);
     };
 
-    let hideCustomAddress = function () {
+    var hideCustomAddress = function hideCustomAddress() {
       $('.j-wcus-warehouse-block').slideDown(400);
       $('.j-wcus-np-custom-address-block').slideUp(400);
     };
 
     if ($customAddressCheckbox.length) {
       $customAddressCheckbox.on('click', function () {
-        let $relation = document.getElementById(this.dataset['relationSelect']);
+        var $relation = document.getElementById(this.dataset['relationSelect']);
 
         if ($relation) {
           $relation.checked = this.checked;
@@ -332,178 +460,110 @@ SelectComponent.prototype._updateHtml = function (data) {
 
         if (this.checked) {
           showCustomAddress();
-        }
-        else {
+        } else {
           hideCustomAddress();
         }
+
+        calculateShipping();
       });
     }
   };
 
-  $(function() {
+  $(function () {
     $('.wc-ukr-shipping-np-fields').css('display', 'none');
-
     $(document.body).bind('update_checkout', function (event, args) {
-      setLoadingState();
+      utils.setLoadingState();
     });
-
     $(document.body).bind('updated_checkout', function (event, args) {
       currentCountry = $('#billing_country').length ? $('#billing_country').val() : 'UA';
       selectShipping();
       disableDefaultBillingFields();
-      unsetLoadingState();
+      utils.unsetLoadingState();
     });
-
-    let getAreaComponentParams = function (type) {
-      let mirrorComponent = 'billing' === type
-        ? 'wcus_np_shipping_area'
-        : 'wcus_np_billing_area';
-
-      let refTarget = '#wcus_np_' + type + '_area';
-
-      return {
-        mirror: mirrorComponent,
-        ajaxAction: 'wc_ukr_shipping_get_cities',
-        ajaxData: function () {
-          return {
-            ref: $(refTarget).val(),
-            nonce: wc_ukr_shipping_globals.nonce
-          };
-        },
-        ajaxTarget: [
-          'wcus_np_billing_city',
-          'wcus_np_shipping_city'
-        ],
-        targetPlaceholder: wc_ukr_shipping_globals.i10n.placeholder_city,
-        responseMapper: function (data) {
-          let result = [];
-
-          for (let i = 0; i < data.length; i++) {
-            result.push({
-              value: data[i]['ref'],
-              name: wc_ukr_shipping_globals.lang === 'ru' ?
-                data[i]['description_ru'] :
-                data[i]['description']
-            });
-          }
-
-          return result;
-        },
-        events: {
-          beforeRequest: function () {
-            setLoadingState();
-          },
-          response: function () {
-            unsetLoadingState();
-          }
-        },
-        i10n: {
-          noResult: wc_ukr_shipping_globals.i10n.not_found
+    var bArea, sArea, bCity, sCity, bWarehouse, sWarehouse;
+    bArea = new WCUSSelect(document.getElementById('wcus_np_billing_area'), utils.mergeSelectParams({
+      mirror: function mirror() {
+        return sArea;
+      },
+      ajax: {
+        action: 'wcus_api_v2_get_cities',
+        target: function target() {
+          return bCity;
         }
-      };
-    };
-
-    let getCityComponentParams = function (type) {
-      let mirrorComponent = 'billing' === type
-        ? 'wcus_np_shipping_city'
-        : 'wcus_np_billing_city';
-
-      let refTarget = '#wcus_np_' + type + '_city';
-
-      return {
-        mirror: mirrorComponent,
-        ajaxAction: 'wc_ukr_shipping_get_warehouses',
-        ajaxData: function () {
-          return {
-            ref: $(refTarget).val(),
-            nonce: wc_ukr_shipping_globals.nonce
-          };
-        },
-        ajaxTarget: [
-          'wcus_np_billing_warehouse',
-          'wcus_np_shipping_warehouse'
-        ],
-        targetPlaceholder: wc_ukr_shipping_globals.i10n.placeholder_warehouse,
-        responseMapper: function (data) {
-          let result = [];
-
-          for (let i = 0; i < data.length; i++) {
-            result.push({
-              value: data[i]['ref'],
-              name: wc_ukr_shipping_globals.lang === 'ru' ?
-                data[i]['description_ru'] :
-                data[i]['description']
-            });
-          }
-
-          return result;
-        },
-        events: {
-          beforeRequest: function () {
-            setLoadingState();
-          },
-          response: function () {
-            unsetLoadingState();
-          }
-        },
-        i10n: {
-          noResult: wc_ukr_shipping_globals.i10n.not_found
+      },
+      placeholder: wc_ukr_shipping_globals.i10n.placeholder_area
+    }), $);
+    sArea = new WCUSSelect(document.getElementById('wcus_np_shipping_area'), utils.mergeSelectParams({
+      mirror: function mirror() {
+        return bArea;
+      },
+      ajax: {
+        action: 'wcus_api_v2_get_cities',
+        target: function target() {
+          return sCity;
         }
-      };
-    };
-
-    let getWarehouseComponentParams = function (type) {
-      let mirrorComponent = 'billing' === type
-        ? 'wcus_np_shipping_warehouse'
-        : 'wcus_np_billing_warehouse';
-
-      return {
-        mirror: mirrorComponent,
-        i10n: {
-          noResult: wc_ukr_shipping_globals.i10n.not_found
+      },
+      placeholder: wc_ukr_shipping_globals.i10n.placeholder_area
+    }), $);
+    bCity = new WCUSSelect(document.getElementById('wcus_np_billing_city'), utils.mergeSelectParams({
+      mirror: function mirror() {
+        return sCity;
+      },
+      ajax: {
+        action: 'wcus_api_v2_get_warehouses',
+        target: function target() {
+          return bWarehouse;
         }
-      };
-    };
-
-    let npBillingArea = new SelectComponent(
-      document.getElementById('wcus_np_billing_area'),
-      getAreaComponentParams('billing'),
-      $
-    );
-
-    let npShippingArea = new SelectComponent(
-      document.getElementById('wcus_np_shipping_area'),
-      getAreaComponentParams('shipping'),
-      $
-    );
-
-    let npBillingCity = new SelectComponent(
-      document.getElementById('wcus_np_billing_city'),
-      getCityComponentParams('billing'),
-      $
-    );
-
-    let npShippingCity = new SelectComponent(
-      document.getElementById('wcus_np_shipping_city'),
-      getCityComponentParams('shipping'),
-      $
-    );
-
-    let npBillingWarehouse = new SelectComponent(
-      document.getElementById('wcus_np_billing_warehouse'),
-      getWarehouseComponentParams('billing'),
-      $
-    );
-
-    let npShippingWarehouse = new SelectComponent(
-      document.getElementById('wcus_np_shipping_warehouse'),
-      getWarehouseComponentParams('shipping'),
-      $
-    );
-
+      },
+      events: {
+        beforeRequest: function beforeRequest(select) {
+          utils.setLoadingState();
+          calculateShipping();
+        },
+        response: function response(select, data) {
+          utils.unsetLoadingState();
+        }
+      },
+      placeholder: wc_ukr_shipping_globals.i10n.placeholder_city
+    }), $);
+    sCity = new WCUSSelect(document.getElementById('wcus_np_shipping_city'), utils.mergeSelectParams({
+      mirror: function mirror() {
+        return bCity;
+      },
+      ajax: {
+        action: 'wcus_api_v2_get_warehouses',
+        target: function target() {
+          return sWarehouse;
+        }
+      },
+      events: {
+        beforeRequest: function beforeRequest(select) {
+          utils.setLoadingState();
+          calculateShipping();
+        },
+        response: function response(select, data) {
+          utils.unsetLoadingState();
+        }
+      },
+      placeholder: wc_ukr_shipping_globals.i10n.placeholder_city
+    }), $);
+    bWarehouse = new WCUSSelect(document.getElementById('wcus_np_billing_warehouse'), utils.mergeSelectParams({
+      mirror: function mirror() {
+        return sWarehouse;
+      },
+      placeholder: wc_ukr_shipping_globals.i10n.placeholder_warehouse
+    }), $);
+    sWarehouse = new WCUSSelect(document.getElementById('wcus_np_shipping_warehouse'), utils.mergeSelectParams({
+      mirror: function mirror() {
+        return bWarehouse;
+      },
+      placeholder: wc_ukr_shipping_globals.i10n.placeholder_warehouse
+    }), $);
+    $('body').on('change', 'input[name="payment_method"]', function () {
+      calculateShipping();
+    });
     initialize();
   });
-
 })(jQuery);
 
 /***/ })

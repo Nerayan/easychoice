@@ -2,6 +2,7 @@
 namespace Itgalaxy\Wc\Exchange1c\Admin\PageParts;
 
 use Itgalaxy\Wc\Exchange1c\Includes\Bootstrap;
+use Itgalaxy\Wc\Exchange1c\Includes\PluginRequest;
 
 class SectionLicense
 {
@@ -13,17 +14,9 @@ class SectionLicense
         if (isset($_POST['purchase-code'])) {
             $code = trim(wp_unslash($_POST['purchase-code']));
 
-            $response = \wp_remote_post(
-                'https://wordpress-plugins.xyz/envato/license.php',
-                [
-                    'body' => [
-                        'purchaseCode' => $code,
-                        'itemID' => '24768513',
-                        'action' => isset($_POST['verify']) ? 'activate' : 'deactivate',
-                        'domain' => site_url()
-                    ],
-                    'timeout' => 20
-                ]
+            $response = PluginRequest::call(
+                isset($_POST['verify']) ? 'code_activate' : 'code_deactivate',
+                $code
             );
 
             if (is_wp_error($response)) {
@@ -47,15 +40,9 @@ class SectionLicense
                     $message = 'failedCheck';
                 }
             } else {
-                $response = json_decode(wp_remote_retrieve_body($response));
-
-                if ($response->status == 'successCheck') {
-                    if (isset($_POST['verify'])) {
-                        update_site_option(Bootstrap::PURCHASE_CODE_OPTIONS_KEY, $code);
-                    } else {
-                        update_site_option(Bootstrap::PURCHASE_CODE_OPTIONS_KEY, '');
-                    }
-                } elseif (!isset($_POST['verify']) && $response->status == 'alreadyInactive') {
+                if ($response->status === 'successCheck' && isset($_POST['verify'])) {
+                    update_site_option(Bootstrap::PURCHASE_CODE_OPTIONS_KEY, $code);
+                } else {
                     update_site_option(Bootstrap::PURCHASE_CODE_OPTIONS_KEY, '');
                 }
 
@@ -90,7 +77,7 @@ class SectionLicense
                 </small>
             <?php } ?>
         </h1>
-        <form method="post" action="#">
+        <form method="post" action="#" id="wc1c-license-verify">
             <table class="form-table">
                 <tr>
                     <th scope="row">

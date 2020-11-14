@@ -30,6 +30,8 @@
 	 */
 	do_action( 'electro_before_header_v5' ); ?>
 
+	<?php if ( ! function_exists( 'elementor_theme_do_location' ) || ! elementor_theme_do_location( 'header' ) ) : ?>
+
 	<header id="masthead" class="site-header header-v5">
 		<div class="stick-this">
 			<div class="container <?php echo esc_attr( has_electro_mobile_header() ? electro_desktop_header_responsive_class() : '' );  ?>">
@@ -48,6 +50,8 @@
 
 		</div>
 	</header><!-- #masthead -->
+
+	<?php endif; ?>
 
 	<?php do_action( 'electro_before_content' ); ?>
 

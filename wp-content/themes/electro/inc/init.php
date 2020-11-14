@@ -6,12 +6,36 @@
  */
 
 /**
+ * Assign the Electro version to a var
+ */
+$theme           = wp_get_theme( 'electro' );
+$electro_version = $theme['Version'];
+
+/**
+ * Set the content width based on the theme's design and stylesheet.
+ *
+ * @see mc_content_width()
+ *
+ */
+if ( ! isset( $content_width ) ) {
+	$content_width = 1170; /* pixels */
+}
+
+$electro = (object) array(
+	'version'    => $electro_version,
+
+	/**
+	 * Initialize all the things.
+	 */
+	'main' => require get_template_directory() . '/inc/class-electro.php',
+);
+
+/**
  * Classes
  * Load classes that are used by various functions
  */
 require get_template_directory() . '/inc/classes/class-tgm-plugin-activation.php';
 require get_template_directory() . '/inc/classes/class-wp-bootstrap-navwalker.php';
-require get_template_directory() . '/inc/classes/class-electro.php';
 
 if ( is_admin() ){
 	require get_template_directory() . '/inc/admin/class-electro-admin.php';

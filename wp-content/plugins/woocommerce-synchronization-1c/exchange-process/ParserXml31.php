@@ -95,7 +95,7 @@ class ParserXml31
                         !isset($_SESSION['IMPORT_1C']['optionsIsParse']) &&
                         $reader->name === 'Свойства' &&
                         $reader->nodeType === \XMLReader::ELEMENT &&
-                        str_replace(' ', '', $reader->readOuterXml()) !== '<Свойства/>'
+                        !$this->isEmptyNodeOptions($reader)
                     ) {
                         GlobalProductAttributes::process($reader);
 
@@ -201,10 +201,9 @@ class ParserXml31
                             'ID' => $product
                         ];
 
-                        $isNewProduct = true;
+                        $isNewProduct = empty($productEntry['ID']);
 
-                        if (!empty($productEntry['ID'])) {
-                            $isNewProduct = false;
+                        if (!$isNewProduct) {
                             do_action('itglx_wc1c_before_exists_product_info_resolve', $productEntry['ID'], $element);
                         } else {
                             do_action('itglx_wc1c_before_new_product_info_resolve', $element);
@@ -213,7 +212,7 @@ class ParserXml31
                         $productHash = md5(json_encode((array) $element));
 
                         if (
-                            !empty($productEntry['ID']) &&
+                            !$isNewProduct &&
                             empty($settings['force_update_product']) &&
                             $productHash == get_post_meta($productEntry['ID'], '_md5', true)
                         ) {
@@ -306,6 +305,8 @@ class ParserXml31
                             if (!isset($element->Ид)) {
                                 continue;
                             }
+
+                            $element = apply_filters('itglx_wc1c_offer_xml_data', $element);
 
                             // if duplicate offer
                             if (in_array((string) $element->Ид, $_SESSION['IMPORT_1C_PROCESS']['allCurrentOffers'])) {
@@ -410,13 +411,27 @@ class ParserXml31
                                         isset($element->КоличествоНаСкладах) ||
                                         isset($element->Количество)
                                     ) {
-                                        ProductAndVariationStock::set(
+                                        $ignoreSetStockData = apply_filters(
+                                            'itglx_wc1c_ignore_offer_set_stock_data',
+                                            false,
                                             $productEntry['ID'],
-                                            ProductAndVariationStock::resolve($element),
                                             $productEntry['post_parent']
                                         );
 
-                                        \WC_Product_Variable::sync($productEntry['post_parent']);
+                                        if (!$ignoreSetStockData) {
+                                            ProductAndVariationStock::set(
+                                                $productEntry['ID'],
+                                                ProductAndVariationStock::resolve($element),
+                                                $productEntry['post_parent']
+                                            );
+
+                                            \WC_Product_Variable::sync($productEntry['post_parent']);
+                                        } else {
+                                            Logger::logChanges(
+                                                '(variation) ignore set stock data by filter - itglx_wc1c_ignore_offer_set_stock_data',
+                                                [(string) $element->Ид]
+                                            );
+                                        }
                                     }
 
                                     do_action(
@@ -467,10 +482,24 @@ class ParserXml31
                                         isset($element->КоличествоНаСкладах) ||
                                         isset($element->Количество)
                                     ) {
-                                        ProductAndVariationStock::set(
+                                        $ignoreSetStockData = apply_filters(
+                                            'itglx_wc1c_ignore_offer_set_stock_data',
+                                            false,
                                             $productId,
-                                            ProductAndVariationStock::resolve($element)
+                                            null
                                         );
+
+                                        if (!$ignoreSetStockData) {
+                                            ProductAndVariationStock::set(
+                                                $productId,
+                                                ProductAndVariationStock::resolve($element)
+                                            );
+                                        } else {
+                                            Logger::logChanges(
+                                                '(product) ignore set stock data by filter - itglx_wc1c_ignore_offer_set_stock_data',
+                                                [(string) $element->Ид]
+                                            );
+                                        }
                                     }
 
                                     do_action('itglx_wc1c_after_product_offer_resolve', $productId, $element);
@@ -509,5 +538,20 @@ class ParserXml31
         \wp_defer_term_counting(false);
 
         return $valid;
+    }
+
+    private function isEmptyNodeOptions($reader)
+    {
+        $resolveResult = str_replace(
+            [' xmlns="' . $reader->namespaceURI . '"', ' '],
+            '',
+            $reader->readOuterXml()
+        );
+
+        if ($resolveResult === '<Свойства/>') {
+            return true;
+        }
+
+        return false;
     }
 }

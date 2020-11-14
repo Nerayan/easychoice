@@ -138,16 +138,10 @@ class Init {
 			'supported_plugins' => array(), // Load the supported plugins.
 			'tos'               => \Redux_Connection_Banner::tos_blurb( 'import_wizard' ),
 		);
-
 		if ( ! $global_vars['mokama'] ) {
-
 			// phpcs:disable Squiz.PHP.CommentedOutCode
 			// delete_user_meta( get_current_user_id(), '_redux_templates_counts'); // To test left.
-			if ( ! \Redux_Functions_Ex::activated() ) {
-				$global_vars['left'] = ReduxTemplates\Init::left( get_current_user_id() );
-			} else {
-				$global_vars['left'] = 999;
-			}
+			$global_vars['left'] = ReduxTemplates\Init::left( get_current_user_id() );
 
 			// phpcs:ignore
 			// delete_user_meta( get_current_user_id(), '_redux_welcome_guide' ); // For testing.
@@ -163,6 +157,10 @@ class Init {
 		if ( ! $global_vars['mokama'] ) {
 			$global_vars['u'] = rtrim( \Redux_Functions_Ex::get_site_utm_url( '', 'library', true ), '1' );
 		}
+
+		// TODO - Only have this show up After 2 imports and Redux installed for a week. If they dismissed, then show up again in 30 days one last time.
+		// phpcs:ignore Squiz.Commenting.InlineComment.InvalidEndChar
+		// $global_vars['nps'] = __( 'Hey there. You\'ve been using Redux for a bit now, would you mind letting us know how likely you are to recommend Redux to a friend or colleague?', 'redux-framework' );
 
 		wp_localize_script(
 			'redux-templates-js',

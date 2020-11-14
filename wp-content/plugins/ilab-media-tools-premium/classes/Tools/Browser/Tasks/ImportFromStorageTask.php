@@ -21,6 +21,15 @@ use MediaCloud\Vendor\Mimey\MimeTypes;
 use function MediaCloud\Plugin\Utilities\arrayPath;
 
 class ImportFromStorageTask extends Task {
+	protected $reportHeaders = [
+		'Post ID',
+		'Key',
+		'Thumb Count',
+		'Thumbs',
+		'Import Only',
+		'Scaled',
+		'Result'
+	];
 
 	//region Static Task Properties
 
@@ -143,7 +152,7 @@ class ImportFromStorageTask extends Task {
 		Logger::info("Importing from storage: {$item['key']}", [], __METHOD__, __LINE__);
 		/** @var StorageTool $storageTool */
 		$storageTool = ToolsManager::instance()->tools['storage'];
-		$storageTool->importFileFromStorage($item['key'], arrayPath($item, 'thumbs', []), $importOnly, $preservePaths, arrayPath($item, 'scaled', null));
+		$storageTool->importFileFromStorage($item['key'], arrayPath($item, 'thumbs', []), $importOnly, $preservePaths, arrayPath($item, 'scaled', null), $this->reporter());
 
 		return true;
 	}

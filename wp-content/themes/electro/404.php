@@ -7,6 +7,8 @@
 
 electro_get_header(); ?>
 
+<?php if ( ! function_exists( 'elementor_theme_do_location' ) || ! elementor_theme_do_location( 'single' ) ) : ?>
+
 <div id="primary" class="content-area">
 	<main id="main" class="site-main">
 		<div class="row">
@@ -49,5 +51,7 @@ electro_get_header(); ?>
 		</div>
 	</main><!-- #main -->
 </div><!-- #primary -->
+
+<?php endif; ?>
 
 <?php get_footer();

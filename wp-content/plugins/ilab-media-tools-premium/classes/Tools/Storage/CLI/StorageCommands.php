@@ -17,6 +17,7 @@
 namespace MediaCloud\Plugin\Tools\Storage\CLI;
 
 use MediaCloud\Plugin\CLI\Command;
+use MediaCloud\Plugin\Tasks\TaskReporter;
 use MediaCloud\Plugin\Tools\Storage\StorageToolSettings;
 use MediaCloud\Plugin\Tools\Browser\Tasks\ImportFromStorageTask;
 use MediaCloud\Plugin\Tools\Integrations\PlugIns\Elementor\Tasks\UpdateElementorTask;
@@ -69,6 +70,9 @@ class StorageCommands extends Command {
 	 *
 	 * [--skip-thumbnails]
 	 * : Skips uploading thumbnails.  Requires Imgix.
+	 *
+	 * [--verify]
+	 * : Verifies the migration and generates a report with the details
 	 *
 	 * [--order-by=<string>]
 	 * : The field to sort the items to be imported by. Valid values are 'date', 'title' and 'filename'.
@@ -141,6 +145,11 @@ class StorageCommands extends Command {
 				unset($assoc_args['order']);
 
 				$assoc_args['sort-order'] = $orderBy.'-'.$dir;
+			}
+
+			if (isset($assoc_args['verify']) ) {
+				unset($assoc_args['verify']);
+				$assoc_args['verify-migration'] = true;
 			}
 
 			$task = new MigrateTask();
@@ -441,6 +450,9 @@ class StorageCommands extends Command {
 	 *
 	 * ## OPTIONS
 	 *
+	 * [--skip-imported]
+	 * : Skip imported items
+	 *
 	 * [--limit=<number>]
 	 * : The maximum number of items to process, default is infinity.
 	 *
@@ -491,7 +503,10 @@ class StorageCommands extends Command {
 		$postArgs = [
 			'post_type' => 'attachment',
 			'post_status' => 'inherit',
-			'meta_query' => [
+		];
+
+		if ($assoc_args['skip-imported']) {
+			$postArgs['meta_query'] = [
 				'relation' => 'AND',
 				[
 					'key'     => '_wp_attachment_metadata',
@@ -503,8 +518,8 @@ class StorageCommands extends Command {
 					'key'     => 'ilab_s3_info',
 					'compare' => 'NOT EXISTS',
 				],
-			],
-		];
+			];
+		}
 
 		if (isset($assoc_args['limit'])) {
 			$postArgs['posts_per_page'] = $assoc_args['limit'];
@@ -641,6 +656,342 @@ class StorageCommands extends Command {
 			}
 		}
 
+	}
+
+
+	/**
+	 * Fixes S3 metadata keys.  Do not use unless directed by Media Cloud support.
+	 *
+	 * ## OPTIONS
+	 *
+	 * <search>
+	 * : The key prefix to search for
+	 *
+	 * <replace>
+	 * : The replacement key prefix
+	 *
+	 * ## EXAMPLES
+	 *
+	 *     wp mediacloud fixKeys 'https://somedomain.com/uploads/' 'uploads/'
+	 *
+	 * @when after_wp_load
+	 *
+	 * @param $args
+	 * @param $assoc_args
+	 *
+	 * @throws \GuzzleHttp\Exception\GuzzleException
+	 */
+	public function fixKeys($args, $assoc_args) {
+		if (count($args) != 2) {
+			self::Error("fixKeys requires two arguments: wp mediacloud fixKeys <string to replace> <replacement>");
+		}
+
+
+		self::Info("Replacing {$args[0]} with {$args[1]}.\n", true);
+
+		Command::Out("", true);
+		Command::Warn("%WThis command will make some changes to your database that are not reversible.  Make sure to backup your database first.%n");
+		Command::Out("", true);
+
+		$result = \WP_CLI::confirm("Are you sure you want to continue?", $assoc_args);
+		self::Info($result, true);
+
+		$postArgs = [
+			'post_type' => 'attachment',
+			'post_status' => 'inherit',
+			'nopaging' => true
+		];
+
+		$q = new \WP_Query($postArgs);
+
+		$postCount = count($q->posts);
+		if ($postCount == 0) {
+			self::Error("No posts found.");
+			exit(0);
+		}
+
+		self::Info("Found $postCount posts.", true);
+
+		/** @var \WP_Post $post */
+		foreach($q->posts as $post) {
+			$meta = get_post_meta($post->ID,'_wp_attachment_metadata', true);
+			$isS3Info = false;
+			if (!isset($meta)) {
+				$isS3Info = true;
+				$meta = get_post_meta($post->ID,'ilab_s3_info', true);
+			}
+
+			if (empty($meta)) {
+				self::Warn("Post {$post->ID} has no metadata.");
+				continue;
+			}
+
+			$changed = false;
+			if (isset($meta['file']) && (strpos($meta['file'], $args[0]) !== false)) {
+				$changed = true;
+				$meta['file'] = str_replace($args[0], $args[1], $meta['file']);
+			}
+
+			if (isset($meta['s3'])) {
+				if (isset($meta['s3']['key']) && (strpos($meta['s3']['key'], $args[0]) !== false)) {
+					$changed = true;
+					$meta['s3']['key'] = str_replace($args[0], $args[1], $meta['s3']['key']);
+				}
+			}
+
+			if (isset($meta['sizes'])) {
+				foreach($meta['sizes'] as $size => $sizeData) {
+					if (isset($sizeData['s3'])) {
+						if (isset($sizeData['s3']['key']) && (strpos($sizeData['s3']['key'], $args[0]) !== false)) {
+							$changed = true;
+							$meta['sizes'][$size]['s3']['key'] = str_replace($args[0], $args[1], $sizeData['s3']['key']);
+						}
+					}
+				}
+			}
+
+			if ($changed) {
+				self::Info("Post ID # {$post->ID} {$post->post_name} changed.", true);
+				if ($isS3Info) {
+					update_post_meta($post->ID, 'ilab_s3_info', $meta);
+				} else {
+					update_post_meta($post->ID, '_wp_attachment_metadata', $meta);
+				}
+			} else {
+				self::Info("Post ID # {$post->ID} is not changed.", true);
+			}
+		}
+	}
+
+	/**
+	 * Verifies the media library's cloud storage status
+	 *
+	 * ## OPTIONS
+	 *
+	 * <filename>
+	 * : The filename for the CSV report to generate
+	 *
+	 * [--limit=<number>]
+	 * : The maximum number of items to process, default is infinity.
+	 *
+	 * [--offset=<number>]
+	 * : The starting offset to process.  Cannot be used with page.
+	 *
+	 * [--page=<number>]
+	 * : The starting offset to process.  Page numbers start at 1.  Cannot be used with offset.
+	 *
+	 * ## EXAMPLES
+	 *
+	 *     wp mediacloud verify verify.csv
+	 *
+	 * @when after_wp_load
+	 *
+	 * @param $args
+	 * @param $assoc_args
+	 *
+	 * @throws \GuzzleHttp\Exception\GuzzleException
+	 */
+	public function verify($args, $assoc_args) {
+		if (count($args) == 0) {
+			self::Error("Missing required argument.  Run the command: wp mediacloud verify <filename.csv>");
+		}
+
+		$allSizes = ilab_get_image_sizes();
+		$sizeKeys = array_keys($allSizes);
+		$sizeKeys = array_sort($sizeKeys);
+
+		/** @var StorageTool $storageTool */
+		$storageTool = ToolsManager::instance()->tools['storage'];
+
+		$csvFileName = $args[0];
+		if (strpos($csvFileName, '/') !== 0) {
+			$csvFileName = trailingslashit(getcwd()).$csvFileName;
+		}
+
+		if (file_exists($csvFileName)) {
+			unlink($csvFileName);
+		}
+
+		$headers = array_merge(array_merge([
+			'Post ID',
+			'Mime Type',
+			'S3 Metadata Status',
+			'Attachment URL',
+			'Original Source Image URL',
+		], $sizeKeys), ['Notes']);
+
+		$reporter = new TaskReporter($csvFileName, $headers, true);
+
+		$queryArgs = [
+			'post_type' => 'attachment',
+			'post_status' => 'inherit',
+			'fields' => 'ids',
+			'orderby' => 'date',
+			'order' => 'desc',
+			'meta_query' => [
+				'relation' => 'OR',
+				[
+					'key'     => '_wp_attachment_metadata',
+					'value'   => '"s3"',
+					'compare' => 'LIKE',
+					'type'    => 'CHAR',
+				],
+				[
+					'key'     => 'ilab_s3_info',
+					'compare' => 'EXISTS',
+				],
+			]
+		];
+
+		if (isset($assoc_args['limit'])) {
+			$queryArgs['posts_per_page'] = $assoc_args['limit'];
+			if (isset($assoc_args['page'])) {
+				$queryArgs['offset'] = max(0,($assoc_args['page'] - 1) * $assoc_args['limit']);
+			} else if (isset($assoc_args['offset'])) {
+				$queryArgs['offset'] = $assoc_args['offset'];
+			}
+		} else {
+			$queryArgs['posts_per_page'] = -1;
+		}
+
+
+		$query = new \WP_Query($queryArgs);
+		$postIds = $query->posts;
+
+		add_filter('media-cloud/dynamic-images/skip-url-generation', '__return_true');
+
+		foreach($postIds as $postId) {
+			self::Info("Processing $postId ... ");
+
+			$storageTool->verifyPost($postId, $reporter, function($message, $newLine = false) {
+				self::Info($message, $newLine);
+			});
+
+			self::Info("Done.", true);
+		}
+
+		remove_filter('media-cloud/dynamic-images/skip-url-generation', '__return_true');
+
+		$reporter->close();
+	}
+
+	/**
+	 * Syncs cloud storage to the local file system
+	 *
+	 * ## OPTIONS
+	 *
+	 * <filename>
+	 * : The filename for the CSV report to generate
+	 *
+	 * [--limit=<number>]
+	 * : The maximum number of items to process, default is infinity.
+	 *
+	 * [--offset=<number>]
+	 * : The starting offset to process.  Cannot be used with page.
+	 *
+	 * [--page=<number>]
+	 * : The starting offset to process.  Page numbers start at 1.  Cannot be used with offset.
+	 *
+	 * ## EXAMPLES
+	 *
+	 *     wp mediacloud syncLocal sync.csv
+	 *
+	 * @when after_wp_load
+	 *
+	 * @param $args
+	 * @param $assoc_args
+	 *
+	 * @throws \GuzzleHttp\Exception\GuzzleException
+	 */
+	public function syncLocal($args, $assoc_args) {
+		if (count($args) == 0) {
+			self::Error("Missing required argument.  Run the command: wp mediacloud syncLocal <filename.csv>");
+		}
+
+		$allSizes = ilab_get_image_sizes();
+		$sizeKeys = array_keys($allSizes);
+		$sizeKeys = array_sort($sizeKeys);
+		$sizeKeysLocal = [];
+		foreach($sizeKeys as $key) {
+			$sizeKeysLocal[] = $key;
+			$sizeKeysLocal[] = "$key Local";
+		}
+
+		/** @var StorageTool $storageTool */
+		$storageTool = ToolsManager::instance()->tools['storage'];
+
+		$csvFileName = $args[0];
+		if (strpos($csvFileName, '/') !== 0) {
+			$csvFileName = trailingslashit(getcwd()).$csvFileName;
+		}
+
+		if (file_exists($csvFileName)) {
+			unlink($csvFileName);
+		}
+
+		$headers = array_merge(array_merge([
+			'Post ID',
+			'Mime Type',
+			'S3 Metadata Status',
+			'Attachment URL',
+			'Attachment Local',
+			'Original Source Image URL',
+			'Original Source Image Local',
+		], $sizeKeysLocal), ['Notes']);
+
+		$reporter = new TaskReporter($csvFileName, $headers, true);
+
+		$queryArgs = [
+			'post_type' => 'attachment',
+			'post_status' => 'inherit',
+			'fields' => 'ids',
+			'orderby' => 'date',
+			'order' => 'desc',
+			'meta_query' => [
+				'relation' => 'OR',
+				[
+					'key'     => '_wp_attachment_metadata',
+					'value'   => '"s3"',
+					'compare' => 'LIKE',
+					'type'    => 'CHAR',
+				],
+				[
+					'key'     => 'ilab_s3_info',
+					'compare' => 'EXISTS',
+				],
+			]
+		];
+
+		if (isset($assoc_args['limit'])) {
+			$queryArgs['posts_per_page'] = $assoc_args['limit'];
+			if (isset($assoc_args['page'])) {
+				$queryArgs['offset'] = max(0,($assoc_args['page'] - 1) * $assoc_args['limit']);
+			} else if (isset($assoc_args['offset'])) {
+				$queryArgs['offset'] = $assoc_args['offset'];
+			}
+		} else {
+			$queryArgs['posts_per_page'] = -1;
+		}
+
+		$query = new \WP_Query($queryArgs);
+		$postIds = $query->posts;
+
+
+		add_filter('media-cloud/dynamic-images/skip-url-generation', '__return_true');
+
+		foreach($postIds as $postId) {
+			self::Info("Processing $postId ... ");
+
+			$storageTool->syncLocal($postId, $reporter, function($message, $newLine = false) {
+				self::Info($message, $newLine);
+			});
+
+			self::Info("Done.", true);
+		}
+
+		remove_filter('media-cloud/dynamic-images/skip-url-generation', '__return_true');
+
+		$reporter->close();
 	}
 
 	public static function Register() {

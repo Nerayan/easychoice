@@ -9,6 +9,15 @@ class ProductAndVariationStock
 {
     public static function resolve($element)
     {
+        $settings = get_option(Bootstrap::OPTIONS_KEY);
+
+        if (!empty($settings['skip_product_stocks'])) {
+            return [
+                '_stock' => 0,
+                '_separate_warehouse_stock' => []
+            ];
+        }
+
         $stock = 0;
 
         if (
@@ -99,9 +108,14 @@ class ProductAndVariationStock
 
     public static function set($productId, $stockData, $parentProductID = false)
     {
+        $settings = get_option(Bootstrap::OPTIONS_KEY);
+
+        if (!empty($settings['skip_product_stocks'])) {
+            return;
+        }
+
         global $wpdb;
 
-        $settings = get_option(Bootstrap::OPTIONS_KEY);
         $products1cStockNull = isset($settings['products_stock_null_rule'])
             ? $settings['products_stock_null_rule']
             : '0';

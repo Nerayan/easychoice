@@ -21,6 +21,10 @@ class ParserXmlOrders
 
         $hasDocuments = false;
 
+        if (!isset($_SESSION['ordersProcessed'])) {
+            $_SESSION['ordersProcessed'] = [];
+        }
+
         while ($reader->read()) {
             if (
                 $reader->name !== 'Документ' ||
@@ -51,6 +55,16 @@ class ParserXmlOrders
 
                 continue;
             }
+
+            if (in_array((int) $element->Номер, $_SESSION['ordersProcessed'])) {
+                Logger::logProtocol('has already been processed - ignore - ' . (int) $element->Номер);
+
+                unset($element);
+
+                continue;
+            }
+
+            $_SESSION['ordersProcessed'][] = (int) $element->Номер;
 
             $order = wc_get_order((int) $element->Номер);
 

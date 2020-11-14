@@ -36,7 +36,8 @@ class SectionNomenclatureExchangeConfigure
                             'type' => 'number',
                             'title' => esc_html__('Script running time (second):', 'itgalaxy-woocommerce-1c'),
                             'description' => esc_html__(
-                                'Maximum time the sync script runs (in seconds), for one step processing progress.',
+                                'Maximum time the sync script runs (in seconds), for one step processing progress. '
+                                    . 'Recommended value: 20, this is suitable for most hosts.',
                                 'itgalaxy-woocommerce-1c'
                             ),
                             'default' => 20
@@ -172,6 +173,60 @@ class SectionNomenclatureExchangeConfigure
                                 'itgalaxy-woocommerce-1c'
                             )
                         ],
+                        'get_product_sku_from' => [
+                            'type' => 'select',
+                            'title' => esc_html__('Get product sku from:', 'itgalaxy-woocommerce-1c'),
+                            'options' => [
+                                'sku' => esc_html__(
+                                    'SKU (data from node "Товар->Артикул")',
+                                    'itgalaxy-woocommerce-1c'
+                                ),
+                                'requisite_code' => esc_html__(
+                                    'Requisite value "Code"',
+                                    'itgalaxy-woocommerce-1c'
+                                ),
+                                'code' => esc_html__(
+                                    'Code (data from node "Товар->Код")',
+                                    'itgalaxy-woocommerce-1c'
+                                )
+                            ],
+                            'description' => esc_html__(
+                                'Indicate from which value the article number should be written.',
+                                'itgalaxy-woocommerce-1c'
+                            )
+                        ],
+                    ]
+                ],
+                [
+                    'title' => esc_html__('For Images', 'itgalaxy-woocommerce-1c'),
+                    'id' => 'nomenclature-images',
+                    'fields' => [
+                        'write_product_name_to_attachment_title' => [
+                            'type' => 'checkbox',
+                            'title' => esc_html__(
+                                'Write the name of the product in the title of the media file',
+                                'itgalaxy-woocommerce-1c'
+                            ),
+                            'description' => esc_html__(
+                                'If enabled, then in the title of the added media files (images) will be written the name of '
+                                . 'the product to which the picture belongs. Please note that the title will be write '
+                                . 'only for new or changed pictures.',
+                                'itgalaxy-woocommerce-1c'
+                            )
+                        ],
+                        'write_product_name_to_attachment_attribute_alt' => [
+                            'type' => 'checkbox',
+                            'title' => esc_html__(
+                                'Write the name of the product in the "Attribute Alt" of the media file',
+                                'itgalaxy-woocommerce-1c'
+                            ),
+                            'description' => esc_html__(
+                                'If enabled, the name of the product to which the picture belongs will be write in '
+                                . 'the metadata `_wp_attachment_image_alt` added media files (images). Please note '
+                                . 'that the metadata will be write only for new or changed pictures.',
+                                'itgalaxy-woocommerce-1c'
+                            )
+                        ],
                         'more_check_image_changed' => [
                             'type' => 'checkbox',
                             'title' => esc_html__(
@@ -182,28 +237,6 @@ class SectionNomenclatureExchangeConfigure
                                 'Turn this option on if you notice that changing the image in 1C does not lead '
                                 . 'to a change on the site. This can occur in a number of configurations in '
                                 . 'which the file name does not change when the image is changed.',
-                                'itgalaxy-woocommerce-1c'
-                            )
-                        ],
-                        'get_product_sku_from' => [
-                            'type' => 'select',
-                            'title' => esc_html__('Get product sku from:', 'itgalaxy-woocommerce-1c'),
-                            'options' => [
-                                'sku' => esc_html__(
-                                    'SKU',
-                                    'itgalaxy-woocommerce-1c'
-                                ),
-                                'requisite_code' => esc_html__(
-                                    'Requisite value "Code"',
-                                    'itgalaxy-woocommerce-1c'
-                                ),
-                                'code' => esc_html__(
-                                    'Code',
-                                    'itgalaxy-woocommerce-1c'
-                                )
-                            ],
-                            'description' => esc_html__(
-                                'Indicate from which value the article number should be written.',
                                 'itgalaxy-woocommerce-1c'
                             )
                         ],
@@ -242,6 +275,28 @@ class SectionNomenclatureExchangeConfigure
                     'title' => esc_html__('Skipping / excluding data', 'itgalaxy-woocommerce-1c'),
                     'id' => 'nomenclature-skipping-data',
                     'fields' => [
+                        'skip_product_prices' => [
+                            'type' => 'checkbox',
+                            'title' => esc_html__(
+                                'Skip product prices',
+                                'itgalaxy-woocommerce-1c'
+                            ),
+                            'description' => esc_html__(
+                                'If enabled, prices will not be writed or modified.',
+                                'itgalaxy-woocommerce-1c'
+                            )
+                        ],
+                        'skip_product_stocks' => [
+                            'type' => 'checkbox',
+                            'title' => esc_html__(
+                                'Skip product stocks',
+                                'itgalaxy-woocommerce-1c'
+                            ),
+                            'description' => esc_html__(
+                                'If enabled, stocks will not be writed or modified.',
+                                'itgalaxy-woocommerce-1c'
+                            )
+                        ],
                         'skip_products_without_photo' => [
                             'type' => 'checkbox',
                             'title' => esc_html__(
@@ -364,6 +419,8 @@ class SectionNomenclatureExchangeConfigure
             ]
         ];
 
-        Section::render($section);
+        Section::render(
+            apply_filters('itglx_wc1c_admin_section_nomenclature_fields', $section)
+        );
     }
 }

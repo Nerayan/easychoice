@@ -121,7 +121,7 @@ class wp_bootstrap_navwalker extends Walker_Nav_Menu {
 
 			$item_output = $args->before;
 
-			if( 'static_block' == $item->object ){
+			if( 'static_block' == $item->object || 'mas_static_content' === $item->object ){
 
 				if ( is_elementor_activated() ) {
 					$content = \Elementor\Plugin::$instance->frontend->get_builder_content_for_display( $item->object_id );

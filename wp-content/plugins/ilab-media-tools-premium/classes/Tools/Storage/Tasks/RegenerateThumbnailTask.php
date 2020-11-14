@@ -20,6 +20,13 @@ use MediaCloud\Plugin\Utilities\Logging\Logger;
 use function MediaCloud\Plugin\Utilities\postIdExists;
 
 class RegenerateThumbnailTask extends AttachmentTask {
+	protected $reportHeaders = [
+		'Post ID',
+		'Filename',
+		'Title',
+		'Status'
+	];
+
 	/**
 	 * The identifier for the task.  Must be overridden.  Default implementation throws exception.
 	 * @return string
@@ -109,7 +116,13 @@ class RegenerateThumbnailTask extends AttachmentTask {
 	public function willStart() {
 		parent::willStart();
 
+		add_filter('media-cloud/dynamic-images/skip-url-generation', '__return_true');
 		add_filter('media-cloud/optimizer/no-background', '__return_true', PHP_INT_MAX);
+	}
+
+	public function didFinish() {
+		remove_filter('media-cloud/dynamic-images/skip-url-generation', '__return_true');
+		parent::didFinish();
 	}
 
 	/**
@@ -128,13 +141,25 @@ class RegenerateThumbnailTask extends AttachmentTask {
 
 		$this->updateCurrentPost($post_id);
 
-		Logger::info("Processing $post_id", [], __METHOD__, __LINE__);
+		Logger::info("Regenerating $post_id", [], __METHOD__, __LINE__);
 
 		/** @var StorageTool $storageTool */
 		$storageTool = ToolsManager::instance()->tools['storage'];
-		$storageTool->regenerateFile($post_id);
+		$result = $storageTool->regenerateFile($post_id);
 
-		Logger::info("Finished processing $post_id", [], __METHOD__, __LINE__);
+		$this->reporter()->add([
+			$post_id,
+			$this->currentFile,
+			$this->currentTitle,
+			($result === true) ? 'Success' : $result
+		]);
+
+		if ($result !== true) {
+			Logger::error("Error regenerating $post_id: $result", [], __METHOD__, __LINE__);
+			return $result;
+		} else {
+			Logger::info("Finished regenerating $post_id", [], __METHOD__, __LINE__);
+		}
 
 		return true;
 	}

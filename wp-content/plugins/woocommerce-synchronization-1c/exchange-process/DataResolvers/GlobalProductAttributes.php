@@ -22,6 +22,8 @@ class GlobalProductAttributes
             $options = [];
         }
 
+        $ignoreAttributeProcessing = apply_filters('itglx_wc1c_attribute_ignore_guid_array', []);
+
         while (
             $reader->read() &&
             !($reader->name === 'Свойства' && $reader->nodeType === \XMLReader::END_ELEMENT)
@@ -76,7 +78,7 @@ class GlobalProductAttributes
 
             $element = simplexml_load_string(trim($reader->readOuterXml()));
 
-            if (!isset($element->Ид)) {
+            if (!isset($element->Ид) || in_array((string) $element->Ид, $ignoreAttributeProcessing, true)) {
                 unset($element);
                 $_SESSION['IMPORT_1C']['numberOfOptions'] = $numberOfOptions;
                 continue;
@@ -190,12 +192,24 @@ class GlobalProductAttributes
                         $variantTerm = Term::getTermIdByMeta((string) $variant->ИдЗначения);
                     }
 
+                    /*
+                     * check if there is a real term, perhaps it does not exist,
+                     * then delete the value from `termmeta` so as not to find it again
+                     */
                     if ($variantTerm) {
                         $realTerm = get_term($variantTerm, $attributeTaxName);
 
                         if (!$realTerm) {
+                            Logger::logChanges(
+                                '(attribute) Real term not exists, removed term meta by `term_id` - ' . $variantTerm,
+                                [get_term_meta($variantTerm, '_id_1c', true)]
+                            );
+
+                            delete_term_meta($variantTerm, '_id_1c');
                             $variantTerm = false;
                         }
+
+                        unset($realTerm);
                     }
 
                     if ($variantTerm) {

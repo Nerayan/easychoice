@@ -5,7 +5,7 @@ Theme URI:          https://themeforest.net/item/electro-electronics-store-wooco
 Author:             MadrasThemes
 Author URI:         https://madrasthemes.com/
 Description:        Electro is a robust and flexible WordPress theme, designed by Transvelo to help you make the most out of using WooCommerce to power your online store. The design is well suited for Electronics Store, Vendor based marketplaces, affiliate websites. It is built and comes bundled with most of the advanced features available in most popular eCommerce websites like amazon, flipkart, snapdeal, walmart, alibaba, aliexpress, etc.
-Version:            2.5.9
+Version:            2.6.1
 GitHub Theme URI:   https://github.com/Transvelo/electro
 GitHub Branch:      theme
 License:            GNU General Public License v2 or later
@@ -128,7 +128,7 @@ button,
 input,
 textarea {
   color: #333e48;
-  font-family: "Open Sans", "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+  font-family: "Inter", "Open Sans", "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
   line-height: 1.714em;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -140,7 +140,7 @@ input {
 
 select {
   color: initial;
-  font-family: "Open Sans", "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; }
+  font-family: "Inter", "Open Sans", "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; }
 
 .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
   margin-bottom: 0.5em; }

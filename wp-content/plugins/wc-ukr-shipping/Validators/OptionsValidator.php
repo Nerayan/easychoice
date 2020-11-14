@@ -2,6 +2,10 @@
 
 namespace kirillbdev\WCUkrShipping\Validators;
 
+if ( ! defined('ABSPATH')) {
+    exit;
+}
+
 class OptionsValidator
 {
   public function validateRequest($data)

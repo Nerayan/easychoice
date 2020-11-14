@@ -13,6 +13,7 @@
 
 namespace MediaCloud\Plugin\Tools\Integrations;
 
+use MediaCloud\Plugin\Tools\Storage\StorageGlobals;
 use MediaCloud\Plugin\Tools\Storage\StorageToolSettings;
 use MediaCloud\Plugin\Tools\Storage\StorageTool;
 use MediaCloud\Plugin\Tools\Tool;
@@ -115,11 +116,15 @@ class IntegrationsTool extends Tool {
 
 			$meta = wp_get_attachment_metadata($postID);
 
-			$s3 = [];
-			if (empty($meta['s3'])) {
-				$s3 = get_post_meta($postID, 'ilab_s3_info', true);
-				if (isset($s3['s3'])) {
-					$s3 = $s3['s3'];
+			$isILABS3Info = false;
+			if (empty($meta) || empty($meta['s3'])) {
+				$meta = get_post_meta($postID, 'ilab_s3_info', true);
+
+				$isILABS3Info = !empty($meta);
+				if (isset($meta['s3'])) {
+					$s3 = $meta['s3'];
+				} else {
+					$s3 = $meta;
 				}
 			} else {
 				$s3 = $meta['s3'];
@@ -136,6 +141,32 @@ class IntegrationsTool extends Tool {
 				}
 
 				return $file_path;
+			}
+
+			// Fix bad ilab_s3_info
+			if (!empty($isILABS3Info) && isset($meta['file']) && (!isset($meta['s3']))) {
+				$mime = get_post_mime_type($postID);
+
+				$s3 = [
+					'url' => $storageTool->client()->url($meta['file']),
+					'bucket' => $storageTool->client()->bucket(),
+					'privacy' => StorageToolSettings::privacy($mime),
+					'mime-type' => $mime,
+					'key'=> $meta['file'],
+					'provider' => StorageToolSettings::driver(),
+					'optimized' => null,
+					'options' => [],
+					'v' => MEDIA_CLOUD_INFO_VERSION,
+				];
+
+				$meta = [
+					'file' => $meta['file'],
+					'url' => $s3['url'],
+					'type' => $mime,
+					's3' => $s3
+				];
+
+				update_post_meta($postID, 'ilab_s3_info', $meta);
 			}
 
 			return $storageTool->client()->presignedUrl($s3['key'], $this->wooSignedURLExpiration);

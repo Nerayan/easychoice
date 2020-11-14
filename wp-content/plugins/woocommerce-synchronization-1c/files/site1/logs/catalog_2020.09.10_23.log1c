@@ -1,3 +1,0 @@
-[2020-09-10 20:59:43 | 134.249.146.137 | iamtheboss | GET | type=catalog&mode=checkauth] wc1c.INFO: START PROCESSING REQUEST {"Usage, mb":"21.46","Peak, mb":"21.63"} []
-[2020-09-10 20:59:43 | 134.249.146.137 | iamtheboss | GET | type=catalog&mode=checkauth] wc1c.INFO: success ["59bbb337b51cd35f227524ef8c874772"] []
-[2020-09-10 20:59:43 | 134.249.146.137 | iamtheboss | GET | type=catalog&mode=checkauth] wc1c.INFO: END PROCESSING REQUEST {"Usage, mb":"21.48","Peak, mb":"21.74"} []

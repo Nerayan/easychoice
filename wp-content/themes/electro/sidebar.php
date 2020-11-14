@@ -10,6 +10,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 ?>
 
+<?php if ( ! function_exists( 'elementor_theme_do_location' ) || ! elementor_theme_do_location( 'sidebar' ) ) : ?>
+
 <div id="sidebar" class="sidebar-blog" role="complementary">
 <?php
 	if ( is_active_sidebar( 'blog-sidebar-widgets' ) ) {
@@ -22,3 +24,5 @@ if ( ! defined( 'ABSPATH' ) ) {
 	}
 ?>
 </div><!-- /.sidebar-blog -->
+
+<?php endif; ?>

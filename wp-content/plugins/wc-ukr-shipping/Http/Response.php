@@ -2,6 +2,10 @@
 
 namespace kirillbdev\WCUkrShipping\Http;
 
+if ( ! defined('ABSPATH')) {
+    exit;
+}
+
 class Response
 {
   public static function make($type, $data = [])

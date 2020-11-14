@@ -41,7 +41,6 @@ if ( ! class_exists( 'Redux_AJAX_Save', false ) ) {
 						'action' => '',
 					)
 				);
-
 				die();
 			}
 
@@ -52,7 +51,6 @@ if ( ! class_exists( 'Redux_AJAX_Save', false ) ) {
 						'action' => '',
 					)
 				);
-
 				die();
 			}
 
@@ -114,6 +112,7 @@ if ( ! class_exists( 'Redux_AJAX_Save', false ) ) {
 								'status' => esc_html__( 'Your panel has no fields. Nothing to save.', 'redux-framework' ),
 							)
 						);
+						die();
 					}
 				}
 			}

@@ -151,35 +151,14 @@ if ( ! function_exists( 'electro_fonts_url' ) ) {
     function electro_fonts_url() {
 
         $fonts_url = '';
-        $fonts     = array();
-        $subsets   = 'latin,latin-ext';
 
-        /* translators: If there are characters in your language that are not supported by Open Sans, translate this to 'off'. Do not translate into your own language. */
-        if ( 'off' !== esc_html_x( 'on', 'Open Sans font: on or off', 'electro' ) ) {
-            $fonts[] =  'Open Sans:400,300,600,700,800,800italic,700italic,600italic,400italic,300italic';
+        if ( apply_filters( 'electro/enable_inter', true ) ) {
+            $fonts_url = 'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap';
+        } else {
+            $fonts_url = 'https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,300;1,400;1,600;1,700;1,800&display=swap';
         }
 
-        $fonts = apply_filters( 'electro_google_fonts', $fonts );
-
-        /* translators: To add an additional character subset specific to your language, translate this to 'greek', 'cyrillic', 'devanagari' or 'vietnamese'. Do not translate into your own language. */
-        $subset = esc_html_x( 'no-subset', 'Add new subset (greek, cyrillic, devanagari, vietnamese)', 'electro' );
-
-        if ( 'cyrillic' == $subset ) {
-            $subsets .= ',cyrillic,cyrillic-ext';
-        } elseif ( 'greek' == $subset ) {
-            $subsets .= ',greek,greek-ext';
-        } elseif ( 'devanagari' == $subset ) {
-            $subsets .= ',devanagari';
-        } elseif ( 'vietnamese' == $subset ) {
-            $subsets .= ',vietnamese';
-        }
-
-        if ( $fonts ) {
-            $fonts_url = add_query_arg( array(
-                'family' => urlencode( implode( '|', $fonts ) ),
-                'subset' => urlencode( $subsets ),
-            ), '//fonts.googleapis.com/css' );
-        }
+        $fonts_url = apply_filters( 'electro_google_fonts', $fonts_url );
 
         return $fonts_url;
     }

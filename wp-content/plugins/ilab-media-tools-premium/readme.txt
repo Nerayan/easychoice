@@ -2,10 +2,10 @@
 Contributors: mediacloud, interfacelab, freemius
 Tags: offload, amazon, s3, imgix, uploads, video, video encoding, google cloud storage, digital ocean spaces, wasabi, media, cdn, rekognition, cloudfront, images, crop, image editing, image editor, optimize, image optimization, media library, offload, offload s3, filepicker, smush, imagify, shortpixel
 Requires at least: 4.9
-Tested up to: 5.5
+Tested up to: 5.6
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
-Stable tag: 4.1.0
+Stable tag: 4.1.7
 Requires PHP: 7.1
 
 Automatically store media on Amazon S3, Google Cloud Storage, DigitalOcean Spaces + others. Serve CSS/JS assets through CDNs.  Integrate with Imgix.
@@ -104,6 +104,53 @@ Imgix is a content delivery network with a twist.  In addition to distributing y
 
 
 == Changelog ==
+
+= 4.1.7 =
+
+- When Debugging is enabled, a log file will be generated next to the CSV report.  This log file includes all the logging
+  that would normally be in the Debug Log, but limited to the time period the task was running.  If you are running into
+  issues with a task, make sure to turn on Debugging, re-run the task and then attach both the CSV and the log file
+  to a support ticket https://support.mediacloud.press/submit-issue/
+- The `report` command line command has been renamed to `verify`
+- You can run the Verify Library task from the WordPress admin by going to Media Cloud -> Task Manager.  In the
+  **Available Tasks** click on **Verify Library**.  When it is done running, a report will be in your
+  `WP_CONTENT/mcloud-reports` directory
+- Added a Sync Local task that copies down media from cloud storage to your local server.  You can run it from the
+  WordPress admin by going to Media Cloud -> Task Manager.  In the **Available Tasks** click on **Sync Local**.
+- You can also run the Sync Local task from the command line via `wp mediacloud syncLocal report-filename.csv`
+- Fixed a bug with direct uploads where the cloud storage provider wasn't being saved in the cloud metadata.  If you
+  run the Verify Library task, Media Cloud will fix the issue with any existing direct uploads in your library.
+- Added paging to the `syncLocal` and `verify` command line commands, ex: `wp mediacloud verify verify.csv --limit=100 --page=1`
+- Fixed Sync Local, Verify Library and Regenerate Thumbnails to work with Imgix enabled.
+
+= 4.1.4 =
+
+- Fix for Regenerate Thumbnails command, it will first attempt to download the original image, if that can't be found then
+  it will use the "scaled" image that WordPress 5.5 generates.
+- Added a new command, `wp mediacloud report report-name.csv` that iterates through all of the items in your media library and reports
+  on their cloud storage status.
+- The Migrate To Cloud, Import From Cloud, Clean Uploads and Regenerate Thumbnails tasks now generate CSV reports when
+  they run so you can see more details about what they did.  The reports are located in your
+  `WP_CONTENT/mcloud-reports` directory.
+- You can toggle task reporting on or off in the Settings -> Batch Processing settings or through the
+  `MCLOUD_TASKS_GENERATE_REPORTS` environment variable.  The default value is ON.
+- The Migrate To Cloud task has a new toggle *Generate Verification Report* which causes the task to verify that the
+  media migrated successfully.   This will generate a report in the aforementioned reports directory.
+- The `migrateToCloud` wp-cli command now accepts a `--verify` flag to force verification.
+
+= 4.1.2 =
+
+- Fix for WooCommerce integration with files that have malformed metadata
+
+= 4.1.1 =
+
+- Fix for compatibility with Amp plugin and any other plugin using symfony polyfills.
+- Fix for edge case issue where the S3 library was closing a resource stream causing a fatal error.
+- Added hooks `media-cloud/tools/added-tools` and `media-cloud/tools/added-tools` for inserting other tools in other plugins into the media cloud menu.
+- Fix for Mux database tables failing installation on constricted MySQL systems.
+- Only check for Mux database tables if Mux is enabled.
+- Fix for front end uploads with some form plugins.
+
 
 = 4.1.0 =
 

@@ -122,6 +122,12 @@ class MigrateTask extends AttachmentTask {
 				"description" => "Skip items that have already been imported.",
 				"type" => "checkbox",
 				"default" => true
+			],
+			'verify-migration' => [
+				"title" => "Generate Verification Report",
+				"description" => "Generates a verification report for the migrated media.  This report will be located in the <code>".WP_CONTENT_DIR."/mcloud-reports/</code> directory.",
+				"type" => "checkbox",
+				"default" => true
 			]
 		];
 
@@ -184,6 +190,26 @@ class MigrateTask extends AttachmentTask {
 		return $options;
 	}
 
+	//endregion
+
+	//region Reporter
+	public function reporter() {
+		if (empty($this->reportHeaders)) {
+			$allSizes = ilab_get_image_sizes();
+			$sizeKeys = array_keys($allSizes);
+			$sizeKeys = array_sort($sizeKeys);
+
+			$this->reportHeaders = array_merge(array_merge([
+				'Post ID',
+				'Mime Type',
+				'S3 Metadata Status',
+				'Attachment URL',
+				'Original Source Image URL',
+			], $sizeKeys), ['Notes']);
+		}
+
+		return parent::reporter();
+	}
 	//endregion
 
 	//region Data
@@ -258,6 +284,10 @@ class MigrateTask extends AttachmentTask {
 	public function performTask($item) {
 		$post_id = $item['id'];
 		if (!postIdExists($post_id)) {
+			if ($this->options['verify-migration']) {
+				$this->reporter()->add([$post_id, '', 'Post does not exist']);
+			}
+
 			return true;
 		}
 
@@ -268,6 +298,10 @@ class MigrateTask extends AttachmentTask {
 		/** @var StorageTool $storageTool */
 		$storageTool = ToolsManager::instance()->tools['storage'];
 		$storageTool->processImport($this->currentItem, $post_id, null, $this->options);
+
+		if ($this->options['verify-migration']) {
+			$storageTool->verifyPost($post_id, $this->reporter(), function ($message, $newLine = false) {});
+		}
 
 		Logger::info("Finished processing $post_id", [], __METHOD__, __LINE__);
 

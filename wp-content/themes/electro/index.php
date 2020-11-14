@@ -15,14 +15,18 @@ electro_get_header();
 
 	do_action( 'electro_before_main_content' );
 
-	if( have_posts() ) {
+    if ( ! function_exists( 'elementor_theme_do_location' ) || ! elementor_theme_do_location( 'archive' ) ) :
 
-		get_template_part( 'loop' );
+    	if( have_posts() ) {
 
-	} else {
+    		get_template_part( 'loop' );
 
-		get_template_part( 'templates/contents/content', 'none' );
-	}
+    	} else {
+
+    		get_template_part( 'templates/contents/content', 'none' );
+    	}
+
+    endif;
 
 	do_action( 'electro_after_main_content' );
 

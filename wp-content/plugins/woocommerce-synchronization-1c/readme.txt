@@ -35,6 +35,36 @@ Once completed, visit your plugins page.
 
 == Changelog ==
 
+= 1.78.3 =
+Chore: added new filters `itglx_wc1c_root_image_directory` and `itglx_wc1c_image_path_from_xml`.
+Fixed: checking the existence of a media file entry when searching by meta.
+Fixed: processing an existing but empty property node.
+Feature: ability to write the title of the product in the meta `_wp_attachment_image_alt` and the title of the media file.
+Feature: support processing length, width and height not only in the set of requisites, but also in the position `Товар->$node`.
+Feature: support for a variant of the scheme, when guid of the characteristic is in a separate node `ИдХарактеристики`, and not in node `Ид` through `#` (offers).
+Feature: support for processing multiple nodes `Значение` in node `ЗначенияСвойства` for the main properties of the product.
+
+= 1.74.3 =
+Chore: compatibility check with WC 4.6
+Chore: added new filter `itglx_wc1c_ignore_offer_set_stock_data`.
+Chore: added new filter `itglx_wc1c_attribute_ignore_guid_array`.
+Feature: ability to skip stocks processing.
+Feature: ability specify currency according to order data (by default the currency is used from the base price type).
+
+= 1.72.1 =
+Chore: do not form empty nodes if there is no data (unloading orders).
+Feature: ability to skip prices processing.
+
+= 1.71.7 =
+Fixed: break step processing logic error.
+Chore: added new action `itglx_wc1c_product_or_variation_has_empty_price`.
+Chore: added new filter `itglx_wc1c_do_not_delete_images_if_xml_does_not_contain`.
+Fixed: the number of units of a product can be 0, which results in a division by zero (unloading orders).
+Chore: admin notification in the list of products when there are products with a guid in the trash.
+Chore: compatibility check with WC 4.5
+Chore: delete meta entry if no real term exists.
+Feature: processing of variations in the schema less than 2.04 when the data on characteristics can be in the main product data.
+
 = 1.70.5 =
 Fixed: maybe empty group progress.
 Chore: compatibility check with WC 4.4
