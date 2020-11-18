@@ -13,6 +13,14 @@
 */
 
 /* GLOBAL */
+.secondary-nav>.menu-item a:focus,
+.secondary-nav>.menu-item a:hover,
+.footer-bottom-widgets ul>li>a:focus,
+.footer-bottom-widgets ul>li>a:hover,
+.primary-nav-menu .nav-inline>.menu-item a:focus,
+.primary-nav-menu .nav-inline>.menu-item a:hover {
+	color: #d5fee0;
+}
 /* .form-electro-wc-ppp, */
 .wpsl-search,
 .wpsl-provided-by,
@@ -78,51 +86,7 @@
 .departments-menu-v2.animated-dropdown .yamm .yamm-fw>.dropdown-menu>li {
 	min-width: auto !important;
 }
-/* .galamaga>.dropdown-menu {
-	display: flex !important;
-	flex-wrap: wrap;
-}
 
-.yamm-fw>.dropdown-menu>li {
-	min-width: 200px !important;
-    max-width: 200px !important;
-}
-
-.yamm-fw>.dropdown-menu>li.image-block {
-	min-width: 30% !important;
-    min-height: 100% !important;
-}
-
-.yamm-fw>.dropdown-menu>li.image-block .yamm-content {
-	padding: 0;
-}
-
-.dropdown-menu li.menu-item-has-children .dropdown-menu {
-	padding: 10px 5px !important;
-	border-top: none !important;
-}
-
-.dropdown-menu .flex-block a {
-	font-weight: bold !important;
-	border-bottom: 1px solid #ddd;
-}
-
-.dropdown-menu .flex-block a:after {
-	display: none;
-}
-
-.dropdown-menu li.flex-block.menu-item .dropdown-menu {
-	position: initial;
-	opacity: 100 !important;
-    visibility: visible !important;
-}
-
-.dropdown-menu li.flex-block.menu-item .dropdown-menu .subitem a {
-	font-weight: normal !important;
-	padding: 5px 0 !important;
-	margin-top: -5px !important;
-}
- */
 /* MENU END */
 .header-icon .woocommerce-Price-amount,
 .header-icons i,
@@ -156,7 +120,7 @@
 .departments-menu-v2 .departments-menu-v2-title+.dropdown-menu li.menu-item-has-children .dropdown-menu {
 	top: 0;
 }
-
+.departments-menu-v2 .departments-menu-v2-title+.dropdown-menu li.menu-item-has-children .dropdown-menu li>span,
 .departments-menu-v2 .departments-menu-v2-title+.dropdown-menu li.menu-item-has-children .dropdown-menu li>a {
 	padding: 5px 0 5px 10px;
 }
@@ -227,7 +191,7 @@
 }
 
 .footer-bottom-widgets {
-	background-color: #333e48;
+	background-color: #171718;
     color: #fff;
 }
 .copyright-bar {
@@ -382,11 +346,20 @@
 	
 /* 	FOOTER */
 	.handheld-footer {
-		background-color: #333e48;
+		background-color: #171718;
 	}
+	
 	
 	.handheld-footer .handheld-footer-bar {
 		background-color: #000;
+	}
+	
+	.handheld-footer .handheld-footer-bar .footer-call-us {
+		max-width: 185px;
+	}
+	
+	.handheld-footer .handheld-footer-bar .handheld-footer-bar-inner {
+		padding-bottom: 75px;
 	}
 	
 	.handheld-footer .handheld-widget-menu .columns {
