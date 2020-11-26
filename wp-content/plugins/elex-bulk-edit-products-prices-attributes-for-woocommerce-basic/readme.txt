@@ -3,7 +3,7 @@ Contributors: elextensions
 Tags: bulk edit, bulk edit attributes, bulk edit price, woocommerce bulk edit, woocommerce
 Requires at least: 3.0.1
 Tested up to: 5.5
-Stable tag: 1.1.0
+Stable tag: 1.1.1
 Requires PHP: 5.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -71,6 +71,10 @@ For complete list of features and details, please visit <a rel="nofollow" href="
 = Premium Version walkthrough Video =
 [youtube https://youtu.be/zcxf6_LhcjY]
 
+= About ELEXtensions =
+
+We are a group of WordPress and WooCommerce enthusiasts with a vision to solve genuine problems related to WordPress & WooCommerce stores.
+
 == Screenshots ==
 1. Filter Products for Bulk editing.
 2. Preview Filtered Products.
@@ -80,9 +84,6 @@ For complete list of features and details, please visit <a rel="nofollow" href="
 6. Bulk Edit Product Categories.
 7. Tested for 10,000+ products.
 
-= About ELEXtensions =
-
-We are a group of WordPress and WooCommerce enthusiasts with a vision to solve genuine problems related to WordPress & WooCommerce stores.
 
 
 == Frequently Asked Questions ==
@@ -133,6 +134,9 @@ If you are facing any issues, please create a topic at the plugin support sectio
  = 1.1.0 =
  * Tested WC Version 4.6
 
+ = 1.1.1 =
+ * Tested WC Version 4.7
+
 == Upgrade Notice ==
 
 = 1.0.1 =
@@ -169,6 +173,9 @@ If you are facing any issues, please create a topic at the plugin support sectio
 
  = 1.1.0 =
  * Tested WC Version 4.6.
+ 
+ = 1.1.1 = 
+ * Tested WC Version 4.7
 
 
 

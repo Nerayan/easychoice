@@ -172,6 +172,12 @@
 	pointer-events: all;
 }
 
+/* ONSALE */
+.onsale-products .stock-sold {
+	opacity: 0;
+	pointer-events: none;
+}
+
 /* PRODUCT */
 .product-sku {
 	font-size: .929em;

@@ -146,7 +146,6 @@ class Product
                 'post_title' => $productEntry['title'],
                 'post_author' => $postAuthor,
                 'post_type' => 'product',
-                'post_name' => self::uniquePostSlug($productEntry['title']),
                 'post_status' => 'publish'
             ];
 
@@ -683,43 +682,6 @@ class Product
         }
 
         return false;
-    }
-
-    public static function uniquePostSlug($slug, $post_ID = null)
-    {
-        global $wpdb;
-
-        $slug = sanitize_title($slug);
-
-        if ($post_ID) {
-            $check_sql = "SELECT `post_name` FROM `{$wpdb->posts}` WHERE `post_name` = '%s' AND `post_type` = 'product' AND `ID` != '%d' LIMIT 1";
-            $post_name_check = $wpdb->get_var($wpdb->prepare($check_sql, $slug, $post_ID));
-
-            if ($post_name_check) {
-                $suffix = 2;
-                do {
-                    $alt_post_name = _truncate_post_slug($slug, 200 - (strlen($suffix) + 1)) . "-$suffix";
-                    $post_name_check = $wpdb->get_var($wpdb->prepare($check_sql, $alt_post_name, $post_ID));
-                    $suffix++;
-                } while ($post_name_check);
-                $slug = $alt_post_name;
-            }
-        } else {
-            $check_sql = "SELECT `post_name` FROM `{$wpdb->posts}` WHERE `post_name` = '%s' AND `post_type` = 'product' LIMIT 1";
-            $post_name_check = $wpdb->get_var($wpdb->prepare($check_sql, $slug));
-
-            if ($post_name_check) {
-                $suffix = 2;
-                do {
-                    $alt_post_name = _truncate_post_slug($slug, 200 - (strlen($suffix) + 1)) . "-$suffix";
-                    $post_name_check = $wpdb->get_var($wpdb->prepare($check_sql, $alt_post_name));
-                    $suffix++;
-                } while ($post_name_check);
-                $slug = $alt_post_name;
-            }
-        }
-
-        return $slug;
     }
 
     private static function updateLookupTable($id, $stockStatus)

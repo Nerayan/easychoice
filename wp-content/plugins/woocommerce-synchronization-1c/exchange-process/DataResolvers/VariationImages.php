@@ -26,7 +26,7 @@ class VariationImages
             // delete images that do not exist in the current set
             foreach ($oldImages as $oldImage) {
                 $attachID = self::findImageByMeta($oldImage);
-                $imageSrcPath = self::imageSrcResultPath($dirName, $oldImage);
+                $imageSrcPath = self::imageSrcResultPath($dirName, $oldImage, $variationID, $element);
                 $removeImage = false;
 
                 if ($attachID && !in_array($oldImage, $images, true)) {
@@ -57,7 +57,7 @@ class VariationImages
                 if ($attachID && !is_wp_error($attachID)) {
                     $attachmentIds[] = $attachID;
                 } else {
-                    $imageSrcPath = self::imageSrcResultPath($dirName, $image);
+                    $imageSrcPath = self::imageSrcResultPath($dirName, $image, $variationID, $element);
 
                     if (file_exists($imageSrcPath)) {
                         $attachID = self::resolveImage($image, $imageSrcPath, $variationID, $postAuthor);
@@ -143,9 +143,15 @@ class VariationImages
         return $attachID;
     }
 
-    private static function imageSrcResultPath($rootImagePath, $imageRelativePath)
+    private static function imageSrcResultPath($rootImagePath, $imageRelativePath, $variationID, $element)
     {
-        $imageSrcPath = $rootImagePath . apply_filters('itglx_wc1c_image_path_from_xml', $imageRelativePath);
+        $imageSrcPath = $rootImagePath
+            . apply_filters(
+                'itglx_wc1c_image_path_from_xml',
+                $imageRelativePath,
+                $variationID,
+                $element
+            );
 
         return str_replace('//', '/', $imageSrcPath);
     }

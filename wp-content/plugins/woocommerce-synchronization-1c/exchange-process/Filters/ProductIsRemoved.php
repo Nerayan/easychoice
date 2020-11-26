@@ -28,6 +28,13 @@ class ProductIsRemoved
             return true;
         }
 
+        if (
+            isset($element['Статус']) &&
+            (string) $element['Статус'] === 'Удален'
+        ) {
+            return true;
+        }
+
         return $isRemoved;
     }
 }

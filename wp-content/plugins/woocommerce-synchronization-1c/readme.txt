@@ -35,7 +35,17 @@ Once completed, visit your plugins page.
 
 == Changelog ==
 
-= 1.78.3 =
+= 1.80.0 =
+Feature: ability to disable the formation of data on the contragent (unloading orders).
+
+= 1.79.3 =
+Chore: new options for filter `itglx_wc1c_image_path_from_xml`.
+Fixed: product deletion behavior if attribute `Статус` is present in the value `Удален` for the product node.
+Chore: compatibility check with WC 4.7
+Feature: processing units of measure for a scheme 3.1
+
+= 1.78.4 =
+Chore: refusal to generate `post_name` for product, using standard behavior `WordPress`.
 Chore: added new filters `itglx_wc1c_root_image_directory` and `itglx_wc1c_image_path_from_xml`.
 Fixed: checking the existence of a media file entry when searching by meta.
 Fixed: processing an existing but empty property node.

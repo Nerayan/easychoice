@@ -14,6 +14,7 @@ class Bootstrap
 {
     const OPTIONS_KEY = 'wc-itgalaxy-1c-exchange-settings';
     const OPTION_INFO_KEY = 'wc-itgalaxy-1c-exchange-additional-info';
+    const OPTION_UNITS_KEY = 'itglx_wc1c_nomenclature_units';
     const PURCHASE_CODE_OPTIONS_KEY = 'wc-itgalaxy-1c-exchange-purchase-code';
     const CRON = 'wc-itgalaxy-1c-exchange-cron';
 
@@ -170,6 +171,10 @@ class Bootstrap
 
         if (get_option('all_prices_types') === false) {
             add_option('all_prices_types', [], '', 'no');
+        }
+
+        if (get_option(self::OPTION_UNITS_KEY) === false) {
+            add_option(self::OPTION_UNITS_KEY, [], '', 'no');
         }
 
         if (get_option('itglx_wc1c_nomenclature_categories') === false) {

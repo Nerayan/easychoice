@@ -94,36 +94,9 @@ class SectionLogging
                 <span class="spinner-grow spinner-grow-sm" role="status"></span>
             </button>
             <hr>
-            <?php $info = \get_option(Bootstrap::OPTION_INFO_KEY, []); ?>
-            <p>
-                <strong><?php esc_html_e('Last request from 1C', 'itgalaxy-woocommerce-1c'); ?>:</strong>
-                <?php
-                echo empty($info['last_request'])
-                    ? esc_html__('No requests have been made yet', 'itgalaxy-woocommerce-1c')
-                    : esc_html(
-                        $info['last_request']['date']
-                        . ' | '
-                        . $info['last_response']['user']
-                        . ' | '
-                        . $info['last_request']['query']
-                    );
-                ?>
-            </p>
-            <p>
-                <strong><?php esc_html_e('Last response for 1C', 'itgalaxy-woocommerce-1c'); ?>:</strong>
-                <?php
-                echo empty($info['last_response'])
-                    ? esc_html__('No response has been sent yet', 'itgalaxy-woocommerce-1c')
-                    : esc_html($info['last_response']['date']
-                        . ' | '
-                        . $info['last_response']['user']
-                        . ' | '
-                        . $info['last_response']['query']
-                        . ' | '
-                        . $info['last_response']['message']
-                    );
-                ?>
-            </p>
+            <div data-ui-component="itglx-wc1c-ajax-last-request-response-container">
+                <span class="spinner-grow spinner-grow-sm" role="status"></span>
+            </div>
             <?php
         }
 

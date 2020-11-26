@@ -51,6 +51,26 @@ function resolveTempCountAndSize()
   });
 }
 
+function resolveRequestResponseData()
+{
+  var ajaxUrl = typeof ajaxurl !== 'undefined' ? ajaxurl : '/wp-admin/admin-ajax.php';
+  var $resultContainer = $('[data-ui-component="itglx-wc1c-ajax-last-request-response-container"]');
+  var $spinner = $resultContainer.find('span[role="status"]');
+
+  $spinner.removeClass('d-none');
+
+  $.ajax({
+    url: ajaxUrl,
+    method: "POST",
+    data: {
+      action: 'ItglxWc1cLastRequestResponse'
+    },
+    success: function (response) {
+      $resultContainer.html(response);
+    }
+  });
+}
+
 $(document).ready(function () {
   $('[data-ui-component="tabs"]').tabs();
   $('[data-ui-component="select2"]').select2();
@@ -63,6 +83,11 @@ $(document).ready(function () {
 
   resolveLogsCountAndSize();
   resolveTempCountAndSize();
+  resolveRequestResponseData();
+
+  setInterval(function () {
+    resolveRequestResponseData();
+  }, 20000);
 });
 
 $(document).on('click', '[data-ui-component="itglx-wc1c-ajax-clear-logs"]', function () {

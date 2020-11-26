@@ -146,6 +146,15 @@ class SectionForExchangeOrders
                                 'itgalaxy-woocommerce-1c'
                             )
                         ],
+                        'send_orders_do_not_generate_contragent_data' => [
+                            'type' => 'checkbox',
+                            'title' => esc_html__('Do not generate data on the contragent', 'itgalaxy-woocommerce-1c'),
+                            'description' => esc_html__(
+                                'If enabled, then data on the contragent, that is "Контрагенты->Контрагент", is not'
+                                . 'added to the order.',
+                                'itgalaxy-woocommerce-1c'
+                            )
+                        ],
                         'send_orders_status_is_paid' => [
                             'title' => esc_html__(
                                 'Order statuses at which to transfer props `Заказ оплачен` in the value `true`:',

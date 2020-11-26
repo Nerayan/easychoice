@@ -77,6 +77,7 @@ class Cron
     {
         global $wpdb;
 
+        Logger::startProcessingRequestLogProtocolEntry(true);
         Logger::logProtocol('termsRecount1cSynchronization - started');
 
         delete_option('product_cat_children');
@@ -163,12 +164,14 @@ class Cron
         }
 
         Logger::logProtocol('termsRecount1cSynchronization - end');
+        Logger::endProcessingRequestLogProtocolEntry();
     }
 
     public function actionDisableItems()
     {
         global $wpdb;
 
+        Logger::startProcessingRequestLogProtocolEntry(true);
         Logger::logProtocol('disableItems1cSynchronization - started');
 
         $all1cProducts = get_option('all1cProducts');
@@ -227,6 +230,7 @@ class Cron
         update_option('currentAll1cGroup', []);
 
         Logger::logProtocol('disableItems1cSynchronization - end');
+        Logger::endProcessingRequestLogProtocolEntry();
     }
 
     public function recalculatePostCountInTax($tax)
