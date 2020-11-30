@@ -455,3 +455,105 @@ if ( ! function_exists( 'redux_apply_header_user_account_menu' ) ) {
 		return $electro_options['header_user_account_logged_in_menu'];
 	}
 }
+
+if ( ! function_exists ( 'redux_toggle_top_bar_v3_additional_links' ) ) {
+	function redux_toggle_top_bar_v3_additional_links( $enable ) {
+		global $electro_options;
+
+		if ( ! isset( $electro_options['header_enable_topbar_additional_links'] ) ) {
+			$electro_options['header_enable_topbar_additional_links'] = true;
+		}
+
+		if ( $electro_options['header_enable_topbar_additional_links'] ) {
+			$enable = true;
+		} else {
+			$enable = false;
+		}
+
+		return $enable;
+	}
+}
+
+if ( ! function_exists( 'redux_apply_top_bar_v3_additional_links_title' ) ) {
+	function redux_apply_top_bar_v3_additional_links_title( $title ) {
+		global $electro_options;
+
+		if( isset( $electro_options['header_topbar_additional_links_title'] ) ) {
+			$title = $electro_options['header_topbar_additional_links_title'];
+		}
+
+		return $title;
+	}
+}
+
+if ( ! function_exists( 'redux_apply_top_bar_v3_additional_link_1_text' ) ) {
+	function redux_apply_top_bar_v3_additional_link_1_text( $text ) {
+		global $electro_options;
+
+		if( isset( $electro_options['header_topbar_additional_link_1_text'] ) ) {
+			$text = $electro_options['header_topbar_additional_link_1_text'];
+		}
+
+		return $text;
+	}
+}
+
+if ( ! function_exists( 'redux_apply_top_bar_v3_additional_link_1_url' ) ) {
+	function redux_apply_top_bar_v3_additional_link_1_url( $url ) {
+		global $electro_options;
+
+		if( isset( $electro_options['header_topbar_additional_link_1_url'] ) ) {
+			$url = $electro_options['header_topbar_additional_link_1_url'];
+		}
+
+		return $url;
+	}
+}
+
+if ( ! function_exists( 'redux_apply_top_bar_v3_additional_link_1_image' ) ) {
+	function redux_apply_top_bar_v3_additional_link_1_image( $image ) {
+		global $electro_options;
+
+		if ( isset( $electro_options['header_topbar_additional_link_1_image'] ) && isset( $electro_options['header_topbar_additional_link_1_image']['id'] ) && ! empty( $electro_options['header_topbar_additional_link_1_image']['id'] ) ) {
+			$image = $electro_options['header_topbar_additional_link_1_image']['id'];
+		}
+
+		return $image;
+	}
+}
+
+if ( ! function_exists( 'redux_apply_top_bar_v3_additional_link_2_text' ) ) {
+	function redux_apply_top_bar_v3_additional_link_2_text( $text ) {
+		global $electro_options;
+
+		if( isset( $electro_options['header_topbar_additional_link_2_text'] ) ) {
+			$text = $electro_options['header_topbar_additional_link_2_text'];
+		}
+
+		return $text;
+	}
+}
+
+if ( ! function_exists( 'redux_apply_top_bar_v3_additional_link_2_url' ) ) {
+	function redux_apply_top_bar_v3_additional_link_2_url( $url ) {
+		global $electro_options;
+
+		if( isset( $electro_options['header_topbar_additional_link_2_url'] ) ) {
+			$url = $electro_options['header_topbar_additional_link_2_url'];
+		}
+
+		return $url;
+	}
+}
+
+if ( ! function_exists( 'redux_apply_top_bar_v3_additional_link_2_image' ) ) {
+	function redux_apply_top_bar_v3_additional_link_2_image( $image ) {
+		global $electro_options;
+
+		if ( isset( $electro_options['header_topbar_additional_link_2_image'] ) && isset( $electro_options['header_topbar_additional_link_2_image']['id'] ) && ! empty( $electro_options['header_topbar_additional_link_2_image']['id'] ) ) {
+			$image = $electro_options['header_topbar_additional_link_2_image']['id'];
+		}
+
+		return $image;
+	}
+}

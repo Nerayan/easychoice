@@ -193,7 +193,7 @@ class RootProcessStarter
             throw new \Exception(
                 esc_html__(
                     'Error! Empty login or password! Most likely your PHP is operating in cgi(fcgi) mode and '
-                        . 'processing of the authorization header is configured.',
+                        . 'processing of the authorization header is not configured.',
                     'itgalaxy-woocommerce-1c'
                 )
             );
@@ -230,6 +230,8 @@ class RootProcessStarter
             if (preg_match('/Basic\s+(.*)$/i', $_SERVER[$environmentVariable], $matches) === 0) {
                 continue;
             }
+
+            Logger::logProtocol('fixed empty login/password through `fixCgiAuth`');
 
             list($name, $password) = explode(':', base64_decode($matches[1]));
             $_SERVER['PHP_AUTH_USER'] = trim($name);

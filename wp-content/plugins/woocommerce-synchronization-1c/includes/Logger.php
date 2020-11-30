@@ -7,11 +7,7 @@ use Monolog\Logger as MonologLogger;
 
 class Logger
 {
-    public static $format = '[%datetime% | %request_id%] %channel%.%level_name%: '
-        . "%message% %context%\n";
-
-    public static $formatStartEnd = '[%datetime% | %ip% | %user% | %method% | %query%] %channel%.%level_name%: '
-    . "%message% %context%\n";
+    public static $format = '[%datetime% | %request_id%] %channel%.%level_name%: %message% %context%' . "\n";
 
     public static $log;
 
@@ -39,53 +35,19 @@ class Logger
         }
     }
 
-    public static function logStartEnd($message, $data = [])
+    public static function startProcessingRequestLogProtocolEntry($ignoreWriteLastRequest = false)
     {
-        $settings = get_option(Bootstrap::OPTIONS_KEY);
+        if (!$ignoreWriteLastRequest) {
+            $option = \get_option(Bootstrap::OPTION_INFO_KEY, []);
 
-        if (
-            !empty($settings['enable_logs_protocol']) &&
-            is_writable(self::getLogPath())
-        ) {
-            if (empty($_SESSION['logSynchronizeProcessFile'])) {
-                // prepare and set log file path
-                self::setLogFilePathToSession(
-                    self::generateLogFilePath()
-                );
-            }
+            $option['last_request'] = [
+                'date' => \date_i18n('Y-m-d H:i:s'),
+                'user' => isset($_SERVER['PHP_AUTH_USER']) ? $_SERVER['PHP_AUTH_USER'] : 'non user',
+                'query' => $_SERVER['QUERY_STRING']
+            ];
 
-            try {
-                $log = new MonologLogger('wc1c');
-
-                $handler = new StreamHandler($_SESSION['logSynchronizeProcessFile'], MonologLogger::INFO);
-                $handler->setFormatter(new LineFormatter(self::$formatStartEnd));
-
-                $log->pushHandler($handler);
-
-                $log->pushProcessor(function ($entry) {
-                    return self::addClientData($entry);
-                });
-
-                $log->info($message, (array) $data);
-
-                unset($log);
-            } catch (\Exception $exception) {
-                // nothing
-            }
+            \update_option(Bootstrap::OPTION_INFO_KEY, $option);
         }
-    }
-
-    public static function startProcessingRequestLogProtocolEntry()
-    {
-        $option = \get_option(Bootstrap::OPTION_INFO_KEY, []);
-
-        $option['last_request'] = [
-            'date' => \date_i18n('Y-m-d H:i:s'),
-            'user' => isset($_SERVER['PHP_AUTH_USER']) ? $_SERVER['PHP_AUTH_USER'] : 'non user',
-            'query' => $_SERVER['QUERY_STRING']
-        ];
-
-        \update_option(Bootstrap::OPTION_INFO_KEY, $option);
 
         if (!isset($_SESSION['exchange_id'])) {
             $_SESSION['exchange_id'] = uniqid();
@@ -93,12 +55,12 @@ class Logger
 
         $_SESSION['request_id'] = uniqid();
 
-        self::logStartEnd('START PROCESSING REQUEST', self::getStartEndRequestData());
+        self::logChanges('START PROCESSING REQUEST', self::getStartEndRequestData());
     }
 
     public static function endProcessingRequestLogProtocolEntry()
     {
-        self::logStartEnd('END PROCESSING REQUEST', self::getStartEndRequestData());
+        self::logChanges('END PROCESSING REQUEST', self::getStartEndRequestData());
     }
 
     public static function saveLastResponseInfo($message)
@@ -238,20 +200,6 @@ class Logger
 
     private static function addClientData($record)
     {
-        $ip = '';
-
-        if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
-            $ip = $_SERVER['HTTP_CLIENT_IP'];
-        } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-            $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
-        } elseif (!empty($_SERVER['REMOTE_ADDR'])) {
-            $ip = $_SERVER['REMOTE_ADDR'];
-        }
-
-        $record['ip'] = $ip;
-        $record['method'] = $_SERVER['REQUEST_METHOD'];
-        $record['query'] = $_SERVER['QUERY_STRING'];
-        $record['user'] = isset($_SERVER['PHP_AUTH_USER']) ? $_SERVER['PHP_AUTH_USER'] : 'non user';
         $record['request_id'] = '';
 
         if (isset($_SESSION['exchange_id'])) {
@@ -263,14 +211,26 @@ class Logger
 
     private static function getStartEndRequestData()
     {
-        $usage = round(memory_get_usage() / 1024 / 1024, 2);
-        $peak = round(memory_get_peak_usage() / 1024 / 1024, 2);
+        $ip = '';
 
-        return [
-            'Request' => $_SESSION['exchange_id'] . '.' . $_SESSION['request_id'],
-            'Usage, mb' => (string) $usage,
-            'Peak, mb' => (string) $peak,
+        if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+            $ip = $_SERVER['HTTP_CLIENT_IP'];
+        } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+            $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+        } elseif (!empty($_SERVER['REMOTE_ADDR'])) {
+            $ip = $_SERVER['REMOTE_ADDR'];
+        }
+
+        $data = [
+            'Query' => $_SERVER['QUERY_STRING'],
+            'Usage, mb' => (string) round(memory_get_usage() / 1024 / 1024, 2),
+            'Peak, mb' => (string) round(memory_get_peak_usage() / 1024 / 1024, 2),
+            'Ip' => $ip,
+            'Method' => $_SERVER['REQUEST_METHOD'],
+            'User' => isset($_SERVER['PHP_AUTH_USER']) ? $_SERVER['PHP_AUTH_USER'] : 'non user',
             'Site' => \site_url()
         ];
+
+        return $data;
     }
 }

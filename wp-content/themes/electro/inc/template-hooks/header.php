@@ -13,6 +13,8 @@ add_action( 'electro_before_header_v7',    'electro_top_bar_center',      10 );
 
 add_action( 'electro_before_header_v8',    'electro_top_bar_v2',         10 );
 
+add_action( 'electro_before_header_v9',    'electro_top_bar_v3',         10 );
+
 add_action( 'electro_content_top',      'electro_breadcrumb',               10 );
 add_action( 'electro_content_top',      'electro_site_content_inner_open',  20 );
 add_action( 'electro_content_bottom',   'electro_site_content_inner_close', 10 );
@@ -26,6 +28,7 @@ require_once get_template_directory() . '/inc/template-hooks/header-v5.php';
 require_once get_template_directory() . '/inc/template-hooks/header-v6.php';
 require_once get_template_directory() . '/inc/template-hooks/header-v7.php';
 require_once get_template_directory() . '/inc/template-hooks/header-v8.php';
+require_once get_template_directory() . '/inc/template-hooks/header-v9.php';
 
 add_action( 'electro_after_header',         'electro_handheld_header',      10 );
 

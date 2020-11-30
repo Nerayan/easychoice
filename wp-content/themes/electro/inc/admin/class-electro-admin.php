@@ -44,6 +44,8 @@ class Electro_Admin {
 		include_once( 'meta-boxes/class-electro-meta-box-home-v5.php' );
 		include_once( 'meta-boxes/class-electro-meta-box-home-v6.php' );
 		include_once( 'meta-boxes/class-electro-meta-box-home-v7.php' );
+		include_once( 'meta-boxes/class-electro-meta-box-home-v8.php' );
+		include_once( 'meta-boxes/class-electro-meta-box-home-v9.php' );
 		include_once( 'meta-boxes/class-electro-meta-box-home-mobile-v1.php' );
 		include_once( 'meta-boxes/class-electro-meta-box-home-mobile-v2.php' );
 		include_once( 'meta-boxes/class-electro-meta-box-page.php' );

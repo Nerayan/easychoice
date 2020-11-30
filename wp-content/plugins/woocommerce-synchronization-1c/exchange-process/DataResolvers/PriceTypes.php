@@ -6,16 +6,17 @@ use Itgalaxy\Wc\Exchange1c\Includes\Logger;
 
 class PriceTypes
 {
-    public static function process(&$reader)
+    /**
+     * Processing and save global info by price types.
+     *
+     * @param \XMLReader $reader
+     *
+     * @return void
+     */
+    public static function process(\XMLReader &$reader)
     {
-        $settings = get_option(Bootstrap::OPTIONS_KEY);
-
-        if (!empty($settings['skip_product_prices'])) {
-            return;
-        }
-
-        // run once per exchange
-        if (isset($_SESSION['IMPORT_1C']['price_types_parse'])) {
+        // if processing is disabled or processing has already occurred
+        if (self::isDisabled() || self::isParsed()) {
             return;
         }
 
@@ -56,6 +57,31 @@ class PriceTypes
             update_option('all_prices_types', $prices);
         }
 
+        self::setParsed();
+    }
+
+    private static function isDisabled()
+    {
+        $settings = get_option(Bootstrap::OPTIONS_KEY);
+
+        if (!empty($settings['skip_product_prices'])) {
+            return true;
+        }
+
+        return false;
+    }
+
+    private static function isParsed()
+    {
+        if (isset($_SESSION['IMPORT_1C']['price_types_parse'])) {
+            return true;
+        }
+
+        return false;
+    }
+
+    private static function setParsed()
+    {
         $_SESSION['IMPORT_1C']['price_types_parse'] = true;
     }
 }

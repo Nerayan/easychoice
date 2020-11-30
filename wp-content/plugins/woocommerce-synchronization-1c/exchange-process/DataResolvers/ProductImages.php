@@ -30,7 +30,7 @@ class ProductImages
             // delete images that do not exist in the current set
             foreach ($oldImages as $oldImage) {
                 $attachID = self::findImageByMeta($oldImage);
-                $imageSrcPath = self::imageSrcResultPath($dirName, $oldImage);
+                $imageSrcPath = self::imageSrcResultPath($dirName, $oldImage, $productEntry['ID'], $element);
                 $removeImage = false;
 
                 if ($attachID && !in_array($oldImage, $images, true)) {
@@ -78,7 +78,7 @@ class ProductImages
                 if ($attachID && !is_wp_error($attachID)) {
                     $attachmentIds[] = $attachID;
                 } else {
-                    $imageSrcPath = self::imageSrcResultPath($dirName, $image);
+                    $imageSrcPath = self::imageSrcResultPath($dirName, $image, $productEntry['ID'], $element);
 
                     if (file_exists($imageSrcPath)) {
                         $attachID = self::resolveImage($image, $imageSrcPath, $productEntry['ID'], $postAuthor);
@@ -265,9 +265,15 @@ class ProductImages
         return $attachID;
     }
 
-    private static function imageSrcResultPath($rootImagePath, $imageRelativePath)
+    private static function imageSrcResultPath($rootImagePath, $imageRelativePath, $productID, $element)
     {
-        $imageSrcPath = $rootImagePath . apply_filters('itglx_wc1c_image_path_from_xml', $imageRelativePath);
+        $imageSrcPath = $rootImagePath
+            . apply_filters(
+                'itglx_wc1c_image_path_from_xml',
+                $imageRelativePath,
+                $productID,
+                $element
+            );
 
         return str_replace('//', '/', $imageSrcPath);
     }

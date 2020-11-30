@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: WooCommerce 1C\n"
-"POT-Creation-Date: 2020-11-07 23:27+0300\n"
+"POT-Creation-Date: 2020-11-19 14:50+0300\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -19,25 +19,41 @@ msgstr ""
 "X-Poedit-SearchPath-2: exchange-process\n"
 "X-Poedit-SearchPath-3: woocommerce-synchronization-1c.php\n"
 
-#: admin/AjaxActions/ItglxWc1cClearLogs.php:36
-#: admin/AjaxActions/ItglxWc1cClearLogs.php:54
-#: admin/AjaxActions/ItglxWc1cClearTemp.php:35
-#: admin/AjaxActions/ItglxWc1cClearTemp.php:53
+#: admin/AjaxActions/ClearLogsAjaxAction.php:60
+#: admin/AjaxActions/ClearLogsAjaxAction.php:78
+#: admin/AjaxActions/ClearTempAjaxAction.php:57
+#: admin/AjaxActions/ClearTempAjaxAction.php:75
 msgid "Successfully cleared"
 msgstr "Успешно очищено"
 
-#: admin/AjaxActions/ItglxWc1cClearLogs.php:44
-#: admin/AjaxActions/ItglxWc1cClearTemp.php:43
+#: admin/AjaxActions/ClearLogsAjaxAction.php:68
+#: admin/AjaxActions/ClearTempAjaxAction.php:65
 msgid "Not available for write"
 msgstr "Недоступен для записи"
 
-#: admin/AjaxActions/ItglxWc1cLogsCountAndSize.php:59
-#: admin/AjaxActions/ItglxWc1cTempCountAndSize.php:58
+#: admin/AjaxActions/LastRequestResponseAjaxAction.php:51
+msgid "Last request from 1C"
+msgstr "Последний запрос из 1С"
+
+#: admin/AjaxActions/LastRequestResponseAjaxAction.php:54
+msgid "No requests have been made yet"
+msgstr "Запросов еще не было"
+
+#: admin/AjaxActions/LastRequestResponseAjaxAction.php:66
+msgid "Last response for 1C"
+msgstr "Последний ответ для 1С"
+
+#: admin/AjaxActions/LastRequestResponseAjaxAction.php:69
+msgid "No response has been sent yet"
+msgstr "Ответа пока не отправлялось"
+
+#: admin/AjaxActions/LogsCountAndSizeAjaxAction.php:83
+#: admin/AjaxActions/TempCountAndSizeAjaxAction.php:83
 msgid "(no files)"
 msgstr "(нет файлов)"
 
-#: admin/AjaxActions/ItglxWc1cLogsCountAndSize.php:64
-#: admin/AjaxActions/ItglxWc1cTempCountAndSize.php:63
+#: admin/AjaxActions/LogsCountAndSizeAjaxAction.php:88
+#: admin/AjaxActions/TempCountAndSizeAjaxAction.php:88
 #, php-format
 msgid "(files - %d, size - %s MB)"
 msgstr "(файлов - %d, размер - %s MB)"
@@ -85,7 +101,7 @@ msgid "Please verify the purchase code on the plugin settings page - "
 msgstr "Пожалуйста, укажите код покупки на странице настроек плагина - "
 
 #: admin/Other/AdminNoticeIfNotVerified.php:38
-#: admin/PageParts/SectionForExchangeOrders.php:267 admin/SettingsPage.php:128
+#: admin/PageParts/SectionForExchangeOrders.php:276 admin/SettingsPage.php:128
 msgid "open"
 msgstr "открыть"
 
@@ -302,7 +318,7 @@ msgid "Date / time of order creation no earlier:"
 msgstr "Дата/время создания заказа не ранее:"
 
 #: admin/PageParts/SectionForExchangeOrders.php:80
-#: admin/PageParts/SectionForExchangeOrders.php:166
+#: admin/PageParts/SectionForExchangeOrders.php:175
 msgid ""
 "Use this setting if you want to set a lower bound for the date of creation "
 "of the order that can be unloaded. If the order is created earlier than this "
@@ -377,6 +393,18 @@ msgstr ""
 "по атрибутам и значениям вариации в узле \"ХарактеристикиТовара\"."
 
 #: admin/PageParts/SectionForExchangeOrders.php:151
+msgid "Do not generate data on the contragent"
+msgstr "Не формировать данные по контрагенту"
+
+#: admin/PageParts/SectionForExchangeOrders.php:153
+msgid ""
+"If enabled, then data on the contragent, that is \"Контрагенты->Контрагент"
+"\", is notadded to the order."
+msgstr ""
+"Если включено, то данные по контрагенту, то есть \"Контрагенты->Контрагент"
+"\", не добавляются в заказ."
+
+#: admin/PageParts/SectionForExchangeOrders.php:160
 msgid ""
 "Order statuses at which to transfer props `Заказ оплачен` in the value "
 "`true`:"
@@ -384,7 +412,7 @@ msgstr ""
 "Статусы заказа, при которых передавать реквизит `Заказ оплачен` в значении "
 "`true`:"
 
-#: admin/PageParts/SectionForExchangeOrders.php:157
+#: admin/PageParts/SectionForExchangeOrders.php:166
 msgid ""
 "Select the order statuses at which you want to transfer the requisite in the "
 "value `true`, if the order status is not one of the selected, `false` will "
@@ -393,19 +421,19 @@ msgstr ""
 "Выберите статусы заказа, при которых нужно передать реквизит в значении "
 "`true`, если статус заказа не из выбранных, то будет передано `false`."
 
-#: admin/PageParts/SectionForExchangeOrders.php:163
+#: admin/PageParts/SectionForExchangeOrders.php:172
 msgid "Names of order statuses for 1C"
 msgstr "Названия статусов заказа для 1С (реквизит \"Статус заказа\")"
 
-#: admin/PageParts/SectionForExchangeOrders.php:176
+#: admin/PageParts/SectionForExchangeOrders.php:185
 msgid "Loading changes (for previously unloaded orders)"
 msgstr "Загрузка изменений (по ранее выгруженным заказам)"
 
-#: admin/PageParts/SectionForExchangeOrders.php:183
+#: admin/PageParts/SectionForExchangeOrders.php:192
 msgid "Handle status change"
 msgstr "Обрабатывать изменение статуса"
 
-#: admin/PageParts/SectionForExchangeOrders.php:185
+#: admin/PageParts/SectionForExchangeOrders.php:194
 msgid ""
 "If enabled, when exchanging with 1C, then the site will accept and process "
 "changes in the status of the order when 1C sends this data."
@@ -413,25 +441,25 @@ msgstr ""
 "Если включено, то при обмене с 1С, сайт примет и обработает изменения "
 "статуса заказа, когда 1С отправляет эти данные."
 
-#: admin/PageParts/SectionForExchangeOrders.php:193
+#: admin/PageParts/SectionForExchangeOrders.php:202
 msgid ""
 "Order status, if there is \"Дата оплаты по 1С\" or \"Дата отгрузки по 1С\":"
 msgstr ""
 "Статус заказа, если есть \"Дата оплаты по 1С\" или \"Дата отгрузки по 1С\":"
 
-#: admin/PageParts/SectionForExchangeOrders.php:200
+#: admin/PageParts/SectionForExchangeOrders.php:209
 msgid "Order status if \"Проведен\" = \"true\":"
 msgstr "Статус заказа, если \"Проведен\" = \"true\":"
 
-#: admin/PageParts/SectionForExchangeOrders.php:206
+#: admin/PageParts/SectionForExchangeOrders.php:215
 msgid "Order status if \"ПометкаУдаления\" = \"true\":"
 msgstr "Статус заказа, если \"ПометкаУдаления\" = \"true\":"
 
-#: admin/PageParts/SectionForExchangeOrders.php:213
+#: admin/PageParts/SectionForExchangeOrders.php:222
 msgid "Handle changes in the set of products"
 msgstr "Обрабатывать изменения в составе товаров"
 
-#: admin/PageParts/SectionForExchangeOrders.php:215
+#: admin/PageParts/SectionForExchangeOrders.php:224
 msgid ""
 "If enabled, when exchanging with 1C, then the site will accept and process "
 "changes in the set of products of the order when 1C sends this data (Add, "
@@ -443,15 +471,15 @@ msgstr ""
 "удаление, количество, цена). Изменения применяются только в том случае, если "
 "у товара/вариации на сайте есть guid из 1С."
 
-#: admin/PageParts/SectionForExchangeOrders.php:248
+#: admin/PageParts/SectionForExchangeOrders.php:257
 msgid "At the next request, 1C will receive the following orders in response"
 msgstr "При следующем запросе, 1С получит в ответ следующие заказы"
 
-#: admin/PageParts/SectionForExchangeOrders.php:256
+#: admin/PageParts/SectionForExchangeOrders.php:265
 msgid "There are no orders to be unloaded at the next request."
 msgstr "Пока нет заказов, которые будут выгружены при следующем запросе."
 
-#: admin/PageParts/SectionForExchangeOrders.php:263
+#: admin/PageParts/SectionForExchangeOrders.php:272
 msgid ""
 "You can see the content that will receive 1C in response to the following "
 "request"
@@ -630,22 +658,6 @@ msgstr "Скачать в zip архиве"
 #: admin/PageParts/SectionLogging.php:91
 msgid "Clear logs"
 msgstr "Очистить"
-
-#: admin/PageParts/SectionLogging.php:99
-msgid "Last request from 1C"
-msgstr "Последний запрос из 1С"
-
-#: admin/PageParts/SectionLogging.php:102
-msgid "No requests have been made yet"
-msgstr "Запросов еще не было"
-
-#: admin/PageParts/SectionLogging.php:113
-msgid "Last response for 1C"
-msgstr "Последний ответ для 1С"
-
-#: admin/PageParts/SectionLogging.php:116
-msgid "No response has been sent yet"
-msgstr "Ответа пока не отправлялось"
 
 #: admin/PageParts/SectionNomenclatureExchangeConfigure.php:15
 msgid "Product catalog (nomenclature)"
@@ -1203,14 +1215,14 @@ msgstr "Пожалуйста, укажите код покупки на стра
 #: exchange-process/RootProcessStarter.php:195
 msgid ""
 "Error! Empty login or password! Most likely your PHP is operating in "
-"cgi(fcgi) mode and processing of the authorization header is configured."
+"cgi(fcgi) mode and processing of the authorization header is not configured."
 msgstr ""
 
 #: exchange-process/RootProcessStarter.php:212
 msgid "Error! Wrong login or password!"
 msgstr "Ошибка! Неверный логин или пароль!"
 
-#: includes/Bootstrap.php:127
+#: includes/Bootstrap.php:128
 msgid ""
 "To run the plug-in, you must first install and activate the WooCommerce "
 "plugin."
@@ -1218,7 +1230,7 @@ msgstr ""
 "Для работы плагина сначала необходимо установить и активировать плагин "
 "Woocommerce."
 
-#: includes/Bootstrap.php:131
+#: includes/Bootstrap.php:132
 msgid "Error while activating the WooCommerce - 1C:Enterprise - Data Exchange"
 msgstr "Ошибка при активации WooCommerce - 1C: Предприятие - Обмен данными"
 
@@ -1238,26 +1250,14 @@ msgstr "Не существует и недоступен для записи."
 msgid "Exists and available for writing."
 msgstr "Существует и доступен для записи."
 
-#: includes/Logger.php:162
+#: includes/Logger.php:124
 #, php-format
 msgid "Error code (%s): %s."
 msgstr ""
 
-#: includes/Logger.php:169
+#: includes/Logger.php:131
 msgid "An error occurred while writing the log file."
 msgstr ""
-
-#~ msgid "SKU"
-#~ msgstr "Артикула"
-
-#~ msgid "Code"
-#~ msgstr "Кода"
-
-#~ msgid "Error! Synchronization is prohibited!"
-#~ msgstr "Ошибка! Синхронизация запрещена!"
-
-#~ msgid "Show code 1C"
-#~ msgstr "Показать код 1С"
 
 #~ msgid ""
 #~ "If enabled, the metabox with the code will appear in the admin panel, as "
@@ -1266,9 +1266,6 @@ msgstr ""
 #~ msgstr ""
 #~ "Если включено, то в админке у товаров появится метабокс с кодом, а также "
 #~ "при просмотре списка - под названием товара будет отображаться код."
-
-#~ msgid "1C ID"
-#~ msgstr "Ид 1C"
 
 #~ msgid ""
 #~ "It may be useful during debugging to analyze the contents of the received "
@@ -1283,15 +1280,6 @@ msgstr ""
 #~ msgstr ""
 #~ "Устанавливать миниатюры категорий автоматически (исходя из товара с "
 #~ "миниатюрой в категории)"
-
-#~ msgid "Additionally"
-#~ msgstr "Дополнительно"
-
-#~ msgid "Categories for exclusion:"
-#~ msgstr "Категории для исключения:"
-
-#~ msgid "Category IDs with a semicolon."
-#~ msgstr "Ид категорий через точку с запятой."
 
 #~ msgid "days"
 #~ msgstr "дней"

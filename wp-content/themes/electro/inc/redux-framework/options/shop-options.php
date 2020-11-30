@@ -45,7 +45,7 @@ $shop_options 	= apply_filters( 'electro_shop_options_args', array(
 			'type'		=> 'select',
 			'data'		=> 'posts',
 			'args'		=> array(
-				'post_type'			=> 'static_block',
+				'post_type'			=> 'mas_static_content',
 				'posts_per_page'	=> -1,
 			)
 		),
@@ -56,7 +56,7 @@ $shop_options 	= apply_filters( 'electro_shop_options_args', array(
 			'type'		=> 'select',
 			'data'		=> 'posts',
 			'args'		=> array(
-				'post_type'			=> 'static_block',
+				'post_type'			=> 'mas_static_content',
 				'posts_per_page'	=> -1,
 			)
 		),
@@ -366,7 +366,7 @@ $shop_options 	= apply_filters( 'electro_shop_options_args', array(
 			'type'		=> 'select',
 			'data'		=> 'posts',
 			'args'		=> array(
-				'post_type'			=> 'static_block',
+				'post_type'			=> 'mas_static_content',
 				'posts_per_page'	=> -1,
 			),
 			'required'	=> array( 'dokan_electro_store_style', 'equals', 1 ),

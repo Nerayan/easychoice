@@ -13,10 +13,11 @@ use Itgalaxy\Wc\Exchange1c\Admin\MetaBoxes\MetaBoxProduct;
 use Itgalaxy\Wc\Exchange1c\Admin\MetaBoxes\MetaBoxShopOrder;
 
 // ajax actions
-use Itgalaxy\Wc\Exchange1c\Admin\AjaxActions\ItglxWc1cClearLogs;
-use Itgalaxy\Wc\Exchange1c\Admin\AjaxActions\ItglxWc1cClearTemp;
-use Itgalaxy\Wc\Exchange1c\Admin\AjaxActions\ItglxWc1cLogsCountAndSize;
-use Itgalaxy\Wc\Exchange1c\Admin\AjaxActions\ItglxWc1cTempCountAndSize;
+use Itgalaxy\Wc\Exchange1c\Admin\AjaxActions\ClearLogsAjaxAction;
+use Itgalaxy\Wc\Exchange1c\Admin\AjaxActions\ClearTempAjaxAction;
+use Itgalaxy\Wc\Exchange1c\Admin\AjaxActions\LastRequestResponseAjaxAction;
+use Itgalaxy\Wc\Exchange1c\Admin\AjaxActions\LogsCountAndSizeAjaxAction;
+use Itgalaxy\Wc\Exchange1c\Admin\AjaxActions\TempCountAndSizeAjaxAction;
 
 // admin requests
 use Itgalaxy\Wc\Exchange1c\Admin\RequestProcessing\GetInArchiveLogs;
@@ -50,10 +51,11 @@ MetaBoxProduct::getInstance();
 MetaBoxShopOrder::getInstance();
 
 // bind ajax actions
-ItglxWc1cClearLogs::getInstance();
-ItglxWc1cClearTemp::getInstance();
-ItglxWc1cLogsCountAndSize::getInstance();
-ItglxWc1cTempCountAndSize::getInstance();
+ClearLogsAjaxAction::getInstance();
+ClearTempAjaxAction::getInstance();
+LastRequestResponseAjaxAction::getInstance();
+LogsCountAndSizeAjaxAction::getInstance();
+TempCountAndSizeAjaxAction::getInstance();
 
 // bind admin request handlers
 GetInArchiveLogs::getInstance();

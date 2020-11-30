@@ -43,12 +43,12 @@ class Electro_Product_Categories {
 		?>
 		<div class="form-field">
 			<?php 
-				if( post_type_exists( 'static_block' ) ) :
+				if( post_type_exists( 'mas_static_content' ) ) :
 
 					$args = array(
 						'posts_per_page'	=> -1,
 						'orderby'			=> 'title',
-						'post_type'			=> 'static_block',
+						'post_type'			=> 'mas_static_content',
 					);
 					$static_blocks = get_posts( $args );
 				endif;
@@ -104,12 +104,12 @@ class Electro_Product_Categories {
 			<th scope="row" valign="top"><label><?php _e( 'Top Jumbotron', 'electro' ); ?></label></th>
 			<td>
 				<?php 
-					if( post_type_exists( 'static_block' ) ) :
+					if( post_type_exists( 'mas_static_content' ) ) :
 
 						$args = array(
 							'posts_per_page'	=> -1,
 							'orderby'			=> 'title',
-							'post_type'			=> 'static_block',
+							'post_type'			=> 'mas_static_content',
 						);
 						$static_blocks = get_posts( $args );
 					endif;
@@ -132,12 +132,12 @@ class Electro_Product_Categories {
 			<th scope="row" valign="top"><label><?php esc_html_e( 'Bottom Jumbotron', 'electro' ); ?></label></th>
 			<td>
 				<?php 
-					if( post_type_exists( 'static_block' ) ) :
+					if( post_type_exists( 'mas_static_content' ) ) :
 
 						$args = array(
 							'posts_per_page'	=> -1,
 							'orderby'			=> 'title',
-							'post_type'			=> 'static_block',
+							'post_type'			=> 'mas_static_content',
 						);
 						$static_blocks = get_posts( $args );
 					endif;

@@ -92,14 +92,17 @@ class SetVariationAttributeToProducts
                     [get_post_meta($productID, '_id_1c', true), $taxonomy]
                 );
             } else {
-                $productAttributes[$taxonomy] = [
-                    'name' => \wc_clean($taxonomy),
-                    'value' => '',
-                    'position' => 0,
-                    'is_visible' => 0,
-                    'is_variation' => 1,
-                    'is_taxonomy' => 1
-                ];
+                $productAttributes[$taxonomy] = apply_filters(
+                    'itglx_wc1c_set_product_variation_attribute_args',
+                    [
+                        'name' => \wc_clean($taxonomy),
+                        'value' => '',
+                        'position' => 0,
+                        'is_visible' => 0,
+                        'is_variation' => 1,
+                        'is_taxonomy' => 1
+                    ]
+                );
 
                 Logger::logChanges(
                     '(product) Set variation attribute, ID - ' . $productID,

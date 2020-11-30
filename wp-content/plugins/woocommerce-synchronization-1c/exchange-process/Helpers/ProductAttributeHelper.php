@@ -11,14 +11,17 @@ class ProductAttributeHelper
 
         $naturalName = self::getUniqueAttributeName($label);
 
-        $attributeCreate = [
-            'attribute_label' => $label,
-            'attribute_name' => $naturalName ? $naturalName : $name,
-            'attribute_type' => 'select',
-            'attribute_public' => 0,
-            'attribute_orderby' => 'menu_order',
-            'id_1c' => $guid
-        ];
+        $attributeCreate = apply_filters(
+            'itglx_wc1c_create_product_attribute_args',
+            [
+                'attribute_label' => $label,
+                'attribute_name' => $naturalName ? $naturalName : $name,
+                'attribute_type' => 'select',
+                'attribute_public' => 0,
+                'attribute_orderby' => 'menu_order',
+                'id_1c' => $guid
+            ]
+        );
 
         $wpdb->insert(
             $wpdb->prefix . 'woocommerce_attribute_taxonomies',
@@ -37,7 +40,7 @@ class ProductAttributeHelper
 
         \do_action('woocommerce_attribute_added', $wpdb->insert_id, $attributeCreate);
 
-        \flush_rewrite_rules();
+        \wp_schedule_single_event(time(), 'woocommerce_flush_rewrite_rules');
 
         // Clear transients.
         \delete_transient('wc_attribute_taxonomies');

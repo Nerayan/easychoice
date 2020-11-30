@@ -2352,3 +2352,291 @@ if ( ! function_exists( 'electro_home_vertical_nav' ) ) {
         <?php
     }
 }
+
+if ( ! function_exists( 'electro_home_product_category_tags' ) ) {
+	/**
+	 *
+	 */
+	function electro_home_product_category_tags( $args ) {
+
+		$default_args = apply_filters( 'electro_home_product_category_tags_args', array(
+			'section_class'			=> '',
+			'section_title'			=> esc_html__( 'Popular Search', 'electro' ),
+			'category_args'			=> array(
+				'orderby'				=> 'name',
+				'order'					=> 'ASC',
+				'hide_empty'			=> true,
+				'number'				=> 10,
+				'hierarchical'			=> false,
+				'slug'					=> '',
+			),
+		) );
+
+		$args = wp_parse_args( $args, $default_args );
+
+		if ( is_woocommerce_activated() ) {
+			electro_get_template( 'homepage/product-category-tags.php', $args );
+		}
+	}
+}
+
+if ( ! function_exists( 'electro_home_products_categories_1_6' ) ) {
+	/**
+	 *
+	 */
+	function electro_home_products_categories_1_6( $args ) {
+
+		$default_args = apply_filters( 'electro_home_products_categories_1_6_args', array(
+			'section_class'			=> '',
+			'category_args'			=> array(
+				'orderby'				=> 'name',
+				'order'					=> 'ASC',
+				'hide_empty'			=> true,
+				'number'				=> 7,
+				'hierarchical'			=> false,
+				'slug'					=> '',
+			),
+		) );
+
+		$args = wp_parse_args( $args, $default_args );
+
+		if ( is_woocommerce_activated() ) {
+			$section_class = empty( $section_class ) ? 'section-product-categories-1-6' : 'section-product-categories-1-6 ' . $section_class;
+
+			if ( ! empty( $animation ) ) {
+				$section_class .= ' animate-in-view';
+			}
+
+			$categories = get_terms( 'product_cat', $args['category_args'] );
+
+			if( empty( $categories ) || is_wp_error( $categories ) ) {
+				return;
+			}
+
+			$featured_cat = array_shift( $categories );
+
+			?>
+			<section class="<?php echo esc_attr( $section_class ); ?>" <?php if ( ! empty( $animation ) ) : ?>data-animation="<?php echo esc_attr( $animation ); ?>"<?php endif; ?>>
+				<div class="product-categories-1-6__inner">
+					<?php if( ! empty( $featured_cat ) ) :
+						$featured_cat_thumbnail_id = get_term_meta( $featured_cat->term_id, 'thumbnail_id', true ); 
+						if ( $featured_cat_thumbnail_id ) {
+							$featured_cat_image = wp_get_attachment_image_url( $featured_cat_thumbnail_id, array( '543', '272' ) );
+						} else {
+							$featured_cat_image = wc_placeholder_img_src( array( '543', '272' ) );
+						} ?>
+						<div class="featured-category">
+							<div class="featured-category__inner" <?php if ( ! empty( $featured_cat_image ) ) : ?>style="<?php echo esc_attr( 'background-image: url(' . $featured_cat_image . ');' ); ?>"<?php endif; ?>>
+								<a href="<?php echo esc_url( get_term_link( $featured_cat ) ); ?>">
+									<div class="featured-category__inner--left"></div>
+									<div class="featured-category__inner--right">
+										<div class="featured-category__name">
+											<?php echo esc_html( $featured_cat->name ); ?>
+										</div>
+									</div>
+								</a>
+							</div>
+						</div>
+					<?php endif; ?>
+					<?php if( ! empty( $categories ) ) : ?>
+						<div class="categories-list">
+							<div class="categories-list__inner columns-3">
+								<?php foreach( $categories as $category ) :
+									$thumbnail_id = get_term_meta( $category->term_id, 'thumbnail_id', true ); 
+									$image_class = 'category-img';
+									if ( $thumbnail_id ) {
+										$image = wp_get_attachment_image_url( $thumbnail_id, array( '100', '100' ) );
+									} else {
+										$image = wc_placeholder_img_src( array( '100', '100' ) );
+									} ?>
+									<div class="category">
+										<div class="category__inner">
+											<a href="<?php echo esc_url( get_term_link( $category ) ); ?>">
+												<div class="media">
+													<div class="media-image">
+														<img class="category-img" src="<?php echo esc_url( $image ); ?>" alt="<?php esc_attr( $category->name ); ?>">
+													</div>
+													<div class="media-body">
+														<h6 class="category__name">
+															<?php echo esc_html( $category->name ); ?>
+														</h6>
+													</div>
+												</div>
+											</a>
+										</div>
+									</div>
+								<?php endforeach; ?>
+							</div>
+						</div>
+					<?php endif; ?>
+				</div>
+			</section>
+			<?php
+		}
+	}
+}
+
+if ( ! function_exists( 'electro_onsale_product_carousel_v9' ) ) {
+	/**
+	 * Displays an onsale products carousel in home v9
+	 *
+	 * @return void
+	 */
+	function electro_onsale_product_carousel_v9( $section_args = array(), $carousel_args = array() ) {
+
+		if ( is_woocommerce_activated() ) {
+
+			$default_section_args 	= array(
+				'section_class'		=> '',
+				'limit'				=> 2,
+				'product_ids'		=> '',
+				'animation'			=> '',
+				'show_timer'		=> true,
+			);
+
+			$default_carousel_args 	= array(
+				'items'				=> 1,
+				'nav'				=> true,
+				'dots'				=> false,
+				'rtl'				=> is_rtl() ? true : false,
+				'navText'			=> is_rtl() ? array( '<i class="fa fa-angle-right"></i>', '<i class="fa fa-angle-left"></i>' ) : array( '<i class="fa fa-angle-left"></i>', '<i class="fa fa-angle-right"></i>' ),
+			);
+
+			$section_args 		= wp_parse_args( $section_args, $default_section_args );
+			$carousel_args 		= wp_parse_args( $carousel_args, $default_carousel_args );
+
+			$args = array( 'per_page' => $section_args['limit'] );
+
+			if ( isset( $section_args['product_choice'] ) ) {
+				switch( $section_args['product_choice'] ) {
+					case 'random':
+						$args['orderby'] 	= 'rand';
+					break;
+					case 'recent':
+						$args['orderby'] 	= 'date';
+						$args['order'] 		= 'DESC';
+					break;
+					case 'specific':
+						$args['orderby'] 	= 'post__in';
+						$args['ids'] 		= $section_args['product_ids'];
+						$args['post__in'] 	= array_map( 'trim', explode( ',', $section_args['product_ids'] ) );
+					break;
+				}
+			}
+
+			if ( isset( $args['post__in'] ) ) {
+				$products 	= Electro_Products::products( $args );
+			} else {
+				$products 	= Electro_Products::sale_products( $args );
+			}
+
+
+			extract( $section_args );
+
+			$section_class = empty( $section_class ) ? 'section-onsale-product-carousel-v9' : 'section-onsale-product-carousel-v9 ' . $section_class;
+
+			if ( ! empty ( $animation ) ) {
+				$section_class .= ' animate-in-view';
+			}
+
+			if( ! $show_timer ) {
+				$section_class .= ' hide-timer';
+			}
+
+			if ( $products->have_posts() ) {
+				global $electro_version;
+				$carousel_id = 'onsale-products-carousel-' . uniqid();
+				wp_enqueue_script( 'owl-carousel-js', 	get_template_directory_uri() . '/assets/js/owl.carousel.min.js', array( 'jquery' ), $electro_version, true );
+
+
+				?>
+				<section class="<?php echo esc_attr( $section_class ); ?>" <?php if ( ! empty( $animation ) ) : ?>data-animation="<?php echo esc_attr( $animation );?>"<?php endif; ?>>
+					<div id="<?php echo esc_attr( $carousel_id ); ?>">
+						<div class="onsale-products-carousel owl-carousel">
+							<?php while ( $products->have_posts() ) : $products->the_post(); ?>
+								<div class="onsale-product">
+									<?php do_action( 'electro_onsale_product_carousel_content_v3' ); ?>
+								</div>
+							<?php endwhile; ?>
+						</div>
+					</div>
+					<script type="text/javascript">
+						jQuery(document).ready( function($){
+							$( '#<?php echo esc_attr( $carousel_id ); ?> .owl-carousel').owlCarousel( <?php echo json_encode( $carousel_args );?> );
+						} );
+					</script>
+				</section>
+				<?php
+			}
+
+			woocommerce_reset_loop();
+			wp_reset_postdata();
+		}
+	}
+}
+
+if ( ! function_exists( 'electro_home_banner_1_6_block' ) ) {
+	/**
+	 *
+	 */
+	function electro_home_banner_1_6_block( $args ) {
+		if( empty( $args ) ) return;
+
+		$featured_banner = array_shift( $args );
+		?>
+		<div class="container">
+			<div class="home-banner-1-6__inner">
+				<?php if( ! empty( $featured_banner ) ) : ?>
+					<div class="featured-banner<?php if( isset( $featured_banner['el_class'] ) && ! empty( $featured_banner['el_class'] ) ) echo esc_attr( ' ' . $featured_banner['el_class'] ); ?>">
+						<a href="<?php echo esc_url( $featured_banner['action_link'] ); ?>">
+							<img class="featured-banner-img" src="<?php echo esc_url( $featured_banner['image'] ); ?>">
+						</a>
+					</div>
+				<?php endif; ?>
+				<?php if( ! empty( $args ) ) : ?>
+					<div class="banners-list">
+						<div class="banners-list__inner columns-3">
+							<?php foreach( $args as $arg ) : ?>
+								<div class="banner<?php if( isset( $arg['el_class'] ) && ! empty( $arg['el_class'] ) ) echo esc_attr( ' ' . $arg['el_class'] ); ?>">
+									<a href="<?php echo esc_url( $arg['action_link'] ); ?>">
+										<img class="featured-banner-img" src="<?php echo esc_url( $arg['image'] ); ?>">
+									</a>
+								</div>
+							<?php endforeach; ?>
+						</div>
+					</div>
+				<?php endif; ?>
+			</div>
+		</div>
+		<?php
+	}
+}
+
+if ( ! function_exists( 'electro_home_product_categories_with_banner_carousel' ) ) {
+	/**
+	 *
+	 */
+	function electro_home_product_categories_with_banner_carousel( $args ) {
+
+	if ( is_woocommerce_activated() ) {
+			$defaults = array(
+				'animation'				=> '',
+				'section_title'			=> '',
+				'section_class'			=> '',
+				'content'				=> array(),
+				'carousel_args'			=> array(
+					'autoplay'			=> false,
+					'items'				=> 1,
+					'nav'				=> true,
+					'dots'				=> false,
+					'rtl'				=> is_rtl() ? true : false,
+					'navText'			=> is_rtl() ? array( '<i class="fa fa-angle-right"></i>', '<i class="fa fa-angle-left"></i>' ) : array( '<i class="fa fa-angle-left"></i>', '<i class="fa fa-angle-right"></i>' ),
+				),
+			);
+
+			$args   = wp_parse_args( $args, $defaults );
+
+			electro_get_template( 'homepage/product-categories-with-banner-carousel.php', $args );
+		}
+	}
+}

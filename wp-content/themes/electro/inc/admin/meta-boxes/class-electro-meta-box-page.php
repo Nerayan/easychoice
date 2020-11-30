@@ -32,6 +32,7 @@ if ( ! class_exists( 'Electro_Meta_Box_Page' ) ) {
 						'v6'			=> esc_html__( 'Header v6', 'electro' ),
 						'v7'			=> esc_html__( 'Header v7', 'electro' ),
 						'v8'			=> esc_html__( 'Header v8', 'electro' ),
+						'v9'			=> esc_html__( 'Header v9', 'electro' ),
 					),
 				),
 				

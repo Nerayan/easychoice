@@ -22,7 +22,7 @@ $header_options     = apply_filters( 'electro_header_options_args', array(
             'id'        => 'top_bar_start',
             'type'      => 'section',
             'indent'    => true,
-            'required'  => array( 'header_style', 'equals' , array( 'v1', 'v2', 'v3', 'v4', 'v6', 'v7', 'v8' ) ),
+            'required'  => array( 'header_style', 'equals' , array( 'v1', 'v2', 'v3', 'v4', 'v6', 'v7', 'v8', 'v9' ) ),
         ),
 
         array(
@@ -37,6 +37,91 @@ $header_options     = apply_filters( 'electro_header_options_args', array(
             'title'     => esc_html__( 'Show Top Bar in Mobile', 'electro' ),
             'type'      => 'switch',
             'default'   => 0,
+        ),
+
+        array(
+            'id'        => 'header_enable_topbar_additional_links',
+            'title'     => esc_html__( 'Show Top Bar Additional Links', 'electro' ),
+            'type'      => 'switch',
+            'default'   => 1,
+            'required'  => array( 'header_style', 'equals', 'v9' )
+        ),
+
+        array(
+            'id'        => 'header_topbar_additional_links_title',
+            'type'      => 'text',
+            'title'     => esc_html__( 'Additional Links Title', 'electro' ),
+            'default'   =>  __( 'Two Shops<br>One Shipment', 'electro' ),
+            'required'  => array( 
+                array( 'header_style', 'equals', 'v9' ),
+                array( 'header_enable_topbar_additional_links', 'equals', true ),
+            ),
+        ),
+
+        array(
+            'id'        => 'header_topbar_additional_link_1_text',
+            'type'      => 'text',
+            'title'     => esc_html__( 'Additional Link #1 Title', 'electro' ),
+            'default'   => esc_html__( 'Electronics', 'electro' ),
+            'required'  => array( 
+                array( 'header_style', 'equals', 'v9' ),
+                array( 'header_enable_topbar_additional_links', 'equals', true ),
+            ),
+        ),
+
+        array(
+            'id'        => 'header_topbar_additional_link_1_url',
+            'type'      => 'text',
+            'title'     => esc_html__( 'Additional Link #1 URL', 'electro' ),
+            'default'   => '#',
+            'required'  => array( 
+                array( 'header_style', 'equals', 'v9' ),
+                array( 'header_enable_topbar_additional_links', 'equals', true ),
+            ),
+        ),
+
+        array(
+            'id'        => 'header_topbar_additional_link_1_image',
+            'title'     => esc_html__( 'Additional Link #1 Image', 'electro' ),
+            'subtitle'  => esc_html__( 'Upload your additional link #1 image.', 'electro' ),
+            'type'      => 'media',
+            'required'  => array( 
+                array( 'header_style', 'equals', 'v9' ),
+                array( 'header_enable_topbar_additional_links', 'equals', true ),
+            ),
+        ),
+
+        array(
+            'id'        => 'header_topbar_additional_link_2_text',
+            'type'      => 'text',
+            'title'     => esc_html__( 'Additional Links Title', 'electro' ),
+            'default'   => esc_html__( 'Power Tools', 'electro' ),
+            'required'  => array( 
+                array( 'header_style', 'equals', 'v9' ),
+                array( 'header_enable_topbar_additional_links', 'equals', true ),
+            ),
+        ),
+
+        array(
+            'id'        => 'header_topbar_additional_link_2_url',
+            'type'      => 'text',
+            'title'     => esc_html__( 'Additional Link #2 URL', 'electro' ),
+            'default'   => '#',
+            'required'  => array( 
+                array( 'header_style', 'equals', 'v9' ),
+                array( 'header_enable_topbar_additional_links', 'equals', true ),
+            ),
+        ),
+
+        array(
+            'id'        => 'header_topbar_additional_link_2_image',
+            'title'     => esc_html__( 'Additional Link #2 Image', 'electro' ),
+            'subtitle'  => esc_html__( 'Upload your additional link #2 image.', 'electro' ),
+            'type'      => 'media',
+            'required'  => array( 
+                array( 'header_style', 'equals', 'v9' ),
+                array( 'header_enable_topbar_additional_links', 'equals', true ),
+            ),
         ),
 
         array(
@@ -88,6 +173,7 @@ $header_options     = apply_filters( 'electro_header_options_args', array(
                 'v6'        => esc_html__( 'Header v6', 'electro' ),
                 'v7'        => esc_html__( 'Header v7', 'electro' ),
                 'v8'        => esc_html__( 'Header v8', 'electro' ),
+                'v9'        => esc_html__( 'Header v9', 'electro' ),
             ),
             'default'   => 'v2',
         ),

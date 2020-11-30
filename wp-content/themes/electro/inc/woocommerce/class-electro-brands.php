@@ -46,12 +46,12 @@ class Electro_Brands {
 		?>
 		<div class="form-field">
 			<?php 
-				if( post_type_exists( 'static_block' ) ) :
+				if( post_type_exists( 'mas_static_content' )) :
 
 					$args = array(
 						'posts_per_page'	=> -1,
 						'orderby'			=> 'title',
-						'post_type'			=> 'static_block',
+						'post_type'			=> 'mas_static_content',
 					);
 					$static_blocks = get_posts( $args );
 				endif;
@@ -154,12 +154,12 @@ class Electro_Brands {
 			<th scope="row" valign="top"><label><?php _e( 'Jumbotron', 'electro' ); ?></label></th>
 			<td>
 				<?php 
-					if( post_type_exists( 'static_block' ) ) :
+					if( post_type_exists( 'mas_static_content' ) ) :
 
 						$args = array(
 							'posts_per_page'	=> -1,
 							'orderby'			=> 'title',
-							'post_type'			=> 'static_block',
+							'post_type'			=> 'mas_static_content',
 						);
 						$static_blocks = get_posts( $args );
 					endif;

@@ -109,3 +109,4 @@ require_once get_template_directory() . '/inc/template-tags/headers/header-v5.ph
 require_once get_template_directory() . '/inc/template-tags/headers/header-v6.php';
 require_once get_template_directory() . '/inc/template-tags/headers/header-v7.php';
 require_once get_template_directory() . '/inc/template-tags/headers/header-v8.php';
+require_once get_template_directory() . '/inc/template-tags/headers/header-v9.php';

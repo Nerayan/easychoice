@@ -1,7 +1,12 @@
 <?php
 
 function electro_ocdi_import_files() {
-    $dd_path_vc = trailingslashit( get_template_directory() ) . 'assets/dummy-data/visualcomposer/';
+    if( apply_filters( 'electro_visual_composer_2_dummy_data', true ) ) {
+        $dd_path_vc = trailingslashit( get_template_directory() ) . 'assets/dummy-data/visualcomposer-2/';
+    } else {
+        $dd_path_vc = trailingslashit( get_template_directory() ) . 'assets/dummy-data/visualcomposer/';
+    }
+
     $dd_path_el = trailingslashit( get_template_directory() ) . 'assets/dummy-data/elementor/';
 
     $import_files = array(
@@ -56,21 +61,27 @@ function electro_ocdi_after_import_setup( $selected_import ) {
     $topbar_center          = get_term_by( 'name', 'Top Bar Center', 'nav_menu' );
     $header_support         = get_term_by( 'name', 'Header Support', 'nav_menu' );
 
-    set_theme_mod( 'nav_menu_locations', array(
-            'topbar-left'                   => $topbar_left_menu->term_id,
-            'topbar-right'                  => $topbar_right_menu->term_id,
-            'primary-nav'                   => $primary_menu->term_id,
-            'navbar-primary'                => $navbar_primary_menu->term_id,
-            'secondary-nav'                 => $secondary_menu->term_id,
-            'departments-menu'              => $departments_menu->term_id,
-            'all-departments-menu'          => $all_departments_menu->term_id,
-            'blog-menu'                     => $blog_menu->term_id,
-            'hand-held-nav'                 => $all_departments_menu->term_id,
-            'mobile-handheld-department'    => $mobile_hh_departments->term_id,
-            'topbar-center'                 => $topbar_center->term_id,
-            'header-support'                => $header_support->term_id,
-        )
+    $nav_menu_locations_args = array(
+        'topbar-left'                   => $topbar_left_menu->term_id,
+        'topbar-right'                  => $topbar_right_menu->term_id,
+        'primary-nav'                   => $primary_menu->term_id,
+        'navbar-primary'                => $navbar_primary_menu->term_id,
+        'secondary-nav'                 => $secondary_menu->term_id,
+        'departments-menu'              => $departments_menu->term_id,
+        'all-departments-menu'          => $all_departments_menu->term_id,
+        'blog-menu'                     => $blog_menu->term_id,
+        'hand-held-nav'                 => $all_departments_menu->term_id,
+        'mobile-handheld-department'    => $mobile_hh_departments->term_id,
+        'topbar-center'                 => $topbar_center->term_id,
+        'header-support'                => $header_support->term_id,
     );
+
+    if( apply_filters( 'electro_visual_composer_2_dummy_data', true ) ) {
+        $navbar_v9_menu = get_term_by( 'name', 'Header v9 Navbar', 'nav_menu' );
+        $nav_menu_locations_args['header-v9-navbar'] = $navbar_v9_menu->term_id;
+    }
+
+    set_theme_mod( 'nav_menu_locations', $nav_menu_locations_args );
 
     // Assign front page and posts page (blog page) and other WooCommerce pages
     $front_page_id      = get_page_by_title( 'Home v1' );
@@ -100,7 +111,7 @@ function electro_ocdi_after_import_setup( $selected_import ) {
 
     // Set WPBPage Builder ( formerly Visual Composer ) for Static Blocks
     if ( function_exists( 'vc_set_default_editor_post_types' ) ) {
-        vc_set_default_editor_post_types( array( 'page', 'static_block' ) );
+        vc_set_default_editor_post_types( array( 'page', 'static_block', 'mas_static_content' ) );
     }
 
     if( class_exists( 'RevSlider' ) ) {
@@ -118,6 +129,12 @@ function electro_ocdi_after_import_setup( $selected_import ) {
             $dd_path . 'home-v5-slider.zip',
             $dd_path . 'home-v7-slider.zip',
         );
+
+        if( apply_filters( 'electro_visual_composer_2_dummy_data', true ) ) {
+            $slider_array[] = $dd_path . 'home-v8-slider.zip';
+            $slider_array[] = $dd_path . 'home-v9-slider.zip';
+        }
+
         $slider = new RevSlider();
 
         foreach( $slider_array as $filepath ) {

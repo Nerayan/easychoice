@@ -20,6 +20,7 @@ use MediaCloud\Plugin\Tools\Storage\StorageToolSettings;
 use MediaCloud\Plugin\Tasks\TaskManager;
 use MediaCloud\Plugin\Tools\Storage\StorageTool;
 use MediaCloud\Plugin\Tools\ToolsManager;
+use MediaCloud\Plugin\Utilities\Logging\Logger;
 
 if (!defined( 'ABSPATH')) { header( 'Location: /'); die; }
 
@@ -34,6 +35,7 @@ class BuddyPressIntegration {
 		$this->settings = BuddyPressSettings::instance();
 
 		if (ToolsManager::instance()->toolEnabled('storage') && $this->settings->enabled) {
+
 			BuddyPressMap::init();
 
 			TaskManager::registerTask(BuddyPressDeleteTask::class);
@@ -53,6 +55,8 @@ class BuddyPressIntegration {
 	//region Cover Images
 
 	public function coverImageCallback($params = []) {
+		Logger::info("Start coverImageCallback", [], __METHOD__, __LINE__);
+
 		$result = '';
 
 		if (!empty($this->previousCallback) && is_callable($this->previousCallback)) {
@@ -99,6 +103,7 @@ class BuddyPressIntegration {
 			$storageTool = ToolsManager::instance()->tools['storage'];
 
 			try {
+				Logger::info("Uploading $filePath => $key", [], __METHOD__, __LINE__);
 				$s3Url = $storageTool->client()->upload($key, $filePath, StorageGlobals::privacy('image'));
 
 				$s3Data = [
@@ -113,7 +118,8 @@ class BuddyPressIntegration {
 
 				$newUrl = BuddyPressMap::updateMap($url, $objectKey, $filePath, $s3Data);
 				return str_replace($url, $newUrl, $result);
-			} catch(StorageException $e) {
+			} catch(\Exception $e) {
+				Logger::info("Error:".$ex->getMessage(), [], __METHOD__, __LINE__);
 				return $result;
 			}
 		}
@@ -141,7 +147,11 @@ class BuddyPressIntegration {
 			require_once \BuddyPress::instance()->plugin_dir . 'bp-groups/bp-groups-filters.php';
 		}
 
+
+		Logger::info("Start fetchCoreAvatar: $imgTag", [], __METHOD__, __LINE__);
+
 		$mysteryUrl = bp_groups_default_avatar(null, $params);
+		Logger::info("Mystery URL: $mysteryUrl", [], __METHOD__, __LINE__);
 		if (preg_match($srcRe, $imgTag, $matches)) {
 			$url = $matches[1];
 			if (($url === $mysteryUrl) || (strpos($url, 'gravatar') !== false)) {
@@ -151,7 +161,10 @@ class BuddyPressIntegration {
 			$objectKey = "avatar_{$params['object']}_{$params['item_id']}";
 
 			$newUrl = BuddyPressMap::mapURL($url, $objectKey);
+
+			Logger::info("mapURL: $url $objectKey $newUrl", [], __METHOD__, __LINE__);
 			if (!empty($newUrl)) {
+				Logger::info("Found new URL, $newUrl", [], __METHOD__, __LINE__);
 				return str_replace($matches[1], $newUrl, $imgTag);
 			}
 
@@ -167,11 +180,13 @@ class BuddyPressIntegration {
 			$key = $keyPrefix.$file;
 
 			$filePath = $folderDir.'/'.$file;
-			if (!file_exists($filePath)) {
+			if (!file_exists($filePath) || is_dir($filePath)) {
+				Logger::info("File does not exist or is a directory: $filePath", [], __METHOD__, __LINE__);
 				return $imgTag;
 			}
 
 			try {
+				Logger::info("Uploading $filePath to $key", [], __METHOD__, __LINE__);
 				$s3Url = $storageTool->client()->upload($key, $filePath, StorageGlobals::privacy('image'));
 
 				$s3Data = [
@@ -186,7 +201,9 @@ class BuddyPressIntegration {
 
 				$newUrl = BuddyPressMap::updateMap($url, $objectKey, $filePath, $s3Data);
 				return str_replace($url, $newUrl, $imgTag);
-			} catch(StorageException $e) {
+			} catch(\Exception $e) {
+				Logger::info("Error:".$e->getMessage(), [], __METHOD__, __LINE__);
+
 				return $imgTag;
 			}
 		}

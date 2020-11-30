@@ -597,6 +597,24 @@ function electro_wp_owl_carousel_options( $field ) {
 		) );
 	}
 
+	if( isset( $field['fields'] ) && in_array( 'dots', $field['fields'] )  ) {
+		electro_wp_checkbox( array(
+			'id'			=> $field['id'] . '_dots',
+			'label'			=> esc_html__( 'Dots', 'electro' ),
+			'name'			=> $field['name'] . '[dots]',
+			'value'			=> isset( $field['value']['dots'] ) ? $field['value']['dots'] : 'no',
+		) );
+	}
+
+	if( isset( $field['fields'] ) && in_array( 'nav', $field['fields'] )  ) {
+		electro_wp_checkbox( array(
+			'id'			=> $field['id'] . '_nav',
+			'label'			=> esc_html__( 'Navigation', 'electro' ),
+			'name'			=> $field['name'] . '[nav]',
+			'value'			=> isset( $field['value']['nav'] ) ? $field['value']['nav'] : 'no',
+		) );
+	}
+
 	if( apply_filters( 'electro_enable_home_carousel_args_responsive', false ) && isset( $field['fields'] ) && in_array( 'responsive', $field['fields'] )  ) {
 		electro_wp_owl_carousel_responsive_options( array(
 			'id'			=> $field['id'] . '_responsive',

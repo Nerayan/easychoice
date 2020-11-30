@@ -358,6 +358,98 @@ if ( ! function_exists( 'electro_top_bar_v2' ) ) {
     }
 }
 
+if ( ! function_exists( 'electro_top_bar_v3' ) ) {
+    /**
+     * Displays Top Bar v3
+     */
+    function electro_top_bar_v3() {
+
+        $top_bar_classes = 'top-bar top-bar-v3';
+
+        if ( apply_filters( 'electro_enable_top_bar', true ) ) :
+            if ( has_electro_mobile_header() ) {
+                if ( apply_filters( 'electro_hide_top_bar_in_mobile', true ) ) {
+                    $top_bar_classes .= ' hidden-lg-down';
+                }
+            }
+
+            $enable_topbar_additional_links = apply_filters( 'electro_enable_top_bar_v3_additional_links', true );
+            ?>
+            <div class="<?php echo esc_attr( $top_bar_classes ); ?>">
+                <div class="container">
+                    <?php if ( $enable_topbar_additional_links ) {
+                        $topbar_additional_links_title = apply_filters( 'electro_top_bar_v3_additional_links_title', __( 'Two Shops<br>One Shipment', 'electro' ) );
+
+                        $topbar_additional_link_1_text = apply_filters( 'electro_top_bar_v3_additional_link_1_text', esc_html__( 'Electronics', 'electro' ) );
+                        $topbar_additional_link_1_url = apply_filters( 'electro_top_bar_v3_additional_link_1_url', '#' );
+                        $topbar_additional_link_1_image = apply_filters( 'electro_top_bar_v3_additional_link_1_image', '' );
+
+                        $topbar_additional_link_2_text = apply_filters( 'electro_top_bar_v3_additional_link_2_text', esc_html__( 'Power Tools', 'electro' ) );
+                        $topbar_additional_link_2_url = apply_filters( 'electro_top_bar_v3_additional_link_2_url', '#' );
+                        $topbar_additional_link_2_image = apply_filters( 'electro_top_bar_v3_additional_link_2_image', '' );
+
+                        if( ! empty( $topbar_additional_links_title ) ) {
+                            ?><span class="additional-links-label"><?php echo wp_kses_post( $topbar_additional_links_title ); ?></span><?php
+                        }
+                        if( ( ! empty( $topbar_additional_link_1_text ) && ! empty( $topbar_additional_link_1_url ) ) || ( ! empty( $topbar_additional_link_2_text ) && ! empty( $topbar_additional_link_2_url ) ) ) {
+                            ?><ul class="additional-links pull-left"><?php
+                                if( ( ! empty( $topbar_additional_link_1_text ) && ! empty( $topbar_additional_link_1_url ) ) ) {
+                                    ?>
+                                    <li class="additional-item">
+                                        <a class="additional-item-link" href="<?php echo esc_attr( $topbar_additional_link_1_url ); ?>">
+                                            <?php if ( ! empty( $topbar_additional_link_1_image ) && $topbar_additional_link_1_image > 0 ) {
+                                                echo wp_get_attachment_image( $topbar_additional_link_1_image, array( '30', '30' ), false, array( "class" => "img-fluid" ) );
+                                            } ?>
+                                            <span class="additional-item-label"><?php echo wp_kses_post( $topbar_additional_link_1_text ); ?></span>
+                                        </a>
+                                    </li>
+                                    <?php
+                                }
+
+                                if( ( ! empty( $topbar_additional_link_2_text ) && ! empty( $topbar_additional_link_2_url ) ) ) {
+                                    ?>
+                                    <li class="additional-item">
+                                        <a class="additional-item-link" href="<?php echo esc_attr( $topbar_additional_link_2_url ); ?>">
+                                            <?php if ( ! empty( $topbar_additional_link_2_image ) && $topbar_additional_link_2_image > 0 ) {
+                                                echo wp_get_attachment_image( $topbar_additional_link_2_image, array( '30', '30' ), false, array( "class" => "img-fluid" ) );
+                                            } ?>
+                                            <span class="additional-item-label"><?php echo wp_kses_post( $topbar_additional_link_2_text ); ?></span>
+                                        </a>
+                                    </li>
+                                    <?php
+                                }
+                            ?></ul><?php
+                        }
+                    } ?>
+
+                    <?php
+                    wp_nav_menu( array(
+                        'theme_location'    => 'header-support',
+                        'container'         => false,
+                        'depth'             => 2,
+                        'menu_class'        => 'nav nav-inline pull-left electro-animate-dropdown flip',
+                        'fallback_cb'       => 'wp_bootstrap_navwalker::fallback',
+                        'walker'            => new wp_bootstrap_navwalker()
+                    ) );
+                    ?>
+
+                    <?php
+                    wp_nav_menu( array(
+                        'theme_location'    => 'topbar-right',
+                        'container'         => false,
+                        'depth'             => 2,
+                        'menu_class'        => 'nav nav-inline pull-right electro-animate-dropdown flip',
+                        'fallback_cb'       => 'wp_bootstrap_navwalker::fallback',
+                        'walker'            => new wp_bootstrap_navwalker()
+                    ) );
+                    ?>
+                </div>
+            </div><!-- /.top-bar-v3 -->
+
+        <?php endif;
+    }
+}
+
 if ( ! function_exists( 'electro_container_wrap_start' ) ) {
     /**
      * Prints Electro container wrapper
@@ -388,11 +480,11 @@ if ( ! function_exists ( 'electro_header_logo' ) ) {
     function electro_header_logo() {
 
         $header_logo_src = apply_filters( 'electro_header_logo_src', get_template_directory_uri() . '/assets/images/logo.png' );
-        
+
         if ( ! empty( $header_logo_src ) ) {
 
             ob_start();
-            
+
             if ( function_exists( 'the_custom_logo' ) && has_custom_logo() ) {
                 the_custom_logo();
             } else { ?>

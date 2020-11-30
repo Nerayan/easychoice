@@ -79,6 +79,15 @@ add_filter( 'electro_enable_header_user_account',              'redux_toggle_hea
 add_filter( 'electro_header_user_account_icon',                'redux_apply_header_user_account_icon',          10 );
 add_filter( 'electro_user_account_nav_menu_ID',                'redux_apply_header_user_account_menu',          10 );
 
+add_filter( 'electro_enable_top_bar_v3_additional_links',      'redux_toggle_top_bar_v3_additional_links',      10 );
+add_filter( 'electro_top_bar_v3_additional_links_title',       'redux_apply_top_bar_v3_additional_links_title', 10 );
+add_filter( 'electro_top_bar_v3_additional_link_1_text',       'redux_apply_top_bar_v3_additional_link_1_text', 10 );
+add_filter( 'electro_top_bar_v3_additional_link_1_url',        'redux_apply_top_bar_v3_additional_link_1_url',  10 );
+add_filter( 'electro_top_bar_v3_additional_link_1_image',      'redux_apply_top_bar_v3_additional_link_1_image',10 );
+add_filter( 'electro_top_bar_v3_additional_link_2_text',       'redux_apply_top_bar_v3_additional_link_2_text', 10 );
+add_filter( 'electro_top_bar_v3_additional_link_2_url',        'redux_apply_top_bar_v3_additional_link_2_url',  10 );
+add_filter( 'electro_top_bar_v3_additional_link_2_image',      'redux_apply_top_bar_v3_additional_link_2_image',10 );
+
 // Footer Filters
 add_filter( 'electro_footer_brands_carousel',                  'redux_toggle_footer_brands_carousel',           10 );
 add_filter( 'ec_footer_bc_carousel_args',                      'redux_toggle_bc_touch_drag' );

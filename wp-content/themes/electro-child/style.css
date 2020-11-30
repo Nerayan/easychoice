@@ -184,6 +184,11 @@
 	display: block;
 }
 
+.deal-stock .stock-sold {
+	visibility: hidden;
+	pointer-events: none;
+}
+
 /* FOOTER */
 .header-logo-link img,
 .footer-logo img {

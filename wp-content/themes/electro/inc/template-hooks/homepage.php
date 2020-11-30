@@ -74,6 +74,31 @@ add_action( 'homepage_v7', 'electro_home_v7_products_category_width_image_2',   
 add_action( 'homepage_v7', 'electro_home_v7_ads_with_banners',                                80 );
 add_action( 'homepage_v7', 'electro_home_v7_two_row_products',                                90 );
 
+add_action( 'homepage_v8', 'electro_page_template_content',                                    5 );
+add_action( 'homepage_v8', 'electro_home_v8_slider',                                          10 );
+add_action( 'homepage_v8', 'electro_home_v8_category_icons_carousel',                         20 );
+add_action( 'homepage_v8', 'electro_home_v8_ads_block',                                       30 );
+add_action( 'homepage_v8', 'electro_home_v8_products_carousel_1',                             40 );
+add_action( 'homepage_v8', 'electro_home_v8_product_category_tags',                           50 );
+add_action( 'homepage_v8', 'electro_home_v8_products_carousel_2',                             60 );
+add_action( 'homepage_v8', 'electro_home_v8_products_carousel_3',                             70 );
+add_action( 'homepage_v8', 'electro_home_v8_products_categories_1_6',                         80 );
+add_action( 'homepage_v8', 'electro_home_v8_products_carousel_4',                             90 );
+add_action( 'homepage_v8', 'electro_home_v8_products_carousel_5',                            100 );
+add_action( 'homepage_v8', 'electro_home_v8_two_banners',                                    110 );
+add_action( 'homepage_v8', 'electro_home_v8_products_carousel_6',                            120 );
+
+
+add_action( 'homepage_v9', 'electro_page_template_content',                                    5 );
+add_action( 'homepage_v9', 'electro_home_v9_slider_with_deals_product_carousel',              10 );
+add_action( 'homepage_v9', 'electro_home_v9_products_carousel_tabs',                          20 );
+add_action( 'homepage_v9', 'electro_home_v9_banner_1_6_block',                                30 );
+add_action( 'homepage_v9', 'electro_home_v9_product_categories_with_banner_carousel_1',       40 );
+add_action( 'homepage_v9', 'electro_home_v9_product_categories_with_banner_carousel_2',       50 );
+add_action( 'homepage_v9', 'electro_home_v9_products_carousel',                               60 );
+add_action( 'homepage_v9', 'electro_home_v9_product_categories_with_banner_carousel_3',       70 );
+add_action( 'homepage_v9', 'electro_home_v9_recent_viewed_products',                          80 );
+
 add_action( 'homepage_mobile_v1', 'electro_page_template_content',                             5 );
 add_action( 'homepage_mobile_v1', 'electro_home_mobile_v1_slider',                            10 );
 add_action( 'homepage_mobile_v1', 'electro_home_mobile_v1_ads_block',                         20 );
@@ -107,5 +132,7 @@ add_action( 'electro_before_homepage_v4', 'electro_home_v4_hook_control',       
 add_action( 'electro_before_homepage_v5', 'electro_home_v5_hook_control',                     10 );
 add_action( 'electro_before_homepage_v6', 'electro_home_v6_hook_control',                     10 );
 add_action( 'electro_before_homepage_v7', 'electro_home_v7_hook_control',                     10 );
+add_action( 'electro_before_homepage_v8', 'electro_home_v8_hook_control',                     10 );
+add_action( 'electro_before_homepage_v9', 'electro_home_v9_hook_control',                     10 );
 add_action( 'electro_before_homepage_mobile_v1', 'electro_home_mobile_v1_hook_control',       10 );
 add_action( 'electro_before_homepage_mobile_v2', 'electro_home_mobile_v2_hook_control',       10 );

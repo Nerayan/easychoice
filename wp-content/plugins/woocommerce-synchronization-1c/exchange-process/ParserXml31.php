@@ -10,6 +10,7 @@ use Itgalaxy\Wc\Exchange1c\ExchangeProcess\DataResolvers\GlobalProductAttributes
 use Itgalaxy\Wc\Exchange1c\ExchangeProcess\DataResolvers\Groups;
 use Itgalaxy\Wc\Exchange1c\ExchangeProcess\DataResolvers\Stocks;
 
+use Itgalaxy\Wc\Exchange1c\ExchangeProcess\DataResolvers\Units;
 use Itgalaxy\Wc\Exchange1c\ExchangeProcess\DataResolvers\VariationCharacteristicsToGlobalProductAttributes;
 use Itgalaxy\Wc\Exchange1c\ExchangeProcess\Helpers\ProductUnvariable;
 use Itgalaxy\Wc\Exchange1c\ExchangeProcess\Helpers\SetVariationAttributeToProducts;
@@ -95,7 +96,7 @@ class ParserXml31
                         !isset($_SESSION['IMPORT_1C']['optionsIsParse']) &&
                         $reader->name === 'Свойства' &&
                         $reader->nodeType === \XMLReader::ELEMENT &&
-                        !$this->isEmptyNodeOptions($reader)
+                        !$this->isEmptyNode($reader, 'Свойства')
                     ) {
                         GlobalProductAttributes::process($reader);
 
@@ -115,6 +116,15 @@ class ParserXml31
                     // resolve price types
                     if ($reader->name === 'ТипыЦен' && $reader->nodeType !== \XMLReader::END_ELEMENT) {
                         PriceTypes::process($reader);
+                    }
+
+                    // resolve units
+                    if (
+                        $reader->name === 'ЕдиницыИзмерения' &&
+                        $reader->nodeType !== \XMLReader::END_ELEMENT &&
+                        !$this->isEmptyNode($reader, 'ЕдиницыИзмерения')
+                    ) {
+                        Units::process($reader);
                     }
 
                     // resolve stocks
@@ -540,7 +550,7 @@ class ParserXml31
         return $valid;
     }
 
-    private function isEmptyNodeOptions($reader)
+    private function isEmptyNode($reader, $node)
     {
         $resolveResult = str_replace(
             [' xmlns="' . $reader->namespaceURI . '"', ' '],
@@ -548,7 +558,7 @@ class ParserXml31
             $reader->readOuterXml()
         );
 
-        if ($resolveResult === '<Свойства/>') {
+        if ($resolveResult === '<' . $node . '/>') {
             return true;
         }
 

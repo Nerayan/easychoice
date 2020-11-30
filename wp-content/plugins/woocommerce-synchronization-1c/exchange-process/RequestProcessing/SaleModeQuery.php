@@ -70,62 +70,7 @@ class SaleModeQuery
                     }
                 }
 
-                $contragents = $document->addChild('Контрагенты');
-
-                if (!function_exists('itglx_wc1c_xml_order_contragent_data')) {
-                    $contragent = $contragents->addChild('Контрагент');
-
-                    $contactData = [];
-
-                    if ($order->get_billing_email()) {
-                        $contactData[] = [
-                            'Тип' => 'Почта',
-                            'Значение' => $order->get_billing_email()
-                        ];
-                    }
-
-                    if ($order->get_billing_phone()) {
-                        $contactData[] = [
-                            'Тип' => 'ТелефонРабочий',
-                            'Значение' => htmlspecialchars($order->get_billing_phone()),
-                            'Представление' => htmlspecialchars($order->get_billing_phone())
-                        ];
-                    }
-
-                    $contragentData = [
-                        'Ид' => $order->get_customer_id(),
-                        'Роль' => 'Покупатель',
-                        'Наименование' => htmlspecialchars(
-                            $order->get_billing_last_name() . ' ' . $order->get_billing_first_name()
-                        ),
-                        'ПолноеНаименование' => htmlspecialchars(
-                            $order->get_billing_last_name() . ' ' . $order->get_billing_first_name()
-                        ),
-                        'Фамилия' => htmlspecialchars($order->get_billing_last_name()),
-                        'Имя' => htmlspecialchars($order->get_billing_first_name()),
-                        'АдресРегистрации' => [
-                            'Вид' => 'Адрес доставки',
-                            'Представление' => htmlspecialchars(self::resolveAddress('shipping', $order)),
-                            'АдресноеПоле' => self::resolveContragentAddressRegistration($order)
-                        ],
-                        'Контакты' => [
-                            'Контакт' => $contactData
-                        ]
-                    ];
-
-                    $contragentData = apply_filters(
-                        'itglx_wc1c_order_xml_contragent_data_array',
-                        $contragentData,
-                        $order
-                    );
-
-                    if ($contragentData) {
-                        self::generateContragentXml($contragent, $contragentData);
-                    }
-                } else {
-                    itglx_wc1c_xml_order_contragent_data($contragents, $order);
-                }
-
+                self::generateOrderContragent($document, $order);
                 self::generateOrderDiscount($document, $order);
                 self::generateOrderProducts($document, $order);
                 self::generateOrderRequisites($document, $order);
@@ -335,6 +280,75 @@ class SaleModeQuery
         Logger::logProtocol('response scheme version - ' . $version);
 
         return $xml;
+    }
+
+    private static function generateOrderContragent($document, $order)
+    {
+        $settings = get_option(Bootstrap::OPTIONS_KEY);
+
+        if (!empty($settings['send_orders_do_not_generate_contragent_data'])) {
+            Logger::logProtocol('do not generate contragent data, order id - ' . $order->get_id());
+
+            return;
+        }
+
+        $contragents = $document->addChild('Контрагенты');
+
+        if (function_exists('itglx_wc1c_xml_order_contragent_data')) {
+            itglx_wc1c_xml_order_contragent_data($contragents, $order);
+
+            return;
+        }
+
+        $contactData = [];
+
+        if ($order->get_billing_email()) {
+            $contactData[] = [
+                'Тип' => 'Почта',
+                'Значение' => $order->get_billing_email()
+            ];
+        }
+
+        if ($order->get_billing_phone()) {
+            $contactData[] = [
+                'Тип' => 'ТелефонРабочий',
+                'Значение' => htmlspecialchars($order->get_billing_phone()),
+                'Представление' => htmlspecialchars($order->get_billing_phone())
+            ];
+        }
+
+        $contragentData = [
+            'Ид' => $order->get_customer_id(),
+            'Роль' => 'Покупатель',
+            'Наименование' => htmlspecialchars(
+                $order->get_billing_last_name() . ' ' . $order->get_billing_first_name()
+            ),
+            'ПолноеНаименование' => htmlspecialchars(
+                $order->get_billing_last_name() . ' ' . $order->get_billing_first_name()
+            ),
+            'Фамилия' => htmlspecialchars($order->get_billing_last_name()),
+            'Имя' => htmlspecialchars($order->get_billing_first_name()),
+            'АдресРегистрации' => [
+                'Вид' => 'Адрес доставки',
+                'Представление' => htmlspecialchars(self::resolveAddress('shipping', $order)),
+                'АдресноеПоле' => self::resolveContragentAddressRegistration($order)
+            ],
+            'Контакты' => [
+                'Контакт' => $contactData
+            ]
+        ];
+
+        $contragentData = apply_filters(
+            'itglx_wc1c_order_xml_contragent_data_array',
+            $contragentData,
+            $order
+        );
+
+        if (empty($contragentData)) {
+            return;
+        }
+
+        self::generateContragentXml($contragents->addChild('Контрагент'), $contragentData);
     }
 
     // todo: refactor to universal

@@ -115,6 +115,32 @@ add_action( 'electro_onsale_product_carousel_content_v2',      'electro_deal_pro
 add_action( 'electro_onsale_product_carousel_content_v2',      'electro_onsale_product_content_wrapper_end',   100 );
 
 /**
+ * Product On Sale Carousel v3
+ */
+
+add_action( 'electro_onsale_product_carousel_content_v3',      'electro_onsale_product_content_wrapper_start', 10 );
+add_action( 'electro_onsale_product_carousel_content_v3',      'electro_template_loop_header_open',            20 );
+add_action( 'electro_onsale_product_carousel_content_v3',      'woocommerce_template_loop_product_link_open',  30 );
+add_action( 'electro_onsale_product_carousel_content_v3',      'woocommerce_template_loop_product_title',      40 );
+add_action( 'electro_onsale_product_carousel_content_v3',      'woocommerce_template_loop_product_link_close', 50 );
+add_action( 'electro_onsale_product_carousel_content_v3',      'electro_template_loop_header_close',           60 );
+add_action( 'electro_onsale_product_carousel_content_v3',      'electro_template_loop_body_open',              70 );
+add_action( 'electro_onsale_product_carousel_content_v3',      'woocommerce_template_loop_product_link_open',  80 );
+add_action( 'electro_onsale_product_carousel_content_v3',      'electro_template_loop_product_thumbnail',      90 );
+add_action( 'electro_onsale_product_carousel_content_v3',      'woocommerce_template_loop_product_link_close', 100 );
+add_action( 'electro_onsale_product_carousel_content_v3',      'electro_template_loop_body_close',             110 );
+add_action( 'electro_onsale_product_carousel_content_v3',      'electro_template_loop_footer_open',            120 );
+add_action( 'electro_onsale_product_carousel_content_v3',      'woocommerce_show_product_sale_flash',          130 );
+add_action( 'electro_onsale_product_carousel_content_v3',      'electro_wrap_price_and_add_to_cart',           140 );
+add_action( 'electro_onsale_product_carousel_content_v3',      'woocommerce_template_loop_price',              150 );
+add_action( 'electro_onsale_product_carousel_content_v3',      'woocommerce_template_loop_add_to_cart',        160 );
+add_action( 'electro_onsale_product_carousel_content_v3',      'electro_wrap_price_and_add_to_cart_close',     170 );
+add_action( 'electro_onsale_product_carousel_content_v3',      'electro_template_loop_availability',           180 );
+add_action( 'electro_onsale_product_carousel_content_v3',      'electro_template_loop_footer_close',           190 );
+add_action( 'electro_onsale_product_carousel_content_v3',      'electro_onsale_product_content_wrapper_end',   200 );
+add_action( 'electro_onsale_product_carousel_content_v3',      'electro_deal_countdown_timer_v2',              210 );
+
+/**
  * Product On Sale Carousel v2
  */
 add_action( 'electro_deal_products_with_featured_content',      'woocommerce_template_loop_product_link_open',  10 );

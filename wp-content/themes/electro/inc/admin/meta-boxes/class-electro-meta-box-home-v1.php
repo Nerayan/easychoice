@@ -108,6 +108,7 @@ class Electro_Meta_Box_Home_v1 {
                             'v6'    => esc_html__( 'Header v6', 'electro' ),
                             'v7'    => esc_html__( 'Header v7', 'electro' ),
                             'v8'    => esc_html__( 'Header v8', 'electro' ),
+                            'v9'    => esc_html__( 'Header v9', 'electro' ),
 						),
 						'name'			=> '_home_v1[hpc][header_style]',
 						'value'			=> isset( $home_v1['hpc']['header_style'] ) ? $home_v1['hpc']['header_style'] : 'v1',
