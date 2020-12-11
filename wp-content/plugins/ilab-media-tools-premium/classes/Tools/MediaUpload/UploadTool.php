@@ -642,12 +642,6 @@ class UploadTool extends Tool {
 	protected function doRenderSettings($insertMode) {
 	    $mtypes = $this->allowedMimeTypes();
 
-		$imgixEnabled = apply_filters('media-cloud/dynamic-images/enabled', false);
-
-		$videoEnabled = apply_filters('media-cloud/transcoder/enabled', false);
-		$altFormatsEnabled = apply_filters('media-cloud/imgix/alternative-formats/enabled', false);
-		$docUploadsEnabled = StorageToolSettings::uploadDocuments();
-
 		$maxUploads = apply_filters('media-cloud/direct-uploads/max-uploads', $this->settings->maxUploads);
 
 		$result = View::render_view('upload/ilab-media-upload.php', [
@@ -656,10 +650,6 @@ class UploadTool extends Tool {
 			'maxUploads' => $maxUploads,
 			'group' => $this->options_group,
 			'page' => $this->options_page,
-			'imgixEnabled' => $imgixEnabled,
-			'videoEnabled' => $videoEnabled,
-			'altFormats' => ($imgixEnabled && $altFormatsEnabled),
-			'docUploads' => $docUploadsEnabled,
 			'insertMode' => $insertMode,
 			'allowedMimes' => $mtypes,
 			"sendDirectory" => true
@@ -675,11 +665,6 @@ class UploadTool extends Tool {
 		$mtypes = $this->allowedMimeTypes();
 
 		$imgixEnabled = apply_filters('media-cloud/dynamic-images/enabled', false);
-
-		$videoEnabled = apply_filters('media-cloud/transcoder/enabled', false);
-		$altFormatsEnabled = apply_filters('media-cloud/imgix/alternative-formats/enabled', false);
-		$docUploadsEnabled = StorageToolSettings::uploadDocuments();
-
 		$maxUploads = apply_filters('media-cloud/direct-uploads/max-uploads', $this->settings->maxUploads);
 
 		$generateThumbnails = !empty($this->settings->generateThumbnails);
@@ -692,10 +677,6 @@ class UploadTool extends Tool {
 		$result = View::render_view('upload/direct-upload-settings', [
 			'driver' => StorageToolSettings::driver(),
 			'maxUploads' => ($maxUploads > 0) ? $maxUploads : 4,
-			'imgixEnabled' => $imgixEnabled,
-			'videoEnabled' => $videoEnabled,
-			'altFormats' => ($imgixEnabled && $altFormatsEnabled),
-			'docUploads' => $docUploadsEnabled,
 			'allowedMimes' => $mtypes,
 			'wildcardUploads' => $this->storageTool->client()->supportsWildcardDirectUploads(),
             'imageQuality' => $this->settings->imageQuality,

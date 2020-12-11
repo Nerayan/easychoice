@@ -12,6 +12,16 @@ class ProductAttributes
             !isset($element->ЗначенияСвойств) ||
             !isset($element->ЗначенияСвойств->ЗначенияСвойства)
         ) {
+            $productAttributes = get_post_meta($productId, '_product_attributes', true);
+
+            /*
+             * Execution of logic is necessary to remove attributes that could have been added earlier
+             * but now the product in XML does not contain attributes
+             */
+            if (!empty($productAttributes)) {
+                self::setAttributes($productId, [], $productAttributes, []);
+            }
+
             return;
         }
 
@@ -119,6 +129,13 @@ class ProductAttributes
             }
         }
 
+        self::setAttributes($productId, $setAttributes, $productAttributes, $currentAttributes);
+    }
+
+    private static function setAttributes($productId, $setAttributes, $allAttributes, $currentList)
+    {
+        $productOptions = get_option('all_product_options');
+
         if ($setAttributes) {
             foreach ($setAttributes as $tax => $values) {
                 Term::setObjectTerms(
@@ -130,12 +147,12 @@ class ProductAttributes
         }
 
         // remove non exists attributes
-        $resolvedAttributes = $productAttributes;
+        $resolved = $allAttributes;
         $allAttributeTaxes = \array_column($productOptions, 'taxName');
 
-        foreach ($productAttributes as $key => $value) {
+        foreach ($allAttributes as $key => $value) {
             if (empty($key)) {
-                unset($resolvedAttributes[$key]);
+                unset($resolved[$key]);
 
                 continue;
             }
@@ -147,10 +164,10 @@ class ProductAttributes
 
             // if not in current set and attribute was getting from 1C
             if (
-                !in_array($key, $currentAttributes, true) &&
+                !in_array($key, $currentList, true) &&
                 in_array($key, $allAttributeTaxes, true)
             ) {
-                unset($resolvedAttributes[$key]);
+                unset($resolved[$key]);
 
                 \wp_set_object_terms(
                     $productId,
@@ -160,7 +177,7 @@ class ProductAttributes
             }
         }
 
-        update_post_meta($productId, '_product_attributes', $resolvedAttributes);
+        update_post_meta($productId, '_product_attributes', $resolved);
     }
 
     // sort attributes based on nomenclature category settings

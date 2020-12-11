@@ -116,26 +116,6 @@ class Groups
             return $processData;
         }
 
-        /*
-         * check if there is a real term, perhaps it does not exist,
-         * then delete the value from `termmeta` so as not to find it again
-         */
-        if ($category) {
-            $realTerm = get_term($category, 'product_cat');
-
-            if (!$realTerm) {
-                Logger::logChanges(
-                    '(product_cat) Real term not exists, removed term meta by `term_id` - ' . $category,
-                    [get_term_meta($category, '_id_1c', true)]
-                );
-
-                delete_term_meta($category, '_id_1c');
-                $category = false;
-            }
-
-            unset($realTerm);
-        }
-
         $_SESSION['IMPORT_1C']['categoryIdStack'] = $processData['categoryIdStack'];
 
         $categoryEntry = [

@@ -82,26 +82,6 @@ class ProductManufacturer
 
         $optionTermID = Term::getTermIdByMeta($uniqueId1c);
 
-        /*
-         * check if there is a real term, perhaps it does not exist,
-         * then delete the value from `termmeta` so as not to find it again
-         */
-        if ($optionTermID) {
-            $realTerm = get_term($optionTermID, $taxName);
-
-            if (!$realTerm) {
-                Logger::logChanges(
-                    '(manufacturer) Real term not exists, removed term meta by `term_id` - ' . $optionTermID,
-                    [get_term_meta($optionTermID, '_id_1c', true)]
-                );
-
-                delete_term_meta($optionTermID, '_id_1c');
-                $optionTermID = false;
-            }
-
-            unset($realTerm);
-        }
-
         if ($optionTermID) {
             wp_update_term(
                 $optionTermID,

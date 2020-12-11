@@ -11,9 +11,11 @@ class Term
 
         $term = $wpdb->get_var(
             $wpdb->prepare(
-                "SELECT `term_id` FROM `{$wpdb->termmeta}` WHERE `meta_value` = %s AND `meta_key` = %s",
+                "SELECT `meta`.`term_id` FROM `{$wpdb->termmeta}` as `meta`
+                INNER JOIN `{$wpdb->terms}` as `terms` ON (`meta`.`term_id` = `terms`.`term_id`)
+                WHERE `meta`.`meta_value` = %s AND `meta`.`meta_key` = %s",
                 (string) $value,
-                $metaKey
+                (string) $metaKey
             )
         );
 

@@ -40,6 +40,21 @@ class CatalogModeImport
             $_SESSION['IMPORT_1C_STEP'] = 2;
         }
 
+        $ignoreProcessing = apply_filters(
+            'itglx_wc1c_ignore_catalog_file_processing',
+            false,
+            basename(RootProcessStarter::getCurrentExchangeFileAbsPath())
+        );
+
+        if ($ignoreProcessing) {
+            Logger::logChanges(
+                'Ignore file processing by `itglx_wc1c_ignore_catalog_file_processing',
+                [basename(RootProcessStarter::getCurrentExchangeFileAbsPath())]
+            );
+
+            $_SESSION['IMPORT_1C_STEP'] = 3;
+        }
+
         if ((int) $_SESSION['IMPORT_1C_STEP'] === 2) {
             // check requested parse file exists
             if (!file_exists(RootProcessStarter::getCurrentExchangeFileAbsPath())) {

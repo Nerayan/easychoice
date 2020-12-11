@@ -35,10 +35,6 @@
             new ilabMediaUploader($,{
                 "insertMode": {{($insertMode) ? 'true' : 'false'}},
                 "maxUploads": {{(int)$maxUploads}},
-                "imgixEnabled": {{($imgixEnabled) ? 'true' : 'false'}},
-                "videoEnabled": {{($videoEnabled) ? 'true' : 'false'}},
-                "docsEnabled": {{($docUploads) ? 'true' : 'false'}},
-                "extrasEnabled": {{($altFormats) ? 'true' : 'false'}},
                 "insertButton": $('#ilab-insert-button'),
                 "uploadTarget": $('#ilab-video-upload-target'),
                 "cellContainer": $('#ilab-video-upload-target'),

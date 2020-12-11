@@ -35,7 +35,12 @@ Once completed, visit your plugins page.
 
 == Changelog ==
 
-= 1.80.1 =
+= 1.81.0 =
+Feature: search for a term by meta always with the condition of the real presence of the term.
+
+= 1.80.3 =
+Fixed: removing previously added attributes from a product when node `ЗначенияСвойств` no longer exists.
+Chore: added new filter `itglx_wc1c_ignore_catalog_file_processing`.
 Chore: more filters - `itglx_wc1c_create_product_attribute_args`, `itglx_wc1c_set_product_variation_attribute_args`.
 Feature: ability to disable the formation of data on the contragent (unloading orders).
 
