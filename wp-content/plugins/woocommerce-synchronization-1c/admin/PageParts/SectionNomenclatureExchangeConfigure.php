@@ -173,6 +173,19 @@ class SectionNomenclatureExchangeConfigure
                                 'itgalaxy-woocommerce-1c'
                             )
                         ],
+                        'use_separate_file_with_html_description' =>[
+                            'type' => 'checkbox',
+                            'title' => esc_html__(
+                                'Use a separate file with a description',
+                                'itgalaxy-woocommerce-1c'
+                            ),
+                            'description' => esc_html__(
+                                'If enabled, the plugin will fill in product description from the first "*.html" file '
+                                . 'in the upload, if the file exists. If there is a file, then data from "Описание" '
+                                . 'will be written into a excerpt description.',
+                                'itgalaxy-woocommerce-1c'
+                            )
+                        ],
                         'get_product_sku_from' => [
                             'type' => 'select',
                             'title' => esc_html__('Get product sku from:', 'itgalaxy-woocommerce-1c'),
@@ -192,6 +205,38 @@ class SectionNomenclatureExchangeConfigure
                             ],
                             'description' => esc_html__(
                                 'Indicate from which value the article number should be written.',
+                                'itgalaxy-woocommerce-1c'
+                            )
+                        ],
+                    ]
+                ],
+                [
+                    'title' => esc_html__('For Attributes', 'itgalaxy-woocommerce-1c'),
+                    'id' => 'nomenclature-attributes',
+                    'fields' => [
+                        'find_exists_attribute_by_name' => [
+                            'type' => 'checkbox',
+                            'title' => esc_html__(
+                                'An attempt to search for basic (for products) attributes by name',
+                                'itgalaxy-woocommerce-1c'
+                            ),
+                            'description' => esc_html__(
+                                'If enabled, then the plugin tries to find the attribute by name, if it is not '
+                                . 'found by ID from 1C. It may be useful if the site already has attributes and, in '
+                                . 'order not to create everything again, you can make their first link by name.',
+                                'itgalaxy-woocommerce-1c'
+                            )
+                        ],
+                        'find_exists_attribute_value_by_name' => [
+                            'type' => 'checkbox',
+                            'title' => esc_html__(
+                                'An attempt to search for basic (for products) attribute values by name',
+                                'itgalaxy-woocommerce-1c'
+                            ),
+                            'description' => esc_html__(
+                                'If enabled, then the plugin tries to find the attribute value by name, if it is not '
+                                . 'found by ID from 1C. It may be useful if the site already has attribute values and, in '
+                                . 'order not to create everything again, you can make their first link by name.',
                                 'itgalaxy-woocommerce-1c'
                             )
                         ],

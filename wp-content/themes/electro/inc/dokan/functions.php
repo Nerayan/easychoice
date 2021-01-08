@@ -14,7 +14,7 @@ if ( ! function_exists( 'electro_dokan_scripts' ) ) {
 
 		// Dequeue Fontawesome
 		wp_dequeue_style( 'fontawesome' );
-		wp_dequeue_style( 'dokan-fontawesome' );
+		// wp_dequeue_style( 'dokan-fontawesome' );
 		wp_enqueue_style( 'ec-fontawesome', get_template_directory_uri() . '/assets/vendor/fontawesome/css/all.min.css', '', $electro_version );
 		wp_enqueue_style( 'ec-fontawesome' );
 

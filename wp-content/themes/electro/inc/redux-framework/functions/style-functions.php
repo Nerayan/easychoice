@@ -87,6 +87,7 @@ if ( ! function_exists( 'redux_get_custom_color_css' ) ) {
         .widget_electro_products_filter .widget_product_categories li.current-cat > a::before,
         .features-list .media-left i,
         .secondary-nav>.dropdown.open >a::before,
+        .secondary-nav>.dropdown.show >a::before,
         p.stars a,
         .top-bar.top-bar-v1 #menu-top-bar-left.nav-inline .menu-item > a i,
         .handheld-footer .handheld-footer-bar .footer-call-us .call-us-text span,

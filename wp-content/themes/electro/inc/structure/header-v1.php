@@ -5,7 +5,7 @@
 
 if ( ! function_exists( 'electro_vertical_menu' ) ) {
 	/**
-	 * 
+	 *
 	 */
 	function electro_vertical_menu() {
 		?>
@@ -14,7 +14,7 @@ if ( ! function_exists( 'electro_vertical_menu' ) ) {
 			$vertical_menu_title = apply_filters( 'electro_vertical_menu_title', wp_kses_post( 'All Departments', 'electro' ) );
 			$vertical_menu_icon  = apply_filters( 'electro_vertical_menu_icon', 'fa fa-list-ul' );
 
-			if ( ( is_front_page() && ! is_home() ) || is_page_template( 'template-homepage-v1.php' ) ) :
+			if ( ( is_front_page() && ! is_home() ) || is_page_template( 'template-homepage-v1.php' ) || is_page_template( 'template-homepage-v10.php' ) ) :
 				wp_nav_menu( array(
 					'theme_location'	=> 'all-departments-menu',
 					'container'			=> false,

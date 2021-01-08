@@ -4,11 +4,23 @@ namespace Itgalaxy\Wc\Exchange1c\ExchangeProcess\DataResolvers;
 use Itgalaxy\Wc\Exchange1c\Includes\Bootstrap;
 use Itgalaxy\Wc\Exchange1c\Includes\Logger;
 
+/**
+ * Parsing and save global info by price types.
+ *
+ * Example xml structure (position ПакетПредложений -> ТипыЦен)
+ *
+ * ```xml
+ * <ТипыЦен>
+ *      <ТипЦены>
+ *          <Ид>bb14a3a4-6b17-11e0-9819-e0cb4ed5eed4</Ид>
+ *          <Наименование>Розничная</Наименование>
+ *          <Валюта>RUB</Валюта>
+ *      </ТипЦены>
+ * </ТипыЦен>
+ */
 class PriceTypes
 {
     /**
-     * Processing and save global info by price types.
-     *
      * @param \XMLReader $reader
      *
      * @return void
@@ -21,18 +33,6 @@ class PriceTypes
         }
 
         $prices = [];
-
-        /*
-         * Example xml structure
-         *
-        <ТипыЦен>
-            <ТипЦены>
-                <Ид>bb14a3a4-6b17-11e0-9819-e0cb4ed5eed4</Ид>
-                <Наименование>Розничная</Наименование>
-                <Валюта>RUB</Валюта>
-            </ТипЦены>
-        </ТипыЦен>
-        */
 
         while ($reader->read() &&
             !($reader->name === 'ТипыЦен' &&

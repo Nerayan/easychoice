@@ -1,22 +1,30 @@
 <?php
 namespace Itgalaxy\Wc\Exchange1c\ExchangeProcess\DataResolvers;
 
+use Itgalaxy\Wc\Exchange1c\ExchangeProcess\Helpers\Product;
 use Itgalaxy\Wc\Exchange1c\ExchangeProcess\Helpers\ProductAttributeHelper;
 use Itgalaxy\Wc\Exchange1c\ExchangeProcess\Helpers\Term;
 use Itgalaxy\Wc\Exchange1c\Includes\Logger;
 
-/*
-* Example xml structure
-* position - Товар -> Изготовитель
-*
-<Изготовитель>
-    <Ид>404fc2e6-cd9d-11e6-8b9d-60eb696dc507</Ид>
-    <Наименование>Наименование изготовителя</Наименование>
-</Изготовитель>
-*/
-
+/**
+ * Parsing and saving data on the manufacturer of a specific product.
+ *
+ * Example xml structure (position - Товар -> Изготовитель)
+ *
+ * ```xml
+ * <Изготовитель>
+ *      <Ид>404fc2e6-cd9d-11e6-8b9d-60eb696dc507</Ид>
+ *      <Наименование>Наименование изготовителя</Наименование>
+ * </Изготовитель>
+ */
 class ProductManufacturer
 {
+    /**
+     * @param \SimpleXMLElement $element
+     * @param int $productId
+     *
+     * @return void
+     */
     public static function process($element, $productId)
     {
         if (
@@ -52,26 +60,28 @@ class ProductManufacturer
             $optionTermID = $_SESSION['IMPORT_1C']['brand_taxonomy']['values'][$uniqueId1c];
         }
 
-        if ($optionTermID) {
-            if (!isset($productAttributes[$taxName])) {
-                $productAttributes[$taxName] = [
-                    'name' => \wc_clean($taxName),
-                    'value' => '',
-                    'position' => 0,
-                    'is_visible' => 1,
-                    'is_variation' => 0,
-                    'is_taxonomy' => 1
-                ];
-            }
-
-            Term::setObjectTerms(
-                $productId,
-                (int) $optionTermID,
-                $taxName
-            );
-
-            update_post_meta($productId, '_product_attributes', $productAttributes);
+        if (!$optionTermID) {
+            return;
         }
+
+        if (!isset($productAttributes[$taxName])) {
+            $productAttributes[$taxName] = [
+                'name' => \wc_clean($taxName),
+                'value' => '',
+                'position' => 0,
+                'is_visible' => 1,
+                'is_variation' => 0,
+                'is_taxonomy' => 1
+            ];
+        }
+
+        Term::setObjectTerms(
+            $productId,
+            (int) $optionTermID,
+            $taxName
+        );
+
+        Product::saveMetaValue($productId, '_product_attributes', $productAttributes);
     }
 
     private static function resolveValue($element, $uniqueId1c, $taxName)

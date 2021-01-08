@@ -1,12 +1,23 @@
 <?php
 namespace Itgalaxy\Wc\Exchange1c\ExchangeProcess\DataResolvers;
 
+use Itgalaxy\Wc\Exchange1c\ExchangeProcess\Helpers\Product;
 use Itgalaxy\Wc\Exchange1c\Includes\Bootstrap;
 use Itgalaxy\Wc\Exchange1c\Includes\Helper;
 use Itgalaxy\Wc\Exchange1c\Includes\Logger;
 
+/**
+ * Parsing and saving images of the specified product.
+ */
 class ProductImages
 {
+    /**
+     * @param \SimpleXMLElement $element
+     * @param array $productEntry
+     * @param int $postAuthor
+     *
+     * @return bool
+     */
     public static function process($element, $productEntry, $postAuthor = 0)
     {
         $dirName = apply_filters('itglx_wc1c_root_image_directory', Helper::getTempPath() . '/');
@@ -25,7 +36,7 @@ class ProductImages
                 $images[] = (string) $image;
             }
 
-            update_post_meta($productEntry['ID'], '_old_images', $images);
+            Product::saveMetaValue($productEntry['ID'], '_old_images', $images);
 
             // delete images that do not exist in the current set
             foreach ($oldImages as $oldImage) {
@@ -46,7 +57,7 @@ class ProductImages
                 if ($removeImage) {
                     // clean product thumbnail if removed
                     if ((int) $attachID === (int) get_post_meta($productEntry['ID'], '_thumbnail_id', true)) {
-                        update_post_meta($productEntry['ID'], '_thumbnail_id', '');
+                        Product::saveMetaValue($productEntry['ID'], '_thumbnail_id', '');
                     }
 
                     // clean category thumbnail if removed
@@ -117,7 +128,7 @@ class ProductImages
                 }
 
                 if (!$hasThumbnail) {
-                    update_post_meta($productEntry['ID'], '_thumbnail_id', $attachID);
+                    Product::saveMetaValue($productEntry['ID'], '_thumbnail_id', $attachID);
                     $hasThumbnail = true;
                     Logger::logChanges(
                         '(image) Set thumbnail image for ID - ' . $productEntry['ID'],
@@ -130,7 +141,7 @@ class ProductImages
 
             // setting gallery images
             if (!empty($gallery)) {
-                update_post_meta($productEntry['ID'], '_product_image_gallery', implode(',', $gallery));
+                Product::saveMetaValue($productEntry['ID'], '_product_image_gallery', implode(',', $gallery));
 
                 Logger::logChanges(
                     '(image) Set gallery for ID - ' . $productEntry['ID'],
@@ -145,7 +156,7 @@ class ProductImages
                 return false;
             // if in the current set there are no images for the gallery, but before they were - delete
             } elseif (count($oldImages) > 1) {
-                update_post_meta($productEntry['ID'], '_product_image_gallery', '');
+                Product::saveMetaValue($productEntry['ID'], '_product_image_gallery', '');
 
                 Logger::logChanges(
                     '(image) Clean gallery for ID - ' . $productEntry['ID']
@@ -214,11 +225,11 @@ class ProductImages
     {
         $settings = get_option(Bootstrap::OPTIONS_KEY);
 
-        update_post_meta($productEntry['ID'], '_old_images', []);
-        update_post_meta($productEntry['ID'], '_thumbnail_id', '');
+        Product::saveMetaValue($productEntry['ID'], '_old_images', []);
+        Product::saveMetaValue($productEntry['ID'], '_thumbnail_id', '');
 
         if (count($oldImages) > 1) {
-            update_post_meta($productEntry['ID'], '_product_image_gallery', '');
+            Product::saveMetaValue($productEntry['ID'], '_product_image_gallery', '');
         }
 
         // delete a known set of images

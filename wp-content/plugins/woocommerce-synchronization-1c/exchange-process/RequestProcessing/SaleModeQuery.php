@@ -654,10 +654,7 @@ class SaleModeQuery
         $requisitesArray['Адрес плательщика'] = htmlspecialchars($billingAddress);
         $requisitesArray['ПометкаУдаления'] = $order->get_status() === 'cancelled' ? 'true' : 'false';
         $requisitesArray['Отменен'] = $order->get_status() === 'cancelled' ? 'true' : 'false';
-        $requisitesArray['Заказ оплачен'] = !empty($settings['send_orders_status_is_paid']) &&
-            in_array($order->get_status(), $settings['send_orders_status_is_paid'], true)
-                ? 'true'
-                : 'false';
+        $requisitesArray['Заказ оплачен'] = self::resolveIsPaidRequisiteValue($order);
 
         $requisitesArray = (array) apply_filters(
             'itglx_wc1c_order_xml_requisites_data_array',
@@ -680,6 +677,42 @@ class SaleModeQuery
             $requisite->addChild('Наименование', $name);
             $requisite->addChild('Значение', $value);
         }
+    }
+
+    private static function resolveIsPaidRequisiteValue($order)
+    {
+        $settings = get_option(Bootstrap::OPTIONS_KEY);
+
+        if (
+            empty($settings['send_orders_status_is_paid']) &&
+            empty($settings['send_orders_payment_method_is_paid'])
+        ) {
+            return 'false';
+        }
+
+        $paymentGateway = \wc_get_payment_gateway_by_order($order);
+
+        if (!$paymentGateway && !empty($settings['send_orders_payment_method_is_paid'])) {
+            return 'false';
+        }
+
+        if (
+            !empty($settings['send_orders_status_is_paid']) &&
+            !empty($settings['send_orders_payment_method_is_paid'])
+        ) {
+            $status = in_array($order->get_status(), $settings['send_orders_status_is_paid'], true);
+            $gateway = in_array($paymentGateway->id, $settings['send_orders_payment_method_is_paid'], true);
+
+            return $status && $gateway ? 'true' : 'false';
+        }
+
+        if (!empty($settings['send_orders_status_is_paid'])) {
+            return in_array($order->get_status(), $settings['send_orders_status_is_paid'], true) ? 'true' : 'false';
+        }
+
+        return in_array($paymentGateway->id, $settings['send_orders_payment_method_is_paid'], true)
+            ? 'true'
+            : 'false';
     }
 
     private static function resolveContragentAddressRegistration($order)

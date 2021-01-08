@@ -238,8 +238,10 @@ if ( ! function_exists( 'electro_products_carousel_with_image' ) ) {
 
                                     $shortcode      = isset( $home_v3['pci']['content']['shortcode'] ) ? $home_v3['pci']['content']['shortcode'] : 'sale_products';
 
+                                    $content        = isset( $home_v3['pci']['content'] ) ? $home_v3['pci']['content'] : array();
+
                                     $default_atts   = array( 'per_page' => intval( $limit ) );
-                                    $atts           = electro_get_atts_for_shortcode( $home_v3['pci']['content'] );
+                                    $atts           = electro_get_atts_for_shortcode( $content );
                                     $atts           = wp_parse_args( $atts, $default_atts );
                                     $products       = Electro_Products::$shortcode( $atts );
 
@@ -301,8 +303,10 @@ if ( ! function_exists( 'electro_products_carousel_with_image' ) ) {
 
                                     $shortcode      = isset( $home_v3['pci']['carousel']['content']['shortcode'] ) ? $home_v3['pci']['carousel']['content']['shortcode'] : 'sale_products';
 
+                                    $content        = isset( $home_v3['pci']['carousel']['content'] ) ? $home_v3['pci']['carousel']['content'] : array();
+
                                     $default_atts   = array( 'per_page' => intval( $limit ) );
-                                    $atts           = electro_get_atts_for_shortcode( $home_v3['pci']['carousel']['content'] );
+                                    $atts           = electro_get_atts_for_shortcode( $content );
                                     $atts           = wp_parse_args( $atts, $default_atts );
 
                                     $products_in_category = electro_do_shortcode( $shortcode, $atts );

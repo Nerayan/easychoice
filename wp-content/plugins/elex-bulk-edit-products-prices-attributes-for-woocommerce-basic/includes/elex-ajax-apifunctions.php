@@ -53,6 +53,7 @@ function elex_bep_get_attributes_action_callback() {
 
 // custom rounding
 
+
 function elex_bep_round_ceiling( $number, $significance = 1 ) {
 	return ( is_numeric( $number ) && is_numeric( $significance ) ) ? ( ceil( $number / $significance ) * $significance ) : false;
 }
@@ -70,7 +71,7 @@ function elex_bep_update_product_callback() {
 	$replace_title_text       = sanitize_text_field( $_POST['replace_title_text'] );
 	$regex_replace_title_text = sanitize_text_field( $_POST['regex_replace_title_text'] );
 
-	
+	//
 
 	$sku_select           = sanitize_text_field( $_POST['sku_select'] );
 	$sku_text                 = sanitize_text_field( $_POST['sku_text'] );
@@ -399,6 +400,7 @@ function elex_bep_update_product_callback() {
 					}
 					break;
 				case 'down_percentage':
+
 					if ( $product_data['regular'] !== '' ) {
 						$per_val = $product_data['regular'] * ( $regular_text / 100 );
 						$cal_val = $product_data['regular'] - $per_val;
@@ -1036,7 +1038,6 @@ function elex_bep_filter_products( $data = '' ) {
 	} else {
 		$data_to_filter = $data;
 	}
-
 	$sql = "SELECT 
                     DISTINCT ID 
                 FROM {$prefix}posts 
@@ -1078,18 +1079,22 @@ function elex_bep_filter_products( $data = '' ) {
 	if ( ! empty( $data_to_filter['attribute_value_filter'] ) && is_array( $data_to_filter['attribute_value_filter'] ) ) {
 		$attribute_value = implode( ',', $data_to_filter['attribute_value_filter'] );
 		$attribute_value = stripslashes( $attribute_value );
+		if ( ! empty( $attribute_value ) ) {
+			$attr_condition = " CONCAT(taxonomy, ':', slug) IN ({$attribute_value})";
+		}
 	}
 	if ( ! empty( $data_to_filter['attribute_value_and_filter'] ) && is_array( $data_to_filter['attribute_value_and_filter'] ) ) {
 		$attribute_value_and = implode( ',', $data_to_filter['attribute_value_and_filter'] );
+		$attribute_count = count( $data_to_filter['attribute_value_and_filter']);
 		$attribute_value_and = stripslashes( $attribute_value_and );
-		if ( ! empty( $attribute_value ) ) {
-			$attribute_value .= ',' . $attribute_value_and;
-		} else {
-			$attribute_value = $attribute_value_and;
+		if ( !empty( $attribute_value_and ) ){
+			$attr_condition = "  {$prefix}posts.ID IN ( SELECT ID FROM {$prefix}posts 
+			LEFT JOIN {$prefix}term_relationships on {$prefix}term_relationships.object_id={$prefix}posts.ID 
+			LEFT JOIN {$prefix}term_taxonomy on {$prefix}term_taxonomy.term_taxonomy_id  = {$prefix}term_relationships.term_taxonomy_id 
+			LEFT JOIN {$prefix}terms on {$prefix}terms.term_id  ={$prefix}term_taxonomy.term_id 
+			WHERE  post_type = 'product' AND post_status='publish'
+			AND CONCAT(taxonomy,':',slug)  in ({$attribute_value_and}) GROUP BY {$prefix}posts.ID HAVING COUNT( {$prefix}posts.ID) ={$attribute_count}) ";
 		}
-	}
-	if ( ! empty( $attribute_value ) ) {
-		$attr_condition = " CONCAT(taxonomy,':',slug)  in ({$attribute_value}) ";
 	}
 	$category_condition = '';
 	$filter_categories  = array();

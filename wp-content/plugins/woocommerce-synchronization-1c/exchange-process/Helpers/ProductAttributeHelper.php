@@ -81,6 +81,20 @@ class ProductAttributeHelper
         );
     }
 
+    public static function getByLabelWithOut1cGuid($value)
+    {
+        global $wpdb;
+
+        return $wpdb->get_row(
+            $wpdb->prepare(
+                "SELECT * FROM `{$wpdb->prefix}woocommerce_attribute_taxonomies`
+                WHERE `attribute_label` = %s
+                AND (`id_1c` IS NULL OR `id_1c` = '')",
+                (string) $value
+            )
+        );
+    }
+
     public static function update($attributeUpdate, $attributeID)
     {
         global $wpdb;

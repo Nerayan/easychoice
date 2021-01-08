@@ -3,10 +3,10 @@
  * Plugin Name: WC Ukr Shipping
  * Plugin URI: https://kirillbdev.pro/plugins/wc-ukr-shipping/?ref=repository
  * Description: Плагин доставки Украинской службой Нова Пошта для WooCommerce
- * Version: 1.7.1
+ * Version: 1.7.3
  * Author: kirillbdev
  * License URI: license.txt
- * Tested up to: 5.5
+ * Tested up to: 5.6
 */
 
 if ( ! defined('ABSPATH')) {

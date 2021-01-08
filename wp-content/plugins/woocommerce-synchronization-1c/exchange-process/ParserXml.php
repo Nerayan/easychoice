@@ -10,6 +10,7 @@ use Itgalaxy\Wc\Exchange1c\ExchangeProcess\DataResolvers\GlobalProductAttributes
 use Itgalaxy\Wc\Exchange1c\ExchangeProcess\DataResolvers\Groups;
 use Itgalaxy\Wc\Exchange1c\ExchangeProcess\DataResolvers\Stocks;
 
+use Itgalaxy\Wc\Exchange1c\ExchangeProcess\DataResolvers\Tags;
 use Itgalaxy\Wc\Exchange1c\ExchangeProcess\DataResolvers\Units;
 use Itgalaxy\Wc\Exchange1c\ExchangeProcess\DataResolvers\VariationCharacteristicsToGlobalProductAttributes;
 use Itgalaxy\Wc\Exchange1c\ExchangeProcess\Helpers\ProductUnvariable;
@@ -79,7 +80,11 @@ class ParserXml
 
             if (
                 $reader->name === 'Классификатор' &&
-                (!isset($_SESSION['IMPORT_1C']['categoryIsParse']) || !isset($_SESSION['IMPORT_1C']['optionsIsParse']))
+                (
+                    !isset($_SESSION['IMPORT_1C']['categoryIsParse']) ||
+                    !isset($_SESSION['IMPORT_1C']['tagsIsParse']) ||
+                    !isset($_SESSION['IMPORT_1C']['optionsIsParse'])
+                )
             ) {
                 $valid = true;
 
@@ -117,6 +122,13 @@ class ParserXml
 
                         // time limit check
                         if ($processDataGroups === false) {
+                            return false;
+                        }
+                    }
+
+                    // resolve tags
+                    if (in_array($reader->name, ['Метки', 'Метка'])) {
+                        if (!Tags::process($reader)) {
                             return false;
                         }
                     }
@@ -177,6 +189,7 @@ class ParserXml
 
                             $element = $reader->readOuterXml();
                             $element = simplexml_load_string(trim($element));
+                            $element = apply_filters('itglx_wc1c_product_xml_data', $element);
 
                             if (apply_filters('itglx_wc1c_skip_product_by_xml', false, $element)) {
                                 unset($element);
@@ -196,7 +209,7 @@ class ParserXml
                                 $product = apply_filters('itglx_wc1c_find_product_id', $product, $element);
 
                                 if ($product) {
-                                    update_post_meta($product, '_id_1c', (string) $element->Ид);
+                                    Product::saveMetaValue($product, '_id_1c', (string) $element->Ид);
                                 }
                             } else {
                                 // if duplicate product
@@ -424,6 +437,12 @@ class ParserXml
                 delete_option('product_cat_children');
                 wp_cache_flush();
 
+                // recalculate product counts
+                if (isset($_SESSION['IMPORT_1C']['products_parse'])) {
+                    $cron = Cron::getInstance();
+                    $cron->createCronTermRecount();
+                }
+
                 $ready = SetVariationAttributeToProducts::process();
 
                 if (!$ready) {
@@ -498,7 +517,7 @@ class ParserXml
                                             );
 
                                             if ($productEntry['post_parent']) {
-                                                update_post_meta($productEntry['post_parent'], '_id_1c', (string) $parseID[0]);
+                                                Product::saveMetaValue($productEntry['post_parent'], '_id_1c', (string) $parseID[0]);
                                             }
                                         }
 
@@ -631,7 +650,7 @@ class ParserXml
                                             $productId = apply_filters('itglx_wc1c_find_product_id', $productId, $element);
 
                                             if ($productId) {
-                                                update_post_meta($productId, '_id_1c', (string) $element->Ид);
+                                                Product::saveMetaValue($productId, '_id_1c', (string) $element->Ид);
                                             }
                                         }
 

@@ -5,7 +5,7 @@
 ?>
 
 <div class="wcus-top-links">
-    <a target="_blank" href="https://kirillbdev.pro/dokumentaciya-wc-nova-poshta-shipping/" class="wcus-btn wcus-btn--docs wcus-btn--md wcus-top-links__link">
+    <a target="_blank" href="https://kirillbdev.pro/docs/wcus-base-setup/" class="wcus-btn wcus-btn--docs wcus-btn--md wcus-top-links__link">
         <?= wc_ukr_shipping_import_svg('docs.svg'); ?>
         Документация
     </a>

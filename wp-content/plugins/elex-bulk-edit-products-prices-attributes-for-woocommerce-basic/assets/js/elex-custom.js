@@ -1119,9 +1119,12 @@ jQuery("#cat_update input:radio").click(function() {
             
             // Use regular value.
             var use_regular_val = 0;
-                if (jQuery("#regular_val_check").attr("checked")) {
-                    use_regular_val = 1;
+            if(jQuery('#regular_val_check').is(":checked")){
+                use_regular_val = 1;
+            }else {
+                use_regular_val = 0;
             }
+            
 
             // Product tags.
             var tags = jQuery('#elex_product_tags').val();
@@ -1388,25 +1391,23 @@ function bep_ajax_filter_products()
     }
     
     //exclude products
-            var ids_to_exclude = '';
-             if ( (jQuery("#exclude_ids").length) && jQuery("#exclude_ids").val() != '') {
-                    ids_to_exclude = jQuery("#exclude_ids").val().split(',');
-                }
-                var cats_to_exclude = [];
-                var exclude_sub_cat = 0;
-                var exclude_prods = 0;
-                if (jQuery("#enable_exclude_products").is(":checked")) {
-                    exclude_prods =1;
-                    jQuery.each(jQuery("input[name='cat_exclude']:checked"), function(){            
-                        cats_to_exclude.push(jQuery(this).val());
-                    });
-                    if (jQuery("#exclude_subcat_check").is(":checked")) {
-                        exclude_sub_cat = 1;
-                    }
-                }
-                
-    
-
+    var ids_to_exclude = '';
+        if ( (jQuery("#exclude_ids").length) && jQuery("#exclude_ids").val() != '') {
+            ids_to_exclude = jQuery("#exclude_ids").val().split(',');
+        }
+        var cats_to_exclude = [];
+        var exclude_sub_cat = 0;
+        var exclude_prods = 0;
+        if (jQuery("#enable_exclude_products").is(":checked")) {
+            exclude_prods =1;
+            jQuery.each(jQuery("input[name='cat_exclude']:checked"), function(){            
+                cats_to_exclude.push(jQuery(this).val());
+            });
+            if (jQuery("#exclude_subcat_check").is(":checked")) {
+                exclude_sub_cat = 1;
+            }
+        }
+        
     var data = {
         paged: '1',
     };

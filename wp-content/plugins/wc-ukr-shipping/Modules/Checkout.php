@@ -98,7 +98,7 @@ class Checkout implements ModuleInterface
     public function injectShippingName($method, $index)
     {
         if ($method->get_method_id() === WC_UKR_SHIPPING_NP_SHIPPING_NAME) {
-            echo '<input id="wcus-shipping-name" type="hidden" value="' . $method->get_label() . '">';
+            echo '<input id="wcus-shipping-name" type="hidden" value="' . esc_attr($method->get_label()) . '">';
         }
     }
 

@@ -58,7 +58,7 @@ class SetVariationAttributeToProducts
                 self::cleanupMissingProductVariations($productID);
             }
 
-            update_post_meta($productID, '_product_attributes', $resolvedAttributes);
+            Product::saveMetaValue($productID, '_product_attributes', $resolvedAttributes);
 
             unset($_SESSION['IMPORT_1C']['setTerms'][$productID]);
         }
@@ -111,11 +111,12 @@ class SetVariationAttributeToProducts
             }
 
             $ids = array_map('intval', $ids);
+            $ids = array_unique($ids);
 
             Term::setObjectTerms($productID, $ids, $taxonomy);
             Logger::logChanges(
                 '(product) Set attribute terms, ID - ' . $productID,
-                [get_post_meta($productID, '_id_1c', true), $ids, $taxonomy]
+                [get_post_meta($productID, '_id_1c', true), array_values($ids), $taxonomy]
             );
         }
 

@@ -1,11 +1,24 @@
 <?php
 namespace Itgalaxy\Wc\Exchange1c\ExchangeProcess\DataResolvers;
 
+use Itgalaxy\Wc\Exchange1c\ExchangeProcess\Helpers\Product;
 use Itgalaxy\Wc\Exchange1c\ExchangeProcess\Helpers\ProductAttributeHelper;
 use Itgalaxy\Wc\Exchange1c\ExchangeProcess\Helpers\Term;
 
+/**
+ * Parsing and saving data on the attributes of a specific product.
+ */
 class ProductAttributes
 {
+    /**
+     * Parsing attributes and values for a product according to data in XML.
+     *
+     * @param \SimpleXMLElement $element
+     * @param int $productId
+     *
+     * @return void
+     * @throws \Exception
+     */
     public static function process($element, $productId)
     {
         if (
@@ -48,6 +61,22 @@ class ProductAttributes
             $attribute = $productOptions[(string) $property->Ид];
 
             foreach ($property->Значение as $propertyValue) {
+                $propertyValue = trim((string) $propertyValue);
+
+                /*
+                 * ignore node  with empty value - <Значение/>
+                 * Example
+                 *
+                 <ЗначенияСвойства>
+                    <Ид>5ff7fc04-d7d8-4c80-b6c6-46fe8bf9ceb2</Ид>
+                    <Значение>28e4831d-d01b-11e2-aba7-001eec015c4c</Значение>
+                    <Значение/>
+                 </ЗначенияСвойства>
+                 */
+                if ($propertyValue === '') {
+                    continue;
+                }
+
                 /*
                  * ignore attribute with full null value
                  * Example
@@ -57,23 +86,23 @@ class ProductAttributes
                     <Значение>00000000-0000-0000-0000-000000000000</Значение>
                  </ЗначенияСвойства>
                  */
-                if ((string) $propertyValue === '00000000-0000-0000-0000-000000000000') {
+                if ($propertyValue === '00000000-0000-0000-0000-000000000000') {
                     continue;
                 }
 
                 if (
                     $attribute['type'] === 'Справочник' &&
-                    isset($attribute['values'][(string) $propertyValue]) &&
-                    $attribute['values'][(string) $propertyValue] !== ''
+                    isset($attribute['values'][$propertyValue]) &&
+                    $attribute['values'][$propertyValue] !== ''
                 ) {
-                    $optionTermID = $attribute['values'][(string) $propertyValue];
+                    $optionTermID = $attribute['values'][$propertyValue];
                 } else {
-                    $uniqId1c = md5($attribute['createdTaxName'] . (string) $propertyValue);
+                    $uniqId1c = md5($attribute['createdTaxName'] . $propertyValue);
 
                     $optionTermID = Term::getTermIdByMeta($uniqId1c);
 
                     if (!$optionTermID) {
-                        $optionTermID = get_term_by('name', (string) $propertyValue, $attribute['taxName']);
+                        $optionTermID = get_term_by('name', $propertyValue, $attribute['taxName']);
 
                         if ($optionTermID) {
                             $optionTermID = $optionTermID->term_id;
@@ -84,7 +113,7 @@ class ProductAttributes
 
                     if (!$optionTermID) {
                         $term = ProductAttributeHelper::insertValue(
-                            (string) $propertyValue,
+                            $propertyValue,
                             $attribute['taxName'],
                             $uniqId1c
                         );
@@ -132,9 +161,23 @@ class ProductAttributes
         self::setAttributes($productId, $setAttributes, $productAttributes, $currentAttributes);
     }
 
+    /**
+     * Set resolved attributes to product.
+     *
+     * @param int $productId
+     * @param array $setAttributes
+     * @param array $allAttributes
+     * @param array $currentList
+     *
+     * @return void
+     */
     private static function setAttributes($productId, $setAttributes, $allAttributes, $currentList)
     {
-        $productOptions = get_option('all_product_options');
+        $productOptions = get_option('all_product_options', []);
+
+        if (empty($productOptions)) {
+            return;
+        }
 
         if ($setAttributes) {
             foreach ($setAttributes as $tax => $values) {
@@ -177,10 +220,18 @@ class ProductAttributes
             }
         }
 
-        update_post_meta($productId, '_product_attributes', $resolved);
+        Product::saveMetaValue($productId, '_product_attributes', $resolved);
     }
 
-    // sort attributes based on nomenclature category settings
+    /**
+     * Sort attributes based on nomenclature category settings.
+     *
+     * @param \SimpleXMLElement $element
+     * @param string $attribute1cId
+     * @param int $position
+     *
+     * @return int
+     */
     private static function resolveAttributePosition($element, $attribute1cId, $position)
     {
         if (empty($element->Категория)) {

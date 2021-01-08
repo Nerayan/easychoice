@@ -5,8 +5,17 @@ use Itgalaxy\Wc\Exchange1c\ExchangeProcess\Helpers\HeartBeat;
 use Itgalaxy\Wc\Exchange1c\ExchangeProcess\Helpers\Term;
 use Itgalaxy\Wc\Exchange1c\Includes\Logger;
 
+/**
+ * Parsing and save info by product categories.
+ */
 class Groups
 {
+    /**
+     * @param \XMLReader $reader
+     * @param array $processData
+     *
+     * @return array|bool
+     */
     public static function process($reader, $processData)
     {
         if (!isset($_SESSION['IMPORT_1C']['numberOfCategories'])) {

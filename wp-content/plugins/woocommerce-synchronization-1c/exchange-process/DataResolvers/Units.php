@@ -4,11 +4,12 @@ namespace Itgalaxy\Wc\Exchange1c\ExchangeProcess\DataResolvers;
 use Itgalaxy\Wc\Exchange1c\Includes\Bootstrap;
 use Itgalaxy\Wc\Exchange1c\Includes\Logger;
 
+/**
+ * Processing and save global info by units.
+ */
 class Units
 {
     /**
-     * Processing and save global info by units.
-     *
      * @param \XMLReader $reader
      *
      * @return void

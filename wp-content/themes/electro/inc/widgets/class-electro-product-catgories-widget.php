@@ -102,7 +102,7 @@ if( class_exists( 'WP_Widget' ) ) :
 					'product_cat',
 					array(
 						'fields'       => 'ids',
-						'child_of'     => $this->current_cat->term_id,
+						'parent'       => $this->current_cat->term_id,
 						'hierarchical' => true,
 						'hide_empty'   => false
 					)
@@ -115,7 +115,7 @@ if( class_exists( 'WP_Widget' ) ) :
 						'product_cat',
 						array(
 							'fields'       => 'ids',
-							'child_of'     => $this->current_cat_parent,
+							'parent'       => $this->current_cat_parent,
 							'hierarchical' => true,
 							'hide_empty'   => false
 						)

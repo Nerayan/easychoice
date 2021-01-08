@@ -7,7 +7,7 @@ class Section
     {
          ?>
         <div class="postbox wc1c-padding">
-            <h3 class="hndle">
+            <h3 class="hndle border-bottom text-uppercase">
                 <?php echo esc_html($title); ?>
             </h3>
             <div class="inside">

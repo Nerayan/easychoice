@@ -38,20 +38,20 @@ if ( ! class_exists( 'Electro' ) ) :
          * @return void
          */
         function register_elementor_locations( $elementor_theme_manager ) {
-            
+
             $elementor_theme_manager->register_all_core_location();
-            
-            $elementor_theme_manager->register_location( 'sidebar', [ 
+
+            $elementor_theme_manager->register_location( 'sidebar', [
                 'label' => esc_html__( 'Sidebar Blog', 'electro' ),
             ] );
 
-            $elementor_theme_manager->register_location( 'sidebar-home', [ 
+            $elementor_theme_manager->register_location( 'sidebar-home', [
                 'label' => esc_html__( 'Sidebar Home', 'electro' ),
             ] );
-            $elementor_theme_manager->register_location( 'sidebar-shop', [ 
+            $elementor_theme_manager->register_location( 'sidebar-shop', [
                 'label' => esc_html__( 'Sidebar Shop', 'electro' ),
             ] );
-            $elementor_theme_manager->register_location( 'sidebar-store', [ 
+            $elementor_theme_manager->register_location( 'sidebar-store', [
                 'label' => esc_html__( 'Sidebar Store', 'electro' ),
             ] );
         }
@@ -93,11 +93,15 @@ if ( ! class_exists( 'Electro' ) ) :
             if( isset( $layout_args['body_classes'] ) ) {
                 $classes[] = $layout_args['body_classes'];
             }
-            
+
             $classes[] = 'electro-compact'; //TODO: deprecate at 2.4
 
             if ( electro_is_wide_enabled() ) {
                 $classes[] = 'electro-wide';
+            }
+
+            if ( is_page_template( 'template-homepage-v10.php' ) ) {
+                $classes[] = 'electro-dark';
             }
 
             return $classes;

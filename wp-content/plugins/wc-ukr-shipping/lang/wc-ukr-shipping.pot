@@ -21,3 +21,6 @@ msgstr ""
 
 msgid "Ничего не найдено"
 msgstr ""
+
+msgid "checkout_validation_message"
+msgstr ""

@@ -6,6 +6,7 @@ use kirillbdev\WCUkrShipping\Contracts\ModuleInterface;
 use kirillbdev\WCUkrShipping\Modules\Activator;
 use kirillbdev\WCUkrShipping\Modules\Ajax;
 use kirillbdev\WCUkrShipping\Modules\AssetsLoader;
+use kirillbdev\WCUkrShipping\Modules\Cart;
 use kirillbdev\WCUkrShipping\Modules\Checkout;
 use kirillbdev\WCUkrShipping\Modules\OptionsPage;
 use kirillbdev\WCUkrShipping\Modules\ShippingItemDrawer;
@@ -35,14 +36,6 @@ final class WCUkrShipping
         $this->instantiateContainer();
     }
 
-    private function __clone()
-    {
-    }
-
-    private function __wakeup()
-    {
-    }
-
     public static function instance()
     {
         if (!self::$instance) {
@@ -68,6 +61,7 @@ final class WCUkrShipping
         $this->initModule(CheckoutValidator::class);
         $this->initModule(OrderCreator::class);
         $this->initModule(ShippingItemDrawer::class);
+        $this->initModule(Cart::class);
 
         add_action('plugins_loaded', function () {
             load_plugin_textdomain(WCUS_TRANSLATE_DOMAIN, false, 'wc-ukr-shipping/lang');

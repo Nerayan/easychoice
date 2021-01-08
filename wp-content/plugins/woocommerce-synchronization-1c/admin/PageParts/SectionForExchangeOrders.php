@@ -16,6 +16,19 @@ class SectionForExchangeOrders
             $orderStatusList[str_replace('wc-', '', $status)] = $label;
         }
 
+        $gateways = \WC()->payment_gateways->get_available_payment_gateways();
+        $gatewayList = [
+            '' => esc_html__('Not chosen', 'itgalaxy-woocommerce-1c')
+        ];
+
+        if($gateways) {
+            foreach ($gateways as $gateway) {
+                if ($gateway->enabled === 'yes') {
+                    $gatewayList[$gateway->id] = !empty($gateway->title) ? $gateway->title : $gateway->id;
+                }
+            }
+        }
+
         $section = [
             'title' => esc_html__('Exchange orders with 1C', 'itgalaxy-woocommerce-1c'),
             'tabs' => [
@@ -157,13 +170,26 @@ class SectionForExchangeOrders
                         ],
                         'send_orders_status_is_paid' => [
                             'title' => esc_html__(
-                                'Order statuses at which to transfer props `Заказ оплачен` in the value `true`:',
+                                'Order statuses for prop `Заказ оплачен` = `true`:',
                                 'itgalaxy-woocommerce-1c'
                             ),
                             'type' => 'select2',
                             'options' => $orderStatusList,
                             'description' => esc_html__(
                                 'Select the order statuses at which you want to transfer the requisite in the value '
+                                . '`true`, if the order status is not one of the selected, `false` will be transferred.',
+                                'itgalaxy-woocommerce-1c'
+                            )
+                        ],
+                        'send_orders_payment_method_is_paid' => [
+                            'title' => esc_html__(
+                                'Payment methods for prop `Заказ оплачен` = `true`:',
+                                'itgalaxy-woocommerce-1c'
+                            ),
+                            'type' => 'select2',
+                            'options' => $gatewayList,
+                            'description' => esc_html__(
+                                'Select the payment methods at which you want to transfer the requisite in the value '
                                 . '`true`, if the order status is not one of the selected, `false` will be transferred.',
                                 'itgalaxy-woocommerce-1c'
                             )

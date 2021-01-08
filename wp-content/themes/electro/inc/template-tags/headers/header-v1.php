@@ -10,8 +10,8 @@ if ( ! function_exists( 'electro_navigation' ) ) {
      * @since 2.0
      */
     function electro_navigation() {
-        ?><div class="electro-navigation <?php if ( ( is_front_page() && ! is_home() ) || is_page_template( 'template-homepage-v1.php' ) ) : ?>yes-home<?php endif; ?>">
-            <?php 
+        ?><div class="electro-navigation <?php if ( ( is_front_page() && ! is_home() ) || is_page_template( 'template-homepage-v1.php' ) || is_page_template( 'template-homepage-v10.php' ) ) : ?>yes-home<?php endif; ?>">
+            <?php
             do_action( 'electro_navigation' ); ?>
         </div><?php
     }
@@ -26,12 +26,12 @@ if ( ! function_exists( 'electro_departments_menu_v2' ) ) {
         $calling_action = current_filter();
 
         if ( 'electro_navbar_v2' === $calling_action ) {
-        
+
             $theme_location = 'departments-menu';
             $menu_title     = apply_filters( 'electro_departments_menu_title', esc_html__( 'Shop by Department', 'electro' ) );
             $menu_icon      = apply_filters( 'electro_departments_menu_icon', 'ec ec-arrow-down-search' );
             $menu_title     = $menu_title . '<i class="departments-menu-v2-icon ' . esc_attr( $menu_icon ) . '"></i>';
-        
+
         } elseif( 'electro_navigation_v5' === $calling_action ) {
 
             $theme_location = 'all-departments-menu';
@@ -47,7 +47,7 @@ if ( ! function_exists( 'electro_departments_menu_v2' ) ) {
             $menu_title     = $menu_title . '<i class="departments-menu-v2-icon ' . esc_attr( $menu_icon ) . '"></i>';
 
         } else {
-            
+
             $theme_location = 'all-departments-menu';
             $menu_title     = apply_filters( 'electro_vertical_menu_title', wp_kses_post( 'All Departments', 'electro' ) );
             $menu_icon      = apply_filters( 'electro_vertical_menu_icon', 'fa fa-list-ul' );
@@ -55,13 +55,13 @@ if ( ! function_exists( 'electro_departments_menu_v2' ) ) {
         }
 
         $enable_dropdown = true;
-        
-        if ( is_page_template( 'template-homepage-v1.php' ) || is_page_template( 'template-homepage-v2.php' ) ) {
+
+        if ( is_page_template( 'template-homepage-v1.php' ) || is_page_template( 'template-homepage-v2.php' ) || is_page_template( 'template-homepage-v10.php' ) ) {
             $enable_dropdown = false;
         }
 
         $enable_dropdown = apply_filters( 'electro_departments_menu_v2_enable_dropdown', $enable_dropdown );
-        
+
         ?><div class="departments-menu-v2">
             <div class="dropdown <?php if ( ! $enable_dropdown ):?>show-dropdown<?php endif; ?>">
                 <a href="#" class="departments-menu-v2-title" <?php if ( $enable_dropdown ) : ?>data-toggle="dropdown"<?php endif; ?>>

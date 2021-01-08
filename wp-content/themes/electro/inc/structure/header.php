@@ -69,8 +69,8 @@ if ( ! function_exists( 'electro_enqueue_scripts' ) ) {
 
         global $electro_version;
 
-        wp_enqueue_script( 'tether-js',     get_template_directory_uri() . '/assets/js/tether.min.js', array( 'jquery' ), $electro_version, true );
-        wp_enqueue_script( 'bootstrap-js',  get_template_directory_uri() . '/assets/js/bootstrap.min.js', array( 'jquery', 'tether-js' ), $electro_version, true );
+        //wp_enqueue_script( 'tether-js',     get_template_directory_uri() . '/assets/js/tether.min.js', array( 'jquery' ), $electro_version, true );
+        wp_enqueue_script( 'bootstrap-js',  get_template_directory_uri() . '/assets/js/bootstrap.bundle.min.js', array( 'jquery' ), $electro_version, true );
 
         $waypoints_js_handler = function_exists( 'is_elementor_activated' ) && is_elementor_activated() ? 'elementor-waypoints' : 'waypoints-js';
         wp_enqueue_script( $waypoints_js_handler,   get_template_directory_uri() . '/assets/js/jquery.waypoints.min.js', array( 'jquery' ), $electro_version, true );

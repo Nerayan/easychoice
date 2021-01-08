@@ -2,11 +2,11 @@
 # This file is distributed under the GNU General Public License v2 or later.=!>
 msgid ""
 msgstr ""
-"Project-Id-Version: Electro 2.7.0\n"
+"Project-Id-Version: Electro 2.7.2\n"
 "Report-Msgid-Bugs-To: "
 "https://themeforest.net/item/electro-electronics-store-woocommerce-theme/157"
 "20624/support/\n"
-"POT-Creation-Date: 2020-11-16 05:26:24+00:00\n"
+"POT-Creation-Date: 2020-12-18 10:47:11+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -155,6 +155,8 @@ msgstr ""
 #: dokan/store-lists-loop.php:276
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:469
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:471
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:469
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:471
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:406
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:408
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v3.php:559
@@ -208,51 +210,55 @@ msgstr ""
 msgid "Electro"
 msgstr ""
 
-#: inc/admin/class-electro-admin-meta-boxes.php:137
+#: inc/admin/class-electro-admin-meta-boxes.php:139
 msgid "Electro Page Options"
 msgstr ""
 
-#: inc/admin/class-electro-admin-meta-boxes.php:154
+#: inc/admin/class-electro-admin-meta-boxes.php:156
 msgid "Home v1 Options"
 msgstr ""
 
-#: inc/admin/class-electro-admin-meta-boxes.php:158
+#: inc/admin/class-electro-admin-meta-boxes.php:160
 msgid "Home v2 Options"
 msgstr ""
 
-#: inc/admin/class-electro-admin-meta-boxes.php:162
+#: inc/admin/class-electro-admin-meta-boxes.php:164
 msgid "Home v3 Options"
 msgstr ""
 
-#: inc/admin/class-electro-admin-meta-boxes.php:166
+#: inc/admin/class-electro-admin-meta-boxes.php:168
 msgid "Home v4 Options"
 msgstr ""
 
-#: inc/admin/class-electro-admin-meta-boxes.php:170
+#: inc/admin/class-electro-admin-meta-boxes.php:172
 msgid "Home v5 Options"
 msgstr ""
 
-#: inc/admin/class-electro-admin-meta-boxes.php:174
+#: inc/admin/class-electro-admin-meta-boxes.php:176
 msgid "Home v6 Options"
 msgstr ""
 
-#: inc/admin/class-electro-admin-meta-boxes.php:178
+#: inc/admin/class-electro-admin-meta-boxes.php:180
 msgid "Home v7 Options"
 msgstr ""
 
-#: inc/admin/class-electro-admin-meta-boxes.php:182
+#: inc/admin/class-electro-admin-meta-boxes.php:184
 msgid "Home v8 Options"
 msgstr ""
 
-#: inc/admin/class-electro-admin-meta-boxes.php:186
+#: inc/admin/class-electro-admin-meta-boxes.php:188
 msgid "Home v9 Options"
 msgstr ""
 
-#: inc/admin/class-electro-admin-meta-boxes.php:190
+#: inc/admin/class-electro-admin-meta-boxes.php:192
+msgid "Home v10 Options"
+msgstr ""
+
+#: inc/admin/class-electro-admin-meta-boxes.php:196
 msgid "Mobile Home v1 Options"
 msgstr ""
 
-#: inc/admin/class-electro-admin-meta-boxes.php:194
+#: inc/admin/class-electro-admin-meta-boxes.php:200
 msgid "Mobile Home v2 Options"
 msgstr ""
 
@@ -345,6 +351,9 @@ msgstr ""
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:554
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:576
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:686
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:554
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:576
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:686
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:577
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:716
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:836
@@ -467,6 +476,7 @@ msgstr ""
 #: inc/admin/meta-boxes/class-electro-meta-box-home-mobile-v2.php:796
 #: inc/admin/meta-boxes/class-electro-meta-box-home-mobile-v2.php:844
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:701
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:701
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:937
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:992
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:1047
@@ -511,6 +521,12 @@ msgstr ""
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:611
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:708
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:720
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:416
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:446
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:598
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:611
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:708
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:720
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:365
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:385
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:554
@@ -730,6 +746,7 @@ msgstr ""
 #: inc/admin/meta-boxes/class-electro-meta-box-home-mobile-v1.php:48
 #: inc/admin/meta-boxes/class-electro-meta-box-home-mobile-v2.php:48
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:48
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:48
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:48
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v3.php:48
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v4.php:48
@@ -750,6 +767,8 @@ msgstr ""
 #: inc/admin/meta-boxes/class-electro-meta-box-home-mobile-v2.php:144
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:53
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:122
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:53
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:122
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:53
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:155
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v3.php:53
@@ -771,6 +790,9 @@ msgstr ""
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:58
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:123
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:170
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:58
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:123
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:170
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:58
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:156
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:215
@@ -858,6 +880,7 @@ msgstr ""
 #: inc/admin/meta-boxes/class-electro-meta-box-home-mobile-v1.php:126
 #: inc/admin/meta-boxes/class-electro-meta-box-home-mobile-v2.php:117
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:101
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:101
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:134
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v3.php:132
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v4.php:121
@@ -874,6 +897,7 @@ msgstr ""
 #: inc/admin/meta-boxes/class-electro-meta-box-home-mobile-v1.php:129
 #: inc/admin/meta-boxes/class-electro-meta-box-home-mobile-v2.php:120
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:103
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:103
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:136
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v3.php:135
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v4.php:124
@@ -890,6 +914,7 @@ msgstr ""
 #: inc/admin/meta-boxes/class-electro-meta-box-home-mobile-v1.php:130
 #: inc/admin/meta-boxes/class-electro-meta-box-home-mobile-v2.php:121
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:104
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:104
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:137
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v3.php:136
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v4.php:125
@@ -924,6 +949,7 @@ msgstr ""
 #: inc/admin/meta-boxes/class-electro-meta-box-home-mobile-v1.php:152
 #: inc/admin/meta-boxes/class-electro-meta-box-home-mobile-v2.php:143
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:121
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:121
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:154
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v3.php:152
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v4.php:141
@@ -942,6 +968,7 @@ msgstr ""
 #: inc/admin/meta-boxes/class-electro-meta-box-home-mobile-v1.php:170
 #: inc/admin/meta-boxes/class-electro-meta-box-home-mobile-v2.php:159
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:134
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:134
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:172
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v3.php:170
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v4.php:157
@@ -958,6 +985,7 @@ msgstr ""
 #: inc/admin/meta-boxes/class-electro-meta-box-home-mobile-v1.php:171
 #: inc/admin/meta-boxes/class-electro-meta-box-home-mobile-v2.php:160
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:135
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:135
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:173
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v3.php:171
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v4.php:158
@@ -972,6 +1000,7 @@ msgstr ""
 #: inc/admin/meta-boxes/class-electro-meta-box-home-mobile-v1.php:172
 #: inc/admin/meta-boxes/class-electro-meta-box-home-mobile-v2.php:161
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:136
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:136
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:174
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v3.php:172
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v4.php:159
@@ -986,6 +1015,7 @@ msgstr ""
 #: inc/admin/meta-boxes/class-electro-meta-box-home-mobile-v1.php:173
 #: inc/admin/meta-boxes/class-electro-meta-box-home-mobile-v2.php:162
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:137
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:137
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:175
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v3.php:173
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v4.php:160
@@ -1000,6 +1030,7 @@ msgstr ""
 #: inc/admin/meta-boxes/class-electro-meta-box-home-mobile-v1.php:195
 #: inc/admin/meta-boxes/class-electro-meta-box-home-mobile-v2.php:184
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:159
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:159
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:204
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v3.php:201
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v4.php:191
@@ -1011,6 +1042,7 @@ msgstr ""
 #: inc/admin/meta-boxes/class-electro-meta-box-home-mobile-v1.php:196
 #: inc/admin/meta-boxes/class-electro-meta-box-home-mobile-v2.php:185
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:160
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:160
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:205
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v3.php:202
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v4.php:192
@@ -1038,6 +1070,10 @@ msgstr ""
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:219
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:261
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:307
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:177
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:219
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:261
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:307
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:222
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:264
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:310
@@ -1085,6 +1121,10 @@ msgstr ""
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:226
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:268
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:314
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:184
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:226
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:268
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:314
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:229
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:271
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:317
@@ -1128,6 +1168,9 @@ msgstr ""
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:186
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:270
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:316
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:186
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:270
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:316
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:231
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v3.php:342
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v3.php:384
@@ -1196,6 +1239,10 @@ msgstr ""
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:233
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:275
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:321
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:191
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:233
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:275
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:321
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:236
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:278
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:324
@@ -1271,6 +1318,10 @@ msgstr ""
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:240
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:282
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:328
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:198
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:240
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:282
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:328
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:243
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:285
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:331
@@ -1322,6 +1373,10 @@ msgstr ""
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:247
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:289
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:335
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:205
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:247
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:289
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:335
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:250
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:292
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:338
@@ -1340,6 +1395,7 @@ msgstr ""
 #: inc/admin/meta-boxes/class-electro-meta-box-home-mobile-v1.php:248
 #: inc/admin/meta-boxes/class-electro-meta-box-home-mobile-v2.php:237
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:212
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:212
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:257
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v3.php:368
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v4.php:241
@@ -1364,6 +1420,7 @@ msgstr ""
 #: inc/admin/meta-boxes/class-electro-meta-box-home-mobile-v1.php:264
 #: inc/admin/meta-boxes/class-electro-meta-box-home-mobile-v2.php:253
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:228
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:228
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:273
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:319
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v3.php:428
@@ -1397,6 +1454,8 @@ msgstr ""
 #: inc/admin/meta-boxes/class-electro-meta-box-home-mobile-v2.php:821
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:545
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:644
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:545
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:644
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:605
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:681
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:801
@@ -1454,6 +1513,8 @@ msgstr ""
 #: inc/admin/meta-boxes/class-electro-meta-box-home-mobile-v2.php:824
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:549
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:648
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:549
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:648
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:609
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:685
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:805
@@ -1698,6 +1759,9 @@ msgstr ""
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:527
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:568
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:679
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:527
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:568
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:679
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:532
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:644
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:764
@@ -1754,6 +1818,7 @@ msgstr ""
 #: inc/admin/meta-boxes/class-electro-meta-box-home-mobile-v1.php:618
 #: inc/admin/meta-boxes/class-electro-meta-box-home-mobile-v2.php:593
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:659
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:659
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:621
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v4.php:459
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v5.php:612
@@ -1778,6 +1843,7 @@ msgstr ""
 #: inc/admin/meta-boxes/class-electro-meta-box-home-mobile-v1.php:625
 #: inc/admin/meta-boxes/class-electro-meta-box-home-mobile-v2.php:600
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:666
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:666
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:628
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v4.php:466
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v5.php:619
@@ -1845,6 +1911,8 @@ msgstr ""
 #: inc/admin/meta-boxes/class-electro-meta-box-home-mobile-v2.php:150
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:78
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:127
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:78
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:127
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:78
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:160
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v4.php:63
@@ -2060,21 +2128,29 @@ msgstr ""
 
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:63
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:124
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:63
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:124
 msgid "Deal and Tabs Block"
 msgstr ""
 
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:68
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:125
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:68
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:125
 msgid "4-1-4 Products Block"
 msgstr ""
 
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:68
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:125
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:68
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:125
 msgid "2-1-2 Products Block"
 msgstr ""
 
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:73
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:126
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:73
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:126
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:73
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:159
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v5.php:93
@@ -2084,6 +2160,8 @@ msgstr ""
 
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:83
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:128
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:83
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:128
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v3.php:98
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v3.php:162
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v5.php:73
@@ -2099,6 +2177,7 @@ msgid "Products Carousel"
 msgstr ""
 
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:105
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:105
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:138
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v3.php:137
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v4.php:126
@@ -2113,6 +2192,7 @@ msgid "Header v3"
 msgstr ""
 
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:106
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:106
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:139
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v3.php:138
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v4.php:127
@@ -2127,6 +2207,7 @@ msgid "Header v4"
 msgstr ""
 
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:107
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:107
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:140
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v3.php:139
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v4.php:128
@@ -2141,6 +2222,7 @@ msgid "Header v5"
 msgstr ""
 
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:108
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:108
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:141
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v3.php:140
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v4.php:129
@@ -2155,6 +2237,7 @@ msgid "Header v6"
 msgstr ""
 
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:109
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:109
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:142
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v3.php:141
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v4.php:130
@@ -2169,6 +2252,7 @@ msgid "Header v7"
 msgstr ""
 
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:110
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:110
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:143
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v3.php:142
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v4.php:131
@@ -2183,6 +2267,7 @@ msgid "Header v8"
 msgstr ""
 
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:111
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:111
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:144
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v3.php:143
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v4.php:132
@@ -2197,6 +2282,7 @@ msgid "Header v9"
 msgstr ""
 
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:179
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:179
 #: inc/functions/homepages/home-v1.php:71
 #: inc/template-tags/homepages/home-v1.php:55
 msgid "Catch Big <br><strong>Deals</strong> on the <br>Cameras"
@@ -2204,6 +2290,8 @@ msgstr ""
 
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:221
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:309
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:221
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:309
 #: inc/functions/homepages/home-v1.php:78
 #: inc/template-tags/homepages/home-v1.php:63
 #: inc/template-tags/homepages/home-v1.php:82
@@ -2211,6 +2299,7 @@ msgid "Shop the <br><strong>Hottest</strong><br> Products"
 msgstr ""
 
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:254
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:254
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:301
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v3.php:412
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v4.php:283
@@ -2221,32 +2310,38 @@ msgid "Ads Block 3"
 msgstr ""
 
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:263
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:263
 #: inc/functions/homepages/home-v1.php:85
 #: inc/template-tags/homepages/home-v1.php:71
 msgid "Tablets, <br>Smartphones <br><strong>and more</strong>"
 msgstr ""
 
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:298
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:298
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v3.php:454
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v6.php:1289
 msgid "Ads Block 4"
 msgstr ""
 
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:300
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:300
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:303
 msgid "Appears only in Wide view"
 msgstr ""
 
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:346
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:346
 msgid "Deals Block"
 msgstr ""
 
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:353
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:353
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v6.php:670
 msgid "Enable Deal Block"
 msgstr ""
 
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:360
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:360
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:479
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v6.php:677
 msgid "Deal Block Title"
@@ -2254,6 +2349,8 @@ msgstr ""
 
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:361
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:363
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:361
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:363
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:480
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:482
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v6.php:678
@@ -2266,6 +2363,7 @@ msgid "Special Offer"
 msgstr ""
 
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:368
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:368
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:495
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v6.php:685
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v9.php:198
@@ -2273,31 +2371,37 @@ msgid "Product Choice"
 msgstr ""
 
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:370
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:370
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v6.php:687
 msgid "Random On Sale Product"
 msgstr ""
 
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:371
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:371
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v6.php:688
 msgid "Most Recent On Sale Product"
 msgstr ""
 
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:372
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:372
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v6.php:689
 msgid "Specify by ID"
 msgstr ""
 
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:381
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:381
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v6.php:698
 msgid "Deal Product ID"
 msgstr ""
 
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:389
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:389
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v6.php:705
 msgid "Savings in"
 msgstr ""
 
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:391
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:391
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v6.php:707
 #: inc/widgets/class-electro-onsale-product.php:103
 #: inc/widgets/class-electro-onsale-products-carousel.php:148
@@ -2305,6 +2409,7 @@ msgid "Amount"
 msgstr ""
 
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:392
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:392
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v6.php:708
 #: inc/widgets/class-electro-onsale-product.php:104
 #: inc/widgets/class-electro-onsale-products-carousel.php:149
@@ -2312,11 +2417,14 @@ msgid "Percentage"
 msgstr ""
 
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:400
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:400
 msgid "Tabs Block"
 msgstr ""
 
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:406
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:436
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:406
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:436
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:355
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:487
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v3.php:505
@@ -2344,6 +2452,8 @@ msgstr ""
 
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:407
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:437
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:407
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:437
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:356
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v3.php:506
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v3.php:1052
@@ -2370,6 +2480,9 @@ msgstr ""
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:432
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:606
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:715
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:432
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:606
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:715
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:381
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:562
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:949
@@ -2392,10 +2505,12 @@ msgid "Wide Layout"
 msgstr ""
 
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:464
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:464
 msgid "Tabs"
 msgstr ""
 
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:468
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:468
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:405
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v3.php:558
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v4.php:387
@@ -2407,6 +2522,7 @@ msgid "Tab #1 Title"
 msgstr ""
 
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:476
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:476
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:413
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v3.php:566
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v4.php:395
@@ -2417,6 +2533,7 @@ msgid "Tab #1 Content"
 msgstr ""
 
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:487
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:487
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:425
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v3.php:578
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v4.php:407
@@ -2429,6 +2546,8 @@ msgstr ""
 
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:488
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:490
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:488
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:490
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:426
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:428
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v3.php:579
@@ -2451,6 +2570,7 @@ msgid "On Sale"
 msgstr ""
 
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:495
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:495
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:433
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v3.php:586
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v4.php:415
@@ -2461,6 +2581,7 @@ msgid "Tab #2 Content"
 msgstr ""
 
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:506
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:506
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:445
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v3.php:598
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v4.php:427
@@ -2473,6 +2594,8 @@ msgstr ""
 
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:507
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:509
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:507
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:509
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:446
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:448
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v3.php:599
@@ -2495,6 +2618,7 @@ msgid "Top Rated"
 msgstr ""
 
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:513
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:513
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:452
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v3.php:605
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v4.php:434
@@ -2507,6 +2631,9 @@ msgstr ""
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:529
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:530
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:531
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:529
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:530
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:531
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v3.php:881
 #: inc/functions/homepages/home-v1.php:143
 msgid "Best Deals"
@@ -2514,6 +2641,8 @@ msgstr ""
 
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:536
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:635
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:536
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:635
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:596
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:672
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:792
@@ -2536,6 +2665,9 @@ msgstr ""
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:570
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:571
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:572
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:570
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:571
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:572
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:534
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:535
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:536
@@ -2550,6 +2682,7 @@ msgid "Best Sellers"
 msgstr ""
 
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:584
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:584
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:540
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v3.php:661
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v3.php:753
@@ -2563,6 +2696,8 @@ msgstr ""
 
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:587
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:601
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:587
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:601
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:543
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:557
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v3.php:664
@@ -2578,6 +2713,7 @@ msgid "Enter number of products to show"
 msgstr ""
 
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:591
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:591
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:547
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v3.php:668
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v3.php:760
@@ -2588,6 +2724,7 @@ msgid "Rows"
 msgstr ""
 
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:594
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:594
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:550
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v3.php:671
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v3.php:763
@@ -2599,6 +2736,8 @@ msgstr ""
 
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:622
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:694
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:622
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:694
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:464
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:517
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:585
@@ -2646,6 +2785,7 @@ msgid "Carousel Args"
 msgstr ""
 
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v1.php:681
+#: inc/admin/meta-boxes/class-electro-meta-box-home-v10.php:681
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v2.php:932
 msgid "Recently Added"
 msgstr ""
@@ -2993,7 +3133,7 @@ msgstr ""
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v3.php:657
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v3.php:704
 #: inc/functions/homepages/home-v5.php:233 inc/structure/homepage-v3.php:114
-#: inc/template-tags/homepages/home-v3.php:248
+#: inc/template-tags/homepages/home-v3.php:250
 #: inc/template-tags/homepages/home-v5.php:564
 msgid "Television Entertainment"
 msgstr ""
@@ -3001,7 +3141,7 @@ msgstr ""
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v3.php:814
 #: inc/admin/meta-boxes/class-electro-meta-box-home-v3.php:815
 #: inc/structure/homepage-v3.php:159
-#: inc/template-tags/homepages/home-v3.php:404
+#: inc/template-tags/homepages/home-v3.php:408
 #: inc/template-tags/homepages/home-v5.php:274
 #: inc/template-tags/homepages/home-v6.php:345
 #: inc/template-tags/homepages/home-v9.php:425
@@ -4012,7 +4152,7 @@ msgstr ""
 #: inc/functions/homepages/home-v4.php:282
 #: inc/functions/homepages/home-v6.php:331
 #: inc/functions/homepages/home-v9.php:396 inc/structure/homepage-v3.php:243
-#: inc/template-tags/homepages/home-v3.php:508
+#: inc/template-tags/homepages/home-v3.php:512
 #: inc/template-tags/homepages/home-v4.php:649
 #: inc/template-tags/homepages/home-v6.php:685
 #: inc/template-tags/homepages/home-v9.php:569
@@ -6448,7 +6588,7 @@ msgid "Catch Hottest <strong>Deals</strong> in Cameras Category"
 msgstr ""
 
 #: inc/structure/homepage-v3.php:139
-#: inc/template-tags/homepages/home-v3.php:352
+#: inc/template-tags/homepages/home-v3.php:356
 msgid "Music"
 msgstr ""
 
@@ -6545,7 +6685,7 @@ msgstr ""
 msgid "The New,<br>Standard<br><strong>360 Cameras</strong>"
 msgstr ""
 
-#: inc/template-tags/homepages/home-v3.php:271
+#: inc/template-tags/homepages/home-v3.php:273
 msgid "Home Entertainment"
 msgstr ""
 
@@ -7630,6 +7770,10 @@ msgstr ""
 
 #. Template Name of the plugin/theme
 msgid "Homepage v1"
+msgstr ""
+
+#. Template Name of the plugin/theme
+msgid "Homepage v10"
 msgstr ""
 
 #. Template Name of the plugin/theme

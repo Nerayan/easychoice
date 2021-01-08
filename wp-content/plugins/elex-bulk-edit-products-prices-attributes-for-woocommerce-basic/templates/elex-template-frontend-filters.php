@@ -127,8 +127,8 @@ $attribute_value = get_terms( 'pa_size', $cat_args );
 			<td class='eh-content-table-input-td'>
 				<select id='regular_price_range_select' style="width: 45%;">
 					<option value='all'><?php _e( 'All', 'eh_bulk_edit' ); ?></option>
-					<option value='>'>>=</option>
-					<option value='<'><=</option>
+					<option value='>='>>=</option>
+					<option value='<='><=</option>
 					<option value='='>==</option>
 					<option value='|'>|| <?php _e( 'Between', 'eh_bulk_edit' ); ?></option>
 				</select>

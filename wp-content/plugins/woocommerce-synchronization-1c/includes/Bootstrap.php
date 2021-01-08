@@ -2,8 +2,11 @@
 namespace Itgalaxy\Wc\Exchange1c\Includes;
 
 use Itgalaxy\Wc\Exchange1c\ExchangeProcess\Filters\CreateProductInDraft;
+use Itgalaxy\Wc\Exchange1c\ExchangeProcess\Filters\FindAttribute;
+use Itgalaxy\Wc\Exchange1c\ExchangeProcess\Filters\FindAttributeValueTermId;
 use Itgalaxy\Wc\Exchange1c\ExchangeProcess\Filters\FindProductCatId;
 use Itgalaxy\Wc\Exchange1c\ExchangeProcess\Filters\FindProductId;
+use Itgalaxy\Wc\Exchange1c\ExchangeProcess\Filters\FindProductTagId;
 use Itgalaxy\Wc\Exchange1c\ExchangeProcess\Filters\FixedSeparatedIdCharacteristicInOfferXmlData;
 use Itgalaxy\Wc\Exchange1c\ExchangeProcess\Filters\ProductIsRemoved;
 use Itgalaxy\Wc\Exchange1c\ExchangeProcess\Filters\SkipProductByXml;
@@ -48,7 +51,10 @@ class Bootstrap
 
             // bind filters
             CreateProductInDraft::getInstance();
+            FindAttribute::getInstance();
+            FindAttributeValueTermId::getInstance();
             FindProductCatId::getInstance();
+            FindProductTagId::getInstance();
             FindProductId::getInstance();
             ProductIsRemoved::getInstance();
             SkipProductByXml::getInstance();

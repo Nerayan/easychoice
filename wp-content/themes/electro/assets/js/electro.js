@@ -282,7 +282,7 @@
 
 				scrollTo = target.offset().top;
 
-				if ( $('.sticky-wrapper > .stuck' ).length > 0 ) {
+					if ( $('.sticky-wrapper > .stuck' ).length > 0 ) {
 					scrollTo = scrollTo - 40;
 				}
 
@@ -852,7 +852,7 @@
 			if( electro_options.enable_sticky_header == '1' && $( "#page" ).find( '.stick-this' ).length > 0 ) {
 				var sticky_header = new Waypoint.Sticky({
 					element: $('.stick-this')[0],
-					stuckClass: 'stuck animated fadeInDown faster',
+						stuckClass: 'stuck animated fadeInDown faster',
 					offset: function() {
 						return -this.element.clientHeight
 					}
@@ -865,14 +865,14 @@
 			if( electro_options.enable_sticky_header == '1' && $( "#page" ).find( '.handheld-navbar-toggle-buttons' ).length > 0 ) {
 				var sticky_hh_nav = new Waypoint.Sticky({
 					element: $('.handheld-navbar-toggle-buttons')[0],
-					stuckClass: 'stuck animated fadeInDown faster'
+							stuckClass: 'stuck animated fadeInDown faster'
 				});
 			}
 
 			if( electro_options.enable_hh_sticky_header == '1' && $( '#page' ).find( '.handheld-stick-this' ).length > 0 ) {
 				var sticky_header = new Waypoint.Sticky({
 					element: $('.handheld-stick-this')[0],
-					stuckClass: 'stuck animated fadeInDown faster',
+							stuckClass: 'stuck animated fadeInDown faster',
 					offset: function() {
 						return -this.element.clientHeight
 					}

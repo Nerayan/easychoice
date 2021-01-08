@@ -23,7 +23,7 @@ class ProductIsRemoved
     {
         if (
             (string) $element->ПометкаУдаления &&
-            (string) $element->ПометкаУдаления === 'true'
+            in_array((string) $element->ПометкаУдаления, ['true', 'Да'], true)
         ) {
             return true;
         }

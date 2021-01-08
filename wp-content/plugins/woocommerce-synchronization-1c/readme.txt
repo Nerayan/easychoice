@@ -35,7 +35,24 @@ Once completed, visit your plugins page.
 
 == Changelog ==
 
-= 1.81.0 =
+= 1.84.0 =
+Feature: ability to search for an existing values for basic (for products) attributes by name, before creating a new one.
+Feature: ability to search for an existing basic (for products) attributes by name, before creating a new one.
+
+= 1.83.1 =
+Fixed: ignoring empty nodes in a set of product property values.
+Chore: added new filter `itglx_wc1c_{product or variation}_meta_{meta key}_value`.
+Chore: added new filter `itglx_wc1c_update_post_product_params`.
+Chore: added new filter `itglx_wc1c_product_xml_data`.
+Feature: processing and recording the sku for variable offers.
+Feature: requisite "Заказ оплачен" to "true", the ability to set in the condition not only the order status, but also the payment method (unloading orders).
+Feature: 2 options for downloading the archive of the temporary directory - all or only xml files.
+
+= 1.82.3 =
+Fixed: show price list in product page (mode 3 and 4).
+Chore: compatibility check with WC 4.8 / WP 5.6
+Chore: added new filter `itglx_wc1c_extension_separate_file_with_product_description`.
+Feature: ability to transfer product description through a separate `*.html` file.
 Feature: search for a term by meta always with the condition of the real presence of the term.
 
 = 1.80.3 =

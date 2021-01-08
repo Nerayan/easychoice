@@ -160,13 +160,14 @@ class Ajax implements ModuleInterface
         $cost = $calculationService->calculateCost($orderData);
 
         wc()->cart->set_total($orderData->getCalculatedTotal() + $cost);
+        $shippingName = wp_unslash(esc_html($_POST['wcus_shipping_name']));
 
         wp_send_json([
             'success' => true,
             'data' => [
                 'shipping' => (float)$cost
-                    ? esc_html($_POST['wcus_shipping_name']) . ': ' . wc_price($cost)
-                    : esc_html($_POST['wcus_shipping_name']),
+                    ? $shippingName . ': ' . wc_price($cost)
+                    : $shippingName,
                 'total' => wc()->cart->get_total()
             ]
         ]);

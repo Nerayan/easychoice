@@ -95,6 +95,7 @@ class SectionForPrices
 
             echo '</td>';
             echo '</tr></table>';
+            echo '<hr>';
         } else {
             ?>
             <div>
@@ -110,10 +111,8 @@ class SectionForPrices
             </div>
             <?php
         }
-        ?>
-        <hr>
-        <?php
-        if (!empty($priceTypes)) {
+
+        if (count($priceTypes) > 1) {
             $priceTypesOptions = ['' => esc_html__('Not chosen', 'itgalaxy-woocommerce-1c')] + $priceTypes;
 
             echo '<table><tr>';
@@ -207,7 +206,7 @@ class SectionForPrices
                     echo '</tr></table>';
                 }
             }
-        } else {
+        } elseif (!empty($priceTypes)) {
             ?>
             <div>
                 <label>
@@ -216,7 +215,7 @@ class SectionForPrices
                 <p class="description">
                     <?php
                     esc_html_e(
-                        'The selection will be available after the first exchange.',
+                        'The selection will appear if there are more than 1 price type in the unloading.',
                         'itgalaxy-woocommerce-1c'
                     );
                     ?>

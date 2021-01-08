@@ -2,6 +2,7 @@
 namespace Itgalaxy\Wc\Exchange1c\ExchangeProcess\Filters;
 
 use Itgalaxy\Wc\Exchange1c\Includes\Bootstrap;
+use Itgalaxy\Wc\Exchange1c\Includes\Logger;
 
 class SkipProductByXml
 {
@@ -41,6 +42,11 @@ class SkipProductByXml
             !empty($settings['skip_products_without_photo']) &&
             (!isset($element->Картинка) || empty((string) $element->Картинка))
         ) {
+            Logger::logChanges(
+                '(product) has no photo and `skip_products_without_photo` is enabled - skip',
+                [(string) $element->Ид]
+            );
+
             return true;
         }
 

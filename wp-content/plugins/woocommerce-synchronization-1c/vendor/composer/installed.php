@@ -6,7 +6,7 @@
     'aliases' => 
     array (
     ),
-    'reference' => '2e126e53c6f72ad19150049e996c963175acddf2',
+    'reference' => 'fb13eb7f42af174a29043fb37943b9dc1111db5f',
     'name' => 'itgalaxy/woocommerce-synchronization-1c',
   ),
   'versions' => 
@@ -27,7 +27,7 @@
       'aliases' => 
       array (
       ),
-      'reference' => '2e126e53c6f72ad19150049e996c963175acddf2',
+      'reference' => 'fb13eb7f42af174a29043fb37943b9dc1111db5f',
     ),
     'monolog/monolog' => 
     array (

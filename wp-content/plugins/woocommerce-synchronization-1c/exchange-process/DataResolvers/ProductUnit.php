@@ -5,6 +5,11 @@ use Itgalaxy\Wc\Exchange1c\Includes\Bootstrap;
 
 class ProductUnit
 {
+    /**
+     * @param \SimpleXMLElement $element
+     *
+     * @return array
+     */
     public static function process($element)
     {
         /*

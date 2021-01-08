@@ -2,7 +2,25 @@
 namespace Itgalaxy\Wc\Exchange1c\ExchangeProcess\DataResolvers;
 
 use Itgalaxy\Wc\Exchange1c\Includes\Bootstrap;
+use Itgalaxy\Wc\Exchange1c\Includes\Helper;
 
+/**
+ * Parsing product requisites data.
+ *
+ * Example xml structure (position - Товар -> ЗначенияРеквизитов)
+ *
+ * ```xml
+ * <ЗначенияРеквизитов>
+ *      <ЗначениеРеквизита>
+ *          <Наименование>ТипНоменклатуры</Наименование>
+ *          <Значение>Запас</Значение>
+ *      </ЗначениеРеквизита>
+ *      <ЗначениеРеквизита>
+ *          <Наименование>Полное наименование</Наименование>
+ *          <Значение>Стол Трансформер Сонома</Значение>
+ *      </ЗначениеРеквизита>
+ * </ЗначенияРеквизитов>
+ */
 class ProductRequisites
 {
     private static $ignoreRequisites = [
@@ -14,6 +32,11 @@ class ProductRequisites
         'ОписаниеВФорматеHTML'
     ];
 
+    /**
+     * @param \SimpleXMLElement $element
+     *
+     * @return array
+     */
     public static function process($element)
     {
         $requisites = [
@@ -22,22 +45,6 @@ class ProductRequisites
             'htmlPostContent' => '',
             'allRequisites' => []
         ];
-
-        /*
-         * Example xml structure
-         * position - Товар -> ЗначенияРеквизитов
-         *
-        <ЗначенияРеквизитов>
-            <ЗначениеРеквизита>
-                <Наименование>ТипНоменклатуры</Наименование>
-                <Значение>Запас</Значение>
-            </ЗначениеРеквизита>
-            <ЗначениеРеквизита>
-                <Наименование>Полное наименование</Наименование>
-                <Значение>Стол Трансформер Сонома</Значение>
-            </ЗначениеРеквизита>
-        </ЗначенияРеквизитов>
-        */
 
         if (
             isset($element->ЗначенияРеквизитов) &&
@@ -51,6 +58,12 @@ class ProductRequisites
         return $requisites;
     }
 
+    /**
+     * @param \SimpleXMLElement $element
+     * @param array $requisites
+     *
+     * @return array
+     */
     private static function resolveMainRequisitesData($element, $requisites)
     {
         $settings = get_option(Bootstrap::OPTIONS_KEY);
@@ -69,6 +82,10 @@ class ProductRequisites
             */
 
             if (in_array($requisiteName, self::$ignoreRequisites, true)) {
+                if ($requisiteName === 'Файл' && !empty($settings['use_separate_file_with_html_description'])) {
+                    $requisites = self::resolveDescriptionInSeparateHtmlFile((string) $requisite->Значение, $requisites);
+                }
+
                 continue;
             }
 
@@ -135,22 +152,57 @@ class ProductRequisites
         return $requisites;
     }
 
+    /**
+     * @param string $filePath
+     * @param array $requisites
+     *
+     * @return array
+     */
+    private static function resolveDescriptionInSeparateHtmlFile($filePath, $requisites)
+    {
+        if (!empty($requisites['htmlPostContent'])) {
+            return $requisites;
+        }
+
+        $basename = basename($filePath);
+        $basename = explode('.', $basename);
+        $extensionList =  apply_filters('itglx_wc1c_extension_separate_file_with_product_description', ['html']);
+
+        if (empty($basename[1]) || !in_array($basename[1], $extensionList, true)) {
+            return $requisites;
+        }
+
+        if (!file_exists(Helper::getTempPath() . '/' . $filePath)) {
+            return $requisites;
+        }
+
+        $requisites['htmlPostContent'] = file_get_contents(Helper::getTempPath() . '/' . $filePath);
+
+        return $requisites;
+    }
+
+    /**
+     * Resolve xml position variant - Товар -> Реквизит
+     *
+     * Example xml structure
+     *
+     * ```xml
+     * <Товар>
+     *    ....
+     *    <Длина>1</Длина>
+     *    <Ширина>1</Ширина>
+     *    <Высота>1</Высота>
+     *    <Вес>1</Вес>
+     *    ....
+     * </Товар>
+     *
+     * @param \SimpleXMLElement $element
+     * @param array $requisites
+     *
+     * @return array
+     */
     private static function resolveVariantPositionData($element, $requisites)
     {
-        /*
-         * resolve xml position variant - Товар -> Реквизит
-         * example xml structure
-         *
-        <Товар>
-            ....
-            <Длина>1</Длина>
-            <Ширина>1</Ширина>
-            <Высота>1</Высота>
-            <Вес>1</Вес>
-            ....
-        </Товар>
-        */
-
         $resolveArray = [
             'weight' => 'Вес',
             'length' => 'Длина',

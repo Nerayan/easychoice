@@ -1,6 +1,7 @@
 <?php
 namespace Itgalaxy\Wc\Exchange1c\ExchangeProcess\DataResolvers;
 
+use Itgalaxy\Wc\Exchange1c\ExchangeProcess\Helpers\Product;
 use Itgalaxy\Wc\Exchange1c\Includes\Bootstrap;
 use Itgalaxy\Wc\Exchange1c\Includes\Logger;
 
@@ -100,8 +101,8 @@ class ProductAndVariationPrices
             return;
         }
 
-        update_post_meta($productId, '_all_prices', $resolvePrices['all']);
-        update_post_meta($productId, '_regular_price', $priceValue);
+        Product::saveMetaValue($productId, '_all_prices', $resolvePrices['all'], $parentProductID);
+        Product::saveMetaValue($productId, '_regular_price', $priceValue, $parentProductID);
 
         if ($parentProductID) {
             Logger::logChanges(
@@ -121,7 +122,7 @@ class ProductAndVariationPrices
         switch ($priceWorkRule) {
             case 'regular':
                 if ($removeSalePrice === 1) {
-                    update_post_meta($productId, '_sale_price', '');
+                    Product::saveMetaValue($productId, '_sale_price', '', $parentProductID);
 
                     if ($parentProductID) {
                         Logger::logChanges(
@@ -142,7 +143,7 @@ class ProductAndVariationPrices
                 $salePrice = get_post_meta($productId, '_sale_price', true);
 
                 if ((float) $salePrice <= 0) {
-                    update_post_meta($productId, '_price', $priceValue);
+                    Product::saveMetaValue($productId, '_price', $priceValue, $parentProductID);
 
                     if ($parentProductID) {
                         Logger::logChanges(
@@ -172,7 +173,7 @@ class ProductAndVariationPrices
                     $salePrice = $resolvePrices['all'][$priceType2];
                 }
 
-                update_post_meta($productId, '_sale_price', $salePrice);
+                Product::saveMetaValue($productId, '_sale_price', $salePrice, $parentProductID);
 
                 if ($parentProductID) {
                     Logger::logChanges(
@@ -191,7 +192,7 @@ class ProductAndVariationPrices
                 }
 
                 if ((float) $salePrice <= 0) {
-                    update_post_meta($productId, '_price', $priceValue);
+                    Product::saveMetaValue($productId, '_price', $priceValue, $parentProductID);
 
                     if ($parentProductID) {
                         Logger::logChanges(
@@ -208,7 +209,7 @@ class ProductAndVariationPrices
                         );
                     }
                 } else {
-                    update_post_meta($productId, '_price', $salePrice);
+                    Product::saveMetaValue($productId, '_price', $salePrice, $parentProductID);
 
                     if ($parentProductID) {
                         Logger::logChanges(
@@ -232,7 +233,7 @@ class ProductAndVariationPrices
                 $salePrice = get_post_meta($productId, '_sale_price', true);
 
                 if ((float) $salePrice <= 0) {
-                    update_post_meta($productId, '_price', $priceValue);
+                    Product::saveMetaValue($productId, '_price', $priceValue, $parentProductID);
 
                     if ($parentProductID) {
                         Logger::logChanges(

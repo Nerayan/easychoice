@@ -120,8 +120,8 @@ class ProductAndVariationStock
             ? $settings['products_stock_null_rule']
             : '0';
 
-        update_post_meta($productId, '_stock', $stockData['_stock']);
-        update_post_meta($productId, '_separate_warehouse_stock', $stockData['_separate_warehouse_stock']);
+        Product::saveMetaValue($productId, '_stock', $stockData['_stock'], $parentProductID);
+        Product::saveMetaValue($productId, '_separate_warehouse_stock', $stockData['_separate_warehouse_stock'], $parentProductID);
 
         if ($parentProductID) {
             Logger::logChanges(

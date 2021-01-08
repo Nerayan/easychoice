@@ -170,6 +170,7 @@ class ParserXml31
 
                         $element = $reader->readOuterXml();
                         $element = simplexml_load_string(trim($element));
+                        $element = apply_filters('itglx_wc1c_product_xml_data', $element);
 
                         if (apply_filters('itglx_wc1c_skip_product_by_xml', false, $element)) {
                             unset($element);
@@ -188,7 +189,7 @@ class ParserXml31
                             $product = apply_filters('itglx_wc1c_find_product_id', $product, $element);
 
                             if ($product) {
-                                update_post_meta($product, '_id_1c', (string) $element->Ид);
+                                Product::saveMetaValue($product, '_id_1c', (string) $element->Ид);
                             }
                         } else {
                             // if duplicate product
@@ -340,7 +341,7 @@ class ParserXml31
                                     );
 
                                     if ($productEntry['post_parent']) {
-                                        update_post_meta($productEntry['post_parent'], '_id_1c', (string) $parseID[0]);
+                                        Product::saveMetaValue($productEntry['post_parent'], '_id_1c', (string) $parseID[0]);
                                     }
                                 }
 
@@ -459,7 +460,7 @@ class ParserXml31
                                     $productId = apply_filters('itglx_wc1c_find_product_id', $productId, $element);
 
                                     if ($productId) {
-                                        update_post_meta($productId, '_id_1c', (string) $element->Ид);
+                                        Product::saveMetaValue($productId, '_id_1c', (string) $element->Ид);
                                     }
                                 }
 

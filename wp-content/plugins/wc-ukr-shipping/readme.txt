@@ -4,8 +4,8 @@ License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl.html
 Tags: novaposhta, nova poshta, новая почта, нова пошта, delivery, доставка, shipping, woocommerce
 Requires PHP: 5.6
-Tested up to: 5.5
-Stable tag: 1.7.1
+Tested up to: 5.6
+Stable tag: 1.7.3
 
 Простой и удобный плагин для подключения доставки популярной службой "Нова Пошта" на ваш сайт WooCommerce.
 
@@ -15,12 +15,13 @@ Stable tag: 1.7.1
 
 Просто установите плагин на сайт, загрузите список актуальных отделений и пользуйтесь =)
 
-[Документация](https://kirillbdev.pro/dokumentaciya-wc-nova-poshta-shipping/)
+[Документация](https://kirillbdev.pro/docs/wcus-base-setup/)
 [PRO версия](https://kirillbdev.pro/wc-ukr-shipping-pro/?ref=repository)
+[Telegram канал](https://t.me/kirillbdev_pro)
 
 == Видео установки и настройки ==
 
-https://www.youtube.com/watch?v=A8pd7hP8bLs
+https://www.youtube.com/watch?v=IFW0B75s54o
 
 == Преимущества ==
 
@@ -75,6 +76,16 @@ The manual installation method involves downloading this plugin and uploading it
 Automatic updates should work like a charm; as always though, ensure you backup your site just in case.
 
 == Changelog ==
+
+= Version 1.7.3 / (24.12.2020) =
+* Исправлены некоторые несовместимости с PHP8.
+* Добавлен фильтр: wcus_http_post_timeout. Позволяет увеличить таймаут опроса API при загрузке отделений.
+
+= Version 1.7.2 / (11.12.2020) =
+* Исправлен некорректный вывод названия доставки, если оно содержит кавычки.
+* Добавлен вывод стоимости доставки на странице корзины.
+* Исправлены некоторые ошибки несовместимости с плагином Saphali Woocommerce.
+* Добавлена локализация сообщения о незаполненных данных Новой Почты.
 
 = Version 1.7.1 / (29.09.2020) =
 * Исравлен баг, когда плагин при любом выбранном методе доставки добавлял свою стоимость к итоговой сумме заказа.

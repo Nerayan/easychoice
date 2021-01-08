@@ -8,7 +8,13 @@ use Itgalaxy\Wc\Exchange1c\Includes\Logger;
 
 class GlobalProductAttributes
 {
-    public static function process(&$reader)
+    /**
+     * @param \XMLReader $reader
+     *
+     * @return bool
+     * @throws \Exception
+     */
+    public static function process(\XMLReader &$reader)
     {
         $numberOfOptions = 0;
 
@@ -86,13 +92,28 @@ class GlobalProductAttributes
 
             $attribute = ProductAttributeHelper::get((string) $element->Ид);
 
+            if (!$attribute) {
+                $attribute = apply_filters('itglx_wc1c_find_exists_product_attribute', null, $element);
+
+                if ($attribute) {
+                    Logger::logChanges(
+                        '(attribute) Found through filter `itglx_wc1c_find_exists_product_attribute`, `attribute_id` - '
+                        . $attribute->attribute_id,
+                        [(string) $element->Ид]
+                    );
+
+                    ProductAttributeHelper::update(
+                        ['id_1c' => (string) $element->Ид],
+                        $attribute->attribute_id
+                    );
+                }
+            }
+
             if ($attribute) {
                 $attributeTaxName = 'pa_' . $attribute->attribute_name;
 
                 ProductAttributeHelper::update(
-                    [
-                        'attribute_label' => (string) $element->Наименование
-                    ],
+                    ['attribute_label' => (string) $element->Наименование],
                     $attribute->attribute_id
                 );
 
@@ -192,6 +213,26 @@ class GlobalProductAttributes
                         $variantTerm = Term::getTermIdByMeta((string) $variant->ИдЗначения);
                     }
 
+                    if (!$variantTerm) {
+                        $variantTerm = apply_filters(
+                            'itglx_wc1c_find_exists_product_attribute_value_term_id',
+                            0,
+                            $variant,
+                            $attributeTaxName
+                        );
+
+                        if ($variantTerm) {
+                            Logger::logChanges(
+                                '(attribute) Found value through filter '
+                                . '`itglx_wc1c_find_exists_product_attribute_value_term_id`, `term_id` - '
+                                . $variantTerm,
+                                [(string) $variant->ИдЗначения]
+                            );
+
+                            Term::update1cId($variantTerm, $uniqId1c);
+                        }
+                    }
+
                     if ($variantTerm) {
                         wp_update_term(
                             $variantTerm,
@@ -252,8 +293,13 @@ class GlobalProductAttributes
             update_option('all_product_options', $options);
         }
 
-        $_SESSION['IMPORT_1C']['optionsIsParse'] = true;
+        self::setParsed();
 
         return false;
+    }
+
+    private static function setParsed()
+    {
+        $_SESSION['IMPORT_1C']['optionsIsParse'] = true;
     }
 }

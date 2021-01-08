@@ -33,7 +33,12 @@ class SectionTempCatalogInfo
             <a href="<?php echo esc_url(admin_url()); ?>?itgxl-wc1c-temp-get-in-archive"
                 class="btn btn-outline-info btn-sm text-decoration-none"
                 target="_blank">
-                <?php echo esc_html__('Download in zip archive', 'itgalaxy-woocommerce-1c'); ?>
+                <?php echo esc_html__('Download in zip archive (all)', 'itgalaxy-woocommerce-1c'); ?>
+            </a>
+            <a href="<?php echo esc_url(admin_url()); ?>?itgxl-wc1c-temp-get-in-archive-only-xml"
+               class="btn btn-outline-info btn-sm text-decoration-none"
+               target="_blank">
+                <?php echo esc_html__('Download in zip archive (only XML files)', 'itgalaxy-woocommerce-1c'); ?>
             </a>
         <?php } ?>
         <button class="btn btn-info btn-sm" type="button" data-ui-component="itglx-wc1c-ajax-clear-temp">

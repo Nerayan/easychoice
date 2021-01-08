@@ -129,10 +129,12 @@ class Product
                 $params['post_title'] = $productEntry['title'];
             }
 
+            $params = (array) apply_filters('itglx_wc1c_update_post_product_params', $params, $element);
+
             wp_update_post($params);
 
             foreach ($productMeta as $key => $value) {
-                update_post_meta($productEntry['ID'], $key, $value);
+                self::saveMetaValue($productEntry['ID'], $key, $value);
             }
 
             self::setCategory($productEntry['ID'], $productEntry['categoryID']);
@@ -179,7 +181,7 @@ class Product
             $productMeta['_id_1c'] = $xmlID;
 
             foreach ($productMeta as $key => $value) {
-                update_post_meta($productEntry['ID'], $key, $value);
+                self::saveMetaValue($productEntry['ID'], $key, $value);
             }
 
             Logger::logChanges(
@@ -189,6 +191,29 @@ class Product
 
             self::setCategory($productEntry['ID'], $productEntry['categoryID']);
             self::hide($productEntry['ID'], true);
+        }
+
+
+        /*
+         * Example xml structure
+         * position - Товар -> Метки
+         *
+        <Метки>
+            <Ид>f108c911-3bca-11eb-841f-ade4b337caca</Ид>
+            <Ид>f108c912-3bca-11eb-841f-ade4b337caca</Ид>
+            <Ид>f108c913-3bca-11eb-841f-ade4b337caca</Ид>
+        </Метки>
+        */
+        if (isset($element->Метки->Ид) && !empty($_SESSION['IMPORT_1C']['productTags'])) {
+            $tagIds = [];
+
+            foreach ($element->Метки->Ид as $tagXmlId) {
+                if (isset($_SESSION['IMPORT_1C']['productTags'][(string) $tagXmlId])) {
+                    $tagIds[] = $_SESSION['IMPORT_1C']['productTags'][(string) $tagXmlId];
+                }
+            }
+
+            \wp_set_object_terms($productEntry['ID'], array_map('intval', $tagIds), 'product_tag');
         }
 
         // is new or not disabled attribute data processing
@@ -226,8 +251,8 @@ class Product
                 'product_type'
             );
 
-            update_post_meta($productEntry['post_parent'], '_manage_stock', 'no');
-            update_post_meta($productEntry['post_parent'], '_is_set_variable', true);
+            self::saveMetaValue($productEntry['post_parent'], '_manage_stock', 'no');
+            self::saveMetaValue($productEntry['post_parent'], '_is_set_variable', true);
         }
 
         // create variation
@@ -265,7 +290,7 @@ class Product
                 ]
             );
 
-            update_post_meta($productEntry['ID'], '_id_1c', (string) $element->Ид);
+            self::saveMetaValue($productEntry['ID'], '_id_1c', (string) $element->Ид, $productEntry['post_parent']);
 
             Logger::logChanges(
                 '(variation) Added, ID - '
@@ -274,6 +299,16 @@ class Product
                 . $productEntry['post_parent'],
                 [(string) $element->Ид]
             );
+        }
+
+        // processing and recording the sku for variable offers.
+        if (isset($element->Артикул)) {
+            $parentSku = get_post_meta($productEntry['post_parent'], '_sku', true);
+            $offerSku = trim((string) $element->Артикул);
+
+            if ($offerSku !== $parentSku) {
+                self::saveMetaValue($productEntry['ID'], '_sku', $offerSku, $productEntry['post_parent']);
+            }
         }
 
         $_SESSION['IMPORT_1C']['productVariations'][$productEntry['post_parent']][] = $productEntry['ID'];
@@ -350,10 +385,11 @@ class Product
             }
 
             if ($optionTermID) {
-                update_post_meta(
+                self::saveMetaValue(
                     $productEntry['ID'],
                     'attribute_' . $attribute['taxName'],
-                    get_term_by('id', $optionTermID, $attribute['taxName'])->slug
+                    get_term_by('id', $optionTermID, $attribute['taxName'])->slug,
+                    $productEntry['post_parent']
                 );
 
                 $_SESSION['IMPORT_1C']['setTerms'][$productEntry['post_parent']][$attribute['taxName']][] =
@@ -416,10 +452,11 @@ class Product
             }
 
             if ($optionTermID) {
-                update_post_meta(
+                self::saveMetaValue(
                     $productEntry['ID'],
                     'attribute_' . $attribute['taxName'],
-                    get_term_by('id', $optionTermID, $attribute['taxName'])->slug
+                    get_term_by('id', $optionTermID, $attribute['taxName'])->slug,
+                    $productEntry['post_parent']
                 );
 
                 $_SESSION['IMPORT_1C']['setTerms'][$productEntry['post_parent']][$attribute['taxName']][] =
@@ -517,6 +554,21 @@ class Product
         );
     }
 
+    public static function saveMetaValue($productID, $metaKey, $metaValue, $parentProductID = null)
+    {
+        if (!$parentProductID) {
+            $filter = 'itglx_wc1c_product_meta_' . $metaKey . '_value';
+        } else {
+            $filter = 'itglx_wc1c_variation_meta_' . $metaKey . '_value';
+        }
+
+        update_post_meta(
+            $productID,
+            $metaKey,
+            apply_filters($filter, $metaValue, $productID, $parentProductID)
+        );
+    }
+
     public static function getProductIdByMeta($value, $metaKey = '_id_1c', $isVariation = false)
     {
         global $wpdb;
@@ -579,7 +631,7 @@ class Product
             );
         }
 
-        update_post_meta($productID, '_product_image_gallery', '');
+        self::saveMetaValue($productID, '_product_image_gallery', '');
 
         Logger::logChanges(
             '(image) Removed gallery for ID - ' . $productID,

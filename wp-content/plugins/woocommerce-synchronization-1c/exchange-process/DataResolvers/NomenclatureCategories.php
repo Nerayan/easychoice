@@ -3,10 +3,15 @@ namespace Itgalaxy\Wc\Exchange1c\ExchangeProcess\DataResolvers;
 
 class NomenclatureCategories
 {
-    public static function process(&$reader)
+    /**
+     * @param \XMLReader $reader
+     *
+     * @return void
+     */
+    public static function process(\XMLReader &$reader)
     {
         // run once per exchange
-        if (isset($_SESSION['IMPORT_1C']['nomenclature_categories_parse'])) {
+        if (self::isParsed()) {
             return;
         }
 
@@ -60,6 +65,20 @@ class NomenclatureCategories
             update_option('itglx_wc1c_nomenclature_categories', $nomenclatureCategories);
         }
 
+        self::setParsed();
+    }
+
+    private static function isParsed()
+    {
+        if (isset($_SESSION['IMPORT_1C']['nomenclature_categories_parse'])) {
+            return true;
+        }
+
+        return false;
+    }
+
+    private static function setParsed()
+    {
         $_SESSION['IMPORT_1C']['nomenclature_categories_parse'] = true;
     }
 }

@@ -48,10 +48,10 @@ class ProductUnvariable
             );
 
             delete_post_meta($productID, '_is_set_variable');
+
             Term::setObjectTerms($productID, 'simple', 'product_type');
             self::cleanVariations($productID);
-
-            update_post_meta($productID, '_regular_price', get_post_meta($productID, '_price', true));
+            Product::saveMetaValue($productID, '_regular_price', get_post_meta($productID, '_price', true));
 
             unset($_SESSION['IMPORT_1C_PROCESS']['allCurrentProductIdBySimpleOffers'][$key]);
         }

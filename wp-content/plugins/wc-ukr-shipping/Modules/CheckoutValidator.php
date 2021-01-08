@@ -18,7 +18,7 @@ class CheckoutValidator implements ModuleInterface
     public function init()
     {
         add_action('woocommerce_checkout_process', [$this, 'validateFields']);
-        add_filter('woocommerce_checkout_fields', [$this, 'removeDefaultFieldsFromValidation']);
+        add_filter('woocommerce_checkout_fields', [$this, 'removeDefaultFieldsFromValidation'], 99);
     }
 
     /**
@@ -112,7 +112,7 @@ class CheckoutValidator implements ModuleInterface
 
     private function addErrorNotice()
     {
-        wc_add_notice('Укажите адрес <strong>Новой Почты</strong>', 'error');
+        wc_add_notice(__('checkout_validation_message', WCUS_TRANSLATE_DOMAIN), 'error');
     }
 
     /**

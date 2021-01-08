@@ -34,10 +34,10 @@ class Electro_Admin_Meta_Boxes {
 	 */
 	public function __construct() {
 		global $post;
-		
+
 		//add_action( 'add_meta_boxes', array( $this, 'remove_meta_boxes' ), 10 );
 		//add_action( 'add_meta_boxes', array( $this, 'rename_meta_boxes' ), 20 );
-		
+
 		add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ), 30 );
 		add_action( 'save_post', array( $this, 'save_meta_boxes' ), 1, 2 );
 
@@ -51,6 +51,7 @@ class Electro_Admin_Meta_Boxes {
 		add_action( 'electro_process_page_home_v7_meta', 'Electro_Meta_Box_Home_v7::save', 10, 2 );
 		add_action( 'electro_process_page_home_v8_meta', 'Electro_Meta_Box_Home_v8::save', 10, 2 );
 		add_action( 'electro_process_page_home_v9_meta', 'Electro_Meta_Box_Home_v9::save', 10, 2 );
+		add_action( 'electro_process_page_home_v10_meta', 'Electro_Meta_Box_Home_v10::save', 10, 2 );
 		add_action( 'electro_process_page_home_mobile_v1_meta', 'Electro_Meta_Box_Home_Mobile_v1::save', 10, 2 );
 		add_action( 'electro_process_page_home_mobile_v2_meta', 'Electro_Meta_Box_Home_Mobile_v2::save', 10, 2 );
 		add_action( 'electro_process_page_meta', 'Electro_Meta_Box_Page::save', 10, 2 );
@@ -101,7 +102,7 @@ class Electro_Admin_Meta_Boxes {
 	 */
 	public function add_meta_boxes( $post_type ) {
 		global $post;
-		
+
 		$screen = get_current_screen();
 
 		if ( !( $screen->base == 'post' && $screen->post_type == 'page' ) ) {
@@ -124,6 +125,7 @@ class Electro_Admin_Meta_Boxes {
 			case 'template-homepage-v7.php':
 			case 'template-homepage-v8.php':
 			case 'template-homepage-v9.php':
+			case 'template-homepage-v10.php':
 			case 'template-homepage-mobile-v1.php':
 			case 'template-homepage-mobile-v2.php':
 				$this->add_home_meta_boxes( $post_type );
@@ -145,7 +147,7 @@ class Electro_Admin_Meta_Boxes {
 
 		$template_file = get_post_meta( $post->ID, '_wp_page_template', true );
 
-		if ( ! ( $template_file === 'template-homepage-v1.php' || $template_file === 'template-homepage-v2.php' || $template_file === 'template-homepage-v3.php' || $template_file === 'template-homepage-v4.php' || $template_file === 'template-homepage-v5.php' || $template_file === 'template-homepage-v6.php'|| $template_file === 'template-homepage-v7.php'| $template_file === 'template-homepage-v8.php'| $template_file === 'template-homepage-v9.php' || $template_file === 'template-homepage-mobile-v1.php' || $template_file === 'template-homepage-mobile-v2.php' ) ) {
+		if ( ! ( $template_file === 'template-homepage-v1.php' || $template_file === 'template-homepage-v2.php' || $template_file === 'template-homepage-v3.php' || $template_file === 'template-homepage-v4.php' || $template_file === 'template-homepage-v5.php' || $template_file === 'template-homepage-v6.php'|| $template_file === 'template-homepage-v7.php'| $template_file === 'template-homepage-v8.php'| $template_file === 'template-homepage-v9.php'| $template_file === 'template-homepage-v10.php' || $template_file === 'template-homepage-mobile-v1.php' || $template_file === 'template-homepage-mobile-v2.php' ) ) {
 			return;
 		}
 
@@ -186,6 +188,10 @@ class Electro_Admin_Meta_Boxes {
 				$meta_box_title 	= esc_html__( 'Home v9 Options', 'electro' );
 				$meta_box_output 	= 'Electro_Meta_Box_Home_v9::output';
 			break;
+			case 'template-homepage-v10.php':
+				$meta_box_title 	= esc_html__( 'Home v10 Options', 'electro' );
+				$meta_box_output 	= 'Electro_Meta_Box_Home_v10::output';
+			break;
 			case 'template-homepage-mobile-v1.php':
 				$meta_box_title 	= esc_html__( 'Mobile Home v1 Options', 'electro' );
 				$meta_box_output 	= 'Electro_Meta_Box_Home_Mobile_v1::output';
@@ -195,7 +201,7 @@ class Electro_Admin_Meta_Boxes {
 				$meta_box_output 	= 'Electro_Meta_Box_Home_Mobile_v2::output';
 			break;
 		}
-		
+
 		add_meta_box( 'electro-home-page-options', $meta_box_title, $meta_box_output, 'page', 'normal', 'high' );
 	}
 
@@ -241,7 +247,7 @@ class Electro_Admin_Meta_Boxes {
 		$what = $post->post_type;
 
 		if ( $what == 'page' ) {
-			
+
 			$template_file = get_post_meta( $post_id, '_wp_page_template', true );
 
 			switch( $template_file ) {
@@ -271,6 +277,9 @@ class Electro_Admin_Meta_Boxes {
 				break;
 				case 'template-homepage-v9.php':
 					$what .= '_home_v9';
+				break;
+				case 'template-homepage-v10.php':
+					$what .= '_home_v10';
 				break;
 				case 'template-homepage-mobile-v1.php':
 					$what .= '_home_mobile_v1';

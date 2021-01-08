@@ -34,7 +34,7 @@ class WcGetPriceHtmlShowPriceListDetailProductPage
 
     public function priceHtml($price, $product)
     {
-        if (!is_product()) {
+        if (!is_product() || !is_single(get_the_ID())) {
             return $price;
         }
 
