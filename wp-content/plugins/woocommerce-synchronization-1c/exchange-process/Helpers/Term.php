@@ -2,6 +2,7 @@
 namespace Itgalaxy\Wc\Exchange1c\ExchangeProcess\Helpers;
 
 use Itgalaxy\Wc\Exchange1c\Includes\Bootstrap;
+use Itgalaxy\Wc\Exchange1c\Includes\Logger;
 
 class Term
 {
@@ -70,7 +71,6 @@ class Term
             self::differenceName($categoryEntry['name'], $categoryEntry['term_id'])
         ) {
             $params['name'] = $categoryEntry['name'];
-            //$params['slug'] = self::uniqueTermSlug($categoryEntry['name'], \get_term($categoryEntry['term_id'], 'product_cat'));
         }
 
         \wp_update_term($categoryEntry['term_id'], 'product_cat', $params);
@@ -82,12 +82,23 @@ class Term
             $categoryEntry['name'],
             'product_cat',
             [
-                'slug' => self::uniqueTermSlug($categoryEntry['name']),
+                'slug' => \wp_unique_term_slug(
+                    \sanitize_title($categoryEntry['name']),
+                    (object) [
+                        'taxonomy' => 'product_cat',
+                        'parent' => 0
+                    ]
+                ),
                 'parent' => ($categoryEntry['parent'] == '' ? 0 : $categoryEntry['parent'])
             ]
         );
 
         if (is_wp_error($result)) {
+            Logger::logChanges(
+                '(product_cat) Add error - ' . $result->get_error_message(),
+                $categoryEntry
+            );
+
             return false;
         }
 
@@ -125,79 +136,5 @@ class Term
         }
 
         return false;
-    }
-
-    public static function uniqueTermSlug($slug, $term = null)
-    {
-        global $wpdb;
-
-        $slug = \sanitize_title($slug);
-
-        if (!\term_exists($slug)) {
-            return $slug;
-        }
-
-        if ($term) {
-            if (\is_taxonomy_hierarchical($term->taxonomy) && !empty($term->parent)) {
-                $the_parent = $term->parent;
-
-                while (!empty($the_parent)) {
-                    $parent_term = \get_term($the_parent, $term->taxonomy);
-
-                    if (\is_wp_error($parent_term) || empty($parent_term)) {
-                        break;
-                    }
-
-                    $slug .= '-' . $parent_term->slug;
-
-                    if (!\term_exists($slug)) {
-                        return $slug;
-                    }
-
-                    if (empty($parent_term->parent)) {
-                        break;
-                    }
-
-                    $the_parent = $parent_term->parent;
-                }
-            }
-
-            // If we didn't get a unique slug, try appending a number to make it unique.
-            if (!empty($term->term_id)) {
-                $query = $wpdb->prepare("SELECT `slug` FROM $wpdb->terms WHERE `slug` = '%s' AND `term_id` != %d", $slug, $term->term_id);
-            } else {
-                $query = $wpdb->prepare("SELECT `slug` FROM $wpdb->terms WHERE `slug` = '%s'", $slug);
-            }
-
-            if ($wpdb->get_var($query)) {
-                $num = 2;
-
-                do {
-                    $alt_slug = $slug . "-$num";
-                    $num++;
-                    $slug_check = $wpdb->get_var($wpdb->prepare("SELECT `slug` FROM `{$wpdb->terms}` WHERE `slug` = '%s'", $alt_slug));
-                } while ($slug_check);
-
-                $slug = $alt_slug;
-            }
-
-        } else {
-            $check_sql = "SELECT `slug` FROM `{$wpdb->terms}` WHERE `slug` = '%s' LIMIT 1";
-            $slug_check = $wpdb->get_var($wpdb->prepare($check_sql, $slug));
-
-            if ($slug_check) {
-                $num = 2;
-
-                do {
-                    $alt_slug = $slug . "-$num";
-                    $num++;
-                    $slug_check = $wpdb->get_var($wpdb->prepare("SELECT `slug` FROM `{$wpdb->terms}` WHERE `slug` = '%s'", $alt_slug));
-                } while ($slug_check);
-
-                $slug = $alt_slug;
-            }
-        }
-
-        return $slug;
     }
 }

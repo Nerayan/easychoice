@@ -119,7 +119,7 @@ class BuddyPressIntegration {
 				$newUrl = BuddyPressMap::updateMap($url, $objectKey, $filePath, $s3Data);
 				return str_replace($url, $newUrl, $result);
 			} catch(\Exception $e) {
-				Logger::info("Error:".$ex->getMessage(), [], __METHOD__, __LINE__);
+				Logger::info("Error:".$e->getMessage(), [], __METHOD__, __LINE__);
 				return $result;
 			}
 		}

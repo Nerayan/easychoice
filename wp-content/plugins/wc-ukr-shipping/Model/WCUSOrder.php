@@ -6,6 +6,7 @@ use kirillbdev\WCUkrShipping\Contracts\AddressInterface;
 use kirillbdev\WCUkrShipping\Contracts\OrderDataInterface;
 use kirillbdev\WCUkrShipping\DB\NovaPoshtaRepository;
 use kirillbdev\WCUkrShipping\Services\CalculationService;
+use kirillbdev\WCUkrShipping\Services\TranslateService;
 
 if ( ! defined('ABSPATH')) {
     exit;
@@ -24,12 +25,18 @@ class WCUSOrder
     private $repository;
 
     /**
+     * @var TranslateService
+     */
+    private $translateService;
+
+    /**
      * @param \WC_Order $wcOrder
      */
     public function __construct($wcOrder)
     {
         $this->wcOrder = $wcOrder;
         $this->repository = new NovaPoshtaRepository();
+        $this->translateService = wcus_container_singleton('translate_service');
     }
 
     /**
@@ -127,7 +134,7 @@ class WCUSOrder
         $warehouse = $this->repository->getWarehouseByRef($address->getWarehouseRef());
 
         if ($warehouse) {
-            $this->setAddress(sanitize_text_field($warehouse['description']));
+            $this->setAddress(sanitize_text_field($this->translateService->translateWarehouse($warehouse)));
         }
     }
 
@@ -139,7 +146,7 @@ class WCUSOrder
         $area = $this->repository->getAreaByRef($address->getAreaRef());
 
         if ($area) {
-            $this->setState(sanitize_text_field($area['description']));
+            $this->setState(sanitize_text_field($this->translateService->translateArea($area)));
         }
     }
 
@@ -151,7 +158,7 @@ class WCUSOrder
         $city = $this->repository->getCityByRef($address->getCityRef());
 
         if ($city) {
-            $this->setCity(sanitize_text_field($city['description']));
+            $this->setCity(sanitize_text_field($this->translateService->translateCity($city)));
         }
     }
 }

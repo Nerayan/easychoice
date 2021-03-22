@@ -91,6 +91,7 @@ class ComposerStaticInitb87fa8086653efac66ff6dcb9469fe96
         'Itgalaxy\\Wc\\Exchange1c\\Admin\\TableColumns\\TableColumnProduct' => __DIR__ . '/../..' . '/admin/TableColumns/TableColumnProduct.php',
         'Itgalaxy\\Wc\\Exchange1c\\Admin\\TableColumns\\TableColumnProductAttribute' => __DIR__ . '/../..' . '/admin/TableColumns/TableColumnProductAttribute.php',
         'Itgalaxy\\Wc\\Exchange1c\\Admin\\TableColumns\\TableColumnProductCat' => __DIR__ . '/../..' . '/admin/TableColumns/TableColumnProductCat.php',
+        'Itgalaxy\\Wc\\Exchange1c\\ExchangeProcess\\Base\\Parser' => __DIR__ . '/../..' . '/exchange-process/Base/Parser.php',
         'Itgalaxy\\Wc\\Exchange1c\\ExchangeProcess\\DataResolvers\\GlobalProductAttributes' => __DIR__ . '/../..' . '/exchange-process/DataResolvers/GlobalProductAttributes.php',
         'Itgalaxy\\Wc\\Exchange1c\\ExchangeProcess\\DataResolvers\\Groups' => __DIR__ . '/../..' . '/exchange-process/DataResolvers/Groups.php',
         'Itgalaxy\\Wc\\Exchange1c\\ExchangeProcess\\DataResolvers\\NomenclatureCategories' => __DIR__ . '/../..' . '/exchange-process/DataResolvers/NomenclatureCategories.php',

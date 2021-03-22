@@ -1,9 +1,9 @@
 === Buy one click WooCommerce ===
 Contributors: northmule
-Donate link: https://www.paypal.me/coderunru
+Donate link: https://money.yandex.ru/to/41001746944171
 Tags: woocommerce, ecommerce, mode catalog, buy one click
 Requires at least: 5.0
-Tested up to: 5.5
+Tested up to: 5.6
 Stable tag: 5.5
 Requires PHP: 7.0
 WC requires at least: 3.9
@@ -42,7 +42,6 @@ This is the best solution for Woocommers to easily add a quick order button to t
 
 = Donate link: =
 <a href="https://money.yandex.ru/to/41001746944171" target="_blank">Visa / MasterCard / Mir / YandexMoney</a>
-<a href="https://www.paypal.me/coderunru">PayPal</a>
 
 == Installation ==
 
@@ -67,6 +66,16 @@ This is the best solution for Woocommers to easily add a quick order button to t
 
 
 == Changelog ==
+= 1.12 =
+* Добавлена настройка связанная с количеством товаров. Форму можно включить/отключить в настройках
+* Появилась возможность в форме выбрать количество товаров
+* Мелкие фиксы кода
+= 1.11 =
+* Добавлена настройка о цене с учётом налога в отправляемом письме
+* Класс BuyJavaScript переименован в Ajax
+* В клас Ajax добавлен namespace
+* Изменена кодировка создаваемой таблицы заказов плагина (для совместимости)
+* Прочие правки
 = 1.10.9 =
 * Улучшена совместимость с дополнением для вариативных товаров и кнопки по шорткоду (необходимое дополнение вариации 1.12)
 = 1.10.8 =

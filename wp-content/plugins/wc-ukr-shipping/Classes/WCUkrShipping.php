@@ -6,6 +6,7 @@ use kirillbdev\WCUkrShipping\Contracts\ModuleInterface;
 use kirillbdev\WCUkrShipping\Modules\Activator;
 use kirillbdev\WCUkrShipping\Modules\Ajax;
 use kirillbdev\WCUkrShipping\Modules\AssetsLoader;
+use kirillbdev\WCUkrShipping\Modules\Backend\PluginInfo;
 use kirillbdev\WCUkrShipping\Modules\Cart;
 use kirillbdev\WCUkrShipping\Modules\Checkout;
 use kirillbdev\WCUkrShipping\Modules\OptionsPage;
@@ -31,6 +32,11 @@ final class WCUkrShipping
      */
     private $modules = [];
 
+    /**
+     * @var Router
+     */
+    private $router;
+
     private function __construct()
     {
         $this->instantiateContainer();
@@ -52,6 +58,8 @@ final class WCUkrShipping
 
     public function init()
     {
+        $this->router = new Router();
+
         $this->initModule(Activator::class);
         $this->initModule(AssetsLoader::class);
         $this->initModule(OptionsPage::class);
@@ -62,6 +70,7 @@ final class WCUkrShipping
         $this->initModule(OrderCreator::class);
         $this->initModule(ShippingItemDrawer::class);
         $this->initModule(Cart::class);
+        $this->initModule(PluginInfo::class);
 
         add_action('plugins_loaded', function () {
             load_plugin_textdomain(WCUS_TRANSLATE_DOMAIN, false, 'wc-ukr-shipping/lang');
@@ -83,6 +92,14 @@ final class WCUkrShipping
         /* @var ModuleInterface $instance */
         $instance = new $module();
         $instance->init();
+
+        if (wp_doing_ajax() && method_exists($instance, 'routes')) {
+            $routes = $instance->routes();
+
+            foreach ($routes as $route) {
+                $this->router->addRoute($route);
+            }
+        }
 
         $this->modules[$module] = $instance;
     }

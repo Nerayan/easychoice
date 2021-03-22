@@ -1,6 +1,7 @@
 <?php
 namespace Itgalaxy\Wc\Exchange1c\ExchangeProcess;
 
+use Itgalaxy\Wc\Exchange1c\ExchangeProcess\Base\Parser;
 use Itgalaxy\Wc\Exchange1c\ExchangeProcess\DataResolvers\NomenclatureCategories;
 use Itgalaxy\Wc\Exchange1c\ExchangeProcess\DataResolvers\PriceTypes;
 use Itgalaxy\Wc\Exchange1c\ExchangeProcess\DataResolvers\ProductAndVariationPrices;
@@ -23,51 +24,13 @@ use Itgalaxy\Wc\Exchange1c\Includes\Cron;
 use Itgalaxy\Wc\Exchange1c\Includes\Bootstrap;
 use Itgalaxy\Wc\Exchange1c\Includes\Logger;
 
-class ParserXml
+class ParserXml extends Parser
 {
-    private $rate = 1;
-
-    private $postAuthor = 0;
-
-    // true or false
-    private $onlyChanges = '';
-
-    public function __construct()
-    {
-        HeartBeat::start();
-    }
-
-    public function parce($filename)
+    public function parse($filename)
     {
         global $wpdb;
 
-        // https://developer.wordpress.org/reference/functions/wp_defer_term_counting/
-        // disable allows to make the exchange much faster, since a large number of resources are saved for
-        // each quantity recount, and the final recount is performed through the cron plugin task
-        wp_defer_term_counting(true);
-
-        if (class_exists('\\WPSEO_Sitemaps_Cache')) {
-            add_filter('wpseo_enable_xml_sitemap_transient_caching', '__return_false');
-        }
-
         $settings = get_option(Bootstrap::OPTIONS_KEY);
-
-        $this->postAuthor = !empty($settings['exchange_post_author'])
-            ? $settings['exchange_post_author']
-            : '';
-
-        if (!$this->postAuthor) {
-            if ($users = get_users(['role' => 'administrator'])) {
-                $this->postAuthor = array_shift($users)->ID;
-            } else {
-                $this->postAuthor = 1;
-            }
-        }
-
-        if (!isset($_SESSION['IMPORT_1C_PROCESS']['allCurrentProducts'])) {
-            $_SESSION['IMPORT_1C_PROCESS']['allCurrentProducts'] = [];
-        }
-
         $valid = false;
 
         $reader = new \XMLReader();
@@ -81,22 +44,12 @@ class ParserXml
             if (
                 $reader->name === 'Классификатор' &&
                 (
-                    !isset($_SESSION['IMPORT_1C']['categoryIsParse']) ||
+                    !Groups::isParsed() ||
                     !isset($_SESSION['IMPORT_1C']['tagsIsParse']) ||
-                    !isset($_SESSION['IMPORT_1C']['optionsIsParse'])
+                    !GlobalProductAttributes::isParsed()
                 )
             ) {
                 $valid = true;
-
-                $processDataGroups = [
-                    'numberOfCategories' => 0,
-                    'currentCategoryId' => isset($_SESSION['IMPORT_1C']['currentCategoryId'])
-                        ? $_SESSION['IMPORT_1C']['currentCategoryId']
-                        : 0,
-                    'categoryIdStack' => isset($_SESSION['IMPORT_1C']['categoryIdStack'])
-                        ? $_SESSION['IMPORT_1C']['categoryIdStack']
-                        : []
-                ];
 
                 $reader->read();
 
@@ -106,7 +59,7 @@ class ParserXml
                 ) {
                     // resolve attributes
                     if (
-                        !isset($_SESSION['IMPORT_1C']['optionsIsParse']) &&
+                        !GlobalProductAttributes::isParsed() &&
                         $reader->name === 'Свойства' &&
                         $reader->nodeType === \XMLReader::ELEMENT &&
                         !$this->isEmptyNode($reader, 'Свойства')
@@ -117,11 +70,9 @@ class ParserXml
                     }
 
                     // resolve groups
-                    if (empty($settings['skip_categories']) && in_array($reader->name, ['Группы', 'Группа'])) {
-                        $processDataGroups = Groups::process($reader, $processDataGroups);
-
+                    if (!Groups::isDisabled() && in_array($reader->name, ['Группы', 'Группа'])) {
                         // time limit check
-                        if ($processDataGroups === false) {
+                        if (!Groups::process($reader)) {
                             return false;
                         }
                     }
@@ -134,31 +85,27 @@ class ParserXml
                     }
 
                     // resolve price types
-                    if ($reader->name === 'ТипыЦен' && $reader->nodeType !== \XMLReader::END_ELEMENT) {
+                    if (PriceTypes::isPriceTypesNode($reader)) {
                         PriceTypes::process($reader);
                     }
 
                     // resolve units
-                    if (
-                        $reader->name === 'ЕдиницыИзмерения' &&
-                        $reader->nodeType !== \XMLReader::END_ELEMENT &&
-                        !$this->isEmptyNode($reader, 'ЕдиницыИзмерения')
-                    ) {
+                    if (Units::isUnitsNode($reader) && !$this->isEmptyNode($reader, 'ЕдиницыИзмерения')) {
                         Units::process($reader);
                     }
 
                     // resolve stocks
-                    if ($reader->name === 'Склады' && $reader->nodeType !== \XMLReader::END_ELEMENT) {
+                    if (!Stocks::isParsed() && Stocks::isStocksNode($reader)) {
                         Stocks::process($reader);
                     }
 
                     // resolve `Категории -> Свойства`
-                    if ($reader->name === 'Категории' && $reader->nodeType !== \XMLReader::END_ELEMENT) {
+                    if (NomenclatureCategories::isNomenclatureCategoriesNode($reader)) {
                         NomenclatureCategories::process($reader);
                     }
                 }
 
-                $_SESSION['IMPORT_1C']['categoryIsParse'] = 'yes';
+                Groups::setParsed();
                 delete_option('product_cat_children');
                 wp_cache_flush();
             } // 'Классификатор'
@@ -225,7 +172,17 @@ class ParserXml
                                 }
                             }
 
-                            // maybe removed
+                            /**
+                             * Filters the sign when an product is considered deleted.
+                             *
+                             * @since 1.61.1
+                             *
+                             * @param bool $isRemoved
+                             * @param \SimpleXMLElement $element
+                             * @param int $product
+                             *
+                             * @see Filters\ProductIsRemoved
+                             */
                             if (apply_filters('itglx_wc1c_product_is_removed', false, $element, $product)) {
                                 if ($product) {
                                     Product::removeProduct($product);
@@ -398,7 +355,7 @@ class ParserXml
                     /*------------------REMOVAL OF THE CATEGORIES OUT OF FULL EXCHANGE--------------------------*/
                     if (
                         !isset($_SESSION['IMPORT_1C_PROCESS']['missingTermsIsRemove']) &&
-                        !empty($_SESSION['IMPORT_1C_PROCESS']['currentCategorys1c'])
+                        !empty($_SESSION['IMPORT_1C_PROCESS']['currentCategories1c'])
                     ) {
                         if (!isset($_SESSION['IMPORT_1C_PROCESS']['countTermRemove'])) {
                             $_SESSION['IMPORT_1C_PROCESS']['countTermRemove'] = 0;
@@ -419,7 +376,7 @@ class ParserXml
 
                             if (
                                 \get_term($category, 'product_cat') &&
-                                !in_array($id, $_SESSION['IMPORT_1C_PROCESS']['currentCategorys1c'])
+                                !in_array($id, $_SESSION['IMPORT_1C_PROCESS']['currentCategories1c'])
                             ) {
                                 \wp_delete_term($category, 'product_cat');
 
@@ -463,16 +420,12 @@ class ParserXml
                             $reader->nodeType === \XMLReader::END_ELEMENT)
                     ) {
                         // resolve price types
-                        if ($reader->name === 'ТипыЦен' && $reader->nodeType !== \XMLReader::END_ELEMENT) {
+                        if (PriceTypes::isPriceTypesNode($reader)) {
                             PriceTypes::process($reader);
                         }
 
                         // resolve stocks
-                        if (
-                            !isset($_SESSION['IMPORT_1C']['stocks_parse']) &&
-                            $reader->name === 'Склады' &&
-                            $reader->nodeType !== \XMLReader::END_ELEMENT
-                        ) {
+                        if (!Stocks::isParsed() && Stocks::isStocksNode($reader)) {
                             Stocks::process($reader);
                         }
 
@@ -743,7 +696,7 @@ class ParserXml
                     \WPSEO_Sitemaps_Cache::clear();
                 }
             } // end 'Предложения'
-        } // end parce
+        } // end parse
 
         \wp_defer_term_counting(false);
 
@@ -787,20 +740,5 @@ class ParserXml
             $this->postAuthor,
             true
         );
-    }
-
-    private function isEmptyNode($reader, $node)
-    {
-        $resolveResult = str_replace(
-            [' xmlns="' . $reader->namespaceURI . '"', ' '],
-            '',
-            $reader->readOuterXml()
-        );
-
-        if ($resolveResult === '<' . $node . '/>') {
-            return true;
-        }
-
-        return false;
     }
 }

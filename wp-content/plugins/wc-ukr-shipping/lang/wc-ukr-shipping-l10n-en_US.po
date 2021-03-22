@@ -39,3 +39,94 @@ msgstr "No results found"
 
 msgid "checkout_validation_message"
 msgstr "Enter <strong>Nova Poshta</strong> address"
+
+msgid "nav_item_premium"
+msgstr "Premium version"
+
+# top panel
+msgid "top_panel_docs"
+msgstr "Documentation"
+
+msgid "top_panel_premium"
+msgstr "Premium version"
+
+# options page
+msgid "options_page_title"
+msgstr "Settings - WC Ukr Shipping"
+
+msgid "options_page_heading"
+msgstr "Settings"
+
+msgid "options_btn_save"
+msgstr "Save"
+
+msgid "options_tab_common"
+msgstr "Common"
+
+msgid "options_tab_translates"
+msgstr "Translates"
+
+msgid "options_label_api_key"
+msgstr "Api key"
+
+msgid "options_label_fixed_price"
+msgstr "Fixed shipping cost"
+
+msgid "options_label_warehouse_lang"
+msgstr "Display language of cities and branches"
+
+msgid "options_warehouse_lang_ru"
+msgstr "Russian"
+
+msgid "options_warehouse_lang_ua"
+msgstr "Ukrainian"
+
+msgid "options_label_field_position"
+msgstr "Block position on the checkout page"
+
+msgid "options_field_position_main"
+msgstr "Main section"
+
+msgid "options_field_position_additional"
+msgstr "Additional section"
+
+msgid "options_tooltip_field_position"
+msgstr ""
+"Selecting the \"Additional section\" option will place plugin fields in "
+"front of the \"Order note\" field"
+
+msgid "options_label_address_shipping"
+msgstr "Enable address shipping"
+
+msgid "options_label_new_ui"
+msgstr "Use new UI components"
+
+msgid "options_label_show_poshtomats"
+msgstr "Show poshtomats"
+
+msgid "options_label_translates_type"
+msgstr "Load translates from"
+
+msgid "options_translates_type_options"
+msgstr "Plugin options"
+
+msgid "options_translates_type_mo_files"
+msgstr "mo translates"
+
+msgid "options_tooltip_translates_type"
+msgstr ""
+"If you are using language plugins like WPML - select the translation from mo "
+"files. This way you will get translations in 3 default languages (russian, "
+"ukrainian, english)."
+
+msgid "options_label_spinner_color"
+msgstr "Frontend spinner color"
+
+msgid "options_label_warehouse_update"
+msgstr "Nova Poshta branches info"
+
+msgid "options_btn_warehouse_update"
+msgstr "Update branches"
+
+msgid "save_options_success"
+msgstr "Settings saved successfully"

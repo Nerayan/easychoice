@@ -16,12 +16,14 @@ use MediaCloud\Plugin\Tasks\TaskManager;
 use MediaCloud\Plugin\Tools\Network\NetworkTool;
 use MediaCloud\Plugin\Utilities\Environment;
 use MediaCloud\Plugin\Utilities\LicensingManager;
+use MediaCloud\Plugin\Utilities\Logging\Logger;
 use MediaCloud\Plugin\Utilities\NoticeManager;
 use MediaCloud\Plugin\Utilities\Tracker;
 use MediaCloud\Plugin\Utilities\View;
 use function MediaCloud\Plugin\Utilities\arrayPath;
 use function MediaCloud\Plugin\Utilities\json_response;
 use MediaCloud\Plugin\Wizard\SetupWizard;
+use function MediaCloud\Plugin\Utilities\vomit;
 
 if (!defined( 'ABSPATH')) { header( 'Location: /'); die; }
 
@@ -78,9 +80,20 @@ final class ToolsManager {
 	//region Constructor
 
     public function __construct() {
-//        MigrationsManager::instance()->migrate();
-
 	    $this->tools=[];
+
+	    if (class_exists('\hyperdb') || class_exists('\LudicrousDB')) {
+		    add_filter('pre_update_option', function($value, $option, $old_value) {
+			    if (empty($value) && (strpos($option, 'mcloud') === 0)) {
+				    $type = strtolower(gettype($value));
+				    if (in_array($type, ['boolean', 'null'])) {
+					    return (string)'';
+				    }
+			    }
+
+			    return $value;
+		    }, 10, 3);
+        }
 
 	    $hasRun = get_option('mcloud-has-run', false);
 	    if (empty($hasRun)) {
@@ -144,7 +157,14 @@ final class ToolsManager {
         $actionLinksPrefix = (is_multisite()) ? 'network_admin_' : '';
 	    add_filter($actionLinksPrefix.'plugin_action_links_'.ILAB_PLUGIN_NAME, function($links) {
 		    $links[] = "<a href='".ilab_admin_url('admin.php?page=media-cloud-settings')."'>Settings</a>";
-		    $links[] = "<a href='https://discourse.interfacelab.io' target='_blank'>Support</a>";
+
+
+		    global $media_cloud_licensing;
+		    if ($media_cloud_licensing->is_paying_or_trial__premium_only()) {
+			    $links[] = "<a href='https://support.mediacloud.press' target='_blank'>Support</a>";
+            }
+		    
+		    $links[] = "<a href='https://users.freemius.com' target='_blank'>Billing</a>";
 
 		    return $links;
 	    });
@@ -278,6 +298,7 @@ final class ToolsManager {
 		    ToolsManager::registerTool("troubleshooting", include ILAB_CONFIG_DIR.'/troubleshooting.config.php');
 		    ToolsManager::registerTool("batch-processing", include ILAB_CONFIG_DIR.'/batch-processing.config.php');
 	        ToolsManager::registerTool("tasks", include ILAB_CONFIG_DIR . '/tasks.config.php');
+	        ToolsManager::registerTool("reports", include ILAB_CONFIG_DIR . '/reports.config.php');
 
 		    if (LicensingManager::CanTrack()) {
 			    ToolsManager::registerTool("opt-in", include ILAB_CONFIG_DIR.'/opt-in.config.php');

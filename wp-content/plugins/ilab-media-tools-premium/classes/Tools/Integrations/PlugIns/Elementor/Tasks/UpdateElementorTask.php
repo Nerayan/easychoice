@@ -16,12 +16,16 @@ namespace MediaCloud\Plugin\Tools\Integrations\PlugIns\Elementor\Tasks;
 
 use Elementor\Plugin;
 use MediaCloud\Plugin\Tasks\Task;
+use MediaCloud\Plugin\Tasks\TaskReporter;
+use MediaCloud\Plugin\Tools\Integrations\PlugIns\Elementor\ElementorUpdater;
 use MediaCloud\Plugin\Tools\ToolsManager;
 use MediaCloud\Plugin\Utilities\Logging\Logger;
 use function MediaCloud\Plugin\Utilities\arrayPath;
 use function MediaCloud\Plugin\Utilities\isKeyedArray;
 
 class UpdateElementorTask extends Task {
+	protected $reportHeaders = ['Post ID', 'Meta ID', 'Widget', 'Notes', 'Old URL', 'New URL'];
+
 	//region Static Task Properties
 
 	/**
@@ -101,6 +105,18 @@ class UpdateElementorTask extends Task {
 	 */
 	public static function taskOptions() {
 		return [
+			'generate-report' => [
+				"title" => "Generate Report",
+				"description" => "Generates a report detailing what changes to your Elementor pages Media Cloud made.  This report will be located in the <code>".TaskReporter::reporterDirectory()."</code> directory.",
+				"type" => "checkbox",
+				"default" => true
+			],
+			'skip-widget-cache' => [
+				"title" => "Skip Widget Cache",
+				"description" => "Media Cloud generates a widget cache to speed up subsequent runs of this task.  If you've recently updated Elementor or any of it's addons, you should turn this on.",
+				"type" => "checkbox",
+				"default" => false
+			],
 		];
 	}
 
@@ -118,100 +134,34 @@ class UpdateElementorTask extends Task {
 
 	//endregion
 
-
-	//region Block Parsing
-	private function extractImage($data) {
-		$id = arrayPath($data, "id", null);
-		$url = arrayPath($data, "url", null);
-
-		if (!empty($id) && !empty($url)) {
-			return ['id' => $id, 'url' => $url];
-		}
-
-		return null;
-	}
-
-	private function parseImages($widgetType, $metaId, $block, &$images) {
-		$settings = arrayPath($block, 'settings', null);
-		$type = arrayPath($block, 'widgetType', $widgetType);
-		Logger::info("Widget type: $type", [], __METHOD__, __LINE__);
-
-		if (!empty($settings)) {
-
-			$thumbSize = arrayPath($settings, 'thumbnail_size', 'full');
-			$thumbCustomSize = arrayPath($settings, 'thumbnail_custom_dimension', null);
-
-			$imageSize = arrayPath($settings, 'image_size', 'full');
-			$imageCustomSize = arrayPath($settings, 'image_custom_dimension', null);
-
-			$size = empty($thumbSize) ? $imageSize : $thumbSize;
-			$customSize = empty($thumbSize) ? $imageCustomSize : $thumbCustomSize;
-
-			foreach($settings as $setting => $settingData) {
-				if (is_array($settingData)) {
-					if (isKeyedArray($settingData)) {
-						$image = $this->extractImage($settingData);
-						if (!empty($image)) {
-							$images[] = [
-								'meta_id' => $metaId,
-								'url' => $image['url'],
-								'id' => $image['id'],
-								'size' => ($size === 'custom') ? $customSize : $size
-							];
-
-							Logger::info("$type - Found image {$image['url']} size:".json_encode($size), [], __METHOD__, __LINE__);
-						}
-					} else {
-						foreach($settingData as $settingDatum) {
-							$image = $this->extractImage($settingDatum);
-							if (!empty($image)) {
-								$images[] = [
-									'meta_id' => $metaId,
-									'url' => $image['url'],
-									'id' => $image['id'],
-									'size' => ($size === 'custom') ? $customSize : $size
-								];
-
-								Logger::info("$type - Found image {$image['url']} size:".json_encode($size), [], __METHOD__, __LINE__);
-							} else if (isKeyedArray($settingDatum)) {
-								foreach($settingDatum as $key => $value) {
-									if (is_array($value)) {
-										$image = $this->extractImage($value);
-										if (!empty($image)) {
-											$images[] = [
-												'meta_id' => $metaId,
-												'url' => $image['url'],
-												'id' => $image['id'],
-												'size' => ($size === 'custom') ? $customSize : $size
-											];
-
-											Logger::info("$type - Found image {$image['url']} size:".json_encode($size), [], __METHOD__, __LINE__);
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-
-		$elements = arrayPath($block, 'elements', null);
-		if (!empty($elements)) {
-			foreach($elements as $element) {
-				$this->parseImages($widgetType, $metaId, $element, $images);
-			}
-		}
-	}
-
-	//endregion
-
-
 	//region Execution
 
+	public function reporter() {
+		if (empty($this->options['generate-report'])) {
+			return null;
+		}
+
+		return parent::reporter();
+	}
+
 	public function prepare($options = [], $selectedItems = []) {
+		$this->options = $options;
+
 		global $wpdb;
-		$results = $wpdb->get_results("select post_id, meta_id from {$wpdb->postmeta} where meta_key = '_elementor_data' and meta_value LIKE '[%'", ARRAY_A);
+		$query = <<<SQL
+select 
+     post_id, meta_id 
+from 
+     {$wpdb->postmeta} 
+where 
+     meta_key = '_elementor_data' 
+and 
+     meta_value LIKE '[%' 
+and 
+     post_id in (select ID from {$wpdb->posts} where post_type in ('page', 'post'))
+SQL;
+
+		$results = $wpdb->get_results($query, ARRAY_A);
 		foreach($results as $result) {
 			$this->addItem($result);
 		}
@@ -220,48 +170,6 @@ class UpdateElementorTask extends Task {
 
 		return true;
 	}
-
-	private function debugInput($metaId, $data) {
-		if (!ToolsManager::instance()->toolEnabled('debugging')) {
-			return;
-		}
-
-		$uploadDirInfo = wp_upload_dir();
-
-		$debugPath = trailingslashit($uploadDirInfo['basedir']).'mediacloud/elementor/';
-		if (!file_exists($debugPath)) {
-			mkdir($debugPath, 0777, true);
-		}
-
-		file_put_contents($debugPath.$metaId.'-input.json', json_encode($data, JSON_PRETTY_PRINT));
-	}
-
-	private function debugOutput($metaId) {
-		if (!ToolsManager::instance()->toolEnabled('debugging')) {
-			return;
-		}
-
-		$uploadDirInfo = wp_upload_dir();
-
-		$debugPath = trailingslashit($uploadDirInfo['basedir']).'mediacloud/elementor/';
-		if (!file_exists($debugPath)) {
-			mkdir($debugPath, 0777, true);
-		}
-
-		$jsonData = get_post_meta_by_id($metaId);
-		if (!empty($jsonData)) {
-			$data = json_decode($jsonData->meta_value, true);
-			if(!empty($data)) {
-				$jsonOutput = json_encode($data, JSON_PRETTY_PRINT);
-				file_put_contents($debugPath.$metaId.'-output.json', $jsonOutput);
-			} else {
-				file_put_contents($debugPath.$metaId.'-output.json', $jsonData->meta_value);
-			}
-		} else {
-			file_put_contents($debugPath.$metaId.'-output.json', '');
-		}
-	}
-
 
 	/**
 	 * Performs the actual task
@@ -293,54 +201,15 @@ class UpdateElementorTask extends Task {
 
 		Logger::info("Processing $metaId", [], __METHOD__, __LINE__);
 
-		$this->debugInput($metaId, $data);
+		$data = ElementorUpdater::update(!empty($this->options['skip-widget-cache']), $item['post_id'], $metaId, $data, $this->reporter());
 
-		$images = [];
-		for($i = 0; $i < count($data); $i++) {
-			$block = $data[$i];
-			$this->parseImages(null, $metaId, $block, $images);
+		$json =  json_encode($data, JSON_HEX_QUOT   | JSON_HEX_APOS);
+		if (strpos($json, '\/') === false) {
+			$json = str_replace("/", '\/', $json);
 		}
 
-		global $wpdb;
-
-		foreach($images as $imageData) {
-			$url = $imageData['url'];
-
-			if (is_array($imageData['size'])) {
-				$width = isset($imageData['size']['width']) ? $imageData['size']['width'] : $imageData['size'][0];
-				$height = isset($imageData['size']['height']) ? $imageData['size']['height'] : $imageData['size'][1];
-
-				$image = image_downsize($imageData['id'], [$width, $height]);
-				$newUrl = empty($image) ? null : $image[0];
-			} else {
-				$image = wp_get_attachment_image_src($imageData['id'], $imageData['size']);
-				$newUrl = empty($image) ? null : $image[0];
-			}
-
-			if (empty($newUrl)) {
-				Logger::info("New URL is empty, skipping.", [], __METHOD__, __LINE__);
-				continue;
-			}
-
-			if ($newUrl === $url) {
-				Logger::info("URL $url is the same as $newUrl, skipping.", [], __METHOD__, __LINE__);
-				continue;
-			}
-
-			Logger::info("Replacing $url with $newUrl", [], __METHOD__, __LINE__);
-
-			$oldUrl = str_replace('/', '\\\/', $url);
-			$newUrl = str_replace('/', '\\\/', $newUrl);
-
-			$rows_affected = $wpdb->query(
-				"UPDATE {$wpdb->postmeta} " .
-				"SET `meta_value` = INSERT(`meta_value`, LOCATE('$oldUrl', `meta_value`), CHAR_LENGTH('$oldUrl'), '$newUrl') ".
-				"WHERE `meta_id` = $metaId");
-
-			Logger::info("Replaced {$rows_affected} instances of $url", [], __METHOD__, __LINE__);
-		}
-
-		$this->debugOutput($metaId);
+		$json = str_replace("\u{00a0}", '\u00a0', $json);
+		update_meta($metaId, '_elementor_data', $json);
 
 		Logger::info("Finished processing $metaId", [], __METHOD__, __LINE__);
 

@@ -25,11 +25,15 @@ class Order {
     }
     
     /**
-     * Создаёт заказ в WooCommerce
-     * @param array $params массив параметров аналогичный $default_params
+     *
+     * Создаёт необходимый объект заказа
+     * @param $params
+     *
+     * @return \WC_Order|\WP_Error
+     * @throws \WC_Data_Exception
      */
-    public function set_order($params) {
-        
+    public function create_order($params)
+    {
         $default_params = array(
             'first_name' => '',
             'last_name' => '',
@@ -49,11 +53,8 @@ class Order {
         );
         
         $params = wp_parse_args($params, $default_params);
-        
         $product = wc_get_product($params['product_id']);
-        
         $order = wc_create_order(); //создаём новый заказ
-        
         $product_params = array(
             'name' => $product->get_name(),
             'tax_class' => $product->get_tax_class(),
@@ -64,10 +65,7 @@ class Order {
             'total' => wc_get_price_excluding_tax($product, array('qty' => $params['qty'])),
             'quantity' => $params['qty'],
         );
-        
-        
         $order->add_product($product, $params['qty'], $product_params);
-        
         $order->set_billing_first_name($params['first_name']);
         $order->set_billing_last_name($params['last_name']);
         $order->set_billing_company($params['company']);
@@ -91,9 +89,72 @@ class Order {
         $order->set_shipping_country($params['country']);
         
         $order->set_customer_id(get_current_user_id());
+        return $order;
+    }
+    
+    /**
+     * Расчёт стоимости заказа без сохранения заказа
+     * @param \WC_Order $order
+     * @see \WC_Abstract_Order
+     * @return float
+     * @throws \WC_Data_Exception
+     */
+    public function calculate_order_totals(\WC_Order $order)
+    {
+        $cart_subtotal     = 0;
+        $cart_total        = 0;
+        $fee_total         = 0;
+        $shipping_total    = 0;
+        $cart_subtotal_tax = 0;
+        $cart_total_tax    = 0;
         
+        foreach ( $order->get_items() as $item ) {
+            $cart_subtotal += round( $item->get_subtotal(), wc_get_price_decimals() );
+            $cart_total    += round( $item->get_total(), wc_get_price_decimals() );
+        }
+        foreach ( $order->get_shipping_methods() as $shipping ) {
+            $shipping_total += round( $shipping->get_total(), wc_get_price_decimals() );
+        }
+        
+        $order->set_shipping_total( $shipping_total );
+        foreach ( $order->get_fees() as $item ) {
+            $amount = $item->get_amount();
+            
+            if ( 0 > $amount ) {
+                $item->set_total( $amount );
+                $max_discount = round( $cart_total + $fee_total + $shipping_total, wc_get_price_decimals() ) * -1;
+                
+                if ( $item->get_total() < $max_discount ) {
+                    $item->set_total( $max_discount );
+                }
+            }
+            
+            $fee_total += $item->get_total();
+        }
+        $order->calculate_taxes();
+        
+        foreach ( $order->get_items() as $item ) {
+            $cart_subtotal_tax += $item->get_subtotal_tax();
+            $cart_total_tax    += $item->get_total_tax();
+        }
+        
+        $order->set_discount_total( $cart_subtotal - $cart_total );
+        $order->set_discount_tax( $cart_subtotal_tax - $cart_total_tax );
+        $order->set_total( round( $cart_total + $fee_total + $order->get_shipping_total() + $order->get_cart_tax() + $order->get_shipping_tax(), wc_get_price_decimals() ) );
+        
+        
+        return $order->get_total();
+    }
+    
+    
+    /**
+     * Создаёт заказ в WooCommerce
+     * @param array $params массив параметров аналогичный $default_params
+     */
+    public function set_order($params) {
+        
+        $order = $this->create_order($params);
         $order->update_status($params['order_status'], $params['message_notes_order']);
-        
         $order->calculate_totals();
         
         return $order->get_id();
@@ -128,7 +189,7 @@ class Order {
         $wpdb->insert($this->order_table, $order);
         BuyHookPlugin::saveOrderToTable($wpdb->insert_id);
         return $wpdb->insert_id;
-
+        
         
     }
     
@@ -141,7 +202,7 @@ class Order {
     
     public function get_orders() {
         global $wpdb;
-       return $wpdb->get_results( "select * from {$this->order_table} where active=1", ARRAY_A );
+        return $wpdb->get_results( "select * from {$this->order_table} where active=1", ARRAY_A );
     }
     
     public function deactive_order($order_id) {

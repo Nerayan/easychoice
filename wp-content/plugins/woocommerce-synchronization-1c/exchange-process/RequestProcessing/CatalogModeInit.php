@@ -38,7 +38,6 @@ class CatalogModeInit
 
         if (!isset($_SESSION['IMPORT_1C_PROCESS'])) {
             $_SESSION['IMPORT_1C_PROCESS'] = [];
-            $_SESSION['IMPORT_1C_PROCESS']['currentCategorys1c'] = [];
         }
     }
 }

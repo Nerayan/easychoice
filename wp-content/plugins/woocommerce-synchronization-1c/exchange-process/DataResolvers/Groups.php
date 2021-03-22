@@ -3,6 +3,7 @@ namespace Itgalaxy\Wc\Exchange1c\ExchangeProcess\DataResolvers;
 
 use Itgalaxy\Wc\Exchange1c\ExchangeProcess\Helpers\HeartBeat;
 use Itgalaxy\Wc\Exchange1c\ExchangeProcess\Helpers\Term;
+use Itgalaxy\Wc\Exchange1c\Includes\Bootstrap;
 use Itgalaxy\Wc\Exchange1c\Includes\Logger;
 
 /**
@@ -11,17 +12,26 @@ use Itgalaxy\Wc\Exchange1c\Includes\Logger;
 class Groups
 {
     /**
-     * @param \XMLReader $reader
-     * @param array $processData
+     * Processing progress data.
      *
-     * @return array|bool
+     * @var array
      */
-    public static function process($reader, $processData)
-    {
-        if (!isset($_SESSION['IMPORT_1C']['numberOfCategories'])) {
-            $_SESSION['IMPORT_1C']['numberOfCategories'] = 0;
-        }
+    protected static $processData = [];
 
+    /**
+     * The flag determines whether the list of groups will be saved to the option or not.
+     *
+     * @var bool
+     */
+    public static $saveGroupListToOption = false;
+
+    /**
+     * @param \XMLReader $reader
+     *
+     * @return bool
+     */
+    public static function process(\XMLReader $reader)
+    {
         /*
          * Example xml structure
          * position - Классификатор -> Группы
@@ -50,26 +60,26 @@ class Groups
             $reader->nodeType === \XMLReader::ELEMENT &&
             str_replace(' ', '', $reader->readOuterXml()) === '<Группы/>'
         ) {
-            return $processData;
+            return true;
         }
 
         // if start new block, add the current category as the last parent on the stack
         if ($reader->name === 'Группы' && $reader->nodeType === \XMLReader::ELEMENT) {
-            if ($processData['numberOfCategories'] >= $_SESSION['IMPORT_1C']['numberOfCategories']) {
-                array_unshift($processData['categoryIdStack'], $processData['currentCategoryId']);
+            if (self::$processData['numberOfCategories'] >= $_SESSION['IMPORT_1C']['numberOfCategories']) {
+                array_unshift(self::$processData['categoryIdStack'], self::$processData['currentCategoryId']);
             }
         }
 
         // if end block, remove the last parent from the stack, as the level of nesting has changed
         // and you need to bind from the previous level
         if ($reader->name === 'Группы' && $reader->nodeType === \XMLReader::END_ELEMENT) {
-            if ($processData['numberOfCategories'] >= $_SESSION['IMPORT_1C']['numberOfCategories']) {
-                array_shift($processData['categoryIdStack']);
+            if (self::$processData['numberOfCategories'] >= $_SESSION['IMPORT_1C']['numberOfCategories']) {
+                array_shift(self::$processData['categoryIdStack']);
             }
         }
 
         if ($reader->name !== 'Группа' || $reader->nodeType !== \XMLReader::ELEMENT) {
-            return $processData;
+            return true;
         }
 
         // check time execution limit
@@ -79,27 +89,27 @@ class Groups
 
         $element = simplexml_load_string(trim($reader->readOuterXml()));
 
-        $processData['numberOfCategories']++;
+        self::$processData['numberOfCategories']++;
 
         // ignore invalid
         if (!isset($element->Ид)) {
             unset($element);
 
-            return $processData;
+            return true;
         }
 
         // progress
-        if ($processData['numberOfCategories'] < $_SESSION['IMPORT_1C']['numberOfCategories']) {
+        if (self::$processData['numberOfCategories'] < $_SESSION['IMPORT_1C']['numberOfCategories']) {
             unset($element);
 
-            return $processData;
+            return true;
         }
 
         // already processed
-        if (in_array((string) $element->Ид, $_SESSION['IMPORT_1C_PROCESS']['currentCategorys1c'], true)) {
+        if (in_array((string) $element->Ид, $_SESSION['IMPORT_1C_PROCESS']['currentCategories1c'], true)) {
             unset($element);
 
-            return $processData;
+            return true;
         }
 
         $category = Term::getTermIdByMeta((string) $element->Ид);
@@ -122,13 +132,13 @@ class Groups
 
             unset($element);
 
-            return $processData;
+            return true;
         }
 
-        $_SESSION['IMPORT_1C']['categoryIdStack'] = $processData['categoryIdStack'];
+        $_SESSION['IMPORT_1C']['categoryIdStack'] = self::$processData['categoryIdStack'];
 
         $categoryEntry = [
-            'parent' => $processData['categoryIdStack'][0],
+            'parent' => self::$processData['categoryIdStack'][0],
             'name' => trim(wp_strip_all_tags((string) $element->Наименование))
         ];
 
@@ -170,13 +180,86 @@ class Groups
             );
         }
 
-        $processData['currentCategoryId'] = $categoryEntry['term_id'];
-        $_SESSION['IMPORT_1C_PROCESS']['currentCategorys1c'][] = (string) $element->Ид;
-        $_SESSION['IMPORT_1C']['currentCategoryId'] = $processData['currentCategoryId'];
-        $_SESSION['IMPORT_1C']['numberOfCategories'] = $processData['numberOfCategories'];
+        self::$processData['currentCategoryId'] = $categoryEntry['term_id'];
+
+        // save current change group list
+        $_SESSION['IMPORT_1C_PROCESS']['currentCategories1c'][] = (string) $element->Ид;
+
+        if (self::$saveGroupListToOption) {
+            update_option('currentAll1cGroup', $_SESSION['IMPORT_1C_PROCESS']['currentCategories1c']);
+        }
+
+        $_SESSION['IMPORT_1C']['currentCategoryId'] = self::$processData['currentCategoryId'];
+        $_SESSION['IMPORT_1C']['numberOfCategories'] = self::$processData['numberOfCategories'];
 
         unset($element, $categoryEntry);
 
-        return $processData;
+        return true;
+    }
+
+    /**
+     * Checking whether the processing of product categories is disabled in the settings.
+     *
+     * @return bool
+     */
+    public static function isDisabled()
+    {
+        $settings = get_option(Bootstrap::OPTIONS_KEY);
+
+        if (!empty($settings['skip_categories'])) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Allows you to check if groups have already been processed or not.
+     *
+     * @return bool
+     */
+    public static function isParsed()
+    {
+        if (isset($_SESSION['IMPORT_1C']['categoryIsParsed'])) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Sets the flag that groups have been processed.
+     *
+     * @return void
+     */
+    public static function setParsed()
+    {
+        $_SESSION['IMPORT_1C']['categoryIsParsed'] = true;
+    }
+
+    /**
+     * Preparing variables before processing groups.
+     *
+     * @return void
+     */
+    public static function prepare()
+    {
+        if (!isset($_SESSION['IMPORT_1C']['numberOfCategories'])) {
+            $_SESSION['IMPORT_1C']['numberOfCategories'] = 0;
+        }
+
+        if (!isset($_SESSION['IMPORT_1C_PROCESS']['currentCategories1c'])) {
+            $_SESSION['IMPORT_1C_PROCESS']['currentCategories1c'] = [];
+        }
+
+        self::$processData = [
+            'numberOfCategories' => 0,
+            'currentCategoryId' => isset($_SESSION['IMPORT_1C']['currentCategoryId'])
+                ? $_SESSION['IMPORT_1C']['currentCategoryId']
+                : 0,
+            'categoryIdStack' => isset($_SESSION['IMPORT_1C']['categoryIdStack'])
+                ? $_SESSION['IMPORT_1C']['categoryIdStack']
+                : []
+        ];
     }
 }

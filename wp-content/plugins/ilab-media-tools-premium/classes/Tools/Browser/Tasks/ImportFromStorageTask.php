@@ -175,7 +175,7 @@ class ImportFromStorageTask extends Task {
 			$key = '';
 		}
 
-		$files = $storageTool->getFileList([$key], !empty($options['skip-thumbnails']));
+		$files = $storageTool->getFileList([$key], !empty($options['skip-thumbnails']))['files'];
 
 		$mimey = new MimeTypes();
 

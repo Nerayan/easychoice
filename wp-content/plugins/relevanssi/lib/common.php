@@ -219,32 +219,41 @@ function relevanssi_default_post_ok( $post_ok, $post_id ) {
  * query, instead of doing up to 500 separate get_post() queries.
  *
  * @global array  $relevanssi_post_array An array of fetched posts.
- * @global array  $relevanssi_post_types An array of post types, to be used by
- * relevanssi_get_post_type() (again to avoid DB calls).
  * @global object $wpdb                  The WordPress database interface.
  *
  * @param array $matches An array of search matches.
+ * @param int   $blog_id The blog ID for multisite searches. Default -1.
  */
-function relevanssi_populate_array( $matches ) {
-	global $relevanssi_post_array, $relevanssi_post_types, $wpdb;
+function relevanssi_populate_array( $matches, $blog_id = -1 ) {
+	global $relevanssi_post_array, $wpdb;
+
+	if ( -1 === $blog_id ) {
+		$blog_id = get_current_blog_id();
+	}
 
 	// Doing this makes life faster.
 	wp_suspend_cache_addition( true );
 
 	$ids = array();
 	foreach ( $matches as $match ) {
-		array_push( $ids, $match->doc );
+		$cache_id = $blog_id . '|' . $match->doc;
+		if ( $match->doc > 0 && ! isset( $relevanssi_post_array[ $cache_id ] ) ) {
+			array_push( $ids, $match->doc );
+		}
 	}
 
 	$ids = array_keys( array_flip( $ids ) ); // Remove duplicate IDs.
 	do {
 		$hundred_ids = array_splice( $ids, 0, 100 );
 		$id_list     = implode( ', ', $hundred_ids );
-		$posts       = $wpdb->get_results( "SELECT * FROM $wpdb->posts WHERE id IN ( $id_list )", OBJECT ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		if ( ! empty( $id_list ) ) {
+			$posts = $wpdb->get_results( "SELECT * FROM $wpdb->posts WHERE id IN ( $id_list )", OBJECT ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 
-		foreach ( $posts as $post ) {
-			$relevanssi_post_array[ $post->ID ] = $post;
-			$relevanssi_post_types[ $post->ID ] = $post->post_type;
+			foreach ( $posts as $post ) {
+				$cache_id = $blog_id . '|' . $post->ID;
+
+				$relevanssi_post_array[ $cache_id ] = $post;
+			}
 		}
 	} while ( $ids );
 
@@ -299,9 +308,8 @@ function relevanssi_remove_punct( $a ) {
 	}
 
 	$a = preg_replace( '/&lt;(\d|\s)/', '\1', $a );
-
 	$a = html_entity_decode( $a, ENT_QUOTES );
-	$a = preg_replace( '/<[^>]*>/', ' ', $a );
+	$a = relevanssi_strip_all_tags( $a );
 
 	$punct_options = get_option( 'relevanssi_punctuation' );
 
@@ -350,6 +358,7 @@ function relevanssi_remove_punct( $a ) {
 		'©'                     => '',
 		'™'                     => '',
 		'&shy;'                 => '',
+		"\xC2\xAD"              => '',
 		'&nbsp;'                => ' ',
 		chr( 194 ) . chr( 160 ) => ' ',
 		'×'                     => ' ',
@@ -528,7 +537,17 @@ function relevanssi_prevent_default_request( $request, $query ) {
  * @return int[] An array of tokens as the keys and their frequency as the
  * value.
  */
-function relevanssi_tokenize( $string, $remove_stops = true, $min_word_length = -1 ) {
+function relevanssi_tokenize( $string, $remove_stops = true, int $min_word_length = -1 ) : array {
+	if ( ! $string || ( ! is_string( $string ) && ! is_array( $string ) ) ) {
+		return array();
+	}
+	$string_for_phrases = is_array( $string ) ? implode( ' ', $string ) : $string;
+	$phrases            = relevanssi_extract_phrases( $string_for_phrases );
+	$phrase_words       = array();
+	foreach ( $phrases as $phrase ) {
+		$phrase_words = array_merge( $phrase_words, explode( ' ', $phrase ) );
+	}
+
 	$tokens = array();
 	if ( is_array( $string ) ) {
 		// If we get an array, tokenize each string in the array.
@@ -593,12 +612,12 @@ function relevanssi_tokenize( $string, $remove_stops = true, $min_word_length = 
 			$accept = false;
 		}
 
-		if ( RELEVANSSI_PREMIUM ) {
+		if ( RELEVANSSI_PREMIUM && ! in_array( $token, $phrase_words, true ) ) {
 			/**
 			 * Fires Premium tokenizer.
 			 *
-			 * Filters the token through the Relevanssi Premium tokenizer to add some
-			 * Premium features to the tokenizing (mostly stemming).
+			 * Filters the token through the Relevanssi Premium tokenizer to add
+			 * some Premium features to the tokenizing (mostly stemming).
 			 *
 			 * @param string $token Search query token.
 			 */
@@ -686,7 +705,7 @@ function relevanssi_get_post_status( $post_id ) {
 		} elseif ( $post ) {
 			if ( 'inherit' === $post->post_status ) {
 				// Attachment, let's see what the parent says.
-				$parent = $relevanssi_post_array[ $post_id ]->post_parent;
+				$parent = $relevanssi_post_array[ $post_id ]->post_parent ?? null;
 				if ( ! $parent ) {
 					// Attachment without a parent, let's assume it's public.
 					$status = 'publish';
@@ -719,11 +738,8 @@ function relevanssi_get_post_type( $post_id ) {
 	global $relevanssi_post_array;
 
 	$original_id = $post_id;
-	$blog_id     = -1;
-	if ( function_exists( 'get_current_blog_id' ) ) {
-		$blog_id = get_current_blog_id();
-		$post_id = $blog_id . '|' . $post_id;
-	}
+	$blog_id     = get_current_blog_id();
+	$post_id     = $blog_id . '|' . $post_id;
 
 	if ( isset( $relevanssi_post_array[ $post_id ] ) ) {
 		return $relevanssi_post_array[ $post_id ]->post_type;
@@ -817,50 +833,6 @@ function relevanssi_add_synonyms( $query ) {
 	}
 
 	return $query;
-}
-
-
-/**
- * Prints out post title with highlighting.
- *
- * Uses the global $post object. Reads the highlighted title from
- * $post->post_highlighted_title.
- *
- * @global object $post The global post object.
- *
- * @param boolean $echo If true, echo out the title. Default true.
- *
- * @return string If $echo is false, returns the title with highlights.
- */
-function relevanssi_the_title( $echo = true ) {
-	global $post;
-	if ( empty( $post->post_highlighted_title ) ) {
-		$post->post_highlighted_title = $post->post_title;
-	}
-	if ( $echo ) {
-		echo $post->post_highlighted_title; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-	}
-	return $post->post_highlighted_title;
-}
-
-/**
- * Returns the post title with highlighting.
- *
- * Reads the highlighted title from $post->post_highlighted_title.
- *
- * @param int $post_id The post ID.
- *
- * @return string The post title with highlights.
- */
-function relevanssi_get_the_title( $post_id ) {
-	$post = relevanssi_get_post( $post_id );
-	if ( ! is_object( $post ) ) {
-		return null;
-	}
-	if ( empty( $post->post_highlighted_title ) ) {
-		$post->post_highlighted_title = $post->post_title;
-	}
-	return $post->post_highlighted_title;
 }
 
 /**
@@ -971,8 +943,8 @@ function relevanssi_add_highlight( $permalink, $link_post = null ) {
  * @global object $post The global post object.
  *
  * @param string     $link      The link to adjust.
- * @param object|int $link_post The post to modify, either WP post object or the post
- * ID. If null, use global $post. Defaults null.
+ * @param object|int $link_post The post to modify, either WP post object or the
+ * post ID. If null, use global $post. Defaults null.
  *
  * @return string The modified link.
  */
@@ -988,7 +960,7 @@ function relevanssi_permalink( $link, $link_post = null ) {
 		$link = $link_post->relevanssi_link;
 	}
 
-	if ( is_search() ) {
+	if ( is_search() && isset( $link_post->relevance_score ) ) {
 		$link = relevanssi_add_highlight( $link, $link_post );
 	}
 	return $link;
@@ -1124,6 +1096,20 @@ function relevanssi_get_forbidden_post_types() {
 		'slides',               // Qoda slides.
 		'carousels',            // Qoda carousels.
 		'pretty-link',          // Pretty Links.
+		'fusion_tb_layout',     // Fusion Builder.
+		'fusion_tb_section',    // Fusion Builder.
+		'fusion_form',          // Fusion Builder.
+		'fusion_icons',         // Fusion Builder.
+		'fusion_template',      // Fusion Builder.
+		'fusion_element',       // Fusion Builder.
+		'acfe-dbt',             // ACF Extended.
+		'acfe-form',            // ACF Extended.
+		'acfe-dop',             // ACF Extended.
+		'acfe-dpt',             // ACF Extended.
+		'acfe-dt',              // ACF Extended.
+		'um_form',              // Ultimate Member.
+		'um_directory',         // Ultimate Member.
+		'mailpoet_page',        // Mailpoet Page.
 	);
 }
 
@@ -1148,7 +1134,9 @@ function relevanssi_get_forbidden_taxonomies() {
 /**
  * Filters out unwanted custom fields.
  *
- * Added to the relevanssi_custom_field_value filter hook.
+ * Added to the relevanssi_custom_field_value filter hook. This function removes
+ * visible custom fields that are known to contain unwanted content and also
+ * removes ACF meta fields (fields where content begins with `field_`).
  *
  * @see relevanssi_index_custom_fields()
  *
@@ -1165,6 +1153,17 @@ function relevanssi_filter_custom_fields( $values, $field ) {
 	if ( isset( $unwanted_custom_fields[ $field ] ) ) {
 		$values = array();
 	}
+
+	$values = array_map(
+		function( $value ) {
+			if ( is_string( $value ) && 'field_' === substr( $value, 0, 6 ) ) {
+				return '';
+			}
+			return $value;
+		},
+		$values
+	);
+
 	return $values;
 }
 
@@ -1517,7 +1516,7 @@ function relevanssi_generate_list_of_custom_fields( $post_id, $custom_fields = n
 	}
 
 	if ( ! is_array( $custom_fields ) ) {
-		return array();
+		$custom_fields = array();
 	}
 
 	$custom_fields = array_unique( $custom_fields );

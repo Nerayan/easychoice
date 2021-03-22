@@ -4,8 +4,8 @@ Contributors: tijmensmit
 Donate link: https://www.paypal.me/tijmensmit
 Tags: google maps, store locator, business locations, geocoding, stores, geo, zipcode locator, dealer locater, geocode, gmaps, google map, google map plugin, location finder, map tools, shop locator, wp google map
 Requires at least: 3.7
-Tested up to: 5.5
-Stable tag: 2.2.233
+Tested up to: 5.6
+Stable tag: 2.2.234
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl.html
 
@@ -60,10 +60,6 @@ The [Search Widget](https://wpstorelocator.co/add-ons/search-widget/) enables us
 **Statistics**
 
 The [Statistics](https://wpstorelocator.co/add-ons/statistics/) add-on enables you to keep track of the locations users are searching for and see where there is demand for a new store.
-
-**Store Directory  - Coming Soon**
-
-Generate a directory based on the store locations.
 
 == Installation ==
 
@@ -126,6 +122,10 @@ If you find a plugin or theme that causes a conflict, please report it on the [s
 4. The plugin settings
 
 == Changelog ==
+
+= 2.2.234, 23 January, 2021 =
+* Fixed: PHP 8 Compatiblity
+* Fixed: Polylang Compatiblity
 
 = 2.2.233, July 10, 2020 =
 * Fixed: A problem with the [Borlabs Cookie](https://borlabs.io/borlabs-cookie/) plugin where Google Maps wasn't blocked correctly.

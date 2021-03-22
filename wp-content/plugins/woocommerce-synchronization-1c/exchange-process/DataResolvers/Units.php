@@ -10,11 +10,13 @@ use Itgalaxy\Wc\Exchange1c\Includes\Logger;
 class Units
 {
     /**
+     * Main loop parsing.
+     *
      * @param \XMLReader $reader
      *
      * @return void
      */
-    public static function process(\XMLReader &$reader)
+    public static function process(\XMLReader $reader)
     {
         // run once per exchange
         if (self::isParsed()) {
@@ -66,6 +68,23 @@ class Units
         self::setParsed();
     }
 
+    /**
+     * Checking if the reader is in the position of data on units.
+     *
+     * @param \XMLReader $reader
+     *
+     * @return bool
+     */
+    public static function isUnitsNode(\XMLReader $reader)
+    {
+        return $reader->name === 'ЕдиницыИзмерения' && $reader->nodeType !== \XMLReader::END_ELEMENT;
+    }
+
+    /**
+     * Allows you to check if units have already been processed or not.
+     *
+     * @return bool
+     */
     private static function isParsed()
     {
         if (isset($_SESSION['IMPORT_1C']['units_parse'])) {
@@ -75,6 +94,11 @@ class Units
         return false;
     }
 
+    /**
+     * Sets the flag that units have been processed.
+     *
+     * @return void
+     */
     private static function setParsed()
     {
         $_SESSION['IMPORT_1C']['units_parse'] = true;

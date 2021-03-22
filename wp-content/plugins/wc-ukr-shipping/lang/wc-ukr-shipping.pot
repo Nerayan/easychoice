@@ -24,3 +24,91 @@ msgstr ""
 
 msgid "checkout_validation_message"
 msgstr ""
+
+# nav
+msgid "nav_item_premium"
+msgstr ""
+
+# top panel
+
+msgid "top_panel_docs"
+msgstr ""
+
+msgid "top_panel_premium"
+msgstr ""
+
+# options page
+msgid "options_page_title"
+msgstr ""
+
+msgid "options_page_heading"
+msgstr ""
+
+msgid "options_btn_save"
+msgstr ""
+
+msgid "options_tab_common"
+msgstr ""
+
+msgid "options_tab_translates"
+msgstr ""
+
+msgid "options_label_api_key"
+msgstr ""
+
+msgid "options_label_fixed_price"
+msgstr ""
+
+msgid "options_label_warehouse_lang"
+msgstr ""
+
+msgid "options_warehouse_lang_ru"
+msgstr ""
+
+msgid "options_warehouse_lang_ua"
+msgstr ""
+
+msgid "options_label_field_position"
+msgstr ""
+
+msgid "options_field_position_main"
+msgstr ""
+
+msgid "options_field_position_additional"
+msgstr ""
+
+msgid "options_tooltip_field_position"
+msgstr ""
+
+msgid "options_label_address_shipping"
+msgstr ""
+
+msgid "options_label_new_ui"
+msgstr ""
+
+msgid "options_label_show_poshtomats"
+msgstr ""
+
+msgid "options_label_translates_type"
+msgstr ""
+
+msgid "options_translates_type_options"
+msgstr ""
+
+msgid "options_translates_type_mo_files"
+msgstr ""
+
+msgid "options_tooltip_translates_type"
+msgstr ""
+
+msgid "options_label_spinner_color"
+msgstr ""
+
+msgid "options_label_warehouse_update"
+msgstr ""
+
+msgid "options_btn_warehouse_update"
+msgstr ""
+
+msgid "save_options_success"
+msgstr ""

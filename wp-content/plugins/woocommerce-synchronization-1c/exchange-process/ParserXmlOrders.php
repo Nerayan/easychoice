@@ -13,7 +13,7 @@ class ParserXmlOrders
         // nothing
     }
 
-    public function parce($filename)
+    public function parse($filename)
     {
         $settings = get_option(Bootstrap::OPTIONS_KEY);
         $reader = new \XMLReader();

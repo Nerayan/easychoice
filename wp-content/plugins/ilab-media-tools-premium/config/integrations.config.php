@@ -29,12 +29,17 @@ return [
 		'powerpress/powerpress.php' => "\\MediaCloud\\Plugin\\Tools\\Integrations\\PlugIns\\BlubrryIntegration",
 		'profilegrid-user-profiles-groups-and-communities/profile-magic.php' => "\\MediaCloud\\Plugin\\Tools\\Integrations\\PlugIns\\ProfileGridIntegration",
 	],
+	"CLI" => [
+		"\\MediaCloud\\Plugin\\Tools\\Integrations\\CLI\\IntegrationsCommand",
+		"\\MediaCloud\\Plugin\\Tools\\Integrations\\PlugIns\\Elementor\\CLI\\ElementorCommand",
+	],
 	"classes" => [
 		"\\BuddyPress" => "\\MediaCloud\\Plugin\\Tools\\Integrations\\PlugIns\\BuddyPress\\BuddyPressIntegration",
 		"\\C_NextGEN_Bootstrap" => "\\MediaCloud\\Plugin\\Tools\\Integrations\\PlugIns\\NextGenGallery\\NextGenGalleryIntegration",
 		"\\Elementor\\Plugin" => "\\MediaCloud\\Plugin\\Tools\\Integrations\\PlugIns\\Elementor\\ElementorIntegration",
 		"\\FooGallery" => "\\MediaCloud\\Plugin\\Tools\\Integrations\\PlugIns\\FooGalleryIntegration",
 		"\\SFWD_LMS" => "\\MediaCloud\\Plugin\\Tools\\Integrations\\PlugIns\\LearnDashIntegration",
+		"\\Google\\Web_Stories\\Model\\Story" => MediaCloud\Plugin\Tools\Integrations\PlugIns\WebStories\WebStoriesIntegration::class,
 	],
 	"settings" => [
 		"options-page" => "media-tools-integrations",

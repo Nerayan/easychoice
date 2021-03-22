@@ -4,11 +4,13 @@ namespace Itgalaxy\Wc\Exchange1c\ExchangeProcess\DataResolvers;
 class NomenclatureCategories
 {
     /**
+     * Main loop parsing.
+     *
      * @param \XMLReader $reader
      *
      * @return void
      */
-    public static function process(\XMLReader &$reader)
+    public static function process(\XMLReader $reader)
     {
         // run once per exchange
         if (self::isParsed()) {
@@ -68,7 +70,24 @@ class NomenclatureCategories
         self::setParsed();
     }
 
-    private static function isParsed()
+    /**
+     * Checking if the reader is in the position of data on nomenclature categories.
+     *
+     * @param \XMLReader $reader
+     *
+     * @return bool
+     */
+    public static function isNomenclatureCategoriesNode(\XMLReader $reader)
+    {
+        return $reader->name === 'Категории' && $reader->nodeType !== \XMLReader::END_ELEMENT;
+    }
+
+    /**
+     * Allows you to check if nomenclature categories have already been processed or not.
+     *
+     * @return bool
+     */
+    public static function isParsed()
     {
         if (isset($_SESSION['IMPORT_1C']['nomenclature_categories_parse'])) {
             return true;
@@ -77,7 +96,12 @@ class NomenclatureCategories
         return false;
     }
 
-    private static function setParsed()
+    /**
+     * Sets the flag that nomenclature categories have been processed.
+     *
+     * @return void
+     */
+    public static function setParsed()
     {
         $_SESSION['IMPORT_1C']['nomenclature_categories_parse'] = true;
     }

@@ -3,16 +3,19 @@ namespace Itgalaxy\Wc\Exchange1c\ExchangeProcess\DataResolvers;
 
 use Itgalaxy\Wc\Exchange1c\Includes\Bootstrap;
 
+/**
+ * Processing and save global info by stocks.
+ */
 class Stocks
 {
     /**
-     * Processing and save info by stocks.
+     * Main loop parsing.
      *
      * @param \XMLReader $reader
      *
      * @return void
      */
-    public static function process(\XMLReader &$reader)
+    public static function process(\XMLReader $reader)
     {
         // if processing is disabled or processing has already occurred
         if (self::isDisabled() || self::isParsed()) {
@@ -102,7 +105,24 @@ class Stocks
         self::setParsed();
     }
 
-    private static function isDisabled()
+    /**
+     * Checking if the reader is in the position of data on stocks.
+     *
+     * @param \XMLReader $reader
+     *
+     * @return bool
+     */
+    public static function isStocksNode(\XMLReader $reader)
+    {
+        return $reader->name === 'Склады' && $reader->nodeType !== \XMLReader::END_ELEMENT;
+    }
+
+    /**
+     * Checking whether the processing of stocks is disabled in the settings.
+     *
+     * @return bool
+     */
+    public static function isDisabled()
     {
         $settings = get_option(Bootstrap::OPTIONS_KEY);
 
@@ -113,17 +133,27 @@ class Stocks
         return false;
     }
 
-    private static function isParsed()
+    /**
+     * Allows you to check if stocks have already been processed or not.
+     *
+     * @return bool
+     */
+    public static function isParsed()
     {
-        if (isset($_SESSION['IMPORT_1C']['stocks_parse'])) {
+        if (isset($_SESSION['IMPORT_1C']['stocksParsed'])) {
             return true;
         }
 
         return false;
     }
 
-    private static function setParsed()
+    /**
+     * Sets the flag that stocks have been processed.
+     *
+     * @return void
+     */
+    public static function setParsed()
     {
-        $_SESSION['IMPORT_1C']['stocks_parse'] = true;
+        $_SESSION['IMPORT_1C']['stocksParsed'] = true;
     }
 }

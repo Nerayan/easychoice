@@ -17,6 +17,10 @@ namespace MediaCloud\Plugin\Utilities {
 
 	if (!defined('ABSPATH') && empty($GLOBALS['__composer_autoload_files'])) { header('Location: /'); die; }
 
+	if (function_exists('\MediaCloud\Plugin\Utilities\vomit')) {
+		return;
+	}
+
 	/**
 	 * Brute force debug tool
 	 * @param $what
@@ -40,7 +44,7 @@ namespace MediaCloud\Plugin\Utilities {
 	{
 		status_header( 200 );
 		header( 'Content-type: application/json; charset=UTF-8' );
-		echo json_encode($data,JSON_PRETTY_PRINT);
+		echo json_encode($data,JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
 		die;
 	}
 
@@ -314,6 +318,23 @@ namespace MediaCloud\Plugin\Utilities {
 		}
 
 		return null;
+	}
+
+	/**
+	 * Determine if a given string ends with a given substring.
+	 *
+	 * @param  string  $haystack
+	 * @param  string|string[]  $needles
+	 * @return bool
+	 */
+	function strEndsWith($haystack, $needles) {
+		foreach ((array) $needles as $needle) {
+			if ($needle !== '' && substr($haystack, -strlen($needle)) === (string) $needle) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 }
 

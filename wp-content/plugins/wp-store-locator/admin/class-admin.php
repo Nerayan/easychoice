@@ -60,9 +60,17 @@ if ( !class_exists( 'WPSL_Admin' ) ) {
             add_filter( 'admin_footer_text',                    array( $this, 'admin_footer_text' ), 1 );
             add_action( 'wp_loaded',                            array( $this, 'disable_setting_notices' ) );
 
-            add_action( 'wp_ajax_validate_server_key',          array( $this->settings_page, 'ajax_validate_server_key' ) );
-            add_action( 'wp_ajax_nopriv_validate_server_key',   array( $this->settings_page, 'ajax_validate_server_key' ) );
+            add_action( 'wp_ajax_validate_server_key',          array( $this, 'ajax_validate_server_key' ) );
+            add_action( 'wp_ajax_nopriv_validate_server_key',   array( $this, 'ajax_validate_server_key' ) );
 		}
+
+        /**
+         * @since 2.2.234
+         * @return void
+         */
+		public function ajax_validate_server_key() {
+            $this->settings_page->ajax_validate_server_key();
+        }
 
         /**
          * Include the required files.

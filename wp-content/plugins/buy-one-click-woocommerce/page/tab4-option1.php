@@ -2,9 +2,9 @@
 if (!defined('ABSPATH')) {
     exit;
 }
-use Coderun\BuyOneClick\BuyCore;
+use Coderun\BuyOneClick\Core;
 ?>
-<h3><?php _e('Information on', 'coderun-oneclickwoo'); ?>  <?php echo BuyCore::NAME_PLUGIN; ?></h3>
+<h3><?php _e('Information on', 'coderun-oneclickwoo'); ?>  <?php echo Core::NAME_PLUGIN; ?></h3>
 <table class="table">
     <tbody>
         <tr>

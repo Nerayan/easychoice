@@ -4,6 +4,8 @@ namespace kirillbdev\WCUkrShipping\Modules;
 
 use kirillbdev\WCUkrShipping\Classes\View;
 use kirillbdev\WCUkrShipping\Contracts\ModuleInterface;
+use kirillbdev\WCUkrShipping\Http\Controllers\OptionsController;
+use kirillbdev\WCUkrShipping\Http\Route;
 
 if ( ! defined('ABSPATH')) {
     exit;
@@ -16,10 +18,17 @@ class OptionsPage implements ModuleInterface
         add_action('admin_menu', [$this, 'registerOptionsPage'], 99);
     }
 
+    public function routes()
+    {
+        return [
+            new Route('wcus_save_options', OptionsController::class, 'save')
+        ];
+    }
+
     public function registerOptionsPage()
     {
         add_menu_page(
-            'Настройки - WC Ukr Shipping',
+            __('options_page_title', WCUS_TRANSLATE_DOMAIN),
             'WC Ukr Shipping',
             'manage_options',
             'wc_ukr_shipping_options',
@@ -30,8 +39,8 @@ class OptionsPage implements ModuleInterface
 
         add_submenu_page(
             'wc_ukr_shipping_options',
-            'Premium версия',
-            wc_ukr_shipping_import_svg('star.svg') . 'Premium версия',
+            __('nav_item_premium', WCUS_TRANSLATE_DOMAIN),
+            wc_ukr_shipping_import_svg('star.svg') . __('nav_item_premium', WCUS_TRANSLATE_DOMAIN),
             'manage_options',
             'wcus_submenu_premium',
             [$this, 'premiumHtml']

@@ -105,20 +105,20 @@ if ( !class_exists( 'WPSL_i18n' ) ) {
          * that was set on the settings page.
          * 
          * @since 2.0.0
-         * @param  string $name The name of the translated string
-         * @param  string $text The text of the translated string
-         * @return string The translation
+         * @param  string $name        The name of the translated string
+         * @param  string $text        The text of the translated string
+         * @return string $translation The translation
          */
         public function get_translation( $name, $text ) {
-            
+
             global $wpsl_settings;
 
             if ( defined( 'WPML_ST_VERSION' ) ) {
                 $translation = $text;
-            } elseif ( defined( 'POLYLANG_VERSION' ) && defined( 'PLL_INC' ) ) {
+            } elseif ( defined( 'POLYLANG_VERSION' ) && defined( 'POLYLANG_DIR' ) ) {
 
-                if ( !function_exists( 'pll__' ) ) {
-                    require_once PLL_INC . '/api.php';
+                if ( ! function_exists( 'pll__' ) ) {
+                    require_once POLYLANG_DIR . '/include/api.php';
                 }
 
                 $translation = pll__( $text );
@@ -128,7 +128,7 @@ if ( !class_exists( 'WPSL_i18n' ) ) {
 
             return $translation;
         }
-        
+
         /**
          * If a multilingual plugin like WPML or qTranslate X is active
          * we return the active language code.

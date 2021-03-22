@@ -13,6 +13,7 @@
 
 namespace MediaCloud\Plugin\Tools\Storage\Tasks;
 
+use MediaCloud\Plugin\Tasks\TaskReporter;
 use MediaCloud\Plugin\Tools\Storage\StorageToolSettings;
 use MediaCloud\Plugin\Tasks\AttachmentTask;
 use MediaCloud\Plugin\Tools\Storage\StorageTool;
@@ -125,9 +126,15 @@ class MigrateTask extends AttachmentTask {
 			],
 			'verify-migration' => [
 				"title" => "Generate Verification Report",
-				"description" => "Generates a verification report for the migrated media.  This report will be located in the <code>".WP_CONTENT_DIR."/mcloud-reports/</code> directory.",
+				"description" => "Generates a verification report for the migrated media.  This report will be located in the <code>".TaskReporter::reporterDirectory()."</code> directory.",
 				"type" => "checkbox",
 				"default" => true
+			],
+			'allow-optimizers' => [
+				"title" => "Allow Image Optimizers",
+				"description" => "If you are using the Image Optimization feature, or using a third party image optimization plugin, this will enable them to run, if needed, during migration.  Generally speaking, <strong>you do not want to turn this on as an error with an optimization can derail the entire migration</strong>.  You should <strong>optimize your media before running the migration</strong> and keep this option turned off.",
+				"type" => "checkbox",
+				"default" => false
 			]
 		];
 
@@ -266,11 +273,23 @@ class MigrateTask extends AttachmentTask {
 	public function willStart() {
 		parent::willStart();
 
+		if (empty($this->options['allow-optimizers'])) {
+			add_filter('media-cloud/storage/ignore-optimizers', '__return_true');
+		}
+
 		if(empty(arrayPath($this->options, 'delete-migrated', false))) {
 			add_filter('media-cloud/storage/delete_uploads', '__return_false');
 		} else {
 			add_filter('media-cloud/storage/queue-deletes', '__return_false');
 		}
+	}
+
+	public function didFinish() {
+		if (empty($this->options['allow-optimizers'])) {
+			remove_filter('media-cloud/storage/ignore-optimizers', '__return_true');
+		}
+
+		parent::didFinish();
 	}
 
 	/**
@@ -300,7 +319,8 @@ class MigrateTask extends AttachmentTask {
 		$storageTool->processImport($this->currentItem, $post_id, null, $this->options);
 
 		if ($this->options['verify-migration']) {
-			$storageTool->verifyPost($post_id, $this->reporter(), function ($message, $newLine = false) {});
+			Logger::info("Verifying $post_id", [], __METHOD__, __LINE__);
+			$storageTool->verifyPost($post_id, false, $this->reporter(), function ($message, $newLine = false) {});
 		}
 
 		Logger::info("Finished processing $post_id", [], __METHOD__, __LINE__);

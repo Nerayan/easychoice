@@ -24,6 +24,7 @@
         <h2>Batch Tools</h2>
         @foreach($tasks as $taskId => $taskClass)
             @continue(empty($taskClass::userTask()))
+            @continue(empty($taskClass::showInMenu()))
             <div class="ilab-settings-section ilab-settings-features">
                 <h4>{{$taskClass::title()}}</h4>
                 @if(!empty($taskClass::instructionView()))

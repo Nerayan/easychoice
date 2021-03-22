@@ -6,15 +6,50 @@ use Itgalaxy\Wc\Exchange1c\ExchangeProcess\Helpers\ProductAttributeHelper;
 use Itgalaxy\Wc\Exchange1c\ExchangeProcess\Helpers\Term;
 use Itgalaxy\Wc\Exchange1c\Includes\Logger;
 
+/**
+ * Parsing and save info by main product attributes.
+ *
+ * @since 1.13.0
+ */
 class GlobalProductAttributes
 {
     /**
+     * Main loop parsing.
+     *
+     * Example xml structure (position - Классификатор -> Свойства)
+     *
+     * ```xml
+     * <Свойства>
+     *      <СвойствоНоменклатуры>
+     *          <Ид>bd9b5fd0-99c7-11ea-9e2b-00155d467e00</Ид>
+     *          <Наименование>ouhu</Наименование>
+     *          <Обязательное>false</Обязательное>
+     *          <Множественное>false</Множественное>
+     *          <ИспользованиеСвойства>true</ИспользованиеСвойства>
+     *      </СвойствоНоменклатуры>
+     * </Свойства>
+     *
+     * <Свойства>
+     *      <Свойство>
+     *          <Ид>65fbdca3-85d6-11da-9aea-000d884f5d77</Ид>
+     *          <ПометкаУдаления>false</ПометкаУдаления>
+     *          <Наименование>Модель</Наименование>
+     *          <ТипЗначений>Справочник</ТипЗначений>
+     *          <ВариантыЗначений>
+     *              <Справочник>
+     *                  <ИдЗначения>65fbdca4-85d6-11da-9aea-000d884f5d77</ИдЗначения>
+     *                  <Значение>KSF 32420</Значение>
+     *              </Справочник>
+     *          </ВариантыЗначений>
+     *      </Свойство>
+     * </Свойства>
+     *
      * @param \XMLReader $reader
      *
-     * @return bool
+     * @return void
      * @throws \Exception
      */
-    public static function process(\XMLReader &$reader)
+    public static function process(\XMLReader $reader)
     {
         $numberOfOptions = 0;
 
@@ -28,42 +63,19 @@ class GlobalProductAttributes
             $options = [];
         }
 
+        /**
+         * Filters the list of product properties to be ignored during processing.
+         *
+         * @since 1.74.1
+         *
+         * @param string[] $ignoreAttributeProcessing Array of strings with property guid to be ignored during processing.
+         */
         $ignoreAttributeProcessing = apply_filters('itglx_wc1c_attribute_ignore_guid_array', []);
 
         while (
             $reader->read() &&
             !($reader->name === 'Свойства' && $reader->nodeType === \XMLReader::END_ELEMENT)
         ) {
-            /*
-             * Example xml structure
-             * position - Классификатор -> Свойства
-             *
-            <Свойства>
-                <СвойствоНоменклатуры>
-                    <Ид>bd9b5fd0-99c7-11ea-9e2b-00155d467e00</Ид>
-                    <Наименование>ouhu</Наименование>
-                    <Обязательное>false</Обязательное>
-                    <Множественное>false</Множественное>
-                    <ИспользованиеСвойства>true</ИспользованиеСвойства>
-                </СвойствоНоменклатуры>
-		    </Свойства>
-
-            <Свойства>
-                <Свойство>
-                    <Ид>65fbdca3-85d6-11da-9aea-000d884f5d77</Ид>
-                    <ПометкаУдаления>false</ПометкаУдаления>
-                    <Наименование>Модель</Наименование>
-                    <ТипЗначений>Справочник</ТипЗначений>
-                    <ВариантыЗначений>
-                        <Справочник>
-                            <ИдЗначения>65fbdca4-85d6-11da-9aea-000d884f5d77</ИдЗначения>
-                            <Значение>KSF 32420</Значение>
-                        </Справочник>
-                    </ВариантыЗначений>
-                </Свойство>
-            </Свойства>
-            */
-
             if (
                 $reader->name !== 'Свойство' &&
                 $reader->name !== 'СвойствоНоменклатуры' &&
@@ -73,7 +85,7 @@ class GlobalProductAttributes
             }
 
             if (!HeartBeat::nextTerm()) {
-                return false;
+                return;
             }
 
             $numberOfOptions++;
@@ -130,7 +142,11 @@ class GlobalProductAttributes
 
                 Logger::logChanges('(attribute) Create attribute by data `Свойства`', $attributeCreate);
 
-                return false;
+                /**
+                 * Let's interrupt the processing process, that it was started again and the created attribute was
+                 * correctly processed and registered by WooCommerce before use.
+                 */
+                return;
             }
 
             if (isset($element->ТипЗначений)) {
@@ -191,7 +207,7 @@ class GlobalProductAttributes
                             (string) $element->Ид
                         );
 
-                        return false;
+                        return;
                     }
 
                     $numberOfOptionValues++;
@@ -295,11 +311,30 @@ class GlobalProductAttributes
 
         self::setParsed();
 
+        return;
+    }
+
+    /**
+     * Allows you to check if properties have already been processed or not.
+     *
+     * @return bool
+     */
+    public static function isParsed()
+    {
+        if (isset($_SESSION['IMPORT_1C']['optionsIsParsed'])) {
+            return true;
+        }
+
         return false;
     }
 
+    /**
+     * Sets the flag that properties have been processed.
+     *
+     * @return void
+     */
     private static function setParsed()
     {
-        $_SESSION['IMPORT_1C']['optionsIsParse'] = true;
+        $_SESSION['IMPORT_1C']['optionsIsParsed'] = true;
     }
 }

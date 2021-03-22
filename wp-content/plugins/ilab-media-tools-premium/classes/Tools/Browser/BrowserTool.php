@@ -39,22 +39,12 @@ class BrowserTool extends Tool {
 
 		$this->settings = BrowserToolSettings::instance();
 
-		add_action('admin_enqueue_scripts', function(){
-			wp_enqueue_media();
-
-			wp_enqueue_style( 'wp-pointer' );
-			wp_enqueue_script( 'wp-pointer' );
-			wp_enqueue_script ( 'ilab-modal-js', ILAB_PUB_JS_URL. '/ilab-modal.js', ['jquery'], MEDIA_CLOUD_VERSION, true );
-			wp_enqueue_script ( 'ilab-media-tools-js', ILAB_PUB_JS_URL. '/ilab-media-tools.js', ['jquery'], MEDIA_CLOUD_VERSION, true );
-			wp_enqueue_script ( 'ilab-storage-browser-js', ILAB_PUB_JS_URL. '/ilab-storage-browser.js', ['jquery'], MEDIA_CLOUD_VERSION, true );
-
-		});
-
 		add_action('wp_ajax_ilab_browser_select_directory', [$this, 'selectDirectory']);
 		add_action('wp_ajax_ilab_browser_browser_select_directory', [$this, 'browserSelectDirectory']);
 		add_action('wp_ajax_ilab_browser_create_directory', [$this, 'createDirectory']);
 		add_action('wp_ajax_ilab_browser_delete', [$this, 'deleteItems']);
 		add_action('wp_ajax_ilab_browser_file_list', [$this, 'listFiles']);
+		add_action('wp_ajax_ilab_browser_file_list_chunk', [$this, 'listFilesChunk']);
 		add_action('wp_ajax_ilab_browser_import_file', [$this, 'importFile']);
 		add_action('wp_ajax_ilab_browser_track', [$this, 'trackAction']);
 
@@ -127,34 +117,34 @@ class BrowserTool extends Tool {
 
 		/** @var StorageTool $storageTool */
 		$storageTool = ToolsManager::instance()->tools['storage'];
-		$files = $storageTool->client()->dir($currentPath);
+//		$files = $storageTool->client()->dir($currentPath)['files'];
 
 		$directUploads = ToolsManager::instance()->toolEnabled('media-upload');
 
-		if (!empty($currentPath)) {
-			$pathParts = explode('/', $currentPath);
-			array_pop($pathParts);
-			array_pop($pathParts);
-			$parentPath = implode('/', $pathParts);
-			if (!empty($parentPath)) {
-				$parentPath .= '/';
-			}
-
-			$parentDirectory = new StorageFile('DIR', $parentPath, '..');
-			array_unshift($files, $parentDirectory);
-		}
+//		if (!empty($currentPath)) {
+//			$pathParts = explode('/', $currentPath);
+//			array_pop($pathParts);
+//			array_pop($pathParts);
+//			$parentPath = implode('/', $pathParts);
+//			if (!empty($parentPath)) {
+//				$parentPath .= '/';
+//			}
+//
+//			$parentDirectory = new StorageFile('DIR', $parentPath, '..');
+//			array_unshift($files, $parentDirectory);
+//		}
 
 		$mtypes = array_values(get_allowed_mime_types(get_current_user_id()));
 		$mtypes[] = 'image/psd';
 
 		Tracker::trackView('Storage Browser', '/browser');
 
-		echo View::render_view('storage/browser', [
+		echo View::render_view('storage/storage-browser', [
 			'title' => 'Cloud Storage Browser',
 			'bucketName' => $storageTool->client()->bucket(),
 			"path" => $currentPath,
 			"directUploads" => $directUploads,
-			'files' => $files,
+//			'files' => $files,
 			'allowUploads' => $this->settings->multisiteAllowUploads,
 			'allowDeleting' => $this->settings->multisiteAllowDeleting,
 			'allowedMimes' => $mtypes
@@ -195,7 +185,7 @@ class BrowserTool extends Tool {
 
 		/** @var StorageTool $storageTool */
 		$storageTool = ToolsManager::instance()->tools['storage'];
-		$files = $storageTool->client()->dir($currentPath);
+		$files = $storageTool->client()->dir($currentPath)['files'];
 
 		if (!empty($currentPath)) {
 			$pathParts = explode('/', $currentPath);
@@ -249,7 +239,7 @@ class BrowserTool extends Tool {
 			$currentPath = rtrim($currentPath, '/').'/';
 		}
 
-		$newDirectory = (empty($_POST['directory'])) ? '' : $_POST['directory'];
+		$newDirectory = sanitize_title((empty($_POST['directory'])) ? '' : $_POST['directory']);
 
 		Tracker::trackView('Storage Browser - Create Directory', '/browser/create');
 
@@ -272,8 +262,6 @@ class BrowserTool extends Tool {
 				'message' => 'Invalid nonce'
 			]);
 		}
-
-		$currentPath = (empty($_POST['key'])) ? '' : $_POST['key'];
 
 		if (empty($_POST['keys']) || !is_array($_POST['keys'])) {
 			json_response([
@@ -300,7 +288,9 @@ class BrowserTool extends Tool {
 			}
 		}
 
-		$this->renderDirectory($currentPath);
+		wp_send_json([
+			'status' => 'ok'
+		], 200);
 	}
 
 	public function listFiles() {
@@ -326,7 +316,43 @@ class BrowserTool extends Tool {
 
 		json_response([
 			'status' => 'ok',
-			'files' => $fileList,
+			'files' => $fileList['files'],
+			'nextNonce' => wp_create_nonce('storage-browser')
+		]);
+	}
+
+	public function listFilesChunk() {
+		if (!check_ajax_referer('storage-browser', 'nonce')) {
+			json_response([
+				'status' => 'error',
+				'message' => 'Invalid nonce'
+			]);
+		}
+
+		$next = isset($_REQUEST['next']) ? $_REQUEST['next'] : null;
+		$path = isset($_REQUEST['path']) ? $_REQUEST['path'] : '';
+
+
+		if (is_multisite() && !empty($this->settings->multisiteRoot)) {
+			if (strpos($path, $this->settings->multisiteRoot) === false) {
+				$path = $this->settings->multisiteRoot;
+			}
+		}
+
+		if ($path == '/') {
+			$path = '';
+		}
+
+		/** @var StorageTool $storageTool */
+		$storageTool = ToolsManager::instance()->tools['storage'];
+
+		$fileList = $storageTool->client()->dir($path, '/', 30, $next);
+
+		json_response([
+			'status' => 'ok',
+			'path' => $path,
+			'files' => $fileList['files'],
+			'next' => $fileList['next'],
 			'nextNonce' => wp_create_nonce('storage-browser')
 		]);
 	}

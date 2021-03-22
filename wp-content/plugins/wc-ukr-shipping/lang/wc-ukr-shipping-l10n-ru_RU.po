@@ -39,3 +39,119 @@ msgstr "Ничего не найдено"
 
 msgid "checkout_validation_message"
 msgstr "Укажите адрес <strong>Новой Почты</strong>"
+
+msgid "nav_item_premium"
+msgstr "Premium версия"
+
+# top panel
+msgid "top_panel_docs"
+msgstr "Документация"
+
+msgid "top_panel_premium"
+msgstr "Premium версия"
+
+# options page
+# Настройки - WC Ukr Shipping
+msgid "options_page_title"
+msgstr "Настройки WC Ukr Shipping"
+
+# Настройки
+msgid "options_page_heading"
+msgstr "Настройки"
+
+# Сохранить
+msgid "options_btn_save"
+msgstr "Сохранить"
+
+# Общие
+msgid "options_tab_common"
+msgstr "Общие"
+
+# Переводы
+msgid "options_tab_translates"
+msgstr "Переводы"
+
+# API ключ
+msgid "options_label_api_key"
+msgstr "API ключ"
+
+# Фиксированная цена за доставку
+msgid "options_label_fixed_price"
+msgstr "Фиксированная цена за доставку"
+
+# Язык отображения городов и отделений
+msgid "options_label_warehouse_lang"
+msgstr "Язык отображения городов и отделений"
+
+# Русский
+msgid "options_warehouse_lang_ru"
+msgstr "Русский"
+
+# Українська
+msgid "options_warehouse_lang_ua"
+msgstr "Українська"
+
+# Позиция блока на странице оформления заказа
+msgid "options_label_field_position"
+msgstr "Позиция блока на странице оформления заказа"
+
+# Основная секция
+msgid "options_field_position_main"
+msgstr "Основная секция"
+
+# Дополнительная секция
+msgid "options_field_position_additional"
+msgstr "Дополнительная секция"
+
+# Выбор опции "Дополнительная секция" расположит блок выбора отделения перед полем "Примечание к заказу"
+msgid "options_tooltip_field_position"
+msgstr ""
+"Выбор опции \"Дополнительная секция\" расположит блок выбора отделения перед "
+"полем \"Примечание к заказу\""
+
+# Включить блок Адресной доставки
+msgid "options_label_address_shipping"
+msgstr "Включить блок Адресной доставки"
+
+# Использовать новые ui компоненты
+msgid "options_label_new_ui"
+msgstr "Использовать новые ui компоненты"
+
+# Позиция блока на странице оформления заказа
+msgid "options_label_show_poshtomats"
+msgstr "Показывать почтоматы"
+
+# Загрузать переводы из
+msgid "options_label_translates_type"
+msgstr "Загружать переводы из"
+
+# Настроек плагина
+msgid "options_translates_type_options"
+msgstr "Настроек плагина"
+
+# mo файлов перевода
+msgid "options_translates_type_mo_files"
+msgstr "mo файлов перевода"
+
+# Если вы используете языковые плагины по типу WPML - выберите значение переводов из mo файлов. Так вы получите переводы на 3 языка по-умолчанию (русский, украинский, английский), а также возможность переводить строки по вашему желанию (используя например WPML String Translations).
+msgid "options_tooltip_translates_type"
+msgstr ""
+"Если вы используете языковые плагины по типу WPML - выберите значение "
+"переводов из mo файлов. Так вы получите переводы на 3 языка по-умолчанию "
+"(русский, украинский, английский), а также возможность переводить строки по "
+"вашему желанию (используя например WPML String Translations)."
+
+# Цвет спинера во front-end
+msgid "options_label_spinner_color"
+msgstr "Цвет спинера во front-end"
+
+# Информация об отделениях Новой Почты:
+msgid "options_label_warehouse_update"
+msgstr "Информация об отделениях Новой Почты:"
+
+# Информация об отделениях Новой Почты:
+msgid "options_btn_warehouse_update"
+msgstr "Обновить отделения"
+
+msgid "save_options_success"
+msgstr "Настройки успешно сохранены"

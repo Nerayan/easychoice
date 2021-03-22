@@ -39,3 +39,96 @@ msgstr "Нічого не здайдено"
 
 msgid "checkout_validation_message"
 msgstr "Вкажіть адресу <strong>Нової Пошти</strong>"
+
+msgid "nav_item_premium"
+msgstr "Premium версія"
+
+# top panel
+msgid "top_panel_docs"
+msgstr "Документація"
+
+msgid "top_panel_premium"
+msgstr "Premium версія"
+
+# options page
+msgid "options_page_title"
+msgstr "Налаштування - WC Ukr Shipping"
+
+msgid "options_page_heading"
+msgstr "Налаштування"
+
+msgid "options_btn_save"
+msgstr "Зберегти"
+
+msgid "options_tab_common"
+msgstr "Загальні"
+
+msgid "options_tab_translates"
+msgstr "Переклади"
+
+msgid "options_label_api_key"
+msgstr "API ключ"
+
+msgid "options_label_fixed_price"
+msgstr "Фіксована ціна за доставку"
+
+msgid "options_label_warehouse_lang"
+msgstr "Мова відображення міст та відділень"
+
+msgid "options_warehouse_lang_ru"
+msgstr "Російська"
+
+msgid "options_warehouse_lang_ua"
+msgstr "Українська"
+
+msgid "options_label_field_position"
+msgstr "Позиція блоку на сторінці оформлення замовлення"
+
+msgid "options_field_position_main"
+msgstr "Основна секція"
+
+msgid "options_field_position_additional"
+msgstr "Додаткова секція"
+
+msgid "options_tooltip_field_position"
+msgstr ""
+"Вибір опції \"Додаткова секція\" розташує блок вибору відділення перед полем "
+"\"Примітка до замовлення\""
+
+msgid "options_label_address_shipping"
+msgstr "Включити блок адресної доставки"
+
+msgid "options_label_new_ui"
+msgstr "Використовувати нові UI компоненти"
+
+msgid "options_label_show_poshtomats"
+msgstr "Показувати поштомати"
+
+msgid "options_label_translates_type"
+msgstr "Завантажувати переклади з"
+
+msgid "options_translates_type_options"
+msgstr "Налаштувань плагіну"
+
+msgid "options_translates_type_mo_files"
+msgstr "mo файлів перекладу"
+
+msgid "options_tooltip_translates_type"
+msgstr ""
+"Якщо ви використовуєте мовні плагіни по типу WPML - виберіть значення "
+"перекладів з mo файлів. Так ви отримаєте переклади на 3 мови за "
+"замовчуванням (російська, українська, англійська), а також можливість "
+"переводити рядки за вашим бажанням (використовуючи наприклад WPML String "
+"Translations)."
+
+msgid "options_label_spinner_color"
+msgstr "Колір спінера у front-end"
+
+msgid "options_label_warehouse_update"
+msgstr "Інформація про відділення Нової Пошти"
+
+msgid "options_btn_warehouse_update"
+msgstr "Оновити відділення"
+
+msgid "save_options_success"
+msgstr "Налаштування успішно збережені"

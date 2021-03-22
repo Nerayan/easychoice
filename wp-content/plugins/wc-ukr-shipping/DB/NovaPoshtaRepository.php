@@ -21,7 +21,14 @@ class NovaPoshtaRepository
     {
         global $wpdb;
 
-        return $wpdb->get_results("SELECT * FROM wc_ukr_shipping_np_areas", ARRAY_A);
+        $areas = $wpdb->get_results("SELECT * FROM wc_ukr_shipping_np_areas", ARRAY_A);
+        $mapped = [];
+
+        foreach ($areas as $area) {
+            $mapped[ $area['ref'] ] = $area;
+        }
+
+        return array_values(apply_filters('wcus_get_areas', $mapped));
     }
 
     public function getCities($areaRef)
@@ -40,13 +47,21 @@ class NovaPoshtaRepository
     {
         global $wpdb;
 
-        return $wpdb->get_results("
-      SELECT * 
-      FROM wc_ukr_shipping_np_warehouses 
-      WHERE city_ref='" . esc_attr($cityRef) . "' 
-      ORDER BY number ASC
-      ", ARRAY_A
+        $warehouses = $wpdb->get_results("
+            SELECT * 
+            FROM wc_ukr_shipping_np_warehouses 
+            WHERE city_ref='" . esc_attr($cityRef) . "' 
+            ORDER BY `number` ASC
+            ", ARRAY_A
         );
+
+        if (0 === (int)get_option('wcus_show_poshtomats', 1)) {
+            return array_filter($warehouses, function ($warehouse) {
+                return false === strpos($warehouse['description'], 'Поштомат');
+            });
+        }
+
+        return $warehouses;
     }
 
     public function getAreaByRef($ref)
@@ -129,5 +144,7 @@ class NovaPoshtaRepository
         $wpdb->query("DROP TABLE IF EXISTS wc_ukr_shipping_np_areas");
         $wpdb->query("DROP TABLE IF EXISTS wc_ukr_shipping_np_cities");
         $wpdb->query("DROP TABLE IF EXISTS wc_ukr_shipping_np_warehouses");
+
+        delete_option('wcus_migrations_history');
     }
 }

@@ -37,7 +37,7 @@ class Logger
 
     public static function startProcessingRequestLogProtocolEntry($ignoreWriteLastRequest = false)
     {
-        if (!$ignoreWriteLastRequest) {
+        if (!$ignoreWriteLastRequest && !isset($_GET['manual-1c-import'])) {
             $option = \get_option(Bootstrap::OPTION_INFO_KEY, []);
 
             $option['last_request'] = [
@@ -65,6 +65,10 @@ class Logger
 
     public static function saveLastResponseInfo($message)
     {
+        if (isset($_GET['manual-1c-import'])) {
+            return;
+        }
+
         $option = \get_option(Bootstrap::OPTION_INFO_KEY, []);
 
         $option['last_response'] = [

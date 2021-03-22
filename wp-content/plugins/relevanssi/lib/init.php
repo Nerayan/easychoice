@@ -178,6 +178,10 @@ function relevanssi_init() {
 		require_once 'compatibility/yoast-seo.php';
 	}
 
+	if ( defined( 'AIOSEO_DIR' ) ) {
+		require_once 'compatibility/aioseo.php';
+	}
+
 	if ( function_exists( 'seopress_get_toggle_titles_option' ) && '1' === seopress_get_toggle_titles_option() ) {
 		require_once 'compatibility/seopress.php';
 	}
@@ -449,7 +453,7 @@ function relevanssi_create_database_tables( $relevanssi_db_version ) {
 		}
 
 		if ( $docs_exists ) { // This index was removed in 4.9.2 / 2.11.2.
-			$sql = "DROP INDEX docs ON $relevanssi_table (doc)";
+			$sql = "DROP INDEX docs ON $relevanssi_table";
 			$wpdb->query( $sql ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery
 		}
 

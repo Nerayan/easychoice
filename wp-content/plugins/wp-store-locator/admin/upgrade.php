@@ -14,7 +14,7 @@ function wpsl_check_upgrade() {
 
     $current_version = get_option( 'wpsl_version' );
    
-    if ( version_compare( $current_version, WPSL_VERSION_NUM, '===' ) )	
+    if ( version_compare( $current_version, WPSL_VERSION_NUM, '==' ) )
         return;
 
     if ( version_compare( $current_version, '1.1', '<' ) ) {

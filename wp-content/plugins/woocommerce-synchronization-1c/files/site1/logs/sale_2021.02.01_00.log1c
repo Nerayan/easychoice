@@ -1,0 +1,18 @@
+[2021-01-31 21:24:48 | 6017202065d43.6017202065d46] wc1c.INFO: START PROCESSING REQUEST {"Query":"type=sale&mode=checkauth","Usage, mb":"23.46","Peak, mb":"23.5","Ip":"134.249.146.137","Method":"GET","User":"exchanger","Site":"https://easychoice.com.ua"}
+[2021-01-31 21:24:48 | 6017202065d43.6017202065d46] wc1c.INFO: success ["36ed406c1f9d6a41fc3c54f4a33f324a"]
+[2021-01-31 21:24:48 | 6017202065d43.6017202065d46] wc1c.INFO: END PROCESSING REQUEST {"Query":"type=sale&mode=checkauth","Usage, mb":"23.47","Peak, mb":"23.62","Ip":"134.249.146.137","Method":"GET","User":"exchanger","Site":"https://easychoice.com.ua"}
+[2021-01-31 21:24:48 | 6017202065d43.60172020b74bd] wc1c.INFO: START PROCESSING REQUEST {"Query":"type=sale&mode=init&&version=3.1","Usage, mb":"23.44","Peak, mb":"23.48","Ip":"134.249.146.137","Method":"GET","User":"exchanger","Site":"https://easychoice.com.ua"}
+[2021-01-31 21:24:48 | 6017202065d43.60172020b74bd] wc1c.INFO: zip=no, file_limit=10000000 []
+[2021-01-31 21:24:48 | 6017202065d43.60172020b74bd] wc1c.INFO: END PROCESSING REQUEST {"Query":"type=sale&mode=init&&version=3.1","Usage, mb":"23.45","Peak, mb":"23.6","Ip":"134.249.146.137","Method":"GET","User":"exchanger","Site":"https://easychoice.com.ua"}
+[2021-01-31 21:24:49 | 6017202065d43.601720210b5a2] wc1c.INFO: START PROCESSING REQUEST {"Query":"type=sale&mode=query&&version=3.1","Usage, mb":"23.44","Peak, mb":"23.48","Ip":"134.249.146.137","Method":"GET","User":"exchanger","Site":"https://easychoice.com.ua"}
+[2021-01-31 21:24:49 | 6017202065d43.601720210b5a2] wc1c.INFO: response scheme version - 2.08 []
+[2021-01-31 21:24:49 | 6017202065d43.601720210b5a2] wc1c.INFO: start orders modified date ["2021-01-14 23:06:00"]
+[2021-01-31 21:24:49 | 6017202065d43.601720210b5a2] wc1c.INFO: setting - send_orders_date_create_start [""]
+[2021-01-31 21:24:49 | 6017202065d43.601720210b5a2] wc1c.INFO: count orders [1]
+[2021-01-31 21:24:49 | 6017202065d43.601720210b5a2] wc1c.INFO: list order ids ["143528"]
+[2021-01-31 21:24:49 | 6017202065d43.601720210b5a2] wc1c.INFO: used encoding ["utf-8"]
+[2021-01-31 21:24:49 | 6017202065d43.601720210b5a2] wc1c.INFO: order query send result []
+[2021-01-31 21:24:49 | 6017202065d43.601720210b5a2] wc1c.INFO: END PROCESSING REQUEST {"Query":"type=sale&mode=query&&version=3.1","Usage, mb":"23.92","Peak, mb":"24.21","Ip":"134.249.146.137","Method":"GET","User":"exchanger","Site":"https://easychoice.com.ua"}
+[2021-01-31 21:24:49 | 6017202065d43.6017202183a2d] wc1c.INFO: START PROCESSING REQUEST {"Query":"type=sale&mode=success&&version=3.1","Usage, mb":"23.44","Peak, mb":"23.48","Ip":"134.249.146.137","Method":"GET","User":"exchanger","Site":"https://easychoice.com.ua"}
+[2021-01-31 21:24:49 | 6017202065d43.6017202183a2d] wc1c.INFO: 1c send success, setting `send_orders_last_success_export` set ["2021-02-01 00:24"]
+[2021-01-31 21:24:49 | 6017202065d43.6017202183a2d] wc1c.INFO: END PROCESSING REQUEST {"Query":"type=sale&mode=success&&version=3.1","Usage, mb":"23.46","Peak, mb":"23.6","Ip":"134.249.146.137","Method":"GET","User":"exchanger","Site":"https://easychoice.com.ua"}

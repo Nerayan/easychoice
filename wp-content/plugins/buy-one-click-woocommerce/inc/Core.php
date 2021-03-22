@@ -13,7 +13,7 @@ if (!defined('ABSPATH')) {
  * Создаёт настройки, отображает опции в админки
  * Вызывает хуки ВордПресс
  */
-class BuyCore {
+class Core {
 
     /**
      * Полное название плагина
@@ -107,7 +107,6 @@ class BuyCore {
      * @uses [nametovar] - Название товара
      * @uses [pricetovar] - Цена товара
      * @uses [message] - Сообщение от клиента
-     * @uses [linktovar] - ссылка на товар вместе с тегами и подписью
      * @uses [smslog] - Лог СМС
      */
     static $buyzakaz;
@@ -135,7 +134,7 @@ class BuyCore {
 
     /**
      * Singletone
-     * @return BuyCore
+     * @return Core
      */
     public static function getInstance() {
 

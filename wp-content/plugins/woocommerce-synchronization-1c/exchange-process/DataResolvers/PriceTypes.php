@@ -21,11 +21,13 @@ use Itgalaxy\Wc\Exchange1c\Includes\Logger;
 class PriceTypes
 {
     /**
+     * Main loop parsing.
+     *
      * @param \XMLReader $reader
      *
      * @return void
      */
-    public static function process(\XMLReader &$reader)
+    public static function process(\XMLReader $reader)
     {
         // if processing is disabled or processing has already occurred
         if (self::isDisabled() || self::isParsed()) {
@@ -60,7 +62,24 @@ class PriceTypes
         self::setParsed();
     }
 
-    private static function isDisabled()
+    /**
+     * Checking if the reader is in the position of data on price types.
+     *
+     * @param \XMLReader $reader
+     *
+     * @return bool
+     */
+    public static function isPriceTypesNode(\XMLReader $reader)
+    {
+        return $reader->name === 'ТипыЦен' && $reader->nodeType !== \XMLReader::END_ELEMENT;
+    }
+
+    /**
+     * Checking whether the processing of prices is disabled in the settings.
+     *
+     * @return bool
+     */
+    public static function isDisabled()
     {
         $settings = get_option(Bootstrap::OPTIONS_KEY);
 
@@ -71,7 +90,12 @@ class PriceTypes
         return false;
     }
 
-    private static function isParsed()
+    /**
+     * Allows you to check if price types have already been processed or not.
+     *
+     * @return bool
+     */
+    public static function isParsed()
     {
         if (isset($_SESSION['IMPORT_1C']['price_types_parse'])) {
             return true;
@@ -80,7 +104,12 @@ class PriceTypes
         return false;
     }
 
-    private static function setParsed()
+    /**
+     * Sets the flag that price types have been processed.
+     *
+     * @return void
+     */
+    public static function setParsed()
     {
         $_SESSION['IMPORT_1C']['price_types_parse'] = true;
     }

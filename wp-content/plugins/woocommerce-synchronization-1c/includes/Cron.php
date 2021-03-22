@@ -164,6 +164,12 @@ class Cron
         }
 
         Logger::logProtocol('termsRecount1cSynchronization - end');
+
+        // fixed compatibility with `Rank Math SEO`
+        if (class_exists('\\RankMath')) {
+            flush_rewrite_rules(true);
+        }
+
         Logger::endProcessingRequestLogProtocolEntry();
     }
 

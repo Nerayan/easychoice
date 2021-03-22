@@ -436,6 +436,8 @@ class SaleModeQuery
                 }
             } else {
                 $exportProduct = [
+                    'originalItem' => $item,
+                    'originalProduct' => $product,
                     'id' => $item['variation_id'] ? $item['variation_id'] : $item['product_id'],
                     'productId' => $item['product_id'],
                     'variationId' => $item['variation_id'],
@@ -469,7 +471,10 @@ class SaleModeQuery
             }
         }
 
+        $products = apply_filters('itglx_wc1c_xml_order_product_rows', $products, $order);
+
         foreach ($products as $product) {
+            $product = apply_filters('itglx_wc1c_xml_order_product_row_params', $product, $order);
             $productXml = $productsXml->addChild('Товар');
 
             // has 1C guid

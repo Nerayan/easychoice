@@ -86,7 +86,7 @@ class CatalogModeImport
             include_once ABSPATH . 'wp-admin/includes/media.php';
             include_once ABSPATH . 'wp-includes/pluggable.php';
 
-            if ($ParserXml->parce(RootProcessStarter::getCurrentExchangeFileAbsPath())) {
+            if ($ParserXml->parse(RootProcessStarter::getCurrentExchangeFileAbsPath())) {
                 $_SESSION['IMPORT_1C_STEP'] = 3;
                 unset($_SESSION['IMPORT_1C']);
 
@@ -95,7 +95,6 @@ class CatalogModeImport
                     strpos($baseName, 'rests') !== false // scheme 3.1
                 ) {
                     $_SESSION['IMPORT_1C_PROCESS'] = [];
-                    $_SESSION['IMPORT_1C_PROCESS']['currentCategorys1c'] = [];
                 }
             } else {
                 // manual import auto progress

@@ -108,7 +108,6 @@ function relevanssi_query( $posts, $query = false ) {
  * @global object   $wpdb                  The WordPress database interface.
  * @global array    $relevanssi_variables  The global Relevanssi variables array.
  * @global WP_Query $wp_query              The WP_Query object.
- * @global array    $relevanssi_post_types Cache array for post type values.
  *
  * @param array $args Array of arguments.
  *
@@ -412,7 +411,6 @@ function relevanssi_search( $args ) {
 			}
 
 			relevanssi_populate_array( $matches );
-			global $relevanssi_post_types;
 
 			$total_hits += count( $matches );
 
@@ -558,10 +556,7 @@ function relevanssi_search( $args ) {
 				$mysqlcolumn_matches[ $match->doc ] += $match->mysqlcolumn;
 
 				/* Post type weights. */
-				$type = null;
-				if ( isset( $relevanssi_post_types[ $match->doc ] ) ) {
-					$type = $relevanssi_post_types[ $match->doc ];
-				}
+				$type = relevanssi_get_post_type( $match->doc );
 				if ( ! empty( $post_type_weights[ $type ] ) ) {
 					$match->weight = $match->weight * $post_type_weights[ $type ];
 				}
@@ -821,6 +816,7 @@ function relevanssi_search( $args ) {
 		'term_hits'           => $term_hits,
 		'query'               => $q,
 		'doc_weights'         => $doc_weight,
+		'query_no_synonyms'   => $q_no_synonyms,
 	);
 
 	return $return;
@@ -873,14 +869,9 @@ function relevanssi_do_query( &$query ) {
 		$return        = relevanssi_search( $search_params );
 	}
 
-	$hits = array();
-	if ( isset( $return['hits'] ) ) {
-		$hits = $return['hits'];
-	}
-	$q = '';
-	if ( isset( $return['query'] ) ) {
-		$q = $return['query'];
-	}
+	$hits          = $return['hits'] ?? array();
+	$q             = $return['query'] ?? '';
+	$q_no_synonyms = $return['query_no_synonyms'] ?? '';
 
 	$filter_data = array( $hits, $q );
 	/**
@@ -915,7 +906,26 @@ function relevanssi_do_query( &$query ) {
 
 	$update_log = get_option( 'relevanssi_log_queries' );
 	if ( 'on' === $update_log ) {
-		relevanssi_update_log( $q, $hits_count );
+		/**
+		 * Filters the query.
+		 *
+		 * By default, Relevanssi logs the original query without the added
+		 * synonyms. This filter hook gets the query with the synonyms added as
+		 * a second parameter, so if you wish, you can log the query with the
+		 * synonyms added.
+		 *
+		 * @param string   $q_no_synonyms The query string without synonyms.
+		 * @param string   $q             The query string with synonyms.
+		 * @param WP_Query $query         The WP_Query that triggered the
+		 * logging.
+		 */
+		$query_string = apply_filters(
+			'relevanssi_log_query',
+			$q_no_synonyms,
+			$q,
+			$query
+		);
+		relevanssi_update_log( $query_string, $hits_count );
 	}
 
 	$make_excerpts = get_option( 'relevanssi_excerpts' );
@@ -963,9 +973,13 @@ function relevanssi_do_query( &$query ) {
 			$highlight                    = get_option( 'relevanssi_highlight' );
 			if ( 'none' !== $highlight ) {
 				if ( ! is_admin() || ( defined( 'DOING_AJAX' ) && DOING_AJAX ) ) {
+					$q_for_highlight = 'on' === get_option( 'relevanssi_index_synonyms', 'off' )
+					? relevanssi_add_synonyms( $q )
+					: $q;
+
 					$post->post_highlighted_title = relevanssi_highlight_terms(
 						$post->post_highlighted_title,
-						$q
+						$q_for_highlight
 					);
 				}
 			}
@@ -1007,6 +1021,16 @@ function relevanssi_do_query( &$query ) {
 
 	$query->posts      = $posts;
 	$query->post_count = count( $posts );
+
+	/**
+	 * If true, Relevanssi adds a list of all post IDs found in the query
+	 * object in $query->relevanssi_all_results.
+	 *
+	 * @param boolean If true, enable the feature. Default false.
+	 */
+	if ( apply_filters( 'relevanssi_add_all_results', false ) ) {
+		$query->relevanssi_all_results = wp_list_pluck( $hits, 'ID' );
+	}
 
 	$relevanssi_active = false;
 

@@ -111,7 +111,7 @@ class ShortPixelDriver implements OptimizerInterface {
 
 		\MediaCloud\Vendor\ShortPixel\setKey($this->settings->apiKey);
 
-		$result = \ShortPixel\fromFile($filepath)
+		$result = \MediaCloud\Vendor\ShortPixel\fromFile($filepath)
 			->optimize($params['lossy'])
 			->keepExif($params['keep_exif'])
 			->toFiles($filedir, ['optim-'.$filename]);

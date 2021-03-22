@@ -440,7 +440,8 @@ class UploadTool extends Tool {
 
 			    	$s3 = $meta['s3'];
 
-			    	$urlBase = trailingslashit(str_replace($s3['key'], '', $s3['url']));
+			    	$encKey = str_replace('%2F', '/', urlencode($s3['key']));
+			    	$urlBase = trailingslashit(str_replace($encKey, '', $s3['url']));
 
 			    	foreach($otherSizes as $otherSize) {
 			    		$sizeS3 = $s3;

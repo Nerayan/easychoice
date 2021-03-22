@@ -5,7 +5,7 @@ if (!defined('ABSPATH')) {
 }
 
 use Coderun\BuyOneClick\Help;
-use Coderun\BuyOneClick\BuyCore;
+use Coderun\BuyOneClick\Core;
 
 class BuyShortcode {
 
@@ -37,10 +37,10 @@ class BuyShortcode {
         //return;
         $content = '';
         if (!empty($buyoptions['enable_button_shortcod']) and $buyoptions['enable_button_shortcod'] == 'on') {
-            $core = BuyCore::getInstance();
+            $core = Core::getInstance();
             $core->styleAddFrontPage();
             $core->scriptAddFrontPage();
-            if (BuyCore::$variation && class_exists('BuyVariationClass') && method_exists('BuyVariationClass','shortCode')) {
+            if (Core::$variation && class_exists('BuyVariationClass') && method_exists('BuyVariationClass','shortCode')) {
               $content =   BuyVariationClass::shortCode();
             }
             $content .= BuyFunction::viewBuyButton(true);
@@ -63,7 +63,7 @@ class BuyShortcode {
                 'count' => 1,
                 'price' => 5,
                     ), $arParams);
-            $core = BuyCore::getInstance();
+            $core = Core::getInstance();
             $core->styleAddFrontPage();
             $core->scriptAddFrontPage();
             return BuyFunction::viewBuyButtonCustrom($arParams);

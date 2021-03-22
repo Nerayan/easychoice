@@ -85,6 +85,6 @@ class SaleModeFile
         }
 
         $parserXml = new ParserXmlOrders();
-        $parserXml->parce(RootProcessStarter::getCurrentExchangeFileAbsPath());
+        $parserXml->parse(RootProcessStarter::getCurrentExchangeFileAbsPath());
     }
 }

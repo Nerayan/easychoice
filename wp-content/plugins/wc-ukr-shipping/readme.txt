@@ -5,7 +5,7 @@ License URI: http://www.gnu.org/licenses/gpl.html
 Tags: novaposhta, nova poshta, новая почта, нова пошта, delivery, доставка, shipping, woocommerce
 Requires PHP: 5.6
 Tested up to: 5.6
-Stable tag: 1.7.3
+Stable tag: 1.7.4
 
 Простой и удобный плагин для подключения доставки популярной службой "Нова Пошта" на ваш сайт WooCommerce.
 
@@ -76,6 +76,13 @@ The manual installation method involves downloading this plugin and uploading it
 Automatic updates should work like a charm; as always though, ensure you backup your site just in case.
 
 == Changelog ==
+
+= Version 1.7.4 / (05.02.2021) =
+* Исправлена ошибка сохранения адреса доставки на украинском языке, даже если в настройках выбран русский.
+* Добавлена опция "Показывать почтоматы" (включена по-умолчанию).
+* Добавлен фильтр wcus_get_areas.
+* Улучшения локализации админ-части.
+* Общие улучшения производительности.
 
 = Version 1.7.3 / (24.12.2020) =
 * Исправлены некоторые несовместимости с PHP8.

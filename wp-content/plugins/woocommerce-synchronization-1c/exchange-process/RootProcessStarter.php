@@ -1,9 +1,6 @@
 <?php
 namespace Itgalaxy\Wc\Exchange1c\ExchangeProcess;
 
-use Itgalaxy\Wc\Exchange1c\ExchangeProcess\RequestProcessing\Catalog;
-use Itgalaxy\Wc\Exchange1c\ExchangeProcess\RequestProcessing\Listen;
-use Itgalaxy\Wc\Exchange1c\ExchangeProcess\RequestProcessing\Sale;
 use Itgalaxy\Wc\Exchange1c\Includes\Bootstrap;
 use Itgalaxy\Wc\Exchange1c\Includes\Helper;
 use Itgalaxy\Wc\Exchange1c\Includes\Logger;
@@ -42,21 +39,39 @@ class RootProcessStarter
             $this->checkAuth();
             $this->prepareExchangeFileStructure();
 
-            switch ($_GET['type']) {
-                case 'catalog':
-                    // catalog exchange - https://dev.1c-bitrix.ru/api_help/sale/algorithms/data_2_site.php
-                    Catalog::process();
-                    break;
-                case 'listen':
-                    // https://dev.1c-bitrix.ru/api_help/sale/algorithms/realtime.php
-                    Listen::process();
-                    break;
-                case 'sale':
-                    // order exchange
-                    Sale::process();
-                    break;
-                default:
-                    throw new \Exception('unknown or empty type');
+            /**
+             * Filters the list of exchange request types and set of handlers.
+             *
+             * Based on the protocol, the request type is contained in the GET parameter `type`.
+             *
+             * @since 1.84.1
+             *
+             * @param array $typeRequestProcessors Array where key is the type of request and value is an array of handlers.
+             *
+             * @link https://dev.1c-bitrix.ru/api_help/sale/algorithms/data_2_site.php Info about `catalog` type.
+             * @link https://dev.1c-bitrix.ru/api_help/sale/algorithms/realtime.php Info about `listen` type.
+             * @link https://dev.1c-bitrix.ru/api_help/sale/algorithms/doc_from_site.php Info about `sale` type.
+             */
+            $typeRequestProcessors = apply_filters('itglx_wc1c_exchange_request_type_handlers', [
+                'catalog' => [
+                    \Itgalaxy\Wc\Exchange1c\ExchangeProcess\RequestProcessing\Catalog::class
+                ],
+                'listen' => [
+                    \Itgalaxy\Wc\Exchange1c\ExchangeProcess\RequestProcessing\Listen::class
+                ],
+                'sale' => [
+                    \Itgalaxy\Wc\Exchange1c\ExchangeProcess\RequestProcessing\Sale::class
+                ]
+            ]);
+
+            if (!empty($typeRequestProcessors[$_GET['type']]) && is_array($typeRequestProcessors[$_GET['type']])) {
+                foreach ($typeRequestProcessors[$_GET['type']] as $processor) {
+                    if (class_exists($processor) && method_exists($processor, 'process')) {
+                        $processor::process();
+                    }
+                }
+            } else {
+                throw new \Exception('unknown, empty or no handlers for this type');
             }
         } catch (\Exception $error) {
             self::failureResponse($error->getMessage());
@@ -213,8 +228,17 @@ class RootProcessStarter
         }
     }
 
-    // https://www.php.net/manual/ru/features.http-auth.php#106285
-    // method fills in empty user and password variables
+    /**
+     * Method fills in empty user and password variables.
+     *
+     * Sometimes, the environment does not automatically process the header of the basic authorization http, but only
+     * transfers the content of the header to the variable, so the login / password variables remain empty, so we can
+     * process the header ourselves.
+     *
+     * @link https://www.php.net/manual/ru/features.http-auth.php#106285
+     *
+     * @return void
+     */
     private function fixCgiAuth()
     {
         $environmentVariables = [

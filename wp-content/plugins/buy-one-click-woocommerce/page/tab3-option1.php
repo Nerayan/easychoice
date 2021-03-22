@@ -2,20 +2,20 @@
 if (!defined('ABSPATH')) {
     exit;
 }
-use Coderun\BuyOneClick\BuyCore;
+use Coderun\BuyOneClick\Core;
 use Coderun\BuyOneClick\Help;
 ?>
-<h3><?php _e('Orders via plugin', 'coderun-oneclickwoo'); ?> <?php echo BuyCore::NAME_PLUGIN; ?></h3>
+<h3><?php _e('Orders via plugin', 'coderun-oneclickwoo'); ?> <?php echo Core::NAME_PLUGIN; ?></h3>
 <p><?php _e('All orders sent via the button', 'coderun-oneclickwoo'); ?> "<?php
-    if (isset(BuyCore::$buyoptions['namebutton'])) {
-        echo BuyCore::$buyoptions['namebutton'];
+    if (isset(Core::$buyoptions['namebutton'])) {
+        echo Core::$buyoptions['namebutton'];
     }
     ?>"</p>
 <?php
 ?>
 <input type="button" class="btn btn-default btn-sm removeallorder" value="<?php _e('Delete history', 'coderun-oneclickwoo'); ?>"/>
 <?php
-$url_tab = add_query_arg(array('page' => BuyCore::URL_SUB_MENU, 'tab' => 'orders'), 'admin.php');
+$url_tab = add_query_arg(array('page' => Core::URL_SUB_MENU, 'tab' => 'orders'), 'admin.php');
 
 ?>
 <table class="table table-bordered table-hover table-condensed">
@@ -56,10 +56,18 @@ $url_tab = add_query_arg(array('page' => BuyCore::URL_SUB_MENU, 'tab' => 'orders
             <th><?php echo $form['user_name']; ?></th>
             <th><?php echo $form['user_phone']; ?></th>
             <th><?php echo $form['user_email']; ?></th>
-            <th><?php echo $order['product_name']; ?></th>
+            <th>
+                <?php echo $order['product_name']; ?>
+                <br>
+                <?php
+                if(isset($form['quantity_product'])) {
+                    echo __('Quantity', 'coderun-oneclickwoo') . ': ' . $form['quantity_product'];
+                }
+                ?>
+            </th>
             <th><?php echo $order['product_price']; ?></th>
             <th><?php echo $form['user_cooment']; ?></th>
-            <th><?php echo $form['linktovar']; ?></th>
+            <th><?php echo isset($form['product_link_admin']) ? $form['product_link_admin'] : ''; ?></th>
             <th><?php
                 if (!empty($sms['sms_log']) && is_array($sms['sms_log'])) {
                     echo 'id:' . $sms[0] . '</br>' . __('Count.sms', 'coderun-oneclickwoo') . ':' . $sms[1] . '</br>' . __('Cost of', 'coderun-oneclickwoo') . ':' . $sms[2] . '</br>' . __('Balance', 'coderun-oneclickwoo') . ':' . $sms[3];

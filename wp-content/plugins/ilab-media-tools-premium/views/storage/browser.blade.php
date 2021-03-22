@@ -1,9 +1,12 @@
 @extends('../templates/sub-page', ['title' => $title])
 
 @section('main')
-    <div class="settings-body ilab-storage-browser">
+    <div class="settings-body ilab-storage-browser" data-bucket="{{$bucketName}}" data-path="{{$path}}" data-base-url="{{admin_url('admin.php?page=media-tools-storage-browser')}}" data-nonce="{{wp_create_nonce('storage-browser')}}" data-uploads="{{($allowUploads && $directUploads) ? 'true' : 'false'}}" data-delete="{{($allowDeleting) ? 'true' : 'false'}}">
         <div class="mcsb-actions">
-            @include('storage/browser-header', ['path' => $path])
+            <div class="ilab-storage-browser-header">
+                <ul>
+                </ul>
+            </div>
             <div class="mcsb-buttons mcsb-action-buttons">
                 <a href="https://kb.mediacloud.press/articles/documentation/tools/storage-browser" class="button button-primary button-help" target="_blank" data-article-sidebar="https://kb.mediacloud.press/articles/documentation/tools/storage-browser">@inline('ilab-ui-icon-help.svg') Help</a>
                 @if($allowUploads && $directUploads)
@@ -87,6 +90,9 @@
         </div>
     </div>
 
+    <script type="text/template" id="tmpl-mcsb-browser-row">
+
+    </script>
     <script type="text/template" id="tmpl-ilab-upload-cell">
         <div class="ilab-upload-item">
             <div class="ilab-upload-item-background"></div>

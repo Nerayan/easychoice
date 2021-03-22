@@ -4,16 +4,18 @@
  * Plugin Name: Buy one click WooCommerce
  * Plugin URI: http://zixn.ru/plagin-zakazat-v-odin-klik-dlya-woocommerce.html
  * Description: Buy in one click for WooCommerce. The best plugin that adds to your online store purchase button in one click
- * Version: 1.10.9
+ * Version: 1.12
  * Author: Djo
  * Author URI: https://zixn.ru
  * WC requires at least: 3.9
- * WC tested up to: 4.2.4
+ * WC tested up to: 4.8
+ * Requires at least: 5.1
+ * Tested up to: 5.6
  * Text Domain: coderun-oneclickwoo
  * Domain Path: /languages
  */
 
-/*  Copyright 2020  Djo  (email: izm@zixn.ru)
+/*  Copyright 2021  Djo  (email: izm@zixn.ru)
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -73,7 +75,7 @@ function coderun_buy_plugin_init_core() {
         require_once (CODERUN_ONECLICKWOO_PLUGIN_DIR . '/inc/variation-class.php');
     }
     
-    $core = Coderun\BuyOneClick\BuyCore::getInstance();
+    $core = Coderun\BuyOneClick\Core::getInstance();
     
     add_action('wp', array($core, 'addAction'));
     
@@ -90,7 +92,7 @@ function coderun_buy_plugin_init_core() {
     }
     
     if (wp_doing_ajax()) {
-        new BuyJavaScript();
+        new \Coderun\BuyOneClick\Ajax();
     }
     
     register_deactivation_hook(__FILE__, array($core, 'deactivationPlugin'));
@@ -106,4 +108,3 @@ function coderun_buy_plugin_init_core() {
 
 coderun_buy_plugin_init_core();
 
-// todo - Повесить фильтр на кнопку для классов html, убирать базовый стиль кнопки в вариативных товарах

@@ -31,7 +31,7 @@ class BrowserToolSettings extends ToolSettings {
 		'multisiteHide' => ['mcloud-network-browser-hide', null, false],
 		'multisiteAllowUploads' => ['mcloud-network-browser-allow-uploads', null, true],
 		'multisiteAllowDeleting' => ['mcloud-network-browser-allow-deleting', null, true],
-		'multisiteLockToRoot' => ['mcloud-network-browser-lock-to-root', null, false],
+		'multisiteLockToRoot' => ['mcloud-network-browser-lock-to-root', null, true],
 	];
 
 	public function __get($name) {

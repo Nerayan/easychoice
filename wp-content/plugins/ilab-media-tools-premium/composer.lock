@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "264f93d842e4637d1feb30fcc41ffc1c",
+    "content-hash": "8d93a2ee8b740b6cab06c1b9a42e9fb9",
     "packages": [
         {
             "name": "yuloh/bccomp-polyfill",
@@ -56,5 +56,6 @@
     "platform-dev": [],
     "platform-overrides": {
         "php": "7.1"
-    }
+    },
+    "plugin-api-version": "1.1.0"
 }

@@ -1,16 +1,19 @@
 <?php
 
+namespace Coderun\BuyOneClick;
+
 if (!defined('ABSPATH')) {
     exit;
 }
 
-use Coderun\BuyOneClick\Help;
-use Coderun\BuyOneClick\LoadFile;
+use BuyFunction;
+use BuySMSC;
+use Exception;
 
 /**
  * Класс для работы с JavaScript функциями отправляемыми через скрипты
  */
-class BuyJavaScript {
+class Ajax {
     
     /**
      * Конструктор класса
@@ -155,7 +158,7 @@ class BuyJavaScript {
         $options = $help->get_options();
         
         if(!empty($options['buyoptions']['recaptcha_order_form'])) {
-            $check_recaptcha = Coderun\BuyOneClick\ReCaptcha::getInstance()->check($options['buyoptions']['recaptcha_order_form']);
+            $check_recaptcha = ReCaptcha::getInstance()->check($options['buyoptions']['recaptcha_order_form']);
             if($check_recaptcha['check']!==true) {
                 wp_send_json_error(array('message' => $check_recaptcha['message']),200);
             }
@@ -187,6 +190,7 @@ class BuyJavaScript {
             'order_time' => current_time('mysql'),
             'custom' => $help->get_value_field($base_form_data, 'custom'),
             'files' => !empty($_FILES['files']) ? $_FILES['files'] : null,
+            'quantity_product' => $help->get_value_field($base_form_data, 'quantity_product'),
         );
         
         //@todo поле теперь отличается, нет name и value
@@ -218,9 +222,9 @@ class BuyJavaScript {
         //В таблицу Woo
         if (isset($options['buyoptions']['add_tableorder_woo']) and $field['custom'] == 0) {
             
-            $woo_order = \Coderun\BuyOneClick\Order::getInstance();
+            $woo_order = Order::getInstance();
             
-            $woo_order_id=$woo_order->set_order(
+            $woo_order_id = $woo_order->set_order(
                 array(
                     'first_name' => $field['user_name'],
                     'last_name' => '',
@@ -235,17 +239,24 @@ class BuyJavaScript {
                     'country' => '',
                     'order_status' => 'processing', //Статус заказа который будет установлен
                     'message_notes_order' => __('Quick order form', 'coderun-oneclickwoo'), //Сообщение в заказе
-                    'qty' => 1,
+                    'qty' => empty($field['quantity_product']) ? 1 : $field['quantity_product'],
                     'product_id' => $product_id, //ИД товара Woo
                 )
             );
         }
         
+        // Копия для модификации в уведомлениях
+        $copyField = $field;
+        if (!empty($options['buynotification']['price_including_tax'])) {
+            $wcOrder = Order::getInstance()->create_order(['product_id' => $product_id]);
+            $copyField['product_price'] = Order::getInstance()->calculate_order_totals($wcOrder);
+        }
+  
         if (empty($options['buyoptions']['add_tableorder_woo']) && !empty($field['user_email']) && !empty($options['buynotification']['infozakaz_chek'])) {
-            BuyFunction::BuyEmailNotification($field['user_email'], $field['company_name'], $field);
+            BuyFunction::BuyEmailNotification($field['user_email'], $field['company_name'], $copyField);
         }
         if (!empty($options['buynotification']['emailbbc'])) {
-            BuyFunction::BuyEmailNotification($options['buynotification']['emailbbc'], $field['company_name'], $field);
+            BuyFunction::BuyEmailNotification($options['buynotification']['emailbbc'], $field['company_name'], $copyField);
         }
         //Отправка СМС клиенту
         if (!empty($options['buysmscoptions']['enable_smsc'])) {
@@ -285,46 +296,24 @@ class BuyJavaScript {
             $field['user_cooment'] .= '<br>' . $help->get_message_files_url($arResult['files']);
         }
         
-//        //Журналирование
-//
-//        $jornal_row = array(
-//            'time' => $field['order_time'],
-//            'idtovar' => $product_id,
-//            'txtname' => $field['user_name'],
-//            'txtphone' => $field['user_phone'],
-//            'txtemail' => $field['user_email'],
-//            'nametovar' => $field['product_name'],
-//            'pricetovar' => $field['product_price'],
-//            'message' => $field['user_cooment'],
-//            'status' => 1,
-//            'linktovar' => $field['product_link_admin'],
-//            'smslog' => $smslog,
-//            'woo_order_id'=>$woo_order_id
-//        );
-//
-//        array_push($options['buyzakaz'], $jornal_row);
-//
-//        update_option('buyzakaz', $options['buyzakaz']);
-    
+ 
         $order_field = [
             'product_id'=>$product_id,
             'product_name'=>$field['product_name'],
             'product_meta'=>null,
             'product_price'=>$field['product_price'],
-            'product_quantity'=>1,
+            'product_quantity'=> empty($field['quantity_product']) ? 1 : $field['quantity_product'],
             'form'=>\wp_json_encode($field),
             'sms_log'=>\wp_json_encode($smslog),
             'woo_order_id'=>$woo_order_id,
             'user_id'=>\get_current_user_id(),
         ];
     
-        \Coderun\BuyOneClick\Order::getInstance()->save_order(
+        Order::getInstance()->save_order(
             $order_field
         );
-        
 
-        
-        \Coderun\BuyOneClick\BuyHookPlugin::buyClickNewrder($arResult, $order_field);
+       BuyHookPlugin::buyClickNewrder($arResult, $order_field);
         
         ob_end_clean();
         
@@ -340,12 +329,12 @@ class BuyJavaScript {
         // Удаление записи журнала плагина
         if(!empty($_POST['text'])) {
             $order_id = $_POST['text'];
-            \Coderun\BuyOneClick\Order::getInstance()->deactive_order($order_id);
+            Order::getInstance()->deactive_order($order_id);
             wp_send_json_success();
         }elseif(!empty($_POST['orderId']) && !empty($_POST['pluginId'])){ //Удаление заказа
             $order_id = $_POST['orderId'];
             $plugin_id=$_POST['pluginId'];
-            $order = \Coderun\BuyOneClick\Order::getInstance()->get_order($order_id);
+            $order = Order::getInstance()->get_order($order_id);
             if(!empty($order['woo_order_id'])) {
 
                 if(!Help::getInstance()->isset_woo_order($order['woo_order_id'])) {
@@ -360,8 +349,7 @@ class BuyJavaScript {
         }
         
         wp_send_json_error();
-        
-        
+
     }
     
     /**
@@ -372,7 +360,7 @@ class BuyJavaScript {
         $nonce = $_POST['nonce']; // Массив URL и NONCE
         ob_end_clean();
         if (wp_verify_nonce($nonce['nonce'], 'superKey')) {
-            \Coderun\BuyOneClick\Order::getInstance()->remove_order_all();
+            Order::getInstance()->remove_order_all();
             wp_die('ok');
         } else {
             wp_die(__('Are you a hacker?', 'coderun-oneclickwoo'));
@@ -386,7 +374,7 @@ class BuyJavaScript {
     public function ajaxStatusOrderId() {
         $text = $_POST['text'];
         $id = $text['id'];
-        \Coderun\BuyOneClick\Order::getInstance()->update_status($id,intval($text['status']));
+        Order::getInstance()->update_status($id,intval($text['status']));
         wp_send_json_success();
     }
     

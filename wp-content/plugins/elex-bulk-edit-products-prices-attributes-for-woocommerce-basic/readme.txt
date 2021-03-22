@@ -3,7 +3,7 @@ Contributors: elextensions
 Tags: bulk edit, bulk edit attributes, bulk edit price, woocommerce bulk edit, woocommerce
 Requires at least: 3.0.1
 Tested up to: 5.6
-Stable tag: 1.1.2
+Stable tag: 1.1.3
 Requires PHP: 5.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -141,6 +141,9 @@ If you are facing any issues, please create a topic at the plugin support sectio
  * Tested With Wordpress verion 5.6
  * Resolved AND filter Bug.
 
+ = 1.1.3 =
+ * Tested With WC version 4.9
+ 
 == Upgrade Notice ==
 
 = 1.0.1 =
@@ -186,4 +189,5 @@ If you are facing any issues, please create a topic at the plugin support sectio
  * Tested With Wordpress verion 5.6
  * Resolved AND filter Bug.
 
-
+ = 1.1.3 =
+ * Tested With WC version 4.9

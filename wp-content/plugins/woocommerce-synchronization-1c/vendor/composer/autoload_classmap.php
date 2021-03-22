@@ -43,6 +43,7 @@ return array(
     'Itgalaxy\\Wc\\Exchange1c\\Admin\\TableColumns\\TableColumnProduct' => $baseDir . '/admin/TableColumns/TableColumnProduct.php',
     'Itgalaxy\\Wc\\Exchange1c\\Admin\\TableColumns\\TableColumnProductAttribute' => $baseDir . '/admin/TableColumns/TableColumnProductAttribute.php',
     'Itgalaxy\\Wc\\Exchange1c\\Admin\\TableColumns\\TableColumnProductCat' => $baseDir . '/admin/TableColumns/TableColumnProductCat.php',
+    'Itgalaxy\\Wc\\Exchange1c\\ExchangeProcess\\Base\\Parser' => $baseDir . '/exchange-process/Base/Parser.php',
     'Itgalaxy\\Wc\\Exchange1c\\ExchangeProcess\\DataResolvers\\GlobalProductAttributes' => $baseDir . '/exchange-process/DataResolvers/GlobalProductAttributes.php',
     'Itgalaxy\\Wc\\Exchange1c\\ExchangeProcess\\DataResolvers\\Groups' => $baseDir . '/exchange-process/DataResolvers/Groups.php',
     'Itgalaxy\\Wc\\Exchange1c\\ExchangeProcess\\DataResolvers\\NomenclatureCategories' => $baseDir . '/exchange-process/DataResolvers/NomenclatureCategories.php',

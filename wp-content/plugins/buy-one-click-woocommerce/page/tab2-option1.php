@@ -2,9 +2,9 @@
 if (!defined('ABSPATH')) {
     exit;
 }
-use Coderun\BuyOneClick\BuyCore;
+use Coderun\BuyOneClick\Core;
 ?>
-<h3><?php _e('Methods and notification settings for the client', 'coderun-oneclickwoo'); ?>  <?php echo BuyCore::NAME_PLUGIN; ?></h3>
+<h3><?php _e('Methods and notification settings for the client', 'coderun-oneclickwoo'); ?>  <?php echo Core::NAME_PLUGIN; ?></h3>
 <?php
 $buynotification = get_option('buynotification');
 $buysmscoptions = get_option('buysmscoptions'); //настройки смсц
@@ -249,6 +249,22 @@ $buysmscoptions = get_option('buysmscoptions'); //настройки смсц
                 </td>
             </tr>
 
+        </table>
+    </fieldset>
+    <fieldset>
+        <legend><?php _e('Other settings in this section', 'coderun-oneclickwoo'); ?></legend>
+        <table class="form-table">
+            <tr valign="top">
+                <th scope="row"><?php _e('Price in the email', 'coderun-oneclickwoo'); ?></th>
+                <td>
+                    <input type="checkbox" name="buynotification[price_including_tax]" <?php
+                    if (isset($buynotification['price_including_tax'])) {
+                        checked($buynotification['price_including_tax'], 'on', 1);
+                    }
+                    ?>/>
+                    <span class="description"><?php _e('Specify the price including tax', 'coderun-oneclickwoo'); ?></span>
+                </td>
+            </tr>
         </table>
     </fieldset>
     <input type="hidden" name="action" value="update" />

@@ -870,6 +870,19 @@ msgstr ""
 msgid "The order has been sent"
 msgstr ""
 
+#: templates/forms/quantity.php:6
+msgid "Quantity"
+msgstr ""
+
+msgid "File upload field"
+msgstr ""
+
+msgid "Add the ability to attach a file to the quick order form. Tick is worth - offer"
+msgstr ""
+
+msgid "Add a quantity input form"
+msgstr ""
+
 #: inc/Ajax.php:335
 msgid "Are you a hacker?"
 msgstr ""

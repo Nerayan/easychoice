@@ -70,6 +70,22 @@ class TranslateService
         return apply_filters('wc_ukr_shipping_get_nova_poshta_translates', $translates);
     }
 
+    /**
+     * @param array $area
+     *
+     * @return string
+     */
+    public function translateArea($area)
+    {
+        if ('ru' === $this->getCurrentLanguage()) {
+            if (isset($this->areaTranslates[$area['ref']])) {
+                return $this->areaTranslates[$area['ref']];
+            }
+        }
+
+        return $area['description'];
+    }
+
     public function translateAreas($areas)
     {
         if ('ru' === $this->getCurrentLanguage()) {

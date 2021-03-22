@@ -6,12 +6,11 @@ use kirillbdev\WCUkrShipping\Api\NovaPoshtaApi;
 use kirillbdev\WCUkrShipping\Contracts\ModuleInterface;
 use kirillbdev\WCUkrShipping\DB\NovaPoshtaRepository;
 use kirillbdev\WCUkrShipping\DB\OptionsRepository;
-use kirillbdev\WCUkrShipping\Http\Response;
+use kirillbdev\WCUkrShipping\Http\ResponseLegacy;
 use kirillbdev\WCUkrShipping\Http\WpHttpClient;
 use kirillbdev\WCUkrShipping\Model\CheckoutOrderData;
 use kirillbdev\WCUkrShipping\Services\CalculationService;
 use kirillbdev\WCUkrShipping\Services\TranslateService;
-use kirillbdev\WCUkrShipping\Validators\OptionsValidator;
 
 if ( ! defined('ABSPATH')) {
     exit;
@@ -59,9 +58,6 @@ class Ajax implements ModuleInterface
 
     public function initAdminRoutes()
     {
-        // Options Save
-        add_action('wp_ajax_wc_ukr_shipping_save_settings', [$this, 'saveSettings']);
-
         // Options Areas Load to DB
         add_action('wp_ajax_wc_ukr_shipping_load_areas', [$this, 'loadAreas']);
 
@@ -72,33 +68,12 @@ class Ajax implements ModuleInterface
         add_action('wp_ajax_wc_ukr_shipping_load_warehouses', [$this, 'loadWarehouses']);
     }
 
-    public function saveSettings()
-    {
-        parse_str($_POST['body'], $body);
-
-        $validator = new OptionsValidator();
-        $result = $validator->validateRequest($body);
-
-        if ($result !== true) {
-            Response::makeAjax('error', [
-                'errors' => $result
-            ]);
-        }
-
-        $this->optionsRepository->save($body);
-
-        Response::makeAjax('success', [
-            'api_key' => get_option('wc_ukr_shipping_np_api_key', ''),
-            'message' => 'Настройки успешно сохранены'
-        ]);
-    }
-
     public function apiV2GetCities()
     {
         $this->apiV2ValidateRequest();
 
         if (empty($_POST['value'])) {
-            Response::makeAjax('error');
+            ResponseLegacy::makeAjax('error');
         }
 
         // todo: refactor
@@ -114,7 +89,7 @@ class Ajax implements ModuleInterface
             }
         }
 
-        Response::makeAjax('success', [
+        ResponseLegacy::makeAjax('success', [
             'items' => $result
         ]);
     }
@@ -124,7 +99,7 @@ class Ajax implements ModuleInterface
         $this->apiV2ValidateRequest();
 
         if (empty($_POST['value'])) {
-            Response::makeAjax('error');
+            ResponseLegacy::makeAjax('error');
         }
 
         // todo: refactor
@@ -140,7 +115,7 @@ class Ajax implements ModuleInterface
             }
         }
 
-        Response::makeAjax('success', [
+        ResponseLegacy::makeAjax('success', [
             'items' => $result
         ]);
     }
@@ -151,7 +126,7 @@ class Ajax implements ModuleInterface
 
         foreach ([ 'wcus_ajax', 'wcus_area_ref', 'wcus_city_ref', 'wcus_address_shipping', 'wcus_shipping_name' ] as $key) {
             if ( ! isset($_POST[ $key ])) {
-                Response::makeAjax('error');
+                ResponseLegacy::makeAjax('error');
             }
         }
 
@@ -233,7 +208,7 @@ class Ajax implements ModuleInterface
     private function apiV2ValidateRequest()
     {
         if (empty($_POST['_token']) || ! wp_verify_nonce($_POST['_token'], 'wc-ukr-shipping')) {
-            Response::makeAjax('error');
+            ResponseLegacy::makeAjax('error');
         }
     }
 }
