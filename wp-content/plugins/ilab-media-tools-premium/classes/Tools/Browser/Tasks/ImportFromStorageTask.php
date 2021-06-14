@@ -19,6 +19,7 @@ use MediaCloud\Plugin\Tools\ToolsManager;
 use MediaCloud\Plugin\Utilities\Logging\Logger;
 use MediaCloud\Vendor\Mimey\MimeTypes;
 use function MediaCloud\Plugin\Utilities\arrayPath;
+use function MediaCloud\Plugin\Utilities\ilab_set_time_limit;
 
 class ImportFromStorageTask extends Task {
 	protected $reportHeaders = [
@@ -142,6 +143,7 @@ class ImportFromStorageTask extends Task {
 		$importOnly = arrayPath($this->options, 'import-only', false);
 		$preservePaths = arrayPath($this->options, 'preserve-paths', false);
 
+
 		$this->currentItemID = $item['key'];
 		$this->currentFile = basename($item['key']);
 		$this->currentTitle = basename($item['key']);
@@ -165,6 +167,8 @@ class ImportFromStorageTask extends Task {
 	 * @throws \MediaCloud\Plugin\Tools\Storage\StorageException
 	 */
 	public function prepare($options = [], $selectedItems = []) {
+		ilab_set_time_limit(0);
+
 		$this->options = $options;
 
 		/** @var StorageTool $storageTool */
@@ -175,7 +179,7 @@ class ImportFromStorageTask extends Task {
 			$key = '';
 		}
 
-		$files = $storageTool->getFileList([$key], !empty($options['skip-thumbnails']))['files'];
+		$files = $storageTool->getFileList([$key], !empty($options['skip-thumbnails']), -1, null, true)['files'];
 
 		$mimey = new MimeTypes();
 

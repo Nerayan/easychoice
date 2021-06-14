@@ -2,10 +2,10 @@
 Contributors: mediacloud, interfacelab, freemius
 Tags: offload, amazon, s3, imgix, uploads, video, video encoding, google cloud storage, digital ocean spaces, wasabi, media, cdn, rekognition, cloudfront, images, crop, image editing, image editor, optimize, image optimization, media library, offload, offload s3, filepicker, smush, imagify, shortpixel
 Requires at least: 4.9
-Tested up to: 5.7
+Tested up to: 5.7.2
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
-Stable tag: 4.2.20
+Stable tag: 4.2.32
 Requires PHP: 7.1
 
 Automatically store media on Amazon S3, Google Cloud Storage, DigitalOcean Spaces + others. Serve CSS/JS assets through CDNs.  Integrate with Imgix.
@@ -104,6 +104,71 @@ Imgix is a content delivery network with a twist.  In addition to distributing y
 
 
 == Changelog ==
+
+= 4.2.32 =
+
+* Fix for **Import from Cloud** task where it would show an error that there was nothing to import.
+* Fix for tasks not updating the progress UI in certain instances.
+* Fix for errors with the `set_time_limit()` function on systems where that function is disabled.
+* Fix for error with Smart Slider integration.
+
+= 4.2.31 =
+
+* Fix for Imgix with BuddyPress avatars and cover images. (Premium)
+* Made the setting **Replace srcset on image tags** disabled by default.  Will be removed in future versions of Media Cloud.
+* Added a warning if you have **Replace srcset on image tags** enabled.
+* **Cloud Tools** menu renamed **Cloud Tasks**.
+* Fix for custom defined image sizes in the **Image Size Manager** not showing up in the WordPress media selector. (Premium)
+
+
+= 4.2.30 =
+
+* Complete overhaul of BuddyPress and BuddyBoss integration. (Premium)
+* Added a new *Migrate BuddyPress Uploads* task which will migrate existing avatar and cover images to cloud storage.  Previously, Media Cloud would migrate these as they were requested on the front end.  (Premium)
+* Added a new WP-ClI command, `wp mediacloud:buddypress migrate` that wraps the *Migrate BuddyPress Uploads* task.  (Premium)
+* Renamed Computer Vision WP-CLI command from `wp vision` to `wp mediacloud:vision`.
+* Renamed the task manager WP-CLI command from `wp taskmanager` to `wp mediacloud:tasks`.
+* Fixed bug for when you have privacy for uploads set to private, but don't have signing enabled, the error message wasn't dismissible.
+* Added new setting *Enable Real Time Processing* to BuddyPress integration that controls the real-time uploading of avatar and cover images.  When disabled, you must run the *Migrate BuddyPress Uploads* task manually to upload these things to cloud storage.  (Premium)
+* Fixed compatibility with rtMedia for BuddyPress.  (Premium)
+* Fixed the `mediacloud:storage replace` command to search all wordpress tables, including custom ones.  (Premium)
+* **Note:** if you are using rtMedia with BuddyPress, you will need to run the CLI command `mediacloud:storage replace` after running the *Migrate to Cloud* task.  You will only need to do this once.  (Premium)
+
+= 4.2.29 =
+
+* Fix for `x-amz-bucket-region` notices
+* Easy Digital Downloads now download as files instead of opening as images or videos in the browser. (Premium)
+
+
+= 4.2.28 =
+
+* Fix for NOTICE errors with srcset generation
+
+= 4.2.27 =
+
+* Fix for potential fatal crash with certain integrations
+
+= 4.2.26 =
+
+* Fix for compatibility with Root's Sage theme framework
+* HOT FIX: Fix for fatal error if Beaver Builder Pro is installed and Compatibility Manager is enabled.
+* Fix for EDD integration with variable product pricing
+* Added option to EDD integration that enables downloading the original unscaled image when the download is an image.
+
+= 4.2.23 =
+
+* More fixes for srcset generation.
+* Ability to turn off `ixlib` and `wpsize` query parameters for imgix image URLs.  To disable these query parameters, toggle *Remove Extra Query Variables* off in Imgix settings.
+* You can now specify the default cropping mode and crop origin for imgix images in the *Imgix Settings*.  This crop mode and origin will be overridden for manually cropped images or images that have had their crop mode set in the *Image Editor*.
+
+= 4.2.22 =
+
+* Fix for srcset generation with Imgix.
+* *System Check* has been renamed *System Test*
+* Added a plugin/theme check to the *System Test* that pinpoints any *potential* (emphasis on potential) issues with activated plugins or your current theme.
+* Added a new *Compatibility Manager* tool that allows you to disable hooks in other plugins or themes that might be causing issues with Media Cloud.  You must enable this tool in Cloud Storage Settings in the Advanced Settings panel.  Once activated, this tool will show you all the hooks that are activated on your WordPress install that might interfere with Media Cloud.  **Note that just because a plugin or theme shows up in the list, this does not mean it's incompatible.  You should only use this tool if directed by Media Cloud support**.
+* Cleaned up the *Debug Log* UI
+* The *System Test* now allows you to run a single specific test instead of having to run all tests every time.
 
 = 4.2.20 =
 

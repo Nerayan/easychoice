@@ -20,6 +20,7 @@ use MediaCloud\Plugin\Tasks\TaskReporter;
 use MediaCloud\Plugin\Tools\Debugging\DebuggingToolSettings;
 use MediaCloud\Plugin\Utilities\Environment;
 use MediaCloud\Plugin\Utilities\Logging\Logger;
+use function MediaCloud\Plugin\Utilities\anyEmpty;
 use function MediaCloud\Plugin\Utilities\arrayPath;
 
 if (!defined('ABSPATH')) { header('Location: /'); die; }
@@ -39,12 +40,6 @@ class StorageContentHooks {
 
 	/** @var TaskReporter[] */
 	private $reporters = [];
-
-	/** @var bool  */
-	private $disableSrcSet;
-
-	/** @var bool  */
-	private $replaceSrcSet;
 
 	public function __construct(StorageTool $tool) {
 		$this->tool = $tool;
@@ -85,13 +80,6 @@ class StorageContentHooks {
 
 			return $sizes;
 		});
-
-		global $wp_version;
-		$this->disableSrcSet = Environment::Option('mcloud-storage-disable-srcset', null, false);
-		$this->replaceSrcSet = empty($this->disableSrcSet) && version_compare($wp_version, '5.3', '>=');
-		if ($this->replaceSrcSet) {
-			$this->replaceSrcSet = Environment::Option('mcloud-storage-replace-srcset', null, true);
-		}
 	}
 
 	//region Gutenberg Filtering
@@ -1054,7 +1042,7 @@ class StorageContentHooks {
 			return $content;
 		}
 
-		if (!empty($data['image']) && $this->replaceSrcSet) {
+		if (!empty($data['image']) && $this->settings->replaceSrcSet) {
 			$image = $data['image'];
 			$image = preg_replace('/(sizes\s*=\s*[\'"]{1}(?:[^\'"]*)[\'"]{1})/m', '', $image);
 			$image = preg_replace('/(srcset\s*=\s*[\'"]{1}(?:[^\'"]*)[\'"]{1})/m', '', $image);
@@ -1074,6 +1062,17 @@ class StorageContentHooks {
 	//endregion
 
 	//region Srcset
+
+	private function getAspectRatio($width, $height) {
+		if ($width < $height) {
+			return 0;
+		} else if ($width == $height) {
+			return 1;
+		} else {
+			return 2;
+		}
+	}
+
 	/**
 	 * Filters an image’s ‘srcset’ sources.  (https://core.trac.wordpress.org/browser/tags/4.8/src/wp-includes/media.php#L1203)
 	 *
@@ -1092,58 +1091,78 @@ class StorageContentHooks {
 
 		global $wp_current_filter;
 		if (in_array('the_content', $wp_current_filter)) {
-			if ($this->disableSrcSet || $this->replaceSrcSet) {
+			if ($this->settings->disableSrcSet || $this->settings->replaceSrcSet) {
 				return [];
 			}
 		}
 
-		if ($this->disableSrcSet) {
+		if ($this->settings->disableSrcSet) {
 			return [];
 		}
 
 		$attachment_id = apply_filters('wpml_object_id', $attachment_id, 'attachment', true);
 
-		if ($this->allSizes == null) {
+		if (empty($this->allSizes)) {
 			$this->allSizes = ilab_get_image_sizes();
 		}
 
-		$allSizesNames = array_keys($this->allSizes);
+		$srcAspect = $this->getAspectRatio($size_array[0], $size_array[1]);
 
-		foreach($image_meta['sizes'] as $sizeName => $sizeData) {
-			$width = $sizeData['width'];
-			if (isset($sources[$width])) {
-				if (in_array($sizeName, $allSizesNames)) {
-					$src = wp_get_attachment_image_src($attachment_id, $sizeName);
+		$imageWidth = intval($image_meta['width']);
+		$imageHeight = intval($image_meta['height']);
 
-					if(is_array($src)) {
-						// fix for wpml
-						$url = preg_replace('/&lang=[aA-zZ0-9]+/m', '', $src[0]);
-						$sources[$width]['url'] = $url;
-					} else {
-						unset($sources[$width]);
-					}
-				} else {
-					unset($sources[$width]);
-				}
-			}
+		if (anyEmpty($imageWidth, $imageHeight)) {
+			return [];
 		}
 
-		if(isset($image_meta['width'])) {
-			$width = $image_meta['width'];
-			if(isset($sources[$width])) {
-				$src = wp_get_attachment_image_src($attachment_id, 'full');
+		$allSizesNames = array_keys($this->allSizes);
+		$newSources = [];
+
+		foreach($image_meta['sizes'] as $sizeName => $sizeData) {
+			if (!isset($this->allSizes[$sizeName])) {
+				continue;
+			}
+
+			$width = intval($this->allSizes[$sizeName]['width']);
+			$height = intval($this->allSizes[$sizeName]['height']);
+
+			$width = ($width === 0) ? 99999 : $width;
+			$height = ($height === 0) ? 99999 : $height;
+
+			if (empty($this->allSizes[$sizeName]['crop'])) {
+				$sizeDim = sizeToFitSize($imageWidth, $imageHeight, $width, $height);
+			} else {
+				$sizeDim = [$width, $height];
+			}
+
+			$sizeAspect = $this->getAspectRatio($sizeDim[0], $sizeDim[1]);
+
+			if (isset($sources["{$sizeDim[0]}"]) && ($sizeAspect == $srcAspect) && in_array($sizeName, $allSizesNames)) {
+				$src = wp_get_attachment_image_src($attachment_id, $sizeName);
 
 				if(is_array($src)) {
 					// fix for wpml
 					$url = preg_replace('/&lang=[aA-zZ0-9]+/m', '', $src[0]);
-					$sources[$width]['url'] = $url;
-				} else {
-					unset($sources[$width]);
+					$newSources["{$sizeDim[0]}"] = $sources["{$sizeDim[0]}"];
+					$newSources["{$sizeDim[0]}"]['url'] = $url;
 				}
 			}
 		}
 
-		return $sources;
+		$imageAspect = $this->getAspectRatio($imageWidth, $imageHeight);
+
+		if(isset($sources["{$imageWidth}"]) && ($imageAspect == $srcAspect)) {
+			$src = wp_get_attachment_image_src($attachment_id, 'full');
+
+			if(is_array($src)) {
+				// fix for wpml
+				$url = preg_replace('/&lang=[aA-zZ0-9]+/m', '', $src[0]);
+				$newSources["{$imageWidth}"] = $sources["{$imageWidth}"];
+				$newSources["{$imageWidth}"]['url'] = $url;
+			}
+		}
+
+		return $newSources;
 	}
 	//endregion
 }

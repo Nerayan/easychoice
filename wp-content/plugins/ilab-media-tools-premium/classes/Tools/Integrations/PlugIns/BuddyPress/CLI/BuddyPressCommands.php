@@ -14,9 +14,11 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 // **********************************************************************
 
-namespace MediaCloud\Plugin\Tools\Integrations\PlugIns\BuddyPress;
+namespace MediaCloud\Plugin\Tools\Integrations\PlugIns\BuddyPress\CLI;
 
 use MediaCloud\Plugin\CLI\Command;
+use MediaCloud\Plugin\Tools\Integrations\PlugIns\BuddyPress\Tasks\BuddyPressDeleteTask;
+use MediaCloud\Plugin\Tools\Integrations\PlugIns\BuddyPress\Tasks\BuddyPressMigrateTask;
 
 if (!defined('ABSPATH')) { header('Location: /'); die; }
 
@@ -38,6 +40,22 @@ class BuddyPressCommands extends Command {
 		$task = new BuddyPressDeleteTask();
 		$this->runTask($task, $assoc_args);
 	}
+
+	/**
+	 * Migrates all profile and group avatars and cover images
+	 *
+	 * @when after_wp_load
+	 *
+	 * @param $args
+	 * @param $assoc_args
+	 *
+	 * @throws \Exception
+	 */
+	public function migrate($args, $assoc_args) {
+		$task = new BuddyPressMigrateTask();
+		$this->runTask($task, $assoc_args);
+	}
+
 
 	public static function Register() {
 		\WP_CLI::add_command('mediacloud:buddypress', __CLASS__);

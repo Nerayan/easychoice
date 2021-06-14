@@ -13,13 +13,13 @@
 
 namespace MediaCloud\Plugin\Tools\Integrations;
 
-use MediaCloud\Plugin\Tools\Storage\StorageGlobals;
 use MediaCloud\Plugin\Tools\Storage\StorageToolSettings;
 use MediaCloud\Plugin\Tools\Storage\StorageTool;
 use MediaCloud\Plugin\Tools\Tool;
 use MediaCloud\Plugin\Tools\ToolsManager;
 use MediaCloud\Plugin\Utilities\Environment;
 use MediaCloud\Plugin\Utilities\Logging\Logger;
+use MediaCloud\Plugin\Utilities\NoticeManager;
 use function MediaCloud\Plugin\Utilities\arrayPath;
 
 if (!defined( 'ABSPATH')) { header( 'Location: /'); die; }
@@ -35,6 +35,7 @@ class IntegrationsTool extends Tool {
 
 	private $usePresignedURLForEDD = true;
 	private $eddSignedURLExpiration = 1;
+	private $eddDownloadOriginalImage = false;
 
 	private $integrations = [];
 
@@ -47,6 +48,7 @@ class IntegrationsTool extends Tool {
 
 		$this->usePresignedURLForEDD = Environment::Option('mcloud-edd-use-presigned-urls', null, true);
 		$this->eddSignedURLExpiration = Environment::Option('mcloud-edd-presigned-expiration', null, 1);
+		$this->eddDownloadOriginalImage = Environment::Option('mcloud-edd-download-original-image', null, false);
 	}
 
 	//region Tool Overrides
@@ -63,13 +65,29 @@ class IntegrationsTool extends Tool {
 
 			foreach($this->toolInfo['plugins'] as $plugin => $integrationClass) {
 				if (is_plugin_active($plugin)) {
-					$this->integrations[] = new $integrationClass();
+					if (class_exists($integrationClass)) {
+						$this->integrations[] = new $integrationClass();
+					} else {
+						if (is_admin()) {
+							NoticeManager::instance()->displayAdminNotice('error', "A required class for integration with a plugin you are using is missing.  Please contact <a href='https://support.mediacloud.press/'>Media Cloud support</a> as soon as possible.  This missing class is: <code>{$integrationClass}</code>.");
+						}
+
+						Logger::error("Integration class $integrationClass is missing.", [], __METHOD__, __LINE__);
+					}
 				}
 			}
 
 			foreach($this->toolInfo['classes'] as $pluginClass => $integrationClass) {
 				if (class_exists($pluginClass)) {
-					$this->integrations[] = new $integrationClass();
+					if (class_exists($integrationClass)) {
+						$this->integrations[] = new $integrationClass();
+					} else {
+						if (is_admin()) {
+							NoticeManager::instance()->displayAdminNotice('error', "A required class for integration with a plugin you are using is missing.  Please contact <a href='https://support.mediacloud.press/'>Media Cloud support</a> as soon as possible.  This missing class is: <code>{$integrationClass}</code>.");
+						}
+
+						Logger::error("Integration class $integrationClass is missing.", [], __METHOD__, __LINE__);
+					}
 				}
 			}
 		}
@@ -185,9 +203,18 @@ class IntegrationsTool extends Tool {
 			return $requested_file;
 		}
 
+		$postID = null;
+		$fileName = null;
 		foreach($downloadFiles as $key => $downloadInfo) {
-			$postID = $downloadInfo['attachment_id'];
-			break;
+			if ($fileKey == $key) {
+				$postID = $downloadInfo['attachment_id'];
+				$fileName = pathinfo($downloadInfo['file'], PATHINFO_BASENAME);
+				break;
+			}
+		}
+
+		if (empty($postID)) {
+			return $requested_file;
 		}
 
 		if (!$this->usePresignedURLForEDD) {
@@ -204,6 +231,9 @@ class IntegrationsTool extends Tool {
 			$s3 = $meta['s3'];
 		}
 
+		if ($this->eddDownloadOriginalImage && isset($meta['original_image_s3'])) {
+			$s3 = $meta['original_image_s3'];
+		}
 
 		if (empty($s3) || empty($s3['provider'])) {
 			return $requested_file;
@@ -219,7 +249,9 @@ class IntegrationsTool extends Tool {
 			return $requested_file;
 		}
 
-		return $storageTool->client()->presignedUrl($s3['key'], $this->eddSignedURLExpiration);
+		return $storageTool->client()->presignedUrl($s3['key'], $this->eddSignedURLExpiration, [
+			'ResponseContentDisposition' => 'attachment; filename="'.$fileName.'"'
+		]);
 	}
 
 	//endregion

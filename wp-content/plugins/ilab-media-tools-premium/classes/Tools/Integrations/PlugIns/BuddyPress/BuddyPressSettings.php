@@ -18,10 +18,12 @@ use MediaCloud\Plugin\Tools\ToolSettings;
 /**
  * @property bool enabled
  * @property bool deleteUploads
+ * @property bool realtimeProcessing
  */
 class BuddyPressSettings extends ToolSettings {
 	protected $settingsMap = [
 		"enabled" => ['mcloud-buddypress-enabled', null, true],
 		"deleteUploads" => ['mcloud-buddypress-delete-uploads', null, false],
+		"realtimeProcessing" => ['mcloud-buddypress-realtime', null, true],
 	];
 }

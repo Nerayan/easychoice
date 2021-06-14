@@ -39,8 +39,8 @@ return [
 		"\\Elementor\\Plugin" => "\\MediaCloud\\Plugin\\Tools\\Integrations\\PlugIns\\Elementor\\ElementorIntegration",
 		"\\FooGallery" => "\\MediaCloud\\Plugin\\Tools\\Integrations\\PlugIns\\FooGalleryIntegration",
 		"\\SFWD_LMS" => "\\MediaCloud\\Plugin\\Tools\\Integrations\\PlugIns\\LearnDashIntegration",
-		"\\Google\\Web_Stories\\Model\\Story" => MediaCloud\Plugin\Tools\Integrations\PlugIns\WebStories\WebStoriesIntegration::class,
-		"\\WooCommerce_Product_Search" => MediaCloud\Plugin\Tools\Integrations\Plugins\WooCommerceProductSearchIntegration::class,
+		"\\Google\\Web_Stories\\Model\\Story" => "\\MediaCloud\\Plugin\\Tools\\Integrations\\PlugIns\\WebStories\\WebStoriesIntegration",
+		"\\WooCommerce_Product_Search" => "\\MediaCloud\\Plugin\\Tools\\Integrations\\PlugIns\\WooCommerceProductSearchIntegration",
 	],
 	"settings" => [
 		"options-page" => "media-tools-integrations",
@@ -88,6 +88,13 @@ return [
 						"display-order" => 1,
 						"type" => "number",
 						"default" => 1,
+					],
+					"mcloud-edd-download-original-image" => [
+						"title" => "Download Original Image",
+						"description" => "If the download is an image, enabling this will download the original unscaled image.",
+						"display-order" => 2,
+						"type" => "checkbox",
+						"default" => false,
 					]
 				]
 			],
@@ -104,10 +111,17 @@ return [
 						"type" => "checkbox",
 						"default" => true,
 					],
+					"mcloud-buddypress-realtime" => [
+						"title" => "Enable Real Time Processing",
+						"description" => "Enabling this will move avatars and cover images the first time they are requested on the front-end of your site.  If disabled, you must use the <a href='".admin_url('admin.php?page=mcloud-task-buddypress-migrate')."'>BuddyPress Migrate Uploads</a> task to upload those things to cloud storage.  The best plan is to leave this enabled and run the task after installing Media Cloud for the first time.",
+						"display-order" => 2,
+						"type" => "checkbox",
+						"default" => true,
+					],
 					"mcloud-buddypress-delete-uploads" => [
 						"title" => "Delete Uploads",
 						"description" => "When enabled, user uploads will be deleted after being transferred to the cloud.  You must have background tasks working to use this feature.",
-						"display-order" => 1,
+						"display-order" => 3,
 						"type" => "checkbox",
 						"default" => false,
 					],

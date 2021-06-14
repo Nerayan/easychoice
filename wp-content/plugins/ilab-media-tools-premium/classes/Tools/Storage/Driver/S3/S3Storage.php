@@ -812,7 +812,7 @@ class S3Storage implements S3StorageInterface, ConfiguresWizard {
 		];
 	}
 
-	public function ls($path = '', $delimiter = '/', $limit = -1, $next = null) {
+	public function ls($path = '', $delimiter = '/', $limit = -1, $next = null, $recursive = false) {
 		if(!$this->client) {
 			throw new InvalidStorageSettingsException('Storage settings are invalid');
 		}
@@ -839,20 +839,44 @@ class S3Storage implements S3StorageInterface, ConfiguresWizard {
 			$results  = $this->client->getPaginator('ListObjectsV2', $args);
 
 			$result = $results->current();
-			if (empty($result) || empty($result['Contents'])) {
+			if (empty($recursive) && (empty($result) || empty($result['Contents']))) {
 				return [
 					'next' => null,
 					'files' => []
 				];
 			}
 
-			foreach($result['Contents'] as $object) {
-				if ($object['Key'] == $path) {
-					continue;
+			if (!empty($result['Contents'])) {
+				foreach($result['Contents'] as $object) {
+					if ($object['Key'] == $path) {
+						continue;
+					}
+
+					$contents[] = $object['Key'];
+				}
+			}
+
+			if (!empty($recursive)) {
+				$recursiveDirs = [];
+				if (!empty($result['CommonPrefixes'])) {
+					foreach($result['CommonPrefixes'] as $prefix) {
+						$decodedPrefix = urldecode($prefix['Prefix']);
+						if (in_array($decodedPrefix, $recursiveDirs)) {
+							continue;
+						}
+
+						$recursiveDirs[] =  $decodedPrefix;
+					}
 				}
 
-				$contents[] = $object['Key'];
+				foreach($recursiveDirs as $recursiveDir) {
+					$ls = $this->ls($recursiveDir, $delimiter, $limit, $next, true);
+					if (!empty($ls['files'])) {
+						$contents = array_merge($contents, $ls['files']);
+					}
+				}
 			}
+
 
 			return [
 				'next' => isset($result['NextContinuationToken']) ? $result['NextContinuationToken'] : null,
@@ -870,7 +894,7 @@ class S3Storage implements S3StorageInterface, ConfiguresWizard {
 	//endregion
 
 	//region URLs
-	protected function presignedRequest($key, $expiration = 0) {
+	protected function presignedRequest($key, $expiration = 0, $options = []) {
 		if(!$this->client) {
 			throw new InvalidStorageSettingsException('Storage settings are invalid');
 		}
@@ -883,12 +907,21 @@ class S3Storage implements S3StorageInterface, ConfiguresWizard {
 			$expiration = 1;
 		}
 
-		$command = $this->client->getCommand('GetObject', ['Bucket' => $this->settings->bucket, 'Key' => $key]);
+		$commandOptions = [
+			'Bucket' => $this->settings->bucket,
+			'Key' => $key
+		];
+
+		if (!empty($options) && is_array($options)) {
+			$commandOptions = array_merge($commandOptions, $options);
+		}
+
+		$command = $this->client->getCommand('GetObject', $commandOptions);
 
 		return $this->client->createPresignedRequest($command, "+".((int)$expiration)." minutes");
 	}
 
-	public function presignedUrl($key, $expiration = 0) {
+	public function presignedUrl($key, $expiration = 0, $options = []) {
 		$ignoreCDN = apply_filters('media-cloud/storage/ignore-cdn', false);
 
 		if ((StorageToolSettings::driver() === 's3') && ($this->settings->validSignedCDNSettings()) && empty($ignoreCDN)) {
@@ -923,7 +956,7 @@ class S3Storage implements S3StorageInterface, ConfiguresWizard {
 
 			return $url;
 		} else {
-		    $req = $this->presignedRequest($key, $expiration);
+		    $req = $this->presignedRequest($key, $expiration, $options);
 		    $uri = $req->getUri();
 		    $url = $uri->__toString();
 

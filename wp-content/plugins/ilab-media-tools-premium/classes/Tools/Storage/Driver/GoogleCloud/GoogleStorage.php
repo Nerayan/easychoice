@@ -573,7 +573,7 @@ class GoogleStorage implements StorageInterface, ConfiguresWizard {
 		];
 	}
 
-	public function ls($path = '', $delimiter = '/', $limit = -1, $next = null) {
+	public function ls($path = '', $delimiter = '/', $limit = -1, $next = null, $recursive = false) {
 		if(!$this->client) {
 			throw new InvalidStorageSettingsException('Storage settings are invalid');
 		}
@@ -593,6 +593,15 @@ class GoogleStorage implements StorageInterface, ConfiguresWizard {
 			$files[] = $file->name();
 		}
 
+		if (!empty($recursive)) {
+			foreach($fileIter->prefixes() as $prefix) {
+				$res = $this->ls($prefix, $delimiter, $limit, $next, true);
+				if (!empty($res['files'])) {
+					$files = array_merge($files, $res['files']);
+				}
+			}
+		}
+
 		return [
 			'next' => null,
 			'files' => $files
@@ -601,13 +610,19 @@ class GoogleStorage implements StorageInterface, ConfiguresWizard {
 	//endregion
 
 	//region URLs
-	public function presignedUrl($key, $expiration = 0) {
+	public function presignedUrl($key, $expiration = 0, $options = []) {
 		if (empty($expiration)) {
 			$expiration = $this->settings->presignedURLExpiration;
 		}
 
 		$object = $this->client->bucket($this->settings->bucket)->object($key);
-		return $object->signedUrl(new Timestamp(new \DateTime("+{$expiration} minutes")));
+		$signedUrl = $object->signedUrl(new Timestamp(new \DateTime("+{$expiration} minutes")));
+
+		if (!empty($options) && is_array($options) && isset($options['ResponseContentDisposition'])) {
+			$signedUrl .= '&response-content-disposition='.$options['ResponseContentDisposition'];
+		}
+
+		return $signedUrl;
 	}
 
 	public function url($key, $type = null) {

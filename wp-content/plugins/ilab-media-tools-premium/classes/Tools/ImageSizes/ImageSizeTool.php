@@ -42,6 +42,16 @@ class ImageSizeTool extends Tool {
 			add_image_size($key, $size['width'], $size['height'], $size['crop']);
 		}
 
+		if (count($this->customSizes) > 0) {
+			add_filter('image_size_names_choose', function ($sizes) {
+				foreach ($this->customSizes as $key => $size) {
+					$sizes[$key] = ucwords(str_replace('_', ' ', str_replace('-', ' ', $key)));;
+				}
+
+				return $sizes;
+			});
+		}
+
 		add_action('wp_ajax_ilab_new_image_size_page', [$this, 'displayAddImageSizePage']);
 		add_action('wp_ajax_ilab_update_image_size', [$this, 'updateImageSize']);
 		add_action('wp_ajax_ilab_update_image_privacy', [$this, 'updateImagePrivacy']);

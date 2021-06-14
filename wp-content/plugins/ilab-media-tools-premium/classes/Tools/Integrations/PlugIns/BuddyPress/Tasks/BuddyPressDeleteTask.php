@@ -14,7 +14,7 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 // **********************************************************************
 
-namespace MediaCloud\Plugin\Tools\Integrations\PlugIns\BuddyPress;
+namespace MediaCloud\Plugin\Tools\Integrations\PlugIns\BuddyPress\Tasks;
 
 use MediaCloud\Plugin\Tasks\Task;
 use MediaCloud\Plugin\Utilities\Logging\Logger;

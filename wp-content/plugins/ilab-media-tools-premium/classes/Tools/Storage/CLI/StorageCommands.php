@@ -947,6 +947,7 @@ class StorageCommands extends Command {
 	 *
 	 */
 	public function replace($cmdArgs, $assoc_args) {
+
 		/** @var \Freemius $media_cloud_licensing */
 		global $media_cloud_licensing;
 		if ($media_cloud_licensing->is__premium_only()) {

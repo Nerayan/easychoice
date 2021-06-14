@@ -41,6 +41,7 @@ use MediaCloud\Vendor\GuzzleHttp\Exception\RequestException;
 use MediaCloud\Vendor\Smalot\PdfParser\Parser;
 use function MediaCloud\Plugin\Utilities\arrayPath;
 use function MediaCloud\Plugin\Utilities\gen_uuid;
+use function MediaCloud\Plugin\Utilities\ilab_set_time_limit;
 use function MediaCloud\Plugin\Utilities\typeFromMeta;
 
 if(!defined('ABSPATH')) {
@@ -286,9 +287,14 @@ class StorageTool extends Tool {
 			if (is_admin()) {
 				if (empty(get_option('uploads_use_yearmonth_folders')) && empty(StorageToolSettings::prefixFormat())) {
 					$mediaUrl = ilab_admin_url('options-media.php');
-					$settingsUrl = ilab_admin_url('admin.php?page=media-cloud-settings-storage#upload-handling');
+					$settingsUrl = ilab_admin_url('admin.php?page=media-cloud-settings#upload-handling');
 					NoticeManager::instance()->displayAdminNotice('warning', "You have the WordPress setting <a href='$mediaUrl'><strong>Organize my uploads into month and year based folders</strong></a> disabled, but haven't specified an <em>Upload Path</em> in <a href='$settingsUrl'>Cloud Storage Settings</a>.  It is recommended that you either enable that setting, or set an upload directory.  We recommend setting the <em>Upload Path</em> to <code>@{date:Y/m}</code>.", true, 'mcloud-no-upload-path', 365);
 				}
+
+				if (!empty($this->settings->replaceSrcSet)) {
+					$settingsUrl = ilab_admin_url('admin.php?page=media-cloud-settings#responsive-image-settings');
+					NoticeManager::instance()->displayAdminNotice('warning', "You currently have the option <strong>Replace srcset on image tags</strong> enabled.  This setting is being deprecated and will be removed in the future.  You should disable it now in <a href='$settingsUrl'>Cloud Storage Settings</a>.  If you run into any issues, please let us know.", true, 'mcloud-deprecated-replace-srcset', 365);
+                }
 			}
 
 			$this->contentHooks = new StorageContentHooks($this);
@@ -495,7 +501,7 @@ class StorageTool extends Tool {
 		}
 
 		if (!empty($privacyErrors)) {
-		    NoticeManager::instance()->displayGroupedAdminNotices('warning', $privacyErrors);
+		    NoticeManager::instance()->displayGroupedAdminNotices('warning', $privacyErrors, true, 'privacy-errors-url-signing');
 		}
 	}
 
@@ -2642,7 +2648,7 @@ TEMPLATE;
 		    return $editors;
 	    });
 
-	    @set_time_limit(0);
+	    ilab_set_time_limit(0);
 
 	    $originalImagePath = $fullsizepath = wp_get_original_image_path($postId, true);
 	    $originalImageBasePath = pathinfo($originalImagePath, PATHINFO_DIRNAME);
@@ -3320,7 +3326,7 @@ TEMPLATE;
 	//endregion
 
     //region File List
-    public function getFileList($directoryKeys = [''], $skipThumbnails = false, $limit = -1, $next = null) {
+    public function getFileList($directoryKeys = [''], $skipThumbnails = false, $limit = -1, $next = null, $recursive = false) {
 	    $tempFileList = [];
 	    $nextToken = null;
 	    foreach($directoryKeys as $key) {
@@ -3331,7 +3337,7 @@ TEMPLATE;
 				    }
 			    }
 
-			    $res = $this->client()->ls($key, '/', $limit, $next);
+			    $res = $this->client()->ls($key, '/', $limit, $next, $recursive);
 			    $nextToken = $res['next'];
 			    $tempFileList = $res['files'];
 		    } else {

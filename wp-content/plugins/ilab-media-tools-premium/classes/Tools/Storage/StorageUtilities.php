@@ -22,6 +22,7 @@ use MediaCloud\Vendor\GuzzleHttp\Exception\RequestException;
 use function MediaCloud\Plugin\Utilities\arrayPath;
 use function MediaCloud\Plugin\Utilities\disableHooks;
 use function MediaCloud\Plugin\Utilities\gen_uuid;
+use function MediaCloud\Plugin\Utilities\ilab_set_time_limit;
 use function MediaCloud\Plugin\Utilities\postIdExists;
 
 class StorageUtilities {
@@ -688,7 +689,7 @@ class StorageUtilities {
 			    wp_send_json(['status' => 'error', 'message' => 'Missing or invalid post ID.'], 400);
 		    }
 
-		    @set_time_limit(0);
+		    ilab_set_time_limit(0);
 		    add_filter('media-cloud/storage/ignore-optimizers', '__return_true');
 		    add_filter('media-cloud/vision/allow-background', '__return_false');
 

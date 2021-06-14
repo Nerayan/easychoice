@@ -13,6 +13,7 @@
 
 namespace MediaCloud\Plugin\Tools\Integrations\PlugIns\BuddyPress;
 
+use MediaCloud\Plugin\Tools\Integrations\PlugIns\BuddyPress\Tasks\BuddyPressDeleteTask;
 use MediaCloud\Plugin\Tools\Storage\StorageGlobals;
 use MediaCloud\Plugin\Tasks\TaskSchedule;
 use MediaCloud\Plugin\Tools\Imgix\ImgixTool;
@@ -32,10 +33,16 @@ final class BuddyPressMap {
 	private static $urlCache = [];
 	private static $objectCache = [];
 
+	private static $scheme = null;
+
 	/**
 	 * Insures the additional database tables are installed
 	 */
 	public static function init() {
+		if (static::$scheme === null) {
+			static::$scheme = parse_url(home_url(), PHP_URL_SCHEME).'://';
+		}
+
 		static::verifyInstalled();
 	}
 
@@ -152,6 +159,8 @@ final class BuddyPressMap {
 	 * @throws \MediaCloud\Plugin\Tools\Storage\StorageException
 	 */
 	public static function mapURL($url, $objectKey = null) {
+		$url = str_replace((static::$scheme === 'https://') ? 'http://' : 'https://', static::$scheme, $url);
+
 		if (!empty($objectKey) && isset(static::$objectCache[$objectKey])) {
 			return static::$objectCache[$objectKey];
 		}
@@ -203,6 +212,34 @@ final class BuddyPressMap {
 	}
 
 	/**
+	 * Copies a mapping from one key to another
+	 *
+	 * @param $oldObjectKey
+	 * @param $newObjectKey
+	 */
+	public static function copyMap($oldObjectKey, $newObjectKey) {
+		if (!static::verifyInstalled()) {
+			return;
+		}
+
+		global $wpdb;
+
+		$tableName = $wpdb->base_prefix.self::TABLE_NAME;
+
+		$record = $wpdb->get_results($wpdb->prepare("select * from {$tableName} where object_key = %s", $oldObjectKey), ARRAY_A);
+		if (empty($record)) {
+			return;
+		}
+
+		$oldId = $record[0]['id'];
+		unset($record[0]['id']);
+		$record[0]['object_key'] = $newObjectKey;
+
+		$wpdb->insert($tableName, $record[0]);
+		$wpdb->delete($tableName, ['id' => $oldId]);
+	}
+
+	/**
 	 * Updates the map with cloud storage info
 	 *
 	 * @param string $url
@@ -217,6 +254,8 @@ final class BuddyPressMap {
 		if (!static::verifyInstalled()) {
 			return null;
 		}
+
+		$url = str_replace((static::$scheme === 'https://') ? 'http://' : 'https://', static::$scheme, $url);
 
 		global $wpdb;
 

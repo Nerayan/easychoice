@@ -53,7 +53,7 @@ class SmartSliderIntegration {
 
 	public function filterContent($content) {
 		$html = new HTML5DOMDocument();
-		$html->loadHTML($content);
+		$html->loadHTML($content, HTML5DOMDocument::ALLOW_DUPLICATE_IDS);
 
 
 		/** @var HTML5DOMNodeList $nodes */

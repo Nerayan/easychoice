@@ -13,12 +13,6 @@
 
 namespace MediaCloud\Plugin\Tools\Integrations\PlugIns;
 
-use MediaCloud\Plugin\Tools\Storage\StorageToolSettings;
-use MediaCloud\Plugin\Tools\Imgix\ImgixTool;
-use MediaCloud\Plugin\Tools\Storage\StorageTool;
-use MediaCloud\Plugin\Tools\ToolsManager;
-use function MediaCloud\Plugin\Utilities\gen_uuid;
-
 if (!defined( 'ABSPATH')) { header( 'Location: /'); die; }
 
 class WooCommerceProductSearchIntegration {

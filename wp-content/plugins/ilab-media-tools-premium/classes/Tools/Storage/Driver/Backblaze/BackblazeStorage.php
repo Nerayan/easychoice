@@ -375,7 +375,7 @@ class BackblazeStorage implements StorageInterface, AuthCacheInterface, Configur
 		];
 	}
 
-	public function ls($path = '', $delimiter = '/', $limit = -1, $next = null) {
+	public function ls($path = '', $delimiter = '/', $limit = -1, $next = null, $recursive = false) {
 		if(!$this->client) {
 			throw new InvalidStorageSettingsException('Storage settings are invalid');
 		}
@@ -431,7 +431,7 @@ class BackblazeStorage implements StorageInterface, AuthCacheInterface, Configur
 	//endregion
 
 	//region URLs
-	public function presignedUrl($key, $expiration = 0) {
+	public function presignedUrl($key, $expiration = 0, $options = []) {
 		return $this->bucketUrl.$key;
 	}
 
