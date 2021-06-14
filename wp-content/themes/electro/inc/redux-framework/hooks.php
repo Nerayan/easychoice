@@ -12,7 +12,8 @@ add_filter( 'electro_enable_scrollup',                         'redux_toggle_scr
 add_filter( 'electro_register_image_sizes',                    'redux_toggle_register_image_size',             10 );
 add_filter( 'electro_load_child_theme',                        'redux_toggle_electro_child_style',             10 );
 add_filter( 'electro_home_sidebar_margin_top',                 'redux_apply_home_sidebar_margin_top',          10 );
-add_filter( 'electro_is_wide_enabled',                         'redux_wide_enabled',                           10 );
+add_filter( 'electro_is_dark_enabled',                         'redux_dark_enabled',                           10 );
+add_filter( 'electro_enable_mode_switcher',                    'redux_mode_switcher_enabled',                  10 );
 
 // Shop Filters
 add_filter( 'electro_shop_catalog_mode',                       'redux_toggle_shop_catalog_mode',                10 );
@@ -132,11 +133,12 @@ add_filter( 'electro_mobile_footer_v2_light_bg',        'redux_toggle_handheld_f
 add_filter( 'electro_show_mobile_footer_bottom_widgets','redux_toggle_mobile_footer_bottom_widgets',    10 );
 
 // Navigation Filters
-add_filter( 'electro_primary-nav_dropdown_trigger',            'redux_apply_dropdown_trigger',                  10, 2 );
-add_filter( 'electro_secondary-nav_dropdown_trigger',          'redux_apply_dropdown_trigger',                  10, 2 );
-add_filter( 'electro_navbar-primary_dropdown_trigger',         'redux_apply_dropdown_trigger',                  10, 2 );
-add_filter( 'electro_topbar-left_dropdown_trigger',            'redux_apply_dropdown_trigger',                  10, 2 );
-add_filter( 'electro_topbar-right_dropdown_trigger',           'redux_apply_dropdown_trigger',                  10, 2 );
+add_filter( 'electro_primary-nav_dropdown_trigger',            'redux_apply_dropdown_trigger',          10, 2 );
+add_filter( 'electro_secondary-nav_dropdown_trigger',          'redux_apply_dropdown_trigger',          10, 2 );
+add_filter( 'electro_navbar-primary_dropdown_trigger',         'redux_apply_dropdown_trigger',          10, 2 );
+add_filter( 'electro_topbar-left_dropdown_trigger',            'redux_apply_dropdown_trigger',          10, 2 );
+add_filter( 'electro_topbar-right_dropdown_trigger',           'redux_apply_dropdown_trigger',          10, 2 );
+add_filter( 'electro_header-v9-navbar_dropdown_trigger',       'redux_apply_dropdown_trigger',          10, 2 );
 
 // Blog Filters
 add_filter( 'electro_blog_style',                              'redux_apply_blog_page_view',                    10 );

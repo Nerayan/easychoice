@@ -1,6 +1,7 @@
 <?php
 namespace Itgalaxy\Wc\Exchange1c\ExchangeProcess;
 
+use Itgalaxy\Wc\Exchange1c\ExchangeProcess\Responses\FailureResponse;
 use Itgalaxy\Wc\Exchange1c\Includes\Bootstrap;
 use Itgalaxy\Wc\Exchange1c\Includes\Helper;
 use Itgalaxy\Wc\Exchange1c\Includes\Logger;
@@ -74,11 +75,9 @@ class RootProcessStarter
                 throw new \Exception('unknown, empty or no handlers for this type');
             }
         } catch (\Exception $error) {
-            self::failureResponse($error->getMessage());
-            Logger::logProtocol('failure - ' . $error->getMessage());
+            FailureResponse::send($error->getMessage());
         } catch (\Throwable $error) {
-            self::failureResponse($error->getMessage());
-            Logger::logProtocol('failure - ' . $error->getMessage(), $error);
+            FailureResponse::send($error->getMessage(), $error);
         }
 
         Logger::endProcessingRequestLogProtocolEntry();
@@ -104,21 +103,6 @@ class RootProcessStarter
         return self::$exchangeFileAbsolutePath;
     }
 
-    public static function failureResponse($message)
-    {
-        echo "failure\n" . esc_html($message);
-
-        Logger::saveLastResponseInfo('failure - ' . $message);
-    }
-
-    public static function successResponse($message = '')
-    {
-        echo "success\n" . $message;
-        // escape ok
-
-        Logger::saveLastResponseInfo('success - ' . $message);
-    }
-
     public function shutdownPhp()
     {
         $error = error_get_last();
@@ -127,8 +111,7 @@ class RootProcessStarter
             return;
         }
 
-        self::failureResponse($error['message']);
-        Logger::logProtocol('failure', $error);
+        FailureResponse::send($error['message'], $error);
     }
 
     private function sentHeaders()
@@ -195,14 +178,14 @@ class RootProcessStarter
         }
 
         if (
-            empty($_SERVER['PHP_AUTH_USER']) ||
+            empty($_SERVER['PHP_AUTH_USER']) &&
             empty($_SERVER['PHP_AUTH_PW'])
         ) {
             $this->fixCgiAuth();
         }
 
         if (
-            empty($_SERVER['PHP_AUTH_USER']) ||
+            empty($_SERVER['PHP_AUTH_USER']) &&
             empty($_SERVER['PHP_AUTH_PW'])
         ) {
             throw new \Exception(

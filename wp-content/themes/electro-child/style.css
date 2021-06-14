@@ -95,6 +95,11 @@
 	color: #fff;
 }
 
+.header-icons {
+	display: flex;
+    max-width: 270px;
+}
+
 .primary-nav-menu .sale a,
 .secondary-nav-menu .sale a {
 	color: red !important;

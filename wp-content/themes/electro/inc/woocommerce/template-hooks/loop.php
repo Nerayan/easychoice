@@ -37,7 +37,6 @@ add_action( 'woocommerce_after_shop_loop_item_title', 'woocommerce_template_loop
 add_action( 'woocommerce_after_shop_loop_item_title', 'electro_template_loop_body_close', 96 );
 
 add_action( 'woocommerce_after_shop_loop_item_title', 'electro_template_loop_footer_open', 98 );
-add_action( 'woocommerce_after_shop_loop_item_title', 'electro_wc_template_loop_sale', 99 );
 add_action( 'woocommerce_after_shop_loop_item_title', 'electro_wrap_price_and_add_to_cart', 100 );
 add_action( 'woocommerce_after_shop_loop_item_title', 'woocommerce_template_loop_price', 110 );  
 add_action( 'woocommerce_after_shop_loop_item_title', 'woocommerce_template_loop_add_to_cart', 120 );

@@ -30,7 +30,9 @@ class SectionNomenclatureExchangeConfigure
                                 'The maximum size of the part of the exchange files transmitted from 1C (in bytes).',
                                 'itgalaxy-woocommerce-1c'
                             ),
-                            'default' => 1000000
+                            'default' => 1000000,
+                            'fieldsetStart' => true,
+                            'legend' => esc_html__('Exchange parameters', 'itgalaxy-woocommerce-1c')
                         ],
                         'time_limit' => [
                             'type' => 'number',
@@ -48,7 +50,8 @@ class SectionNomenclatureExchangeConfigure
                             'description' => esc_html__(
                                 'If enabled, the exchange takes place through a zip archive.',
                                 'itgalaxy-woocommerce-1c'
-                            )
+                            ),
+                            'fieldsetEnd' => true
                         ],
                         'remove_missing_products' => [
                             'type' => 'checkbox',
@@ -95,7 +98,10 @@ class SectionNomenclatureExchangeConfigure
                                 'If enabled, the title of the product will be recorded not "Name" and "Full Name" '
                                 . 'of the details of the products.',
                                 'itgalaxy-woocommerce-1c'
-                            )
+                            ),
+                            'fieldsetStart' => true,
+                            'legend' => esc_html__('Product title', 'itgalaxy-woocommerce-1c'),
+                            'fieldsetEnd' => true
                         ],
                         'products_stock_null_rule' => [
                             'type' => 'select',
@@ -127,7 +133,9 @@ class SectionNomenclatureExchangeConfigure
                             'description' => esc_html__(
                                 'Only products with a non-empty price can be opened.',
                                 'itgalaxy-woocommerce-1c'
-                            )
+                            ),
+                            'fieldsetStart' => true,
+                            'legend' => esc_html__('Stock actions', 'itgalaxy-woocommerce-1c')
                         ],
                         'products_onbackorder_stock_positive_rule' => [
                             'type' => 'select',
@@ -145,7 +153,8 @@ class SectionNomenclatureExchangeConfigure
                                     'Allow',
                                     'itgalaxy-woocommerce-1c'
                                 )
-                            ]
+                            ],
+                            'fieldsetEnd' => true
                         ],
                         'write_product_description_in_excerpt' => [
                             'type' => 'checkbox',
@@ -157,7 +166,9 @@ class SectionNomenclatureExchangeConfigure
                                 'If enabled, the product description will be written in a short description '
                                 . '(post_excerpt).',
                                 'itgalaxy-woocommerce-1c'
-                            )
+                            ),
+                            'fieldsetStart' => true,
+                            'legend' => esc_html__('Product description', 'itgalaxy-woocommerce-1c')
                         ],
                         'use_html_description' => [
                             'type' => 'checkbox',
@@ -184,7 +195,8 @@ class SectionNomenclatureExchangeConfigure
                                 . 'in the upload, if the file exists. If there is a file, then data from "Описание" '
                                 . 'will be written into a excerpt description.',
                                 'itgalaxy-woocommerce-1c'
-                            )
+                            ),
+                            'fieldsetEnd' => true
                         ],
                         'get_product_sku_from' => [
                             'type' => 'select',
@@ -217,7 +229,7 @@ class SectionNomenclatureExchangeConfigure
                         'find_exists_attribute_by_name' => [
                             'type' => 'checkbox',
                             'title' => esc_html__(
-                                'An attempt to search for basic (for products) attributes by name',
+                                'An attempt to search for basic (generated from properties) attributes by name',
                                 'itgalaxy-woocommerce-1c'
                             ),
                             'description' => esc_html__(
@@ -230,13 +242,28 @@ class SectionNomenclatureExchangeConfigure
                         'find_exists_attribute_value_by_name' => [
                             'type' => 'checkbox',
                             'title' => esc_html__(
-                                'An attempt to search for basic (for products) attribute values by name',
+                                'An attempt to search for basic (generated from properties) attribute values by name',
                                 'itgalaxy-woocommerce-1c'
                             ),
                             'description' => esc_html__(
                                 'If enabled, then the plugin tries to find the attribute value by name, if it is not '
                                 . 'found by ID from 1C. It may be useful if the site already has attribute values and, in '
                                 . 'order not to create everything again, you can make their first link by name.',
+                                'itgalaxy-woocommerce-1c'
+                            )
+                        ],
+                        'merge_properties_with_same_name' => [
+                            'type' => 'checkbox',
+                            'title' => esc_html__(
+                                'Merge properties with the same name',
+                                'itgalaxy-woocommerce-1c'
+                            ),
+                            'description' => esc_html__(
+                                'If enabled, properties (both basic and for offers) with the same name will be merged'
+                                . 'into one final attribute. This will be useful when nomenclature categories are '
+                                . 'applied and, as a result, several properties are obtained in the unloading and on'
+                                . 'the basis of them separate attributes are created, which is true in structure, '
+                                . 'but in reality it interferes and looks like duplicates.',
                                 'itgalaxy-woocommerce-1c'
                             )
                         ],
@@ -320,28 +347,6 @@ class SectionNomenclatureExchangeConfigure
                     'title' => esc_html__('Skipping / excluding data', 'itgalaxy-woocommerce-1c'),
                     'id' => 'nomenclature-skipping-data',
                     'fields' => [
-                        'skip_product_prices' => [
-                            'type' => 'checkbox',
-                            'title' => esc_html__(
-                                'Skip product prices',
-                                'itgalaxy-woocommerce-1c'
-                            ),
-                            'description' => esc_html__(
-                                'If enabled, prices will not be writed or modified.',
-                                'itgalaxy-woocommerce-1c'
-                            )
-                        ],
-                        'skip_product_stocks' => [
-                            'type' => 'checkbox',
-                            'title' => esc_html__(
-                                'Skip product stocks',
-                                'itgalaxy-woocommerce-1c'
-                            ),
-                            'description' => esc_html__(
-                                'If enabled, stocks will not be writed or modified.',
-                                'itgalaxy-woocommerce-1c'
-                            )
-                        ],
                         'skip_products_without_photo' => [
                             'type' => 'checkbox',
                             'title' => esc_html__(
@@ -362,7 +367,9 @@ class SectionNomenclatureExchangeConfigure
                             'description' => esc_html__(
                                 'If enabled, description and except will not be writed or modified.',
                                 'itgalaxy-woocommerce-1c'
-                            )
+                            ),
+                            'fieldsetStart' => true,
+                            'legend' => esc_html__('Main product data', 'itgalaxy-woocommerce-1c')
                         ],
                         'skip_post_title' => [
                             'type' => 'checkbox',
@@ -420,6 +427,31 @@ class SectionNomenclatureExchangeConfigure
                                 'If enabled, the product attributes will be writed when the product is created and '
                                 . 'will no longer be changed according to the upload data.',
                                 'itgalaxy-woocommerce-1c'
+                            ),
+                            'fieldsetEnd' => true
+                        ],
+                        'skip_product_prices' => [
+                            'type' => 'checkbox',
+                            'title' => esc_html__(
+                                'Skip product prices',
+                                'itgalaxy-woocommerce-1c'
+                            ),
+                            'description' => esc_html__(
+                                'If enabled, prices will not be writed or modified.',
+                                'itgalaxy-woocommerce-1c'
+                            ),
+                            'fieldsetStart' => true,
+                            'legend' => esc_html__('Offers data (price, stock, offer characteristics)', 'itgalaxy-woocommerce-1c')
+                        ],
+                        'skip_product_stocks' => [
+                            'type' => 'checkbox',
+                            'title' => esc_html__(
+                                'Skip product stocks',
+                                'itgalaxy-woocommerce-1c'
+                            ),
+                            'description' => esc_html__(
+                                'If enabled, stocks will not be writed or modified.',
+                                'itgalaxy-woocommerce-1c'
                             )
                         ],
                         'skip_update_set_attribute_for_variations' => [
@@ -432,7 +464,8 @@ class SectionNomenclatureExchangeConfigure
                                 'If enabled, then the set of attributes that are used for the variations will be writed when '
                                 . 'the product is created and will no longer be changed according to the upload data.',
                                 'itgalaxy-woocommerce-1c'
-                            )
+                            ),
+                            'fieldsetEnd' => true
                         ],
                         'skip_product_cat_name' => [
                             'type' => 'checkbox',
@@ -444,7 +477,9 @@ class SectionNomenclatureExchangeConfigure
                                 'If enabled, the category name will be writed when the category is created and '
                                 . 'will no longer be changed according to the upload data.',
                                 'itgalaxy-woocommerce-1c'
-                            )
+                            ),
+                            'fieldsetStart' => true,
+                            'legend' => esc_html__('Categories', 'itgalaxy-woocommerce-1c')
                         ],
                         'skip_categories' => [
                             'type' => 'checkbox',
@@ -457,7 +492,8 @@ class SectionNomenclatureExchangeConfigure
                                 . 'data about groups from 1C, and the category will not be assigned / changed to '
                                 . 'products.',
                                 'itgalaxy-woocommerce-1c'
-                            )
+                            ),
+                            'fieldsetEnd' => true
                         ],
                     ]
                 ]

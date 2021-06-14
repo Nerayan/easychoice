@@ -237,7 +237,7 @@ class StorageContentHooks {
 		}
 
 		if (preg_match_all('/(<figure(.*)(?=<\/figure>))/m', $content, $figures)) {
-			Logger::info("Found ".count($figures[0])." gutenberg figures.");
+			Logger::info("Found ".count($figures[0])." gutenberg figures.", [], __METHOD__, __LINE__);
 
 			foreach($figures[0] as $figureMatch) {
 				if (preg_match('/<figure(?:.*)class\s*=\s*(?:.*)wp-block-image(?:.*)size-([aA-zZ0-9-_.]+)/', $figureMatch, $sizeMatches)) {
@@ -263,13 +263,13 @@ class StorageContentHooks {
 								Logger::info("Image tag missing src attribute: {$imageTagMatch[0]}", [], __METHOD__, __LINE__);
 							}
 						} else {
-							Logger::info("Figure missing img tag: $figureMatch", [], __METHOD__, __LINE__);
+							Logger::warning("Figure missing img tag: $figureMatch", [], __METHOD__, __LINE__);
 						}
 					} else {
-						Logger::info("Figure missing wp-image class: $figureMatch", [], __METHOD__, __LINE__);
+						Logger::warning("Figure missing wp-image class: $figureMatch", [], __METHOD__, __LINE__);
 					}
 				} else {
-					Logger::info("Figure missing wp-block-image or size class: $figureMatch", [], __METHOD__, __LINE__);
+					Logger::warning("Figure missing wp-block-image or size class: $figureMatch", [], __METHOD__, __LINE__);
 				}
 			}
 		}
@@ -545,7 +545,7 @@ class StorageContentHooks {
 			$imageFound = false;
 
 			if (!preg_match($srcRegex, $image, $srcMatches) || (strpos($image, 'mcloud-attachment-') !== false)) {
-				Logger::info("Image tag has no src attribute or is missing mcloud-attachment class: ".$image, [], __METHOD__, __LINE__);
+				Logger::warning("Image tag has no src attribute or is missing mcloud-attachment class: ".$image, [], __METHOD__, __LINE__);
 				continue;
 			}
 
@@ -568,7 +568,7 @@ class StorageContentHooks {
 				}
 
 				if (!empty($id) && empty($size)) {
-					Logger::info("Found ID '$id' but no size for image tag: ".$image, [], __METHOD__, __LINE__);
+					Logger::warning("Found ID '$id' but no size for image tag: ".$image, [], __METHOD__, __LINE__);
 
 					if (preg_match('/sizes=[\'"]+\(max-(width|height)\:\s*([0-9]+)px/m', $image, $sizeMatches)) {
 						$which = $sizeMatches[1];
@@ -596,11 +596,11 @@ class StorageContentHooks {
 
 								if (empty($size)) {
 									$size = 'full';
-									Logger::info("Could not find size for image tag, using full: ".$image, [], __METHOD__, __LINE__);
+									Logger::warning("Could not find size for image tag, using full: ".$image, [], __METHOD__, __LINE__);
 								}
 							} else {
 								$size = 'full';
-								Logger::info("Could not find size for image tag, using full: ".$image, [], __METHOD__, __LINE__);
+								Logger::warning("Could not find size for image tag, using full: ".$image, [], __METHOD__, __LINE__);
 							}
 						}
 					}
@@ -618,7 +618,7 @@ class StorageContentHooks {
 					];
 				}
 			} else {
-				Logger::info("Image tag has no class attribute: ".$image, [], __METHOD__, __LINE__);
+				Logger::warning("Image tag has no class attribute: ".$image, [], __METHOD__, __LINE__);
 			}
 
 			if (!$imageFound && !empty($this->settings->replaceAllImageUrls)) {
@@ -661,14 +661,14 @@ class StorageContentHooks {
 							];
 						}
 					} else {
-						Logger::info("Unable to map URL to post ID using attachment_url_to_postid(): ".$image, [], __METHOD__, __LINE__);
+						Logger::warning("Unable to map URL to post ID using attachment_url_to_postid(): ".$image, [], __METHOD__, __LINE__);
 						$this->addToReport(null, 'Image', $matchedUrl, null, 'Unable to map URL to post ID.');
 					}
 				} else {
-					Logger::info("Unable to map URL to post ID, no regex match $imageRegex: ".$image, [], __METHOD__, __LINE__);
+					Logger::warning("Unable to map URL to post ID, no regex match $imageRegex: ".$image, [], __METHOD__, __LINE__);
 				}
 			} else if (!$imageFound) {
-				Logger::info("Unable to map URL to post ID: ".$image, [], __METHOD__, __LINE__);
+				Logger::warning("Unable to map URL to post ID: ".$image, [], __METHOD__, __LINE__);
 				$this->addToReport(null, 'Image', $src, null, 'Unable to map URL to post ID.');
 			}
 		}
@@ -737,12 +737,10 @@ class StorageContentHooks {
 	 * @return int|null
 	 */
 	private function getShortCodeSource($url, $type='Video'): ?int {
-		$uploadDir = wp_get_upload_dir();
-		$baseFile = ltrim(str_replace($uploadDir['baseurl'], '', $url), '/');
+		$baseFile = ltrim(parse_url($url, PHP_URL_PATH), '/');
 
 		if (empty($baseFile)) {
 			$this->addToReport(null, $type, $url, null, 'Base file is empty.');
-
 			return null;
 		}
 
@@ -750,9 +748,15 @@ class StorageContentHooks {
 		$query = $wpdb->prepare("select post_id from {$wpdb->postmeta} where meta_key='_wp_attached_file' and meta_value = %s", $baseFile);
 		$postId = $wpdb->get_var($query);
 		if (empty($postId)) {
-			$this->addToReport(null, $type, $url, null, 'Could not map URL to post ID.');
+			$this->addToReport(null, $type, $url, null, 'Could not map URL to post ID with exact match.');
 
-			return null;
+			$query = $wpdb->prepare("select post_id from {$wpdb->postmeta} where meta_key='_wp_attached_file' and meta_value like %s", '%'.$baseFile);
+			$postId = $wpdb->get_var($query);
+			if (empty($postId)) {
+				$this->addToReport(null, $type, $url, null, 'Could not map URL to post ID with like match.');
+
+				return null;
+			}
 		}
 
 		return $postId;
@@ -768,7 +772,7 @@ class StorageContentHooks {
 	 * @return string
 	 * @throws StorageException
 	 */
-	public function filterVideoShortcode(string $output, array $atts, ?string $video, ?int $post_id, ?string $library): string {
+	public function filterVideoShortcode($output, $atts, $video, $post_id, $library) {
 		if (isset($atts['src'])) {
 			$default_types = wp_get_video_extensions();
 			$postId = null;
@@ -831,7 +835,7 @@ class StorageContentHooks {
 	 * @return string
 	 * @throws StorageException
 	 */
-	public function filterAudioShortcode(string $output, array $atts, ?string $audio, ?int $post_id, ?string $library): string {
+	public function filterAudioShortcode($output, $atts, $audio, $post_id, $library) {
 		if (isset($atts['src'])) {
 			$default_types = wp_get_audio_extensions();
 			$postId = null;

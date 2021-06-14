@@ -59,7 +59,7 @@ class BrowserTool extends Tool {
 
 	}
 
-	public function registerMenu($top_menu_slug, $networkMode = false, $networkAdminMenu = false) {
+	public function registerMenu($top_menu_slug, $networkMode = false, $networkAdminMenu = false, $tool_menu_slug = null) {
 		parent::registerMenu($top_menu_slug);
 
 		if ($this->enabled()) {
@@ -71,7 +71,7 @@ class BrowserTool extends Tool {
 
 			ToolsManager::instance()->insertToolSeparator();
 			$this->options_page = 'media-tools-storage-browser';
-			add_submenu_page($top_menu_slug, 'Media Cloud Storage Browser', 'Storage Browser', 'manage_options', 'media-tools-storage-browser', [
+			add_submenu_page(!empty($tool_menu_slug) ? $tool_menu_slug : $top_menu_slug, 'Media Cloud Storage Browser', 'Storage Browser', 'manage_options', 'media-tools-storage-browser', [
 				$this,
 				'renderBrowser'
 			]);

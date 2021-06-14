@@ -8,9 +8,21 @@ $general_options 	= apply_filters( 'electro_general_options_args', array(
 	'title'		=> esc_html__( 'General', 'electro' ),
 	'icon'		=> 'far fa-dot-circle',
 	'fields'	=> array(
+
 		array(
-			'title'		=> esc_html__( 'Electro Wide', 'electro' ),
-			'id'		=> 'wide_enabled',
+			'title'		=> esc_html__( 'Website Mode', 'electro' ),
+			'subtitle'  => esc_html__( 'Choose if you want to use light mode or dark mode for your website by default', 'electro' ),
+			'id'		=> 'dark_enabled',
+			'type'		=> 'switch',
+			'on'		=> esc_html__('Dark', 'electro'),
+			'off'		=> esc_html__('Light', 'electro'),
+			'default'	=> 0,
+		),
+
+		array(
+			'title'		=> esc_html__( 'Show mode switcher', 'electro' ),
+			'subtitle'  => esc_html( 'Select if you want to show a mode switcher in your frontend', 'electro' ),
+			'id'		=> 'mode_switcher_enabled',
 			'type'		=> 'switch',
 			'on'		=> esc_html__('Enabled', 'electro'),
 			'off'		=> esc_html__('Disabled', 'electro'),

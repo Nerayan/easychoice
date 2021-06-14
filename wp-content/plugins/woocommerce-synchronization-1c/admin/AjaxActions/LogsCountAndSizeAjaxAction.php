@@ -83,13 +83,15 @@ class LogsCountAndSizeAjaxAction
             return esc_html__('(no files)', 'itgalaxy-woocommerce-1c');
         }
 
-        return sprintf(
-            esc_html__(
-                '(files - %d, size - %s MB)',
-                'itgalaxy-woocommerce-1c'
-            ),
-            $countFiles,
-            round($size / 1024 / 1024, 2) // show value in megabytes
-        );
+        return '<strong>'
+            . sprintf(
+                esc_html__(
+                    '(files - %d, size - %s MB)',
+                    'itgalaxy-woocommerce-1c'
+                ),
+                $countFiles,
+                round($size / 1024 / 1024, 2) // show value in megabytes
+            )
+            . '</strong>';
     }
 }

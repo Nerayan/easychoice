@@ -6,7 +6,7 @@
     'aliases' => 
     array (
     ),
-    'reference' => 'f4dd20ab62b6279da658cfc7f56bd2fb22d69de1',
+    'reference' => '2d57841992b6376c683a2defe0832d13b6ca2b07',
     'name' => 'itgalaxy/woocommerce-synchronization-1c',
   ),
   'versions' => 
@@ -27,7 +27,7 @@
       'aliases' => 
       array (
       ),
-      'reference' => 'f4dd20ab62b6279da658cfc7f56bd2fb22d69de1',
+      'reference' => '2d57841992b6376c683a2defe0832d13b6ca2b07',
     ),
     'monolog/monolog' => 
     array (
@@ -53,6 +53,15 @@
       array (
         0 => '1.0.0',
       ),
+    ),
+    'symfony/polyfill-mbstring' => 
+    array (
+      'pretty_version' => 'v1.19.0',
+      'version' => '1.19.0.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => 'b5f7b932ee6fa802fc792eabd77c4c88084517ce',
     ),
   ),
 );

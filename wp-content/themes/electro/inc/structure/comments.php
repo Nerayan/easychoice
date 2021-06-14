@@ -33,13 +33,13 @@ if ( ! function_exists( 'electro_comment' ) ) {
 		}
 		?>
 		<<?php echo esc_attr( $tag ); ?> <?php comment_class( empty( $args['has_children'] ) ? '' : 'parent' ) ?> id="comment-<?php comment_ID() ?>">
-			<div class="media">
+			<div class="media d-md-flex">
 				<div class="gravatar-wrapper media-left">
-					<?php echo get_avatar( $comment, 100 ); ?>			
+					<?php echo get_avatar( $comment, 100 ); ?>
 				</div>
 
-				<div class="comment-body media-body">
-					
+				<div class="comment-body media-body flex-grow-1">
+
 					<?php if ( 'div' != $args['style'] ) : ?>
 					<div id="div-comment-<?php comment_ID() ?>" class="comment-content">
 					<?php endif; ?>
@@ -56,7 +56,7 @@ if ( ! function_exists( 'electro_comment' ) ) {
 						</div>
 						<?php if ( '0' == $comment->comment_approved ) : ?>
 							<em class="comment-awaiting-moderation"><?php esc_html_e( 'Your comment is awaiting moderation.', 'electro' ); ?></em>
-							
+
 						<?php endif; ?>
 
 						<div class="date">
@@ -64,15 +64,15 @@ if ( ! function_exists( 'electro_comment' ) ) {
 								<?php echo '<time>' . get_comment_date() . '</time>'; ?>
 							</a>
 						</div>
-						
+
 						<div class="reply">
 							<?php edit_comment_link( esc_html__( 'Edit', 'electro' ), '  ', '' ); ?>
-							<?php comment_reply_link( array_merge( $args, array( 'add_below' => $add_below, 'depth' => $depth, 'max_depth' => $args['max_depth'] ) ) ); ?>				
+							<?php comment_reply_link( array_merge( $args, array( 'add_below' => $add_below, 'depth' => $depth, 'max_depth' => $args['max_depth'] ) ) ); ?>
 						</div>
 					</div>
-		
+
 				</div><!-- /.comment-body -->
-			</div><!-- /.media -->	
+			</div><!-- /.media -->
 	<?php
 	}
 }
@@ -110,7 +110,7 @@ if ( ! function_exists( 'electro_pings' ) ) {
 					</div>
 					<?php if ( '0' == $comment->comment_approved ) : ?>
 						<em class="comment-awaiting-moderation"><?php esc_html_e( 'Your comment is awaiting moderation.', 'electro' ); ?></em>
-						
+
 					<?php endif; ?>
 
 					<div class="date">
@@ -118,13 +118,13 @@ if ( ! function_exists( 'electro_pings' ) ) {
 							<?php echo '<time>' . get_comment_date() . '</time>'; ?>
 						</a>
 					</div>
-					
+
 					<div class="reply">
 						<?php edit_comment_link( esc_html__( 'Edit', 'electro' ), '  ', '' ); ?>
-						<?php comment_reply_link( array_merge( $args, array( 'add_below' => $add_below, 'depth' => $depth, 'max_depth' => $args['max_depth'] ) ) ); ?>				
+						<?php comment_reply_link( array_merge( $args, array( 'add_below' => $add_below, 'depth' => $depth, 'max_depth' => $args['max_depth'] ) ) ); ?>
 					</div>
 				</div>
-	
+
 			</div><!-- /.comment-body -->
 	<?php
 	}

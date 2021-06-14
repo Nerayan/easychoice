@@ -31,7 +31,23 @@ if ( ! class_exists( 'Electro_WooCommerce' ) ) :
 			add_filter( 'comments_template', 									array( $this, 'comments_template_loader' ), 20 );
 			add_filter( 'get_terms_orderby',									array( $this, 'orderby_slug_order' ), 10, 2 );
 			add_action( 'wp_enqueue_scripts', 									array( $this, 'woocommerce_scripts' ),	20 );
+			add_action( 'wp_enqueue_scripts',                                   array( $this, 'dequeue_flexslider' ), 200 );
 		}
+
+		 public function dequeue_flexslider() {
+            if ( is_rtl() && is_woocommerce_activated() ) {
+                wp_dequeue_script( 'flexslider' );
+
+                $flexslider = array(
+                    'handle'  => 'wc-flexslider',
+                    'src'     => plugins_url( 'assets/js/flexslider/jquery.flexslider.min.js' , WC_PLUGIN_FILE ),
+                    'deps'    => array( 'jquery' ),
+                    'version' => '2.7.2',
+                );
+                wp_register_script( $flexslider['handle'], $flexslider['src'], $flexslider['deps'], $flexslider['version'], true );
+                wp_enqueue_script( $flexslider['handle'] );
+            }
+        }
 
 		public function orderby_slug_order( $orderby, $args ) {
 			if ( isset( $args['orderby'] ) && 'include' == $args['orderby'] ) {

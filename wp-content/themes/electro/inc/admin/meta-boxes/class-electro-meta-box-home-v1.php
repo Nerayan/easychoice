@@ -65,7 +65,7 @@ class Electro_Meta_Box_Home_v1 {
 						'class'  => array(),
 					),
 					'tot_block' => array(
-						'label'  => electro_is_wide_enabled() ? esc_html__( '4-1-4 Products Block', 'electro' ) :esc_html__( '2-1-2 Products Block', 'electro' ),
+						'label'  => esc_html__( '4-1-4 Products Block', 'electro' ),
 						'target' => 'tot_block',
 						'class'  => array(),
 					),
@@ -122,7 +122,7 @@ class Electro_Meta_Box_Home_v1 {
 							'sdr'	=> esc_html__( 'Slider', 'electro' ),
 							'ad'	=> esc_html__( 'Ads Block', 'electro' ),
 							'dtd'	=> esc_html__( 'Deal and Tabs Block', 'electro' ),
-							'tot'	=> electro_is_wide_enabled() ? esc_html__( '4-1-4 Products Block', 'electro' ) :esc_html__( '2-1-2 Products Block', 'electro' ),
+							'tot'	=> esc_html__( '4-1-4 Products Block', 'electro' ),
 							'pcc'	=> esc_html__( 'Product Cards Carousel', 'electro' ),
 							'bd'	=> esc_html__( 'Banner', 'electro' ),
 							'pc'	=> esc_html__( 'Products Carousel', 'electro' ),
@@ -293,8 +293,6 @@ class Electro_Meta_Box_Home_v1 {
 				?>
 				</div>
 
-				<?php if ( electro_is_wide_enabled() ) : ?>
-
 				<?php electro_wp_legend( esc_html__( 'Ads Block 4', 'electro' ) ); ?>
 
 				<h5 class="options-group__title"><?php echo esc_html__( 'Appears only in Wide view', 'electro' ); ?></h5>
@@ -337,8 +335,7 @@ class Electro_Meta_Box_Home_v1 {
 						'value'			=> isset( $home_v1['ad'][3]['el_class'] ) ? $home_v1['ad'][3]['el_class'] : '',
 					) );
 				?>
-				</div>	
-				<?php endif; ?>
+				</div>
 			</div><!-- /#ads_block -->
 
 			<div id="deals_and_tabs" class="panel electro_options_panel">
@@ -418,6 +415,8 @@ class Electro_Meta_Box_Home_v1 {
 							'2'	=> '2',
 							'3'	=> '3',
 							'4'	=> '4',
+							'5' => '5',
+							'6' => '6'
 						),
 						'class'			=> 'columns_select',
 						'default'		=> '3',
@@ -427,7 +426,6 @@ class Electro_Meta_Box_Home_v1 {
 				?>
 				</div>
 
-				<?php if ( electro_is_wide_enabled() ) : ?>
 				<div class="options_group">
 					<h5 class="options-group__title"><?php echo esc_html__( 'Wide Layout', 'electro' ); ?></h5>
 				<?php
@@ -458,8 +456,6 @@ class Electro_Meta_Box_Home_v1 {
 					) );
 				?>
 				</div>
-				<?php endif; ?>
-
 				<div class="options_group">
 					<h5 class="options-group__title"><?php echo esc_html__( 'Tabs', 'electro' ); ?></h5>
 				<?php	
@@ -602,7 +598,6 @@ class Electro_Meta_Box_Home_v1 {
 					) );
 				?>
 				</div>
-				<?php if ( electro_is_wide_enabled() ) : ?>
 				<h5 class="options-group__title"><?php echo esc_html__( 'Wide Layout', 'electro' ); ?></h5>
 				<div class="options_group">
 				<?php
@@ -614,7 +609,6 @@ class Electro_Meta_Box_Home_v1 {
 					) ); 
 				?>
 				</div>
-				<?php endif; ?>
 				<div class="options_group"><?php
 
 					electro_wp_owl_carousel_options( array( 
@@ -711,7 +705,6 @@ class Electro_Meta_Box_Home_v1 {
 					) );
 				?>
 				</div>
-				<?php if ( electro_is_wide_enabled() ) : ?>
 				<h5 class="options-group__title"><?php echo esc_html__( 'Wide Layout', 'electro' ); ?></h5>
 				<div class="options_group">
 				<?php
@@ -723,7 +716,6 @@ class Electro_Meta_Box_Home_v1 {
 					) ); 
 				?>
 				</div>
-				<?php endif; ?>
 			</div>
 		</div>
 		<?php

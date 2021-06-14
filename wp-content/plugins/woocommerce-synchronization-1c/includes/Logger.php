@@ -7,7 +7,7 @@ use Monolog\Logger as MonologLogger;
 
 class Logger
 {
-    public static $format = '[%datetime% | %request_id%] %channel%.%level_name%: %message% %context%' . "\n";
+    public static $format = "[%datetime% | %request_id%] %channel%.%level_name%: %message% %context%\n";
 
     public static $log;
 

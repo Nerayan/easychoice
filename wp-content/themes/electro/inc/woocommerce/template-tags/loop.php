@@ -70,3 +70,11 @@ if ( ! function_exists( 'electro_wc_template_loop_sale' ) ) {
         }
     }
 }
+
+if ( ! function_exists( 'electro_wc_get_template_loop_sale' ) ) {
+    function electro_wc_get_template_loop_sale() {
+        ob_start();
+        electro_wc_template_loop_sale();
+        return ob_get_clean();       
+    }
+}

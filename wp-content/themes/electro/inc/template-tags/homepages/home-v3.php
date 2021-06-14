@@ -369,7 +369,7 @@ if ( ! function_exists( 'electro_home_v3_product_cards_carousel' ) ) {
 
             if ( electro_is_wide_enabled() ) {
                 $args['section_args']['columns_wide'] = $columns_wide;
-                $args['section_args']['items'] = $columns_wide;
+                $args['section_args']['items']        = $columns_wide;
             }
 
             electro_product_cards_carousel( $args['section_args'], $args['carousel_args'] );

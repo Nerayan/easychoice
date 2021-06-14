@@ -3,6 +3,7 @@
 namespace Itgalaxy\Wc\Exchange1c\ExchangeProcess;
 
 use Itgalaxy\Wc\Exchange1c\ExchangeProcess\Helpers\Product;
+use Itgalaxy\Wc\Exchange1c\ExchangeProcess\Helpers\ProductVariation;
 use Itgalaxy\Wc\Exchange1c\Includes\Bootstrap;
 use Itgalaxy\Wc\Exchange1c\Includes\Logger;
 
@@ -186,7 +187,7 @@ class ParserXmlOrders
 
                 // is variation
                 if (!empty($parseID[1])) {
-                    $elementID = Product::getProductIdByMeta($guid, '_id_1c', true);
+                    $elementID = ProductVariation::getIdByMeta($guid, '_id_1c');
                 } else {
                     $elementID = Product::getProductIdByMeta($guid);
                 }
@@ -224,18 +225,25 @@ class ParserXmlOrders
 
     private function resolveResultStatus($requisites, $element)
     {
-        $settings = get_option(Bootstrap::OPTIONS_KEY);
+        $settings = get_option(Bootstrap::OPTIONS_KEY, []);
+
+        $isPaid = !empty($requisites['Дата оплаты по 1С']);
+        $isShipped = !empty($requisites['Дата отгрузки по 1С']);
         $resultStatus = '';
 
-        if (
-            !empty($settings['handle_get_order_status_change_if_paid']) &&
-            (
-                !empty($requisites['Дата оплаты по 1С']) ||
-                !empty($requisites['Дата отгрузки по 1С'])
-            )
-        ) {
+        if (!empty($settings['handle_get_order_status_change_if_paid']) && $isPaid) {
             Logger::logProtocol('order is paid', [(string) $element->Ид]);
             $resultStatus = $settings['handle_get_order_status_change_if_paid'];
+        }
+
+        if (!empty($settings['handle_get_order_status_change_if_shipped']) && $isShipped) {
+            Logger::logProtocol('order is shipped', [(string) $element->Ид]);
+            $resultStatus = $settings['handle_get_order_status_change_if_shipped'];
+        }
+
+        if (!empty($settings['handle_get_order_status_change_if_paid_and_shipped']) && $isPaid && $isShipped) {
+            Logger::logProtocol('order is paid and shipped', [(string) $element->Ид]);
+            $resultStatus = $settings['handle_get_order_status_change_if_paid_and_shipped'];
         }
 
         if (

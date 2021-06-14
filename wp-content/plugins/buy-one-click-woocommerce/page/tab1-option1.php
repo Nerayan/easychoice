@@ -459,6 +459,9 @@ $buyoptions = Help::getInstance()->get_options('buyoptions'); //Массив н�
 
                         </p><span class="description"><?php _e('Example', 'coderun-oneclickwoo'); ?>: <a href="https://coderun.ru">"https://coderun.ru"</a>. <?php _e('The user will see the message and go to the specified page.', 'coderun-oneclickwoo'); ?></span>
 
+                        <p><input name="buyoptions[success_action]" type="radio" value="5" <?php checked($buyoptions['success_action'], '5', 1); ?>>
+                            <?php _e('Send to the order page WooCommerce', 'coderun-oneclickwoo'); ?></p>
+                        <span class="description"><?php _e('The buyer will be redirected to the WooCommerce completed order page. It only works if orders are placed in the WooCommerce table', 'coderun-oneclickwoo'); ?></span>
                     </td>
                 </tr>
             </table>
@@ -554,9 +557,12 @@ $buyoptions = Help::getInstance()->get_options('buyoptions'); //Массив н�
                 <tbody>
                 <tr>
                     <td class="active"><?php _e('Element', 'coderun-oneclickwoo'); ?></td>
-                    <td class="success">[viewBuyButton]</td>
-                    <td class="warning"><?php _e('Button shortcode must be inserted in product output cycles, where it is possible to get the product ID. Wherein
+                    <td class="success">[viewBuyButton id="<?php _e('Optional parameter of the real product ID','coderun-oneclickwoo'); ?>"]</td>
+                    <td class="warning">
+                        1. <?php _e('Button shortcode must be inserted in product output cycles, where it is possible to get the product ID. Wherein
                          The shortcode loads styles and scripts for itself, and the "buy" button will be shown if there is a tick "Enable the display of the shortcode button"', 'coderun-oneclickwoo'); ?>
+                        <br>
+                        2. <?php _e('If the ID of the actual WooCommerce product is specified, then you can insert the button anywhere on your site.', 'coderun-oneclickwoo') ?>
                     </td>
 
                 </tr>

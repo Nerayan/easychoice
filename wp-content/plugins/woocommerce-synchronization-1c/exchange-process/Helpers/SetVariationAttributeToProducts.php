@@ -113,7 +113,12 @@ class SetVariationAttributeToProducts
             $ids = array_map('intval', $ids);
             $ids = array_unique($ids);
 
-            Term::setObjectTerms($productID, $ids, $taxonomy);
+            Term::setObjectTerms(
+                $productID,
+                $ids,
+                $taxonomy,
+                apply_filters('itglx_wc1c_set_product_variation_attribute_values_append', false)
+            );
             Logger::logChanges(
                 '(product) Set attribute terms, ID - ' . $productID,
                 [get_post_meta($productID, '_id_1c', true), array_values($ids), $taxonomy]

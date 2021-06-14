@@ -79,7 +79,7 @@ class MuxHooks {
 
 	protected function updateAttachmentMeta($asset) {
 		if (empty($asset->attachmentId)) {
-			Logger::info("Mux: Missing attachment id, cannot update meta.", [], __METHOD__, __LINE__);
+			Logger::error("Mux: Missing attachment id, cannot update meta.", [], __METHOD__, __LINE__);
 			return;
 		}
 
@@ -87,7 +87,7 @@ class MuxHooks {
 
 		$meta = get_post_meta($asset->attachmentId, '_wp_attachment_metadata', true);
 		if (empty($meta)) {
-			Logger::info("Mux: Attachment {$asset->attachmentId} meta is missing or empty, cannot update.", [], __METHOD__, __LINE__);
+			Logger::error("Mux: Attachment {$asset->attachmentId} meta is missing or empty, cannot update.", [], __METHOD__, __LINE__);
 			return;
 		}
 
@@ -109,24 +109,24 @@ class MuxHooks {
 		Logger::info("Mux: Creating attachment for asset", [], __METHOD__, __LINE__);
 
 		if (MuxAPI::assetAPI() === null) {
-			Logger::info("Mux: Unable to create API client", [], __METHOD__, __LINE__);
+			Logger::error("Mux: Unable to create API client", [], __METHOD__, __LINE__);
 			return;
 		}
 
 		try {
 			$result = MuxAPI::assetAPI()->getAssetInputInfo($asset->muxId);
 			if ($result === null) {
-				Logger::info("Mux: Could not get asset input info for {$asset->muxId}", [], __METHOD__, __LINE__);
+				Logger::error("Mux: Could not get asset input info for {$asset->muxId}", [], __METHOD__, __LINE__);
 				return;
 			}
 		} catch (\Exception $ex) {
-			Logger::info("Mux: Mux error fetching input info: ".$ex->getMessage(), [], __METHOD__, __LINE__);
+			Logger::error("Mux: Mux error fetching input info: ".$ex->getMessage(), [], __METHOD__, __LINE__);
 			return;
 		}
 
 		$inputInfos = $result->getData();
 		if (empty($inputInfos)) {
-			Logger::info("Mux: Could not find asset inputs for {$asset->muxId}", [], __METHOD__, __LINE__);
+			Logger::error("Mux: Could not find asset inputs for {$asset->muxId}", [], __METHOD__, __LINE__);
 			return;
 		}
 
@@ -189,14 +189,14 @@ class MuxHooks {
 		}
 
 		if (has_post_thumbnail($asset->attachmentId)) {
-			Logger::info("Mux: Thumbnail already exists", [], __METHOD__, __LINE__);
+			Logger::warning("Mux: Thumbnail already exists", [], __METHOD__, __LINE__);
 			$this->generateFilmstripForAttachment($asset);
 			return;
 		}
 
 		$url = $asset->thumbnailUrl();
 		if (empty($url)) {
-			Logger::info("Mux: Could not generate URL for thumbnail?", [], __METHOD__, __LINE__);
+			Logger::error("Mux: Could not generate URL for thumbnail?", [], __METHOD__, __LINE__);
 			return;
 		}
 
@@ -216,7 +216,7 @@ class MuxHooks {
 		file_put_contents($filePath, ilab_file_get_contents($url));
 
 		if (!file_exists($filePath)) {
-			Logger::info("Mux: Could not download image {$url}.", [], __METHOD__, __LINE__);
+			Logger::error("Mux: Could not download image {$url}.", [], __METHOD__, __LINE__);
 			return;
 		}
 
@@ -265,7 +265,7 @@ class MuxHooks {
 			}
 
 			if($asset->duration < 1.) {
-				Logger::info("Mux: Asset too short for filmstrip.", [], __METHOD__, __LINE__);
+				Logger::warning("Mux: Asset too short for filmstrip.", [], __METHOD__, __LINE__);
 				return;
 			}
 
@@ -282,7 +282,7 @@ class MuxHooks {
 				$filePath = tempnam('/tmp', gen_uuid(8));
 				@file_put_contents($filePath, ilab_file_get_contents($url));
 				if(!file_exists($filePath)) {
-					Logger::info("Mux: Unable to save thumbnails for filmstrip", [], __METHOD__, __LINE__);
+					Logger::error("Mux: Unable to save thumbnails for filmstrip", [], __METHOD__, __LINE__);
 					return;
 				}
 
@@ -303,13 +303,13 @@ class MuxHooks {
 					$filePath = tempnam('/tmp', gen_uuid(8));
 					@file_put_contents($filePath, ilab_file_get_contents($url));
 					if(!file_exists($filePath)) {
-						Logger::info("Mux: Unable to save thumbnails for filmstrip", [], __METHOD__, __LINE__);
+						Logger::error("Mux: Unable to save thumbnails for filmstrip", [], __METHOD__, __LINE__);
 						return;
 					}
 
 					$thumb = @imagecreatefromjpeg($filePath);
 					if (empty($thumb)) {
-						Logger::info("Mux: Retry failed.  Bailing.", [], __METHOD__, __LINE__);
+						Logger::error("Mux: Retry failed.  Bailing.", [], __METHOD__, __LINE__);
 						continue;
 					}
 				}
@@ -335,7 +335,7 @@ class MuxHooks {
 			imagejpeg($filmStrip, $filePath);
 
 			if(!file_exists($filePath)) {
-				Logger::info("Mux: Could not generate final filmstrip.", [], __METHOD__, __LINE__);
+				Logger::error("Mux: Could not generate final filmstrip.", [], __METHOD__, __LINE__);
 				return;
 			}
 
@@ -492,13 +492,13 @@ class MuxHooks {
 	public function handleWebhook($template) {
 		if (strpos($_SERVER['REQUEST_URI'], '/__mux/webhook') === 0) {
 			if (!isset($_SERVER['HTTP_MUX_SIGNATURE'])) {
-				Logger::info("Mux: Missing Mux Signature", [], __METHOD__, __LINE__);
+				Logger::error("Mux: Missing Mux Signature", [], __METHOD__, __LINE__);
 				wp_send_json(['status' => 'error'], 400);
 			}
 
 			$body = file_get_contents('php://input');
 			if (!MuxAPI::validateSignature($_SERVER['HTTP_MUX_SIGNATURE'], $body, $this->settings->webhookSecret)) {
-				Logger::info("Mux: Invalid Mux Signature", [], __METHOD__, __LINE__);
+				Logger::error("Mux: Invalid Mux Signature", [], __METHOD__, __LINE__);
 				wp_send_json(['status' => 'invalid signature'], 400);
 			}
 
@@ -506,7 +506,7 @@ class MuxHooks {
 			$type = arrayPath($data, 'type', null);
 
 			if (empty($type)) {
-				Logger::info("Mux: Webhook missing type.  Exiting.", [], __METHOD__, __LINE__);
+				Logger::error("Mux: Webhook missing type.  Exiting.", [], __METHOD__, __LINE__);
 			}
 
 			if (defined('MEDIACLOUD_DEV_MODE') && !empty(constant('MEDIACLOUD_DEV_MODE'))) {

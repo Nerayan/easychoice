@@ -130,7 +130,6 @@ $shop_options 	= apply_filters( 'electro_shop_options_args', array(
 			'max'		=> '8',
 			'type'		=> 'slider',
 			'default'	=> '5',
-			'required'  => array( 'wide_enabled', 'equals', 1 ),
 		),
 		array(
 			'title'		=> esc_html__('Number of Products Per Page', 'electro'),

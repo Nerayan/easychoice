@@ -7,7 +7,15 @@ use Itgalaxy\Wc\Exchange1c\Includes\Logger;
 
 class ProductAndVariationStock
 {
-    public static function resolve($element)
+    /**
+     * Parsing information about the stock according to the offer data.
+     *
+     * @param \SimpleXMLElement $element Node `Предложение` object.
+     *
+     * @return array The result of parsing the offer stock data, key `_stock` contains (float) the total value of the stock,
+     *              and key `_separate_warehouse_stock` contains (array) the stock with separate by warehouses.
+     */
+    public static function resolve(\SimpleXMLElement $element)
     {
         $settings = get_option(Bootstrap::OPTIONS_KEY);
 
@@ -53,7 +61,15 @@ class ProductAndVariationStock
         ];
     }
 
-    public static function resolveSeparate($element)
+    /**
+     * Resolve of information on stocks with division by warehouses.
+     *
+     * @param \SimpleXMLElement $element Node `Предложение` object
+     *
+     * @return array The result of parsing data on the separate of stocks by warehouses. In the form of an array,
+     *              where the key is the warehouse id, and the value is the stock in this warehouse.
+     */
+    public static function resolveSeparate(\SimpleXMLElement $element)
     {
         $stocks = [];
 
@@ -79,12 +95,12 @@ class ProductAndVariationStock
             isset($element->Остатки->Остаток) &&
             isset($element->Остатки->Остаток->Склад)
         ) {
-            foreach ($element->Остатки->Остаток->Склад as $stockElement) {
-                if (!isset($stocks[(string) $stockElement->Ид])) {
-                    $stocks[(string) $stockElement->Ид] = 0;
+            foreach ($element->Остатки->Остаток as $stockElement) {
+                if (!isset($stocks[(string) $stockElement->Склад->Ид])) {
+                    $stocks[(string) $stockElement->Склад->Ид] = 0;
                 }
 
-                $stocks[(string) $stockElement->Ид] += (float) $stockElement->Количество;
+                $stocks[(string) $stockElement->Склад->Ид] += (float) $stockElement->Склад->Количество;
             }
         } elseif (
             isset($element->КоличествоНаСкладах) &&
@@ -106,6 +122,15 @@ class ProductAndVariationStock
         return $stocks;
     }
 
+    /**
+     * Write of stock values, as well as actions based on the stock.
+     *
+     * Visibility of product / variation, enabling and disabling stock management.
+     *
+     * @param int $productId Product ID (if simple) or variation ID.
+     * @param array $stockData {@see resolve()}
+     * @param bool|int $parentProductID If a simple product, then false, otherwise the product ID of the parent of the variation.
+     */
     public static function set($productId, $stockData, $parentProductID = false)
     {
         $settings = get_option(Bootstrap::OPTIONS_KEY);
@@ -151,8 +176,8 @@ class ProductAndVariationStock
                 );
             }
 
-            // enable variable
-            if ($parentProductID && get_option('woocommerce_manage_stock') === 'yes') {
+            // enable variation
+            if ($parentProductID) {
                 $wpdb->update(
                     $wpdb->posts,
                     ['post_status' => 'publish'],
@@ -188,8 +213,8 @@ class ProductAndVariationStock
                 $_SESSION['IMPORT_1C']['setTerms'][$parentProductID]['is_visible'] = true;
             }
         } else {
-            if ($parentProductID && get_option('woocommerce_manage_stock') === 'yes') {
-                // disable variation
+            // disable variation
+            if ($parentProductID) {
                 $wpdb->update(
                     $wpdb->posts,
                     ['post_status' => 'private'],
@@ -218,9 +243,56 @@ class ProductAndVariationStock
             unset($productObject);
         }
 
-        do_action('itglx_wc1c_after_set_product_stock', $productId, $stockData['_stock'], $parentProductID);
+        /**
+         * Fires after write of the stock data of the product / variation.
+         *
+         * By the time of the call, all actions, including setting the visibility and stock managing, have already been performed.
+         *
+         * @since 1.58.1
+         * @since 1.90.1 The `$stockData` parameter was added
+         *
+         * @param int $productId Product ID (if simple) or variation ID.
+         * @param float $stockValue Current stock value.
+         * @param bool|int $parentProductID If a simple product, then false, otherwise the product ID of the parent of the variation.
+         * @param array $stockData {@see resolve()}
+         */
+        do_action('itglx_wc1c_after_set_product_stock', $productId, $stockData['_stock'], $parentProductID, $stockData);
     }
 
+    /**
+     * The method allows to determine whether the offer contains data on stock.
+     *
+     * @param \SimpleXMLElement $element Node `Предложение` object
+     *
+     * @return bool
+     */
+    public static function offerHasStockData(\SimpleXMLElement $element)
+    {
+        if (
+            isset($element->Остатки) ||
+            isset($element->КоличествоНаСкладах) ||
+            isset($element->Количество) ||
+            // the old exchange may not contain a stock node when the value is 0
+            (
+                !isset($_GET['version']) &&
+                isset($element->Наименование) &&
+                ProductAndVariationPrices::offerHasPriceData($element)
+            )
+        ) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * The method allows to get what status of the stock should be set.
+     *
+     * @param string $products1cStockNull Rule of operation when the stock is less than or equal to zero.
+     * @param array $stockData {@see resolve()}
+     *
+     * @return string The value of the stock status.
+     */
     private static function resolveStockStatus($products1cStockNull, $stockData)
     {
         if ($stockData['_stock'] > 0) {
@@ -234,7 +306,16 @@ class ProductAndVariationStock
         return 'onbackorder';
     }
 
-
+    /**
+     * The method allows to determine whether a product / variation should be hidden or not.
+     *
+     * @param string $products1cStockNull Rule of operation when the stock is less than or equal to zero.
+     * @param array $stockData
+     * @param int $productId Product ID (if simple) or variation ID.
+     * @param null|int $parentProductID If a simple product, then null, otherwise the product ID of the parent of the variation.
+     *
+     * @return bool
+     */
     private static function resolveHide($products1cStockNull, $stockData, $productId, $parentProductID = null)
     {
         $hide = true;
@@ -283,6 +364,16 @@ class ProductAndVariationStock
         return $hide;
     }
 
+    /**
+     * The method allows to determine whether the stock management for a product / variation should be disabled or not.
+     *
+     * @param string $products1cStockNull Rule of operation when the stock is less than or equal to zero.
+     * @param array $stockData
+     * @param int $productId Product ID (if simple) or variation ID.
+     * @param bool|int $parentProductID If a simple product, then false, otherwise the product ID of the parent of the variation.
+     *
+     * @return bool
+     */
     private static function resolveDisableManageStock($products1cStockNull, $stockData, $productId, $parentProductID)
     {
         $disableManageStock = false;

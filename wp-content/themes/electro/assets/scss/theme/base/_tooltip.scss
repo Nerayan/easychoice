@@ -1,0 +1,73 @@
+// Base class
+.tooltip {
+    .tooltip-arrow,
+    .arrow {
+        position: absolute;
+        display: block;
+        width: $tooltip-arrow-width;
+        height: $tooltip-arrow-height;
+
+        &::before {
+            position: absolute;
+            content: "";
+            border-color: transparent;
+            border-style: solid;
+        }
+    }
+}
+
+.bs-tooltip-top {
+    .tooltip-arrow,
+    .arrow {
+        bottom: 0;
+
+        &::before {
+            top: -1px;
+            border-width: $tooltip-arrow-height ($tooltip-arrow-width / 2) 0;
+            border-top-color: $tooltip-arrow-color;
+        }
+    }
+}
+
+.bs-tooltip-end {
+    .tooltip-arrow,
+    .arrow {
+        left: 0;
+        width: $tooltip-arrow-height;
+        height: $tooltip-arrow-width;
+
+        &::before {
+            right: -1px;
+            border-width: ($tooltip-arrow-width / 2) $tooltip-arrow-height ($tooltip-arrow-width / 2) 0;
+            border-right-color: $tooltip-arrow-color;
+        }
+    }
+}
+
+.bs-tooltip-bottom {
+    .tooltip-arrow,
+    .arrow {
+        top: 0;
+
+        &::before {
+            bottom: -1px;
+            border-width: 0 ($tooltip-arrow-width / 2) $tooltip-arrow-height;
+            border-bottom-color: $tooltip-arrow-color;
+        }
+    }
+}
+
+.bs-tooltip-start {
+    .tooltip-arrow,
+    .arrow {
+        right: 0;
+        width: $tooltip-arrow-height;
+        height: $tooltip-arrow-width;
+
+        &::before {
+            left: -1px;
+            border-width: ($tooltip-arrow-width / 2) 0 ($tooltip-arrow-width / 2) $tooltip-arrow-height;
+            border-left-color: $tooltip-arrow-color;
+        }
+    }
+}

@@ -43,7 +43,7 @@ class LearnDashIntegration {
 					return;
 				}
 
-				Logger::info("Cannot find fonts directory in '$pluginDir'.", [], __METHOD__, __LINE__);
+				Logger::warning("Cannot find fonts directory in '$pluginDir'.", [], __METHOD__, __LINE__);
 			}
 		}
 	}

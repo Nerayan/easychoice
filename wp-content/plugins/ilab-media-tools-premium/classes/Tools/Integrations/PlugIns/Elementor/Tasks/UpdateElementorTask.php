@@ -189,13 +189,13 @@ SQL;
 
 		$jsonData = get_post_meta_by_id($metaId);
 		if (empty($jsonData)) {
-			Logger::info("No data for $metaId", [], __METHOD__, __LINE__);
+			Logger::error("No data for $metaId", [], __METHOD__, __LINE__);
 			return true;
 		}
 
 		$data = json_decode($jsonData->meta_value, true);
 		if (empty($data)) {
-			Logger::info("Could not decode JSON value for $metaId: ".$jsonData->meta_value, [], __METHOD__, __LINE__);
+			Logger::error("Could not decode JSON value for $metaId: ".$jsonData->meta_value, [], __METHOD__, __LINE__);
 			return true;
 		}
 
@@ -203,12 +203,7 @@ SQL;
 
 		$data = ElementorUpdater::update(!empty($this->options['skip-widget-cache']), $item['post_id'], $metaId, $data, $this->reporter());
 
-		$json =  json_encode($data, JSON_HEX_QUOT   | JSON_HEX_APOS);
-		if (strpos($json, '\/') === false) {
-			$json = str_replace("/", '\/', $json);
-		}
-
-		$json = str_replace("\u{00a0}", '\u00a0', $json);
+		$json = wp_slash(wp_json_encode($data));
 		update_meta($metaId, '_elementor_data', $json);
 
 		Logger::info("Finished processing $metaId", [], __METHOD__, __LINE__);

@@ -3,6 +3,7 @@ namespace Itgalaxy\Wc\Exchange1c\ExchangeProcess\Base;
 
 use Itgalaxy\Wc\Exchange1c\ExchangeProcess\DataResolvers\Groups;
 use Itgalaxy\Wc\Exchange1c\ExchangeProcess\Helpers\HeartBeat;
+use Itgalaxy\Wc\Exchange1c\ExchangeProcess\Helpers\Product;
 use Itgalaxy\Wc\Exchange1c\Includes\Bootstrap;
 
 abstract class Parser
@@ -45,10 +46,48 @@ abstract class Parser
             }
         }
 
+        $this->setAuthUser();
+
         Groups::prepare();
     }
 
     public function parse($filename) {}
+
+    /**
+     * @param string $guid
+     *
+     * @return int|null Product ID or null if there is no product.
+     */
+    protected function getVariationParent($guid)
+    {
+        if (!isset($_SESSION['IMPORT_1C']['productParent'])) {
+            $_SESSION['IMPORT_1C']['productParent'] = [];
+        }
+
+        if (isset($_SESSION['IMPORT_1C']['productParent'][$guid])) {
+            return $_SESSION['IMPORT_1C']['productParent'][$guid];
+        }
+
+        $productID = Product::getProductIdByMeta($guid);
+
+        $_SESSION['IMPORT_1C']['productParent'][$guid] = $productID;
+
+        return $productID;
+    }
+
+    /**
+     * @param int $productID
+     *
+     * @return void
+     */
+    protected function setHasVariationState($productID)
+    {
+        if (!isset($_SESSION['IMPORT_1C']['hasVariation'])) {
+            $_SESSION['IMPORT_1C']['hasVariation'] = [];
+        }
+
+        $_SESSION['IMPORT_1C']['hasVariation'][$productID] = true;
+    }
 
     /**
      * @param \XMLReader $reader
@@ -69,5 +108,35 @@ abstract class Parser
         }
 
         return false;
+    }
+
+    private function setAuthUser()
+    {
+        if (is_user_logged_in()) {
+            return;
+        }
+
+        if (!(int) $this->postAuthor) {
+            return;
+        }
+
+        $user = get_userdata((int) $this->postAuthor);
+
+        if (!$user || is_wp_error($user)) {
+            return;
+        }
+
+        wp_set_current_user($user->ID);
+
+        $this->disableCleanHtmlInCategoryDescription();
+    }
+
+    private function disableCleanHtmlInCategoryDescription()
+    {
+        if (current_user_can('unfiltered_html')) {
+            remove_filter('pre_term_description', 'wp_filter_kses');
+        }
+
+        remove_filter('term_description', 'wp_kses_data');
     }
 }

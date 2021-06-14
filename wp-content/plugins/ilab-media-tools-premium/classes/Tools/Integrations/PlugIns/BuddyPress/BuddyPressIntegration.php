@@ -119,7 +119,7 @@ class BuddyPressIntegration {
 				$newUrl = BuddyPressMap::updateMap($url, $objectKey, $filePath, $s3Data);
 				return str_replace($url, $newUrl, $result);
 			} catch(\Exception $e) {
-				Logger::info("Error:".$e->getMessage(), [], __METHOD__, __LINE__);
+				Logger::error("Error:".$e->getMessage(), [], __METHOD__, __LINE__);
 				return $result;
 			}
 		}
@@ -181,7 +181,7 @@ class BuddyPressIntegration {
 
 			$filePath = $folderDir.'/'.$file;
 			if (!file_exists($filePath) || is_dir($filePath)) {
-				Logger::info("File does not exist or is a directory: $filePath", [], __METHOD__, __LINE__);
+				Logger::warning("File does not exist or is a directory: $filePath", [], __METHOD__, __LINE__);
 				return $imgTag;
 			}
 
@@ -202,7 +202,7 @@ class BuddyPressIntegration {
 				$newUrl = BuddyPressMap::updateMap($url, $objectKey, $filePath, $s3Data);
 				return str_replace($url, $newUrl, $imgTag);
 			} catch(\Exception $e) {
-				Logger::info("Error:".$e->getMessage(), [], __METHOD__, __LINE__);
+				Logger::error("Error:".$e->getMessage(), [], __METHOD__, __LINE__);
 
 				return $imgTag;
 			}

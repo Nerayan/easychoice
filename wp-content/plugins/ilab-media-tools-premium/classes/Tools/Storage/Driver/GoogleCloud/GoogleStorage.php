@@ -201,7 +201,7 @@ class GoogleStorage implements StorageInterface, ConfiguresWizard {
                             $errorCollector->addError("Bucket {$this->settings->bucket} does not exist.");
                         }
 
-						Logger::info("Bucket does not exist.", [], __METHOD__, __LINE__);
+						Logger::error("Bucket does not exist.", [], __METHOD__, __LINE__);
 					}
                 } catch (\Exception $ex) {
                     if ($errorCollector) {
@@ -283,7 +283,7 @@ class GoogleStorage implements StorageInterface, ConfiguresWizard {
                 $errorCollector->addError("Google configuration is incorrect or missing.");
             }
 
-			Logger::info('Could not create Google storage client.', [], __METHOD__, __LINE__);
+			Logger::error('Could not create Google storage client.', [], __METHOD__, __LINE__);
 		}
 
 		return $client;
@@ -296,6 +296,14 @@ class GoogleStorage implements StorageInterface, ConfiguresWizard {
 	}
 
 	public function region() {
+		return null;
+	}
+
+	public function isUsingPathStyleEndPoint() {
+		return false;
+	}
+
+	public function acl($key) {
 		return null;
 	}
 

@@ -41,7 +41,7 @@ class SectionTempCatalogInfo
                 <?php echo esc_html__('Download in zip archive (only XML files)', 'itgalaxy-woocommerce-1c'); ?>
             </a>
         <?php } ?>
-        <button class="btn btn-info btn-sm" type="button" data-ui-component="itglx-wc1c-ajax-clear-temp">
+        <button class="btn btn-outline-danger btn-sm" type="button" data-ui-component="itglx-wc1c-ajax-clear-temp">
             <span class="text">
                 <?php echo esc_html__('Clear', 'itgalaxy-woocommerce-1c'); ?>
                 <span data-ui-component="itglx-wc1c-temp-count-and-size-text"></span>

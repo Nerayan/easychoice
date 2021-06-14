@@ -30,14 +30,7 @@ if ( ! class_exists( 'Electro' ) ) :
             add_action( 'elementor/theme/register_locations', [ $this, 'register_elementor_locations' ] );
         }
 
-        /**
-         * Register Elementor Locations.
-         *
-         * @param ElementorPro\Modules\ThemeBuilder\Classes\Locations_Manager $elementor_theme_manager theme manager.
-         *
-         * @return void
-         */
-        function register_elementor_locations( $elementor_theme_manager ) {
+        public function register_elementor_locations( $elementor_theme_manager ) {
 
             $elementor_theme_manager->register_all_core_location();
 
@@ -94,13 +87,7 @@ if ( ! class_exists( 'Electro' ) ) :
                 $classes[] = $layout_args['body_classes'];
             }
 
-            $classes[] = 'electro-compact'; //TODO: deprecate at 2.4
-
-            if ( electro_is_wide_enabled() ) {
-                $classes[] = 'electro-wide';
-            }
-
-            if ( is_page_template( 'template-homepage-v10.php' ) ) {
+            if ( electro_is_dark_enabled() ) {
                 $classes[] = 'electro-dark';
             }
 

@@ -111,8 +111,8 @@ if ( ! function_exists( 'electro_home_v7_slider_with_vertical_menu_categories_ba
 
         ?>
         <div class="vertical-menu-slider-category-with-das">
-            <div class="container">
-                <div class="vertical-menu-slider-category-with-das-inner">
+            <div class="container px-3">
+                <div class="vertical-menu-slider-category-with-das-inner row g-0">
 
                     <?php if( $nav_is_enabled === 'yes' ) :
                         electro_home_vertical_nav( $nav_args );

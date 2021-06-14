@@ -34,7 +34,7 @@ class ProductAndVariationPrices
             }
         }
 
-        if (!$basePriceType || !isset($element->Цены)) {
+        if (!$basePriceType || !self::offerHasPriceData($element)) {
             return [
                 'regular' => $priceValue,
                 'all' => $allPrices
@@ -80,6 +80,8 @@ class ProductAndVariationPrices
         $priceValue = (float) $resolvePrices['regular'];
         $priceType2 = !empty($settings['price_type_2']) ? $settings['price_type_2'] : '';
 
+        Product::saveMetaValue($productId, '_all_prices', $resolvePrices['all'], $parentProductID);
+
         if (!$priceValue) {
             if ($parentProductID) {
                 Logger::logChanges(
@@ -97,11 +99,11 @@ class ProductAndVariationPrices
             }
 
             do_action('itglx_wc1c_product_or_variation_has_empty_price', $productId, $parentProductID);
+            do_action('itglx_wc1c_after_set_product_price', $productId, $priceValue, $priceWorkRule);
 
             return;
         }
 
-        Product::saveMetaValue($productId, '_all_prices', $resolvePrices['all'], $parentProductID);
         Product::saveMetaValue($productId, '_regular_price', $priceValue, $parentProductID);
 
         if ($parentProductID) {
@@ -258,5 +260,21 @@ class ProductAndVariationPrices
         }
 
         do_action('itglx_wc1c_after_set_product_price', $productId, $priceValue, $priceWorkRule);
+    }
+
+    /**
+     * The method allows to determine whether the offer contains data on price.
+     *
+     * @param \SimpleXMLElement $element Node `Предложение` object
+     *
+     * @return bool
+     */
+    public static function offerHasPriceData(\SimpleXMLElement $element)
+    {
+        if (isset($element->Цены)) {
+            return true;
+        }
+
+        return false;
     }
 }

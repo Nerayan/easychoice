@@ -329,8 +329,7 @@ class SaleModeQuery
             'Фамилия' => htmlspecialchars($order->get_billing_last_name()),
             'Имя' => htmlspecialchars($order->get_billing_first_name()),
             'АдресРегистрации' => [
-                'Вид' => 'Адрес доставки',
-                'Представление' => htmlspecialchars(self::resolveAddress('shipping', $order)),
+                'Представление' => htmlspecialchars(self::resolveAddress('billing', $order)),
                 'АдресноеПоле' => self::resolveContragentAddressRegistration($order)
             ],
             'Контакты' => [
@@ -397,6 +396,7 @@ class SaleModeQuery
     private static function generateOrderProducts($document, $order)
     {
         $settings = get_option(Bootstrap::OPTIONS_KEY);
+        $includeTax = !empty($settings['send_orders_include_tax_to_price_item_and_shipping']);
         $productsXml = $document->addChild('Товары');
 
         $products = [];
@@ -414,6 +414,10 @@ class SaleModeQuery
                 $sku = $product->get_sku();
             }
 
+            $totalItem = round((float) $item->get_total(), wc_get_price_decimals());
+            $discountItem = round((float) $item->get_subtotal() - (float) $item->get_total(), wc_get_price_decimals());
+            $taxItem = round((float) $item->get_total_tax(), wc_get_price_decimals());
+
             if (
                 !empty($settings['send_orders_combine_data_variation_as_main_product']) &&
                 $item['variation_id']
@@ -426,13 +430,17 @@ class SaleModeQuery
                         '_id_1c' => get_post_meta($item['product_id'], '_id_1c', true),
                         'quantity' => (float) $item['qty'],
                         'name' => htmlspecialchars(get_post_field('post_title', $item['product_id'])),
-                        'lineTotal' => (float) $item['line_total'],
+                        'lineTotal' => $totalItem,
+                        'discountItem' => $discountItem,
+                        'lineTax' => $taxItem,
                         'sku' => $sku,
                         'attributes' => []
                     ];
                 } else {
                     $products[$item['product_id']]['quantity'] += (float) $item['qty'];
-                    $products[$item['product_id']]['lineTotal'] += (float) $item['line_total'];
+                    $products[$item['product_id']]['lineTotal'] += $totalItem;
+                    $products[$item['product_id']]['discountItem'] += $discountItem;
+                    $products[$item['product_id']]['lineTax'] += $taxItem;
                 }
             } else {
                 $exportProduct = [
@@ -448,7 +456,9 @@ class SaleModeQuery
                     ),
                     'quantity' => $item['qty'],
                     'name' => htmlspecialchars($item['name']),
-                    'lineTotal' => $item['line_total'],
+                    'lineTotal' => $totalItem,
+                    'discountItem' => $discountItem,
+                    'lineTax' => $taxItem,
                     'sku' => $sku,
                     'attributes' => []
                 ];
@@ -525,12 +535,27 @@ class SaleModeQuery
                 $base->addAttribute('МеждународноеСокращение', 'PCE');
             }
 
+            if ($includeTax && $product['lineTax']) {
+                $product['lineTotal'] += $product['lineTax'];
+            }
+
             $productXml->addChild(
                 'ЦенаЗаЕдиницу',
                 $product['quantity'] ? $product['lineTotal'] / $product['quantity'] : 0
             );
             $productXml->addChild('Количество', $product['quantity']);
             $productXml->addChild('Сумма', $product['lineTotal']);
+
+            if (
+                !empty($settings['send_orders_add_information_discount_for_each_item']) &&
+                !empty($product['discountItem'])
+            ) {
+                $discounts = $productXml->addChild('Скидки');
+                $discount = $discounts->addChild('Скидка');
+                $discount->addChild('Наименование', 'Скидка');
+                $discount->addChild('Сумма', $product['discountItem']);
+                $discount->addChild('УчтеноВСумме', 'true');
+            }
 
             if (!empty($product['attributes'])) {
                 $characteristics = $productXml->addChild('ХарактеристикиТовара');
@@ -557,7 +582,8 @@ class SaleModeQuery
                 'itglx_wc1c_xml_product_info_custom',
                 [],
                 $product['productId'],
-                $product['variationId']
+                $product['variationId'],
+                $product
             );
 
             if ($moreProductInfo) {
@@ -580,9 +606,16 @@ class SaleModeQuery
             $base->addAttribute('НаименованиеПолное', 'Штука');
             $base->addAttribute('МеждународноеСокращение', 'PCE');
 
-            $productXml->addChild('ЦенаЗаЕдиницу', $order->get_shipping_total());
+            $shippingPrice = round($order->get_shipping_total(), wc_get_price_decimals());
+            $shippingTax = round($order->get_shipping_tax(), wc_get_price_decimals());
+
+            if ($includeTax && $shippingTax) {
+                $shippingPrice += $shippingTax;
+            }
+
+            $productXml->addChild('ЦенаЗаЕдиницу', $shippingPrice);
             $productXml->addChild('Количество', '1');
-            $productXml->addChild('Сумма', $order->get_shipping_total());
+            $productXml->addChild('Сумма', $shippingPrice);
 
             $details = $productXml->addChild('ЗначенияРеквизитов');
 
@@ -724,38 +757,38 @@ class SaleModeQuery
     {
         $contragentAddressRegistration = [];
 
-        if (htmlspecialchars($order->get_shipping_postcode())) {
+        if (htmlspecialchars($order->get_billing_postcode())) {
             $contragentAddressRegistration[] = [
                 'Тип' => 'Почтовый индекс',
-                'Значение' => htmlspecialchars($order->get_shipping_postcode())
+                'Значение' => htmlspecialchars($order->get_billing_postcode())
             ];
         }
 
-        if ($order->get_shipping_country()) {
+        if ($order->get_billing_country()) {
             $contragentAddressRegistration[] =  [
                 'Тип' => 'Страна',
-                'Значение' => htmlspecialchars(\WC()->countries->countries[$order->get_shipping_country()])
+                'Значение' => htmlspecialchars(\WC()->countries->countries[$order->get_billing_country()])
             ];
         }
 
-        if (htmlspecialchars($order->get_shipping_state())) {
+        if (htmlspecialchars($order->get_billing_state())) {
             $contragentAddressRegistration[] =  [
                 'Тип' => 'Регион',
-                'Значение' => htmlspecialchars($order->get_shipping_state())
+                'Значение' => htmlspecialchars($order->get_billing_state())
             ];
         }
 
-        if (htmlspecialchars($order->get_shipping_city())) {
+        if (htmlspecialchars($order->get_billing_city())) {
             $contragentAddressRegistration[] =  [
                 'Тип' => 'Город',
-                'Значение' => htmlspecialchars($order->get_shipping_city())
+                'Значение' => htmlspecialchars($order->get_billing_city())
             ];
         }
 
-        if (htmlspecialchars($order->get_shipping_address_1())) {
+        if (htmlspecialchars($order->get_billing_address_1())) {
             $contragentAddressRegistration[] =  [
                 'Тип' => 'Улица',
-                'Значение' => htmlspecialchars($order->get_shipping_address_1())
+                'Значение' => htmlspecialchars($order->get_billing_address_1())
             ];
         }
 

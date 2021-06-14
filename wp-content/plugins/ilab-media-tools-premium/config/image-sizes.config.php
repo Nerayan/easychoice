@@ -20,4 +20,7 @@ return [
 	"exclude" => true,
 	"dependencies" => [],
 	"env" => "ILAB_MEDIA_IMAGESIZES_ENABLED",  // this is always enabled btw
+	"CLI" => [
+		\MediaCloud\Plugin\Tools\ImageSizes\CLI\ImageSizeCommands::class
+	],
 ];

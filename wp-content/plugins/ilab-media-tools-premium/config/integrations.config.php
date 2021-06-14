@@ -40,6 +40,7 @@ return [
 		"\\FooGallery" => "\\MediaCloud\\Plugin\\Tools\\Integrations\\PlugIns\\FooGalleryIntegration",
 		"\\SFWD_LMS" => "\\MediaCloud\\Plugin\\Tools\\Integrations\\PlugIns\\LearnDashIntegration",
 		"\\Google\\Web_Stories\\Model\\Story" => MediaCloud\Plugin\Tools\Integrations\PlugIns\WebStories\WebStoriesIntegration::class,
+		"\\WooCommerce_Product_Search" => MediaCloud\Plugin\Tools\Integrations\Plugins\WooCommerceProductSearchIntegration::class,
 	],
 	"settings" => [
 		"options-page" => "media-tools-integrations",

@@ -24,7 +24,7 @@ if ( ! function_exists( 'electro_post_header' ) ) {
 		} else {
 
 			the_title( sprintf( '<h1 class="entry-title"><a href="%s" rel="bookmark">', esc_url( get_permalink() ) ), '</a></h1>' );
-			
+
 			if ( 'post' == get_post_type() ) {
 				electro_post_meta();
 			}
@@ -90,7 +90,7 @@ if ( ! function_exists( 'electro_post_meta' ) ) {
 					echo wp_kses_post( $categories_list );
 					?>
 				</span>
-			<?php endif; // End if categories. ?> 
+			<?php endif; // End if categories. ?>
 
 			<?php
 			/* translators: used between list items, there is a space after the comma */
@@ -114,7 +114,7 @@ if ( ! function_exists( 'electro_post_meta' ) ) {
 			<?php endif; ?>
 
 			<?php endif; // End if 'post' == get_post_type(). ?>
-			
+
 		</div>
 		<?php
 	}
@@ -168,7 +168,7 @@ if ( ! function_exists( 'electro_post_excerpt' ) ) {
 	function electro_post_excerpt() {
 		?>
 		<div class="entry-content">
-		
+
 		<?php
 		the_excerpt();
 		wp_link_pages( array(
@@ -220,7 +220,7 @@ if( ! function_exists( 'electro_author_info' ) ) {
 		if( apply_filters( 'electro_show_author_info', true ) ) :
 			?>
 			<div class="post-author-info">
-				<div class="media">
+				<div class="media d-md-flex">
 					<div class="media-left media-middle">
 						<a href="<?php echo get_author_posts_url( get_the_author_meta( 'ID' ) ); ?>">
 							<?php echo get_avatar( get_the_author_meta( 'ID' ) , 160 ); ?>
@@ -240,7 +240,7 @@ if( ! function_exists( 'electro_author_info' ) ) {
 if( ! function_exists( 'electro_post_loop_media' ) ) {
 	function electro_post_loop_media() {
 		$blog_style = electro_get_blog_style();
-		
+
 		if( $blog_style != 'blog-list' && $blog_style != 'blog-grid' ) {
 			electro_post_media_attachment();
 		} else {
@@ -268,7 +268,7 @@ if ( ! function_exists( 'electro_post_thumbnail' ) ) {
 	 * @since 1.0.0
 	 */
 	function electro_post_thumbnail() {
-		
+
 		$image_size 			= electro_get_post_thumbnail_size();
 		$post_format 			= get_post_format();
 		$post_icon 				= electro_get_post_icon( $post_format );
@@ -290,16 +290,16 @@ if( ! function_exists( 'electro_get_post_thumbnail_size' ) ) {
 	function electro_get_post_thumbnail_size( $image_size = 'full' ) {
 
 		$image_size = 'electro_blog_medium';
-		
+
 		if( is_single() ) {
-		
+
 			$image_size = 'electro_blog_medium';
-		
+
 		} else {
-			
+
 			$blog_style 	= electro_get_blog_style();
 			$blog_layout 	= electro_get_blog_layout();
-			
+
 			if( $blog_layout == 'full-width' && $blog_style != 'blog-list' && $blog_style != 'blog-grid' ) {
 				$image_size = 'electro_blog_large';
 			} elseif( $blog_style == 'blog-list' || $blog_style == 'blog-grid' ) {
@@ -342,14 +342,14 @@ if( ! function_exists( 'electro_post_media_attachment' ) ) {
 	 * Displays the media attachment of the post
 	 * @since 1.0.0
 	 */
-	function electro_post_media_attachment() { 
-		
+	function electro_post_media_attachment() {
+
 		$post_format = get_post_format();
-		
+
 		ob_start();
 
 		if( $post_format == 'gallery' ){
-			electro_gallery_slideshow( get_the_ID() );	
+			electro_gallery_slideshow( get_the_ID() );
 		} else if ( $post_format == 'video' ){
 			electro_video_player( get_the_ID() );
 		} else if ( $post_format == 'audio' ){
@@ -374,7 +374,7 @@ if ( !function_exists( 'electro_gallery_slideshow' ) ) :
 	 */
 	function electro_gallery_slideshow($post_id , $thumbnail = 'post-thumbnail') {
 		global $post, $electro_version;
-		
+
 		$post_id = esc_attr( ( $post_id ? $post_id : $post->ID ) );
 
 		// Get the media ID's
@@ -391,7 +391,7 @@ if ( !function_exists( 'electro_gallery_slideshow' ) ) :
 		));
 
 		// Create the media display
-		if ($attachments) : 
+		if ($attachments) :
 			wp_enqueue_script( 'owl-carousel-js', 	get_template_directory_uri() . '/assets/js/owl.carousel.min.js', array( 'jquery' ), $electro_version, true );
 		?>
 		<div class="media-attachment-gallery">
@@ -404,10 +404,10 @@ if ( !function_exists( 'electro_gallery_slideshow' ) ) :
 				</div><!-- /.item -->
 			<?php endforeach; ?>
 			</div>
-			
+
 		</div><!-- /.media-attachment-gallery -->
 		<script type="text/javascript">
-	
+
 			jQuery(document).ready(function(){
 				if(jQuery().owlCarousel) {
 					jQuery("#owl-carousel-<?php echo esc_attr( $post_id ); ?>").owlCarousel({
@@ -477,11 +477,11 @@ if ( !function_exists( 'electro_audio_player' ) ) :
 		} else if( ! empty( $mp3 ) || ! empty ( $ogg ) ) {
 
 			wp_enqueue_script( 'jplayer', get_template_directory_uri() . '/assets/js/jquery.jplayer.min.js', array( 'jquery' ), '1.10.2', true );
-		    
+
 		    // Other audio formats ?>
 
 			<script type="text/javascript">
-		
+
 				jQuery(document).ready(function(){
 
 					if(jQuery().jPlayer) {
@@ -490,7 +490,7 @@ if ( !function_exists( 'electro_audio_player' ) ) :
 
 								// set media
 								jQuery(this).jPlayer("setMedia", {
-								    <?php 
+								    <?php
 								    if($mp3 != '') :
 										echo 'mp3: "'. $mp3 .'",';
 									endif;
@@ -510,7 +510,7 @@ if ( !function_exists( 'electro_audio_player' ) ) :
 							cssSelectorAncestor: "#jp_interface_<?php echo esc_attr( $post_id ); ?>",
 							supplied: "<?php if($ogg != '') : ?>oga,<?php endif; ?><?php if($mp3 != '') : ?>mp3, <?php endif; ?> all"
 						});
-					
+
 					}
 				});
 			</script>
@@ -545,7 +545,7 @@ if ( !function_exists( 'electro_audio_player' ) ) :
 					</div>
 				</div>
 			</div>
-			<?php 
+			<?php
 		} // End if embedded/else
     }
 endif;
@@ -558,7 +558,7 @@ if ( !function_exists( 'electro_video_player' ) ) :
     	global $post;
 
     	$post_id = esc_attr( ( $post_id ? $post_id : $post->ID ) );
-	
+
     	// Get the player media options
     	$embed 		= get_post_meta($post_id, 'postformat_video_embed', 	true);
     	$height 	= get_post_meta($post_id, 'postformat_video_height', 	true);
@@ -575,11 +575,11 @@ if ( !function_exists( 'electro_video_player' ) ) :
 			return; // and.... Done!
 		} else if( ! empty( $m4v ) || ! empty ( $ogv ) || ! empty ( $webm ) || ! empty ( $poster ) ) {
 			wp_enqueue_script( 'jplayer', get_template_directory_uri() . '/assets/js/jquery.jplayer.min.js', array( 'jquery' ), '1.10.2', true );
-		
+
 			?>
 		    <script type="text/javascript">
 		    	jQuery(document).ready(function(){
-				
+
 		    		if(jQuery().jPlayer) {
 		    			jQuery("#jquery_jplayer_<?php echo esc_attr( $post_id ); ?>").jPlayer({
 		    				ready: function (event) {

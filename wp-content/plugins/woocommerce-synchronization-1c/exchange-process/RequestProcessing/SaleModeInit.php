@@ -16,6 +16,8 @@ class SaleModeInit
             throw new \Exception(esc_html__('Initialization Error!', 'itgalaxy-woocommerce-1c'));
         }
 
+        Helper::clearBuffer();
+
         if (isset($_SESSION['version'])) {
             echo "zip=no\n"
                 . "file_limit=10000000\n"

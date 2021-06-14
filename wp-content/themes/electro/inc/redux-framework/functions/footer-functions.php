@@ -279,10 +279,10 @@ if ( ! function_exists( 'redux_apply_footer_credit_icons' ) ) {
 		$credit_card_icons = explode( ',', $electro_options['footer_credit_icons'] );
 		ob_start(); ?>
 		<div class="footer-payment-logo">
-			<ul class="cash-card card-inline">
+			<ul class="nav cash-card card-inline">
 				<?php foreach ( $credit_card_icons as $credit_card_icon ): ?>
 				<?php $credit_card_image_atts = wp_get_attachment_image_src( $credit_card_icon, 'full' ); ?>
-				<li class="card-item"><img src="<?php echo esc_attr( $credit_card_image_atts[0] ); ?>" alt="" width="<?php echo esc_attr( $credit_card_image_atts[1] ); ?>" height="<?php echo esc_attr( $credit_card_image_atts[2] ); ?>"></li>
+				<li class="card-item"><img class="h-auto" src="<?php echo esc_attr( $credit_card_image_atts[0] ); ?>" alt="" width="<?php echo esc_attr( $credit_card_image_atts[1] ); ?>" height="<?php echo esc_attr( $credit_card_image_atts[2] ); ?>"></li>
 				<?php endforeach; ?>
 			</ul>
 		</div><!-- /.payment-methods -->

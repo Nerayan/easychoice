@@ -45,78 +45,72 @@ class Electro_Meta_Box_Home_v3 {
 			<?php
 				$product_data_tabs = apply_filters( 'electro_home_v3_data_tabs', array(
 					'general' => array(
-						'label'  => __( 'General', 'electro' ),
+						'label'  => esc_html__( 'General', 'electro' ),
 						'target' => 'general_block',
 						'class'  => array(),
 					),
 					'slider' => array(
-						'label'  => __( 'Slider', 'electro' ),
+						'label'  => esc_html__( 'Slider', 'electro' ),
 						'target' => 'slider_block',
 						'class'  => array(),
 					),
 					'features_list' => array(
-						'label'  => __( 'Features List', 'electro' ),
+						'label'  => esc_html__( 'Features List', 'electro' ),
 						'target' => 'features_list',
 						'class'  => array(),
 					),
 					'ads_block' => array(
-						'label'  => __( 'Ads Block', 'electro' ),
+						'label'  => esc_html__( 'Ads Block', 'electro' ),
 						'target' => 'ads_block',
 						'class'  => array(),
 					),
 					'tabs_carousel' => array(
-						'label'  => __( 'Tabs Carousel', 'electro' ),
+						'label'  => esc_html__( 'Tabs Carousel', 'electro' ),
 						'target' => 'tabs_carousel',
 						'class'  => array(),
 					),
 					'products_carousel_with_image' => array(
-						'label'  => __( 'Products Carousel with Image', 'electro' ),
+						'label'  => esc_html__( 'Products Carousel with Image', 'electro' ),
 						'target' => 'products_carousel_with_image',
 						'class'  => array(),
 					),
 					'cards_carousel' => array(
-						'label'  => __( 'Product Cards Carousel - 1', 'electro' ),
+						'label'  => esc_html__( 'Product Cards Carousel - 1', 'electro' ),
 						'target' => 'products_cards_carousel',
 						'class'  => array(),
 					),
 					'cards_carousel_2' => array(
-						'label'  => __( 'Product Cards Carousel - 2', 'electro' ),
+						'label'  => esc_html__( 'Product Cards Carousel - 2', 'electro' ),
 						'target' => 'products_cards_carousel_2',
 						'class'  => array(),
 					),
 					'so_block' => array(
-						'label'  => electro_is_wide_enabled() ? esc_html__( '9-1 Products Block', 'electro' ) :esc_html__( '6-1 Products Block', 'electro' ),
+						'label'  => esc_html__( '9-1 Products Block', 'electro' ),
 						'target' => 'so_block',
 						'class'  => array(),
 					),
 					'hlc_block' => array(
-						'label'  => __( 'Categories List Block', 'electro' ),
+						'label'  => esc_html__( 'Categories List Block', 'electro' ),
 						'target' => 'hlc_block',
 						'class'  => array(),
 					),
 					'products_carousel' => array(
-						'label'  => __( 'Products Carousel', 'electro' ),
+						'label'  => esc_html__( 'Products Carousel', 'electro' ),
 						'target' => 'products_carousel',
 						'class'  => array(),
 					),
 					'two_banners'   => array(
-                        'label'     => __( 'Two Banners', 'electro' ),
+                        'label'     => esc_html__( 'Two Banners', 'electro' ),
                         'target'    => 'two_banners',
                         'class'     => array(),
-                        'is_wide_only' => true,
                     ),
                     'recently_viewed_carousel' => array(
-                        'label'  => __( 'Recently Viewed Carousel', 'electro' ),
+                        'label'  => esc_html__( 'Recently Viewed Carousel', 'electro' ),
                         'target' => 'recently_viewed_carousel',
                         'class'  => array(),
-                        'is_wide_only' => true,
                     )
 				) );
 				foreach ( $product_data_tabs as $key => $tab ) {
-					if ( isset( $tab['is_wide_only'] ) && $tab['is_wide_only'] && ! electro_is_wide_enabled() ) {
-						continue;
-					}
-
 					?><li class="<?php echo esc_attr( $key ); ?>_options <?php echo esc_attr( $key ); ?>_tab <?php echo implode( ' ' , $tab['class'] ); ?>">
 						<a href="#<?php echo esc_attr( $tab['target'] ); ?>"><?php echo esc_html( $tab['label'] ); ?></a>
 					</li><?php
@@ -131,7 +125,7 @@ class Electro_Meta_Box_Home_v3 {
 						'id'		=> '_home_v3_header_style',
 						'label'		=> esc_html__( 'Header Style', 'electro' ),
 						'name'		=> '_home_v3[header_style]',
-						'options'		=> array(
+						'options'	=> array(
 							'v1'	=> esc_html__( 'Header v1', 'electro' ),
 							'v2'	=> esc_html__( 'Header v2', 'electro' ),
 							'v3'	=> esc_html__( 'Header v3', 'electro' ),
@@ -157,7 +151,7 @@ class Electro_Meta_Box_Home_v3 {
 							'pci'	=> esc_html__( 'Products Carousel with Image', 'electro' ),
 							'pcc'	=> esc_html__( 'Product Cards Carousel - 1', 'electro' ),
 							'pcc2'	=> esc_html__( 'Product Cards Carousel - 2', 'electro' ),
-							'so'	=> electro_is_wide_enabled() ? esc_html__( '9-1 Products Block', 'electro' ) :esc_html__( '6-1 Products Block', 'electro' ),
+							'so'	=> esc_html__( '9-1 Products Block', 'electro' ),
 							'hlc'	=> esc_html__( 'Categories List Block', 'electro' ),
 							'pc'	=> esc_html__( 'Products Carousel', 'electro' ),
 							'tbrs'  => esc_html__( 'Two Banners', 'electro' ),
@@ -175,12 +169,6 @@ class Electro_Meta_Box_Home_v3 {
 						</thead>
 						<tbody>
 							<?php foreach( $home_v3_blocks as $key => $home_v3_block ) : ?>
-
-							<?php 
-								if ( ! electro_is_wide_enabled() && ( $key == 'tbrs' || $key == 'rvp' ) ) {
-									continue;
-								}
-							?>
 							<tr>
 								<td><?php echo esc_html( $home_v3_block ); ?></td>
 								<td><?php electro_wp_animation_dropdown( array(  'id' => '_home_v3_' . $key . '_animation', 'label'=> '', 'name' => '_home_v3[' . $key . '][animation]', 'value' => isset( $home_v3['' . $key . '']['animation'] ) ? $home_v3['' . $key . '']['animation'] : '', )); ?></td>
@@ -407,8 +395,6 @@ class Electro_Meta_Box_Home_v3 {
 				?>
 				</div>
 
-				<?php if ( electro_is_wide_enabled() ) : ?>
-
 				<?php electro_wp_legend( esc_html__( 'Ads Block 3', 'electro' ) ); ?>
 
 				<div class="options_group">
@@ -492,7 +478,6 @@ class Electro_Meta_Box_Home_v3 {
 					) );
 				?>
 				</div>
-			<?php endif; ?>
 
 			</div><!-- /#ads_block -->
 
@@ -502,7 +487,7 @@ class Electro_Meta_Box_Home_v3 {
 				<?php 
 					electro_wp_text_input( array( 
 						'id'			=> '_home_v3_pct_product_limit', 
-						'label' 		=>  esc_html__( 'Products Limit', 'electro' ),
+						'label' 		=> esc_html__( 'Products Limit', 'electro' ),
 						'placeholder' 	=> esc_html__( 'Enter the number of products to show', 'electro' ),
 						'name'			=> '_home_v3[pct][product_limit]',
 						'class'			=> 'product_limit',
@@ -528,7 +513,6 @@ class Electro_Meta_Box_Home_v3 {
 				?>
 				</div>
 
-				<?php if ( electro_is_wide_enabled() ) : ?>
 				<div class="options_group">
 					<h5 class="options-group__title"><?php echo esc_html__( 'Wide Layout', 'electro' ); ?></h5>
 				<?php
@@ -549,7 +533,6 @@ class Electro_Meta_Box_Home_v3 {
 					) );
 				?>
 				</div>
-				<?php endif; ?>
 
 				<div class="options_group">
 				<?php	
@@ -644,96 +627,54 @@ class Electro_Meta_Box_Home_v3 {
 				?>
 				</div>
 
-				<?php electro_wp_legend( esc_html__( 'Products Carousel Block', 'electro' ) );
+				<?php electro_wp_legend( esc_html__( 'Products Carousel Block', 'electro' ) ); ?>
 
-				if ( electro_is_wide_enabled() ) { ?>
-					<div class="options_group">
-						<?php
-							electro_wp_text_input( array(
-								'id'			=> '_home_v3_pci_section_title',
-								'label'			=> esc_html__( 'Section Title', 'electro' ),
-								'name'			=> '_home_v3[pcc][section_title]',
-								'name'			=> '_home_v3[pci][section_title]',
-								'value'			=> isset( $home_v3['pci']['section_title'] ) ? $home_v3['pci']['section_title'] : esc_html__( 'Television Entertainment', 'electro' ),
-							) );
-							electro_wp_text_input( array(
-								'id'			=> '_home_v3_pci_product_limit',
-								'label'			=> esc_html__( 'Product Limit', 'electro' ),
-								'name'			=> '_home_v3[pci][product_limit]',
-								'value'			=> isset( $home_v3['pci']['product_limit'] ) ? $home_v3['pci']['product_limit'] : 15,
-								'placeholder'	=> esc_html__( 'Enter number of products to show', 'electro' ),
-							) );
-							electro_wp_text_input( array(
-								'id'			=> '_home_v3_pci_product_rows',
-								'label'			=> esc_html__( 'Rows', 'electro' ),
-								'name'			=> '_home_v3[pci][product_rows]',
-								'value'			=> isset( $home_v3['pci']['product_rows'] ) ? $home_v3['pci']['product_rows'] : 2,
-								'placeholder'	=> esc_html__( 'Enter number of rows to display', 'electro' ),
-							) );
-							electro_wp_text_input( array(
-								'id'			=> '_home_v3_pci_product_columns',
-								'label'			=> esc_html__( 'Columns', 'electro' ),
-								'name'			=> '_home_v3[pci][product_columns_wide]',
-								'value'			=> isset( $home_v3['pci']['product_columns_wide'] ) ? $home_v3['pci']['product_columns_wide'] : 2,
-								'placeholder'	=> esc_html__( 'Enter number of products to show', 'electro' ),
-							) );
-							electro_wp_wc_shortcode( array( 
-								'id' 			=> '_home_v3_pci_content',
-								'label'			=> esc_html__( 'Products', 'electro' ),
-								'default'		=> 'best_selling_products',
-								'name'			=> '_home_v3[pci][content]',
-								'value'			=> isset( $home_v3['pci']['content'] ) ? $home_v3['pci']['content'] : ''
-							) );
-							electro_wp_owl_carousel_options( array( 
-								'id' 			=> '_home_v3_pci_carousel_args',
-								'label'			=> esc_html__( 'Carousel Args', 'electro' ),
-								'name'			=> '_home_v3[pci][carousel_args]',
-								'value'			=> isset( $home_v3['pci']['carousel_args'] ) ? $home_v3['pci']['carousel_args'] : '',
-								'fields'		=> array( 'autoplay' )
-							) );
-						?>
-					</div>
-				
-				<?php } else { ?>
-					<div class="options_group">
-						<?php
-							electro_wp_text_input( array(
-								'id'			=> '_home_v3_pci_carousel_section_title',
-								'label'			=> esc_html__( 'Section Title', 'electro' ),
-								'name'			=> '_home_v3[pci][carousel][section_title]',
-								'value'			=> isset( $home_v3['pci']['carousel']['section_title'] ) ? $home_v3['pci']['carousel']['section_title'] : esc_html__( 'Television Entertainment', 'electro' ),
-							) );
-
-							electro_wp_text_input( array(
-								'id'			=> '_home_v3_pci_carousel_product_limit',
-								'label'			=> esc_html__( 'Limit', 'electro' ),
-								'name'			=> '_home_v3[pci][carousel][product_limit]',
-								'value'			=> isset( $home_v3['pci']['carousel']['product_limit'] ) ? $home_v3['pci']['carousel']['product_limit'] : 8,
-							) );
-							electro_wp_text_input( array(
-								'id'			=> '_home_v3_pci_carousel_product_columns',
-								'label'			=> esc_html__( 'Columns', 'electro' ),
-								'name'			=> '_home_v3[pci][carousel][product_columns]',
-								'value'			=> isset( $home_v3['pci']['carousel']['product_columns'] ) ? $home_v3['pci']['carousel']['product_columns'] : 2,
-							) );
-
-							electro_wp_wc_shortcode( array( 
-								'id' 			=> '_home_v3_pci_carousel_content',
-								'label'			=> esc_html__( 'Products', 'electro' ),
-								'default'		=> 'product_category',
-								'name'			=> '_home_v3[pci][carousel][content]',
-								'value'			=> isset( $home_v3['pci']['carousel']['content'] ) ? $home_v3['pci']['carousel']['content'] : '',
-							) );
-
-							electro_wp_owl_carousel_options( array( 
-								'id' 			=> '_home_v3_pci_carousel_carousel_args',
-								'label'			=> esc_html__( 'Carousel Args', 'electro' ),
-								'name'			=> '_home_v3[pci][carousel][carousel_args]',
-								'value'			=> isset( $home_v3['pci']['carousel']['carousel_args'] ) ? $home_v3['pci']['carousel']['carousel_args'] : '',
-							) );
-						?>
-					</div>
-				<?php } ?>
+				<div class="options_group">
+					<?php
+						electro_wp_text_input( array(
+							'id'			=> '_home_v3_pci_section_title',
+							'label'			=> esc_html__( 'Section Title', 'electro' ),
+							'name'			=> '_home_v3[pcc][section_title]',
+							'name'			=> '_home_v3[pci][section_title]',
+							'value'			=> isset( $home_v3['pci']['section_title'] ) ? $home_v3['pci']['section_title'] : esc_html__( 'Television Entertainment', 'electro' ),
+						) );
+						electro_wp_text_input( array(
+							'id'			=> '_home_v3_pci_product_limit',
+							'label'			=> esc_html__( 'Product Limit', 'electro' ),
+							'name'			=> '_home_v3[pci][product_limit]',
+							'value'			=> isset( $home_v3['pci']['product_limit'] ) ? $home_v3['pci']['product_limit'] : 15,
+							'placeholder'	=> esc_html__( 'Enter number of products to show', 'electro' ),
+						) );
+						electro_wp_text_input( array(
+							'id'			=> '_home_v3_pci_product_rows',
+							'label'			=> esc_html__( 'Rows', 'electro' ),
+							'name'			=> '_home_v3[pci][product_rows]',
+							'value'			=> isset( $home_v3['pci']['product_rows'] ) ? $home_v3['pci']['product_rows'] : 2,
+							'placeholder'	=> esc_html__( 'Enter number of rows to display', 'electro' ),
+						) );
+						electro_wp_text_input( array(
+							'id'			=> '_home_v3_pci_product_columns',
+							'label'			=> esc_html__( 'Columns', 'electro' ),
+							'name'			=> '_home_v3[pci][product_columns_wide]',
+							'value'			=> isset( $home_v3['pci']['product_columns_wide'] ) ? $home_v3['pci']['product_columns_wide'] : 2,
+							'placeholder'	=> esc_html__( 'Enter number of products to show', 'electro' ),
+						) );
+						electro_wp_wc_shortcode( array( 
+							'id' 			=> '_home_v3_pci_content',
+							'label'			=> esc_html__( 'Products', 'electro' ),
+							'default'		=> 'best_selling_products',
+							'name'			=> '_home_v3[pci][content]',
+							'value'			=> isset( $home_v3['pci']['content'] ) ? $home_v3['pci']['content'] : ''
+						) );
+						electro_wp_owl_carousel_options( array( 
+							'id' 			=> '_home_v3_pci_carousel_args',
+							'label'			=> esc_html__( 'Carousel Args', 'electro' ),
+							'name'			=> '_home_v3[pci][carousel_args]',
+							'value'			=> isset( $home_v3['pci']['carousel_args'] ) ? $home_v3['pci']['carousel_args'] : '',
+							'fields'		=> array( 'autoplay' )
+						) );
+					?>
+				</div>
 			</div>
 			
 			<div id="products_cards_carousel" class="panel electro_options_panel">
@@ -771,19 +712,19 @@ class Electro_Meta_Box_Home_v3 {
 					) );
 				?>
 				</div>
-				<?php if ( electro_is_wide_enabled() ) : ?>
-					<h5 class="options-group__title"><?php echo esc_html__( 'Wide Layout', 'electro' ); ?></h5>
-					<div class="options_group">
-					<?php
-						electro_wp_text_input( array(
-							'id'			=> '_home_v3_pcc_product_columns_wide',
-							'label'			=> esc_html__( 'Columns', 'electro' ),
-							'name'			=> '_home_v3[pcc][product_columns_wide]',
-							'value'			=> isset( $home_v3['pcc']['product_columns_wide'] ) ? $home_v3['pcc']['product_columns_wide'] : 3,
-						) ); 
-					?>
-					</div>
-				<?php endif; ?>
+				
+				<h5 class="options-group__title"><?php echo esc_html__( 'Wide Layout', 'electro' ); ?></h5>
+				<div class="options_group">
+				<?php
+					electro_wp_text_input( array(
+						'id'			=> '_home_v3_pcc_product_columns_wide',
+						'label'			=> esc_html__( 'Columns', 'electro' ),
+						'name'			=> '_home_v3[pcc][product_columns_wide]',
+						'value'			=> isset( $home_v3['pcc']['product_columns_wide'] ) ? $home_v3['pcc']['product_columns_wide'] : 3,
+					) ); 
+				?>
+				</div>
+				
 				<div class="options_group"><?php
 					electro_wp_wc_shortcode( array( 
 						'id' 			=> '_home_v3_pcc_content',
@@ -838,19 +779,19 @@ class Electro_Meta_Box_Home_v3 {
 					) );
 				?>
 				</div>
-				<?php if ( electro_is_wide_enabled() ) : ?>
-					<h5 class="options-group__title"><?php echo esc_html__( 'Wide Layout', 'electro' ); ?></h5>
-					<div class="options_group">
-					<?php
-						electro_wp_text_input( array(
-							'id'			=> '_home_v3_pcc2_product_columns_wide',
-							'label'			=> esc_html__( 'Columns', 'electro' ),
-							'name'			=> '_home_v3[pcc2][product_columns_wide]',
-							'value'			=> isset( $home_v3['pcc2']['product_columns_wide'] ) ? $home_v3['pcc2']['product_columns_wide'] : 4,
-						) ); 
-					?>
-					</div>
-				<?php endif; ?>
+					
+				<h5 class="options-group__title"><?php echo esc_html__( 'Wide Layout', 'electro' ); ?></h5>
+				<div class="options_group">
+				<?php
+					electro_wp_text_input( array(
+						'id'			=> '_home_v3_pcc2_product_columns_wide',
+						'label'			=> esc_html__( 'Columns', 'electro' ),
+						'name'			=> '_home_v3[pcc2][product_columns_wide]',
+						'value'			=> isset( $home_v3['pcc2']['product_columns_wide'] ) ? $home_v3['pcc2']['product_columns_wide'] : 4,
+					) ); 
+				?>
+				</div>
+
 				<div class="options_group"><?php
 					electro_wp_wc_shortcode( array( 
 						'id' 			=> '_home_v3_pcc2_content',
@@ -955,7 +896,7 @@ class Electro_Meta_Box_Home_v3 {
 						'value'			=> isset( $home_v3['pc']['product_columns'] ) ? $home_v3['pc']['product_columns'] : 5,
 					) );
 
-					if ( electro_is_wide_enabled() ) : ?>
+					?>
 					<h5 class="options-group__title"><?php echo esc_html__( 'Wide Layout', 'electro' ); ?></h5>
 					<?php
 						electro_wp_text_input( array(
@@ -965,7 +906,7 @@ class Electro_Meta_Box_Home_v3 {
 							'value'			=> isset( $home_v3['pc']['product_columns_wide'] ) ? $home_v3['pc']['product_columns_wide'] : 7,
 						) ); 
 					
-					endif; ?>
+					?>
 				</div>
 					
 				<div class="options_group"><?php
@@ -987,8 +928,6 @@ class Electro_Meta_Box_Home_v3 {
 				?>
 				</div>
 			</div>
-
-			<?php if ( electro_is_wide_enabled() ) : ?>
 
 			<div id="two_banners" class="panel electro_options_panel">
 
@@ -1078,8 +1017,6 @@ class Electro_Meta_Box_Home_v3 {
                 ?>
                 </div>
             </div><!-- /#recently_viewed_carousel -->
-
-            <?php endif; ?>
 
 		</div>
 		<?php

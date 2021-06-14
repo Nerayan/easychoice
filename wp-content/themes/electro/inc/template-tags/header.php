@@ -8,7 +8,7 @@ if ( ! function_exists( 'electro_site_content_inner_open' ) ) {
      * @since 2.0
      */
     function electro_site_content_inner_open() {
-        ?><div class="site-content-inner"><?php
+        ?><div class="site-content-inner row"><?php
     }
 }
 
@@ -26,7 +26,7 @@ if ( ! function_exists( 'electro_masthead' ) ) {
      * @since 2.0
      */
     function electro_masthead() {
-        ?><div class="masthead"><?php
+        ?><div class="masthead row align-items-center"><?php
         /**
          * @hooked electro_header_logo_area - 10
          * @hooked electro_navbar_search    - 20
@@ -41,7 +41,7 @@ if ( ! function_exists( 'electro_header_icons' ) ) {
      * @since 2.0
      */
     function electro_header_icons() {
-        ?><div class="header-icons"><?php
+        ?><div class="header-icons col-auto d-flex justify-content-end align-items-center"><?php
         /**
          *
          */
@@ -54,7 +54,7 @@ if ( ! function_exists( 'electro_header_logo_area' ) ) {
      * @since 2.0
      */
     function electro_header_logo_area() {
-        ?><div class="header-logo-area"><?php
+        ?><div class="header-logo-area d-flex justify-content-between align-items-center"><?php
         /**
          *
          */

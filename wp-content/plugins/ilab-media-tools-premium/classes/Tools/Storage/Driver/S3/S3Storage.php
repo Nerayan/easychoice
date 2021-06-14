@@ -198,7 +198,7 @@ class S3Storage implements S3StorageInterface, ConfiguresWizard {
 
 				if (empty($valid) && empty($connectError)) {
 					try {
-						Logger::info("Bucket does not exist, trying to list buckets.", [], __METHOD__, __LINE__);
+						Logger::warning("Bucket does not exist, trying to list buckets.", [], __METHOD__, __LINE__);
 
 						$result = $client->listBuckets();
 						$buckets = $result->get('Buckets');
@@ -216,7 +216,7 @@ class S3Storage implements S3StorageInterface, ConfiguresWizard {
                                 $errorCollector->addError("Bucket {$this->settings->bucket} does not exist.");
                             }
 
-                            Logger::info("Bucket does not exist.", [], __METHOD__, __LINE__);
+                            Logger::error("Bucket does not exist.", [], __METHOD__, __LINE__);
                         }
 					} catch(AwsException $ex) {
                         if ($errorCollector) {
@@ -475,8 +475,41 @@ class S3Storage implements S3StorageInterface, ConfiguresWizard {
 		return $this->settings->region;
 	}
 
+	public function isUsingPathStyleEndPoint() {
+		if (in_array(static::identifier(), ['s3', 'google', 'backblaze', 'wasabi'])) {
+			return false;
+		}
+
+		return $this->settings->endPointPathStyle;
+	}
+
 	public function insureACL($key, $acl) {
 
+	}
+
+	public function acl($key) {
+		try {
+			$result = $this->client->getObjectAcl([
+				'Bucket' => $this->settings->bucket,
+				'Key' => $key
+			]);
+
+			$grants = arrayPath($result, 'Grants', []);
+			foreach($grants as $grant) {
+				if (arrayPath($grant, 'Grantee/URI') === 'http://acs.amazonaws.com/groups/global/AllUsers') {
+					return (arrayPath($grant, 'Permission') === 'READ') ? 'public-read' : 'private';
+				}
+
+				if (arrayPath($grant, 'Grantee/URI') === 'http://acs.amazonaws.com/groups/global/AuthenticatedUsers') {
+					return (arrayPath($grant, 'Permission') === 'READ') ? 'authenticated-read' : 'private';
+				}
+			}
+
+			return null;
+		} catch (\Exception $ex) {
+			Logger::error("Error fetching ACL for '$key'.  Exception: ".$ex->getMessage(), [], __METHOD__, __LINE__);
+			return null;
+		}
 	}
 
 	public function updateACL($key, $acl) {

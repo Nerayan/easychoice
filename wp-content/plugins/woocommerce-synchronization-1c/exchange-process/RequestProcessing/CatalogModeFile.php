@@ -1,9 +1,9 @@
 <?php
 namespace Itgalaxy\Wc\Exchange1c\ExchangeProcess\RequestProcessing;
 
+use Itgalaxy\Wc\Exchange1c\ExchangeProcess\Responses\SuccessResponse;
 use Itgalaxy\Wc\Exchange1c\ExchangeProcess\RootProcessStarter;
 use Itgalaxy\Wc\Exchange1c\Includes\Helper;
-use Itgalaxy\Wc\Exchange1c\Includes\Logger;
 
 class CatalogModeFile
 {
@@ -46,7 +46,6 @@ class CatalogModeFile
             $_SESSION['IMPORT_1C']['zip_file'] = RootProcessStarter::getCurrentExchangeFileAbsPath();
         }
 
-        RootProcessStarter::successResponse();
-        Logger::logProtocol('success');
+        SuccessResponse::send();
     }
 }

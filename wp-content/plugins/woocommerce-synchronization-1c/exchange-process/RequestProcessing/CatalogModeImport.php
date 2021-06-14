@@ -3,6 +3,8 @@ namespace Itgalaxy\Wc\Exchange1c\ExchangeProcess\RequestProcessing;
 
 use Itgalaxy\Wc\Exchange1c\ExchangeProcess\ParserXml;
 use Itgalaxy\Wc\Exchange1c\ExchangeProcess\ParserXml31;
+use Itgalaxy\Wc\Exchange1c\ExchangeProcess\Responses\ProgressResponse;
+use Itgalaxy\Wc\Exchange1c\ExchangeProcess\Responses\SuccessResponse;
 use Itgalaxy\Wc\Exchange1c\ExchangeProcess\RootProcessStarter;
 use Itgalaxy\Wc\Exchange1c\Includes\Helper;
 use Itgalaxy\Wc\Exchange1c\Includes\Logger;
@@ -13,7 +15,6 @@ class CatalogModeImport
     {
         $baseName = basename(RootProcessStarter::getCurrentExchangeFileAbsPath());
         $message = '';
-        $strMessage = '';
 
         if (!isset($_SESSION['IMPORT_1C'])) {
             $_SESSION['IMPORT_1C'] = [];
@@ -30,11 +31,11 @@ class CatalogModeImport
             ) {
                 Helper::extractArchive($_SESSION['IMPORT_1C']['zip_file']);
 
-                $strMessage = esc_html__('Archive unpacked', 'itgalaxy-woocommerce-1c')
+                $message = esc_html__('Archive unpacked', 'itgalaxy-woocommerce-1c')
                     . ' - '
                     . esc_html(basename($_SESSION['IMPORT_1C']['zip_file']));
 
-                Logger::logProtocol($strMessage);
+                Logger::logProtocol($message);
             }
 
             $_SESSION['IMPORT_1C_STEP'] = 2;
@@ -107,27 +108,13 @@ class CatalogModeImport
                     !isset($_SESSION['IMPORT_1C']['heartbeat']['Товар'])
                 ) {
                     if (isset($_SESSION['IMPORT_1C']['numberOfCategories'])) {
-                        $count = $_SESSION['IMPORT_1C']['numberOfCategories'];
-
-                        $message = "progress "
-                            . esc_html__('Processing groups', 'itgalaxy-woocommerce-1c')
-                            . " {$baseName}... {$count}";
-
-                        $strMessage =
-                            esc_html__('Processing groups', 'itgalaxy-woocommerce-1c')
+                        $message = esc_html__('Processing groups', 'itgalaxy-woocommerce-1c')
                             . ' '
                             . $baseName
                             . '...'
-                            . $count;
+                            . (int) $_SESSION['IMPORT_1C']['numberOfCategories'];
                     } else {
-                        $message = "progress "
-                            . 'Processing'
-                            . " {$baseName}...";
-
-                        $strMessage =
-                            'Processing '
-                            . $baseName
-                            . '...';
+                        $message = "Processing {$baseName} ...";
                     }
                 } else {
                     if (strpos($baseName, 'import') !== false) {
@@ -140,15 +127,7 @@ class CatalogModeImport
                             : 0;
                     }
 
-                    $message = "progress "
-                        . esc_html__('Reading file', 'itgalaxy-woocommerce-1c')
-                        . " {$baseName}... {$count}";
-
-                    $strMessage = esc_html__('Reading file', 'itgalaxy-woocommerce-1c')
-                        . ' '
-                        . $baseName
-                        . '...'
-                        . $count;
+                    $message = esc_html__('Reading file', 'itgalaxy-woocommerce-1c') . " {$baseName}...{$count}";
                 }
             }
         } else {
@@ -156,28 +135,29 @@ class CatalogModeImport
         }
 
         if ($_SESSION['IMPORT_1C_STEP'] < 3) {
-            Logger::saveLastResponseInfo('progress - ' . $strMessage);
+            ProgressResponse::send($message);
 
-            echo "progress\n" . esc_html($strMessage);
-            // 1c response does not require escape
-        } else {
-            $_SESSION['IMPORT_1C_STEP'] = 0;
-            RootProcessStarter::successResponse(
-                esc_html__('Import file', 'itgalaxy-woocommerce-1c')
-                . ' '
-                . $baseName
-                . ' '
-                . esc_html__('completed!', 'itgalaxy-woocommerce-1c')
-            );
-
-            $message = "success "
-                . esc_html__('Import file', 'itgalaxy-woocommerce-1c')
-                . ' '
-                . $baseName
-                . ' '
-                . esc_html__('completed!', 'itgalaxy-woocommerce-1c');
+            return;
         }
 
-        Logger::logProtocol($message);
+        /**
+         * Success processing.
+         */
+        $_SESSION['IMPORT_1C_STEP'] = 1;
+
+        SuccessResponse::send(
+            esc_html__('Import file', 'itgalaxy-woocommerce-1c')
+            . " {$baseName} "
+            . esc_html__('completed!', 'itgalaxy-woocommerce-1c')
+        );
+
+        /**
+         * Hook makes it possible to perform some of your actions when the file is processing processing.
+         *
+         * @since 1.84.9
+         *
+         * @param string $baseName The name of the file that has been processed
+         */
+        do_action('itglx_wc1c_exchange_catalog_import_file_processing_completed', $baseName);
     }
 }

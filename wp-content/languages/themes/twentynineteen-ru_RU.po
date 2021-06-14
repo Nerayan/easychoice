@@ -263,7 +263,7 @@ msgstr "Страница"
 msgid "Add widgets here to appear in your footer."
 msgstr "Добавьте виджеты сюда, для помещения их в подвал сайта."
 
-#: functions.php:194 template-parts/footer/footer-widgets.php:12
+#: template-parts/footer/footer-widgets.php:12 functions.php:194
 msgid "Footer"
 msgstr "Подвал"
 
@@ -297,14 +297,15 @@ msgid "Top Menu"
 msgstr "Верхнее меню"
 
 #. translators: %s: Post title. Only visible to screen readers.
+#. translators: %s: Post title.
 #: template-parts/content/content.php:36
-#: template-parts/content/content-single.php:27
+#: template-parts/content/content-single.php:27 functions.php:225
 msgid "Continue reading<span class=\"screen-reader-text\"> \"%s\"</span>"
 msgstr "Читать далее<span class=\"screen-reader-text\"> «%s»</span>"
 
-#: image.php:52 template-parts/content/content.php:49
-#: template-parts/content/content-single.php:40
+#: template-parts/content/content.php:49
 #: template-parts/content/content-page.php:27
+#: template-parts/content/content-single.php:40 image.php:52
 msgid "Pages:"
 msgstr "Страницы:"
 
@@ -315,11 +316,6 @@ msgstr "Запрошенную информацию найти не удалос
 #: template-parts/content/content-none.php:39
 msgid "Sorry, but nothing matched your search terms. Please try again with some different keywords."
 msgstr "Извините, по вашему запросу ничего не найдено. Попробуйте другие ключевые слова."
-
-#. translators: 1: Link to WP admin new post page.
-#: template-parts/content/content-none.php:26
-msgid "Ready to publish your first post? <a href=\"%1$s\">Get started here</a>."
-msgstr "Готовы опубликовать свою первую запись? <a href=\"%1$s\">Начните отсюда</a>."
 
 #: template-parts/content/content-none.php:16
 msgid "Nothing Found"
@@ -423,8 +419,8 @@ msgid "Category Archives: "
 msgstr "Архивы рубрик:"
 
 #. translators: %s: Post title. Only visible to screen readers.
-#: inc/template-tags.php:120 template-parts/content/content-page.php:41
-#: template-parts/header/entry-header.php:32
+#: template-parts/content/content-page.php:41
+#: template-parts/header/entry-header.php:32 inc/template-tags.php:120
 msgid "Edit <span class=\"screen-reader-text\">%s</span>"
 msgstr "Редактировать <span class=\"screen-reader-text\">%s</span>"
 
@@ -432,7 +428,7 @@ msgstr "Редактировать <span class=\"screen-reader-text\">%s</span>"
 msgid "Skip to content"
 msgstr "Перейти к содержимому"
 
-#: functions.php:61 template-parts/header/site-branding.php:46
+#: template-parts/header/site-branding.php:46 functions.php:61
 msgid "Social Links Menu"
 msgstr "Меню социальных ссылок"
 

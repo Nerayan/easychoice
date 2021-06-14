@@ -102,9 +102,20 @@ class GlobalProductAttributes
                 continue;
             }
 
+            if (has_action('itglx_wc1c_global_product_option_custom_processing_' . (string) $element->Ид)) {
+                do_action('itglx_wc1c_global_product_option_custom_processing_' . (string) $element->Ид, $element);
+
+                unset($element);
+                $_SESSION['IMPORT_1C']['numberOfOptions'] = $numberOfOptions;
+                continue;
+            }
+
             $attribute = ProductAttributeHelper::get((string) $element->Ид);
 
             if (!$attribute) {
+                /**
+                 * @see \Itgalaxy\Wc\Exchange1c\ExchangeProcess\Filters\FindAttribute
+                 */
                 $attribute = apply_filters('itglx_wc1c_find_exists_product_attribute', null, $element);
 
                 if ($attribute) {
@@ -114,10 +125,13 @@ class GlobalProductAttributes
                         [(string) $element->Ид]
                     );
 
-                    ProductAttributeHelper::update(
-                        ['id_1c' => (string) $element->Ид],
-                        $attribute->attribute_id
-                    );
+                    // set the GUID if the attribute does not already have it
+                    if (empty($attribute->id_1c)) {
+                        ProductAttributeHelper::update(['id_1c' => (string) $element->Ид], $attribute->attribute_id);
+                    }
+
+                    // update the data, as it may have changed during the search
+                    $options = get_option('all_product_options', []);
                 }
             }
 
@@ -216,7 +230,16 @@ class GlobalProductAttributes
                         continue;
                     }
 
-                    if (empty((string) $variant->Значение)) {
+                    /**
+                     * Example xml structure
+                     *
+                     * ```xml
+                     * <Справочник>
+                     *    <ИдЗначения/>
+                     *    <Значение/>
+                     * </Справочник>
+                     */
+                    if (empty((string) $variant->Значение) || empty((string) $variant->ИдЗначения)) {
                         unset($variant);
                         $_SESSION['IMPORT_1C']['numberOfOptionValues'] = $numberOfOptionValues;
                         continue;
@@ -239,10 +262,10 @@ class GlobalProductAttributes
 
                         if ($variantTerm) {
                             Logger::logChanges(
-                                '(attribute) Found value through filter '
+                                '(attribute) Found value ' . (string) $variant->Значение . ' through filter '
                                 . '`itglx_wc1c_find_exists_product_attribute_value_term_id`, `term_id` - '
                                 . $variantTerm,
-                                [(string) $variant->ИдЗначения]
+                                [$attributeTaxName, (string) $variant->ИдЗначения]
                             );
 
                             Term::update1cId($variantTerm, $uniqId1c);

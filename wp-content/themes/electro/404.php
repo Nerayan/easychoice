@@ -14,11 +14,11 @@ electro_get_header(); ?>
 		<div class="row">
 			<div class="col-sm-12 center-block">
 				<div class="info-404">
-					<div class="text-xs-center inner-bottom-xs">
+					<div class="text-xs-center text-center inner-bottom-xs pb-5">
 						<h2 class="display-3"><?php echo esc_html__( '404!', 'electro' ); ?></h2>
 						<p class="lead"><?php echo esc_html__( 'Nothing was found at this location. Try searching, or check out the links below.', 'electro' ); ?></p>
-						<hr class="m-y-2">
-						<div class="sub-form-row inner-bottom-xs">
+						<hr class="my-4">
+						<div class="sub-form-row inner-bottom-xs pb-5">
 			            <?php
 			                if ( is_woocommerce_activated() ) {
 								the_widget( 'WC_Widget_Product_Search' );

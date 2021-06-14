@@ -4,6 +4,8 @@
  */
 add_action( 'wp_enqueue_scripts',       'electro_scripts',      10 );
 
+add_action( 'wp_body_open',    'electro_mode_switcher', 5 );
+
 add_action( 'electro_before_header',    'electro_skip_links',   0  );
 add_action( 'electro_before_header',    'electro_top_bar',      10 );
 

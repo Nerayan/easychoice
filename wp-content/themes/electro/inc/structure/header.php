@@ -16,7 +16,8 @@ if ( ! function_exists( 'electro_enqueue_styles' ) ) {
         }
 
         $css_vendors = apply_filters( 'electro_css_vendors', array(
-            'bootstrap'    => 'bootstrap.min.css',
+            // 'bootstrap'    => 'bootstrap.min.css',
+            // 'bootstrap-map'    => 'bootstrap.min.map',
             'font-electro' => 'font-electro.css'
         ) );
 
@@ -34,18 +35,9 @@ if ( ! function_exists( 'electro_enqueue_styles' ) ) {
         wp_enqueue_style( 'jquery-mCustomScrollbar', get_template_directory_uri() . '/assets/vendor/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.css', '', $electro_version );
 
         if ( is_rtl() ) {
-            wp_enqueue_style( 'bootstrap-rtl', get_template_directory_uri() . '/assets/css/bootstrap-rtl.min.css', '', $electro_version  );
-            wp_enqueue_style( 'electro-rtl-style', get_template_directory_uri() . '/rtl.min.css', '', $electro_version );
+            wp_enqueue_style( 'electro-rtl-style', get_template_directory_uri() . '/style-rtl.min.css', '', $electro_version );
         } else {
             wp_enqueue_style( 'electro-style', get_template_directory_uri() . '/style.min.css', '', $electro_version );
-        }
-
-        if ( apply_filters( 'electro_load_v2', true ) ) {
-            if ( is_rtl() ) {
-                wp_enqueue_style( 'electro-rtl-style-v2', get_template_directory_uri() . '/assets/css/v2-rtl.min.css', '', $electro_version );
-            } else {
-                wp_enqueue_style( 'electro-style-v2', get_template_directory_uri() . '/assets/css/v2.min.css', '', $electro_version );
-            }
         }
 
         if ( is_child_theme() && apply_filters( 'electro_load_child_theme', true ) ) {
@@ -69,7 +61,6 @@ if ( ! function_exists( 'electro_enqueue_scripts' ) ) {
 
         global $electro_version;
 
-        //wp_enqueue_script( 'tether-js',     get_template_directory_uri() . '/assets/js/tether.min.js', array( 'jquery' ), $electro_version, true );
         wp_enqueue_script( 'bootstrap-js',  get_template_directory_uri() . '/assets/js/bootstrap.bundle.min.js', array( 'jquery' ), $electro_version, true );
 
         $waypoints_js_handler = function_exists( 'is_elementor_activated' ) && is_elementor_activated() ? 'elementor-waypoints' : 'waypoints-js';
@@ -199,14 +190,29 @@ if ( ! function_exists( 'electro_get_header' ) ) {
     }
 }
 
+if ( ! function_exists( 'electro_mode_switcher' ) ) {
+    function electro_mode_switcher() {
+        if ( apply_filters( 'electro_enable_mode_switcher', true ) ) :
+        ?><div class="electro-mode-switcher">
+            <a class="data-block electro-mode-switcher-item dark" href="#dark" data-mode="dark">
+                <span class="d-block electro-mode-switcher-item-state"><?php echo esc_html__( 'Dark', 'electro' ); ?></span>
+            </a>
+            <a class="d-block electro-mode-switcher-item light" href="#light" data-mode="light">
+                <span class="d-block electro-mode-switcher-item-state"><?php echo esc_html__( 'Light', 'electro' ); ?></span>
+            </a>
+        </div><?php
+        endif;
+    }
+}
+
 if ( ! function_exists( 'electro_skip_links' ) ) {
     /**
      * Skip Links
      */
     function electro_skip_links() {
         ?>
-        <a class="skip-link screen-reader-text" href="#site-navigation"><?php _e( 'Skip to navigation', 'electro' ); ?></a>
-        <a class="skip-link screen-reader-text" href="#content"><?php _e( 'Skip to content', 'electro' ); ?></a>
+        <a class="skip-link screen-reader-text visually-hidden" href="#site-navigation"><?php _e( 'Skip to navigation', 'electro' ); ?></a>
+        <a class="skip-link screen-reader-text visually-hidden" href="#content"><?php _e( 'Skip to content', 'electro' ); ?></a>
         <?php
     }
 }
@@ -238,14 +244,14 @@ if ( ! function_exists( 'electro_top_bar' ) ) {
 
         if ( has_electro_mobile_header() ) {
             if ( apply_filters( 'electro_hide_top_bar_in_mobile', true ) ) {
-                $top_bar_classes .= ' hidden-lg-down';
+                $top_bar_classes .= ' hidden-lg-down d-none d-xl-block';
             }
         }
 
         ?>
 
         <div class="<?php echo esc_attr( $top_bar_classes ); ?>">
-            <div class="container">
+            <div class="container clearfix">
             <?php
                 wp_nav_menu( array(
                     'theme_location'    => 'topbar-left',
@@ -285,13 +291,13 @@ if ( ! function_exists( 'electro_top_bar_center' ) ) {
 
             if ( has_electro_mobile_header() ) {
                 if ( apply_filters( 'electro_hide_top_bar_in_mobile', true ) ) {
-                    $top_bar_classes .= ' hidden-lg-down';
+                    $top_bar_classes .= ' hidden-lg-down d-none d-xl-block';
                 }
             }
             ?>
 
             <div class="<?php echo esc_attr( $top_bar_classes ); ?>">
-                <div class="container">
+                <div class="container clearfix">
                 <?php
                     wp_nav_menu( array(
                         'theme_location'    => 'topbar-center',
@@ -324,14 +330,14 @@ if ( ! function_exists( 'electro_top_bar_v2' ) ) {
 
         if ( has_electro_mobile_header() ) {
             if ( apply_filters( 'electro_hide_top_bar_in_mobile', true ) ) {
-                $top_bar_classes .= ' hidden-lg-down';
+                $top_bar_classes .= ' hidden-lg-down d-none d-xl-block';
             }
         }
 
         ?>
 
         <div class="<?php echo esc_attr( $top_bar_classes ); ?>">
-            <div class="container">
+            <div class="container clearfix">
             <?php
                 wp_nav_menu( array(
                     'theme_location'    => 'header-support',
@@ -369,14 +375,14 @@ if ( ! function_exists( 'electro_top_bar_v3' ) ) {
         if ( apply_filters( 'electro_enable_top_bar', true ) ) :
             if ( has_electro_mobile_header() ) {
                 if ( apply_filters( 'electro_hide_top_bar_in_mobile', true ) ) {
-                    $top_bar_classes .= ' hidden-lg-down';
+                    $top_bar_classes .= ' hidden-lg-down d-none d-xl-block';
                 }
             }
 
             $enable_topbar_additional_links = apply_filters( 'electro_enable_top_bar_v3_additional_links', true );
             ?>
             <div class="<?php echo esc_attr( $top_bar_classes ); ?>">
-                <div class="container">
+                <div class="container clearfix">
                     <?php if ( $enable_topbar_additional_links ) {
                         $topbar_additional_links_title = apply_filters( 'electro_top_bar_v3_additional_links_title', __( 'Two Shops<br>One Shipment', 'electro' ) );
 
@@ -597,7 +603,7 @@ if ( ! function_exists( 'electro_handheld_header_v2' ) ) {
             }
             ?>
             <div class="handheld-header-wrap container <?php echo esc_attr( electro_handheld_header_responsive_class() ); ?>">
-                <div class="handheld-header-v2 handheld-stick-this <?php echo esc_attr( $classes ); ?>">
+                <div class="handheld-header-v2 row align-items-center handheld-stick-this <?php echo esc_attr( $classes ); ?>">
                     <?php
                     /**
                      * @hooked electro_off_canvas_nav - 10
@@ -619,7 +625,7 @@ if ( ! function_exists( 'electro_mobile_header_v1' ) ) {
     function electro_mobile_header_v1() {
         if( has_electro_mobile_header() ) : ?>
             <div class="container <?php echo esc_attr( electro_handheld_header_responsive_class() ); ?>">
-                <div class="mobile-header-v1 handheld-stick-this">
+                <div class="mobile-header-v1 row align-items-center handheld-stick-this">
                     <?php
                     /**
                      * @hooked electro_off_canvas_nav - 10
@@ -641,7 +647,7 @@ if ( ! function_exists( 'electro_mobile_header_v2' ) ) {
         if( has_electro_mobile_header() ) : ?>
             <div class="mobile-header-v2 handheld-stick-this">
                 <div class="container <?php echo esc_attr( electro_handheld_header_responsive_class() ); ?>">
-                    <div class="mobile-header-v2-inner">
+                    <div class="mobile-header-v2-inner row align-items-center">
                         <?php
                         /**
                          * @hooked electro_off_canvas_nav - 10
@@ -737,7 +743,7 @@ if ( ! function_exists( 'electro_off_canvas_nav' ) ) {
     function electro_off_canvas_nav() {
         $classes = '';
         if( apply_filters( 'electro_off_canvas_nav_hide_in_desktop', false ) ) {
-            $classes = 'off-canvas-hide-in-desktop';
+            $classes = 'off-canvas-hide-in-desktop d-xl-none';
         }
         ?>
         <div class="off-canvas-navigation-wrapper <?php echo esc_attr( $classes ); ?>">
@@ -750,7 +756,7 @@ if ( ! function_exists( 'electro_off_canvas_nav' ) ) {
                 </button>
             </div>
 
-            <div class="off-canvas-navigation" id="default-oc-header">
+            <div class="off-canvas-navigation<?php if ( ! electro_is_dark_enabled() ): ?> light<?php endif; ?>" id="default-oc-header">
                 <?php
                     wp_nav_menu( array(
                         'theme_location'    => 'hand-held-nav',
@@ -933,9 +939,10 @@ if ( ! function_exists( 'electro_jumbotron' ) ) {
 
 if ( ! function_exists( 'electro_add_data_hover_attribute' ) ) {
     function electro_add_data_hover_attribute( $atts, $item, $args, $depth ) {
-        if( isset( $args->has_children ) && $args->has_children && $depth === 0 ) {
+        if( isset( $args->has_children ) && $args->has_children && $depth === 0 && 'hand-held-nav' !== $args->theme_location ) {
 
-            $dropdown_trigger = apply_filters( 'electro_' . $args->theme_location . '_dropdown_trigger', 'click', $args->theme_location );
+            $dropdown_trigger = apply_filters( 'electro_' . $args->theme_location . '_dropdown_trigger', 'hover', $args->theme_location );
+
             if( $dropdown_trigger == 'hover' ) {
                 $atts['data-hover'] = 'dropdown';
 

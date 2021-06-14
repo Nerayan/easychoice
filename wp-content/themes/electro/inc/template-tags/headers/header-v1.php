@@ -10,7 +10,7 @@ if ( ! function_exists( 'electro_navigation' ) ) {
      * @since 2.0
      */
     function electro_navigation() {
-        ?><div class="electro-navigation <?php if ( ( is_front_page() && ! is_home() ) || is_page_template( 'template-homepage-v1.php' ) || is_page_template( 'template-homepage-v10.php' ) ) : ?>yes-home<?php endif; ?>">
+        ?><div class="electro-navigation row <?php if ( ( is_front_page() && ! is_home() ) || is_page_template( 'template-homepage-v1.php' ) || is_page_template( 'template-homepage-v10.php' ) ) : ?>yes-home<?php endif; ?>">
             <?php
             do_action( 'electro_navigation' ); ?>
         </div><?php
@@ -87,7 +87,7 @@ if ( ! function_exists( 'electro_secondary_nav_menu' ) ) {
      */
     function electro_secondary_nav_menu() {
         ?>
-        <div class="secondary-nav-menu electro-animate-dropdown">
+        <div class="secondary-nav-menu col electro-animate-dropdown position-relative">
         <?php
             wp_nav_menu( apply_filters( 'electro_secondary_menu_args', array(
                 'theme_location'    => 'secondary-nav',

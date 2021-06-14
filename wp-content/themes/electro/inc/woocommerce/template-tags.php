@@ -414,8 +414,9 @@ if ( ! function_exists( 'electro_template_loop_product_thumbnail') ) {
 	 * Get the product thumbnail for the loop.
 	 */
 	function electro_template_loop_product_thumbnail() {
-		$thumbnail = woocommerce_get_product_thumbnail();
-		echo apply_filters( 'electro_template_loop_product_thumbnail', wp_kses_post( sprintf( '<div class="product-thumbnail product-item__thumbnail">%s</div>', $thumbnail ) ) );
+		$thumbnail  = woocommerce_get_product_thumbnail();
+		$sale_badge = electro_wc_get_template_loop_sale();
+		echo apply_filters( 'electro_template_loop_product_thumbnail', wp_kses_post( sprintf( '<div class="product-thumbnail product-item__thumbnail">%s%s</div>', $sale_badge, $thumbnail ) ) );
 	}
 }
 
@@ -424,8 +425,9 @@ if ( ! function_exists( 'electro_template_loop_product_single_image') ) {
 	 * Get the product thumbnail for the loop.
 	 */
 	function electro_template_loop_product_single_image() {
-		$thumbnail = woocommerce_get_product_thumbnail( 'shop_single' );
-		echo apply_filters( 'electro_template_loop_product_thumbnail', wp_kses_post( sprintf( '<div class="product-thumbnail product-item__thumbnail">%s</div>', $thumbnail ) ) );
+		$thumbnail  = woocommerce_get_product_thumbnail( 'shop_single' );
+		$sale_badge = electro_wc_get_template_loop_sale();
+		echo apply_filters( 'electro_template_loop_product_thumbnail', wp_kses_post( sprintf( '<div class="product-thumbnail product-item__thumbnail">%s%s</div>', $sale_badge, $thumbnail ) ) );
 	}
 }
 

@@ -1,7 +1,7 @@
 <?php
 namespace Itgalaxy\Wc\Exchange1c\ExchangeProcess\RequestProcessing;
 
-use Itgalaxy\Wc\Exchange1c\ExchangeProcess\RootProcessStarter;
+use Itgalaxy\Wc\Exchange1c\ExchangeProcess\Responses\SuccessResponse;
 use Itgalaxy\Wc\Exchange1c\Includes\Logger;
 
 class Listen
@@ -20,8 +20,7 @@ class Listen
         }
 
         if (SaleModeQuery::hasNewOrders()) {
-            RootProcessStarter::successResponse();
-            Logger::logProtocol('success');
+            SuccessResponse::send();
         } else {
             \status_header(304);
 

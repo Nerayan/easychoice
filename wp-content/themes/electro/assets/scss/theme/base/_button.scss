@@ -1,0 +1,30 @@
+// Button
+
+.btn,
+button,
+.button,
+.hero-action-btn,
+input[type=button],
+input[type=reset],
+input[type=submit] {
+    background-color: #efecec;
+    border-color: #efecec;
+    color: $body-color;
+
+    &:hover,&:focus {
+        background-color: $black;
+        color: $white;
+    }
+}
+
+button,
+.button,
+.hero-action-btn,
+input[type=button],
+input[type=reset],
+input[type=submit],
+a.dokan-btn,
+.dokan-btn,
+input[type='submit'].dokan-btn {
+    @extend .btn;
+}

@@ -96,6 +96,11 @@
 		$( button ).parents( '.add-to-cart-wrap' ).addClass( 'added' ).tooltip( 'hide' ).tooltip( 'dispose' );
 	} );
 
+	$( '.electro-mode-switcher-item').on( 'click', function( event ) {
+		$( 'body' ).toggleClass( 'electro-dark' );
+		return false;
+	} );
+
 	/*===================================================================================*/
 	/*  Visual Composer Row Behavior
 	/*===================================================================================*/
@@ -797,11 +802,11 @@
 
 		$( '.off-canvas-navigation-wrapper .navbar-toggle-hamburger' ).on( 'click', function() {
 			var css_properties = {
-				transform:	'translateX(250px)',
-				transition:	'all .5s'
+				// transform:	'translateX(250px)',
+				// transition:	'all .5s'
 			};
 			if( is_rtl ) {
-				css_properties.transform = 'translateX(-250px)';
+				//css_properties.transform = 'translateX(-250px)';
 			}
 
 			if ( $( this ).parents( '.stuck' ).length > 0 ) {

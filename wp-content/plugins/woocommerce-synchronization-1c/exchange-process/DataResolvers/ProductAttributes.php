@@ -50,11 +50,17 @@ class ProductAttributes
         $setAttributes = [];
 
         foreach ($element->ЗначенияСвойств->ЗначенияСвойства as $property) {
-            if (empty($property->Значение) || empty($productOptions[(string) $property->Ид])) {
+            if (has_action('itglx_wc1c_product_option_custom_processing_' . (string) $property->Ид)) {
+                do_action('itglx_wc1c_product_option_custom_processing_' . (string) $property->Ид, $productId, $property);
+
                 continue;
             }
 
             if (in_array((string) $property->Ид, $ignoreAttributeProcessing, true)) {
+                continue;
+            }
+
+            if (empty($property->Значение) || empty($productOptions[(string) $property->Ид])) {
                 continue;
             }
 

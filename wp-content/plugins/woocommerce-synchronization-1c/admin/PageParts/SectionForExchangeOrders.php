@@ -3,6 +3,7 @@
 namespace Itgalaxy\Wc\Exchange1c\Admin\PageParts;
 
 use Itgalaxy\Wc\Exchange1c\ExchangeProcess\RequestProcessing\SaleModeQuery;
+use Itgalaxy\Wc\Exchange1c\Includes\Bootstrap;
 
 class SectionForExchangeOrders
 {
@@ -81,7 +82,9 @@ class SectionForExchangeOrders
                                 'At the next request for loading orders, which will come from 1C, the plugin will '
                                 . 'unload new / changed orders starting from this date / time.',
                                 'itgalaxy-woocommerce-1c'
-                            )
+                            ),
+                            'fieldsetStart' => true,
+                            'legend' => esc_html__('Conditions for export orders', 'itgalaxy-woocommerce-1c')
                         ],
                         'send_orders_date_create_start' => [
                             'title' => esc_html__(
@@ -106,7 +109,8 @@ class SectionForExchangeOrders
                             'description' => esc_html__(
                                 'Use this setting if you want to exclude orders in some status from unloading.',
                                 'itgalaxy-woocommerce-1c'
-                            )
+                            ),
+                            'fieldsetEnd' => true,
                         ]
                     ]
                 ],
@@ -126,7 +130,23 @@ class SectionForExchangeOrders
                                 . 'product / variation id will be added to the "Ид" node, otherwise if the product / '
                                 . 'variation is not associated with data upload from 1C, node "Ид" will not be added.',
                                 'itgalaxy-woocommerce-1c'
-                            )
+                            ),
+                            'fieldsetStart' => true,
+                            'legend' => esc_html__('For positions without GUID', 'itgalaxy-woocommerce-1c')
+                        ],
+                        'send_orders_use_variation_characteristics_from_site' => [
+                            'type' => 'checkbox',
+                            'title' => esc_html__(
+                                'Generate attribute data for variations (if there is no 1С guid)',
+                                'itgalaxy-woocommerce-1c'
+                            ),
+                            'description' => esc_html__(
+                                'If enabled, then when generating data about goods, if this is a variation and it does'
+                                . 'not have a guid, that is, it is not associated with unloading data, then generate'
+                                . 'data on the attributes and values of the variation in node "ХарактеристикиТовара".',
+                                'itgalaxy-woocommerce-1c'
+                            ),
+                            'fieldsetEnd' => true,
                         ],
                         'send_orders_combine_data_variation_as_main_product' => [
                             'type' => 'checkbox',
@@ -146,16 +166,29 @@ class SectionForExchangeOrders
                                 'itgalaxy-woocommerce-1c'
                             )
                         ],
-                        'send_orders_use_variation_characteristics_from_site' => [
+                        'send_orders_include_tax_to_price_item_and_shipping' => [
                             'type' => 'checkbox',
                             'title' => esc_html__(
-                                'Generate attribute data for variations (if there is no 1С guid)',
+                                'Add tax to item / shipping cost',
                                 'itgalaxy-woocommerce-1c'
                             ),
                             'description' => esc_html__(
-                                'If enabled, then when generating data about goods, if this is a variation and it does'
-                                . 'not have a guid, that is, it is not associated with unloading data, then generate'
-                                . 'data on the attributes and values of the variation in node "ХарактеристикиТовара".',
+                                'If enabled, then if the item has tax in the order, the value will be taken into '
+                                    .'account in the information about the value of the goods in the order being '
+                                    . 'unloaded.',
+                                'itgalaxy-woocommerce-1c'
+                            )
+                        ],
+                        'send_orders_add_information_discount_for_each_item' => [
+                            'type' => 'checkbox',
+                            'title' => esc_html__(
+                                'Add information about a discount for each item of the order, if there is a discount',
+                                'itgalaxy-woocommerce-1c'
+                            ),
+                            'description' => esc_html__(
+                                'If enabled, then if there is a discount for the order item, the information about the '
+                                . 'discount amount will be added to the unloading of the item. Discount information is '
+                                . 'uploaded with attribute `УчтеноВСумме` in the value `true`.',
                                 'itgalaxy-woocommerce-1c'
                             )
                         ],
@@ -179,7 +212,9 @@ class SectionForExchangeOrders
                                 'Select the order statuses at which you want to transfer the requisite in the value '
                                 . '`true`, if the order status is not one of the selected, `false` will be transferred.',
                                 'itgalaxy-woocommerce-1c'
-                            )
+                            ),
+                            'fieldsetStart' => true,
+                            'legend' => esc_html__('Requisite `Заказ оплачен`', 'itgalaxy-woocommerce-1c')
                         ],
                         'send_orders_payment_method_is_paid' => [
                             'title' => esc_html__(
@@ -192,7 +227,8 @@ class SectionForExchangeOrders
                                 'Select the payment methods at which you want to transfer the requisite in the value '
                                 . '`true`, if the order status is not one of the selected, `false` will be transferred.',
                                 'itgalaxy-woocommerce-1c'
-                            )
+                            ),
+                            'fieldsetEnd' => true,
                         ],
                         'send_orders_status_mapping' => [
                             'title' => esc_html__('Names of order statuses for 1C', 'itgalaxy-woocommerce-1c'),
@@ -220,12 +256,30 @@ class SectionForExchangeOrders
                                 'If enabled, when exchanging with 1C, then the site will accept and process changes in '
                                 . 'the status of the order when 1C sends this data.',
                                 'itgalaxy-woocommerce-1c'
-                            )
+                            ),
+                            'fieldsetStart' => true,
+                            'legend' => esc_html__('Change of status by requisites', 'itgalaxy-woocommerce-1c')
                         ],
                         'handle_get_order_status_change_if_paid' => [
                             'type' => 'select',
                             'title' => esc_html__(
-                                'Order status, if there is "Дата оплаты по 1С" or "Дата отгрузки по 1С":',
+                                'Order status, if there is "Дата оплаты по 1С":',
+                                'itgalaxy-woocommerce-1c'
+                            ),
+                            'options' => $orderStatusList
+                        ],
+                        'handle_get_order_status_change_if_shipped' => [
+                            'type' => 'select',
+                            'title' => esc_html__(
+                                'Order status, if there is "Дата отгрузки по 1С":',
+                                'itgalaxy-woocommerce-1c'
+                            ),
+                            'options' => $orderStatusList
+                        ],
+                        'handle_get_order_status_change_if_paid_and_shipped' => [
+                            'type' => 'select',
+                            'title' => esc_html__(
+                                'Order status, if there is "Дата оплаты по 1С" and "Дата отгрузки по 1С":',
                                 'itgalaxy-woocommerce-1c'
                             ),
                             'options' => $orderStatusList
@@ -241,7 +295,8 @@ class SectionForExchangeOrders
                                 'Order status if "ПометкаУдаления" = "true":',
                                 'itgalaxy-woocommerce-1c'
                             ),
-                            'options' => $orderStatusList
+                            'options' => $orderStatusList,
+                            'fieldsetEnd' => true
                         ],
                         'handle_get_order_product_set_change' => [
                             'type' => 'checkbox',
@@ -264,7 +319,9 @@ class SectionForExchangeOrders
 
     private static function sendOrdersInfoContent()
     {
-        $orders = SaleModeQuery::getOrders(false);
+        $settings = get_option(Bootstrap::OPTIONS_KEY, []);
+
+        $orders = !empty($settings['send_orders']) ? SaleModeQuery::getOrders(false) : [];
 
         if (count($orders)) {
             $orderEditList = [];

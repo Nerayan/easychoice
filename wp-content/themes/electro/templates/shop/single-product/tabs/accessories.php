@@ -57,7 +57,7 @@ if ( $products->have_posts() ) : ?>
 
 		<div class="electro-wc-message"></div>
 		<div class="row">
-			<div class="col-xs-12 col-sm-9 col-left">
+			<div class="col-md-9 col-left">
 
 				<?php woocommerce_product_loop_start(); ?>
 
@@ -65,10 +65,10 @@ if ( $products->have_posts() ) : ?>
 
 						<?php wc_get_template_part( 'content', 'product' ); ?>
 
-						<?php 
+						<?php
 							global $product;
 							$product_id = electro_wc_get_product_id( $product );
-							
+
 							$price_html = '';
 							$display_price = 0;
 							$price_suffix = 0;
@@ -105,14 +105,14 @@ if ( $products->have_posts() ) : ?>
 					<?php endwhile; // end of the loop. ?>
 
 				<?php woocommerce_product_loop_end(); ?>
-				
+
 				<div class="check-products">
 					<?php echo $add_to_cart_checkbox; ?>
 				</div>
 
 			</div>
 
-			<div class="col-xs-12 col-sm-3 col-right">
+			<div class="col-md-3 col-right">
 				<?php if( $total_price > 0 ) : ?>
 					<div class="total-price">
 						<?php
@@ -146,7 +146,7 @@ if ( $products->have_posts() ) : ?>
 				'no_variation'	=> sprintf( '<div class="woocommerce-error">%s</div>', esc_html__( 'Product Variation does not selected.', 'electro' ) ),
 				'not_available'	=> sprintf( '<div class="woocommerce-error">%s</div>', esc_html__( 'Sorry, this product is unavailable.', 'electro' ) ),
 			) );
-		
+
 			ob_start(); ?>
 			jQuery(document).ready(function($) {
 

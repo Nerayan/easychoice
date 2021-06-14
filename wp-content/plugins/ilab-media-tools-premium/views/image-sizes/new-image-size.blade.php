@@ -28,6 +28,14 @@
                     <option value="bottom">Bottom</option>
                 </select>
             </div>
+            <div class="row">
+                <label for="privacy">Privacy</label>
+                <select name="privacy">
+                    <option value="inherit">Inherit</option>
+                    <option value="public-read">Public</option>
+                    <option value="private">Private</option>
+                </select>
+            </div>
             <div class="button-row">
                 <input class="button button-primary" type="submit" value="Create Image Size">
             </div>

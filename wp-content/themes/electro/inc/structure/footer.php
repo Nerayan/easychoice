@@ -212,7 +212,7 @@ if ( ! function_exists( 'electro_footer_call_us' ) ) {
 		if ( apply_filters( 'electro_footer_call_us', true ) && ! empty( $call_us_number ) ) : ?>
 
 			<div class="footer-call-us">
-				<div class="media">
+				<div class="media d-flex">
 					<span class="media-left call-us-icon media-middle"><i class="<?php echo esc_html( $call_us_icon ); ?>"></i></span>
 					<div class="media-body">
 						<span class="call-us-text"><?php echo esc_html( $call_us_text ); ?></span>
@@ -267,7 +267,7 @@ if ( ! function_exists( 'electro_footer_social_icons' ) ) {
 			ob_start();
 			?>
 			<div class="footer-social-icons">
-				<ul class="social-icons list-unstyled">
+				<ul class="social-icons list-unstyled nav align-items-center">
 					<?php echo wp_kses( $social_links_output, 'post', $allowed_protocols ); ?>
 				</ul>
 			</div>
@@ -319,7 +319,7 @@ if ( ! function_exists( 'electro_display_footer_bottom_widgets' ) ) {
 			} else {
 				if ( apply_filters( 'electro_show_default_footer_bottom_widgets', true ) ) {
 					$footer_bottom_widget_args = apply_filters( 'electro_footer_bottom_widget_args', array(
-						'before_widget' => '<div class="columns"><aside class="widget clearfix"><div class="body">',
+						'before_widget' => '<div class="columns col"><aside class="widget clearfix"><div class="body">',
 						'after_widget'  => '</div></aside></div>',
 						'before_title'  => '<h4 class="widget-title">',
 						'after_title'   => '</h4>',
@@ -361,8 +361,8 @@ if ( ! function_exists( 'electro_copyright_bar' ) ) {
 
 		<div class="copyright-bar">
 			<div class="container">
-				<div class="pull-left flip copyright"><?php echo wp_kses_post( $footer_copyright_text ); ?></div>
-				<div class="pull-right flip payment"><?php echo wp_kses_post( $credit_card_icons ); ?></div>
+				<div class="float-start pull-left flip copyright"><?php echo wp_kses_post( $footer_copyright_text ); ?></div>
+				<div class="float-end pull-right flip payment"><?php echo wp_kses_post( $credit_card_icons ); ?></div>
 			</div>
 		</div><?php
 

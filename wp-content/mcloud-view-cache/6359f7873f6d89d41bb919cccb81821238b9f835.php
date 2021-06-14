@@ -72,7 +72,10 @@ Not uploaded.
 		Public
 		</option>
 		<option value="authenticated-read" <?php echo e(($privacy == 'authenticated-read') ? 'selected' : ''); ?>>
-		Authenticated Users
+			Authenticated Users
+		</option>
+		<option value="private" <?php echo e(($privacy == 'private') ? 'selected' : ''); ?>>
+			Private
 		</option>
 	</select>
 </div>

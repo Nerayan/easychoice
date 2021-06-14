@@ -57,9 +57,18 @@ class Term
         \update_term_meta($termID, '_id_1c', $ID1c);
     }
 
-    public static function updateProductCat($categoryEntry)
+    /**
+     * Updating an existing product category.
+     *
+     * @param array $categoryEntry Array a set of values for the category term.
+     * @param \SimpleXMLElement $element 'Группа' node object.
+     *
+     * @return void
+     * @link https://developer.wordpress.org/reference/functions/wp_update_term/
+     */
+    public static function updateProductCat($categoryEntry, $element)
     {
-        $settings = get_option(Bootstrap::OPTIONS_KEY);
+        $settings = \get_option(Bootstrap::OPTIONS_KEY, []);
 
         $params = [
             'parent' => ($categoryEntry['parent'] == '' ? 0 : $categoryEntry['parent'])
@@ -73,37 +82,65 @@ class Term
             $params['name'] = $categoryEntry['name'];
         }
 
+        /**
+         * Filters a set of values for the category term being updated.
+         *
+         * @since 1.92.0
+         *
+         * @param array $params Array a set of values for the category term.
+         * @param \SimpleXMLElement $element 'Группа' node object.
+         */
+        $params = \apply_filters('itglx_wc1c_update_product_cat_params', $params, $element);
+
         \wp_update_term($categoryEntry['term_id'], 'product_cat', $params);
+
+        Logger::logChanges('(product_cat) updated `term_id` - ' . $categoryEntry['term_id'], [(string) $element->Ид]);
     }
 
-    public static function insertProductCat($categoryEntry)
+    /**
+     * Adding a new product category.
+     *
+     * @param array $categoryEntry Array a set of values for the category term.
+     * @param \SimpleXMLElement $element 'Группа' node object.
+     *
+     * @return bool|int `false` will be returned if there is an error or the ID of the added term.
+     * @link https://developer.wordpress.org/reference/functions/wp_insert_term/
+     */
+    public static function insertProductCat($categoryEntry, $element)
     {
-        $result = \wp_insert_term(
-            $categoryEntry['name'],
-            'product_cat',
-            [
-                'slug' => \wp_unique_term_slug(
-                    \sanitize_title($categoryEntry['name']),
-                    (object) [
-                        'taxonomy' => 'product_cat',
-                        'parent' => 0
-                    ]
-                ),
-                'parent' => ($categoryEntry['parent'] == '' ? 0 : $categoryEntry['parent'])
-            ]
-        );
+        $params = [
+            'slug' => \wp_unique_term_slug(
+                \sanitize_title($categoryEntry['name']),
+                (object) [
+                    'taxonomy' => 'product_cat',
+                    'parent' => 0
+                ]
+            ),
+            'parent' => ($categoryEntry['parent'] == '' ? 0 : $categoryEntry['parent'])
+        ];
 
-        if (is_wp_error($result)) {
-            Logger::logChanges(
-                '(product_cat) Add error - ' . $result->get_error_message(),
-                $categoryEntry
-            );
+        /**
+         * Filters the set of values for the category term being created.
+         *
+         * @since 1.92.0
+         *
+         * @param array $params Array a set of values for the category term.
+         * @param \SimpleXMLElement $element 'Группа' node object.
+         */
+        $params = \apply_filters('itglx_wc1c_insert_product_cat_params', $params, $element);
+
+        $result = \wp_insert_term($categoryEntry['name'], 'product_cat', $params);
+
+        if (\is_wp_error($result)) {
+            Logger::logChanges('(product_cat) add error - ' . $result->get_error_message(), $categoryEntry);
 
             return false;
         }
 
+        Logger::logChanges('(product_cat) added `term_id` - ' . $result['term_id'], [(string) $element->Ид]);
+
         // default meta value by ordering
-        update_term_meta($result['term_id'], 'order', 0);
+        \update_term_meta($result['term_id'], 'order', 0);
 
         return $result['term_id'];
     }

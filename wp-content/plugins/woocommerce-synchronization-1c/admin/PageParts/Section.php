@@ -64,6 +64,17 @@ class Section
     public static function body($fields)
     {
         foreach ($fields as $name => $field) {
+            if (isset($field['fieldsetStart'])) {
+                ?>
+                <fieldset class="border border-secondary rounded pb-2 pt-1 pl-3 pr-3 mb-2">
+                    <?php if (!empty($field['legend'])) { ?>
+                        <legend class="w-auto text-uppercase font-weight-bold">
+                            <?php echo esc_html($field['legend']); ?>
+                        </legend>
+                    <?php } ?>
+                <?php
+            }
+
             switch ($field['type']) {
                 case 'checkbox':
                     FieldCheckbox::render($field, $name);
@@ -91,7 +102,11 @@ class Section
                     break;
             }
 
-            echo end($fields) !== $field ? '<hr>' : '';
+            if (isset($field['fieldsetEnd'])) {
+                echo '</fieldset>';
+            } else {
+                echo end($fields) !== $field ? '<hr>' : '';
+            }
         }
     }
 

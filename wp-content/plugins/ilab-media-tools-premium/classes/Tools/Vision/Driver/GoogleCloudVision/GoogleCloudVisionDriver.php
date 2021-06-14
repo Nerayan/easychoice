@@ -353,7 +353,7 @@ class GoogleCloudVisionDriver extends VisionDriver {
                 $errorCollector->addError("Google configuration is incorrect or missing.");
             }
 
-            Logger::info('Could not create Google storage client.', [], __METHOD__, __LINE__);
+            Logger::error('Could not create Google storage client.', [], __METHOD__, __LINE__);
         }
 
         return $client;

@@ -189,7 +189,7 @@ class OptimizerTool extends Tool {
 				Logger::info("Handling optimizer webhook", [], __METHOD__, __LINE__);
 				$this->driver->handleWebhook($data);
 			} else {
-				Logger::info("Empty data", [], __METHOD__, __LINE__);
+				Logger::warning("Empty data", [], __METHOD__, __LINE__);
 			}
 
 			wp_send_json(['status' => 'ok'], 200);
@@ -252,7 +252,7 @@ class OptimizerTool extends Tool {
 		]);
 
 		if (is_wp_error($downloadResult)) {
-			Logger::info("Error downloading file {$url} to {$filename} on try #{$try}: ".$downloadResult->get_error_message(),  [], __METHOD__, __LINE__);
+			Logger::error("Error downloading file {$url} to {$filename} on try #{$try}: ".$downloadResult->get_error_message(),  [], __METHOD__, __LINE__);
 
 			if ($try === 4) {
 				return false;
@@ -381,7 +381,7 @@ class OptimizerTool extends Tool {
 				if (!empty($result->optimizedUrl()) && empty($cloudInfo)) {
 					Logger::info("Downloading optimized file {$result->optimizedUrl()}",  [], __METHOD__, __LINE__);
 					if (!$this->downloadUrl($result->optimizedUrl(), trailingslashit($uploadPath).'optimized-'.$filename)) {
-						Logger::info("Could not download {$result->optimizedUrl()} skipping.",  [], __METHOD__, __LINE__);
+						Logger::error("Could not download {$result->optimizedUrl()} skipping.",  [], __METHOD__, __LINE__);
 						return [
 							'status' => OptimizerConsts::SKIPPED,
 							'results' => null
@@ -485,7 +485,7 @@ class OptimizerTool extends Tool {
 		} else {
 			$meta = get_post_meta($postId, '_wp_attachment_metadata', true);
 			if (empty($meta)) {
-				Logger::info("Attachment metadata is missing or empty for {$postId}", [], __METHOD__, __LINE__);
+				Logger::error("Attachment metadata is missing or empty for {$postId}", [], __METHOD__, __LINE__);
 				return;
 			}
 		}
@@ -521,7 +521,7 @@ class OptimizerTool extends Tool {
 				$meta['sizes'] = $sizes;
 				$updated = true;
 			} else {
-				Logger::info("Size {$wordpressSize} missing from metadata sizes.", [], __METHOD__, __LINE__);
+				Logger::warning("Size {$wordpressSize} missing from metadata sizes.", [], __METHOD__, __LINE__);
 			}
 		}
 

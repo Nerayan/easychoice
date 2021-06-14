@@ -151,9 +151,9 @@ class KrakenIODriver implements OptimizerInterface {
 
 			if (isset($result['success']) && empty($result['success'])) {
 				if (isset($result['error'])) {
-					Logger::info("Error uploading file to Kraken: ".$result['error'], [], __METHOD__, __LINE__);
+					Logger::error("Error uploading file to Kraken: ".$result['error'], [], __METHOD__, __LINE__);
 				} else {
-					Logger::info("Error uploading file to Kraken: ".$result['message'], [], __METHOD__, __LINE__);
+					Logger::error("Error uploading file to Kraken: ".$result['message'], [], __METHOD__, __LINE__);
 				}
 			} else {
 				break;
@@ -186,9 +186,9 @@ class KrakenIODriver implements OptimizerInterface {
 
 			if (isset($result['success']) && empty($result['success'])) {
 				if (isset($result['error'])) {
-					Logger::info("Error posting URL to Kraken: ".$result['error'], [], __METHOD__, __LINE__);
+					Logger::error("Error posting URL to Kraken: ".$result['error'], [], __METHOD__, __LINE__);
 				} else {
-					Logger::info("Error posting URL to Kraken: ".$result['message'], [], __METHOD__, __LINE__);
+					Logger::error("Error posting URL to Kraken: ".$result['message'], [], __METHOD__, __LINE__);
 				}
 			} else {
 				Logger::info("Finished optimizing url $url for size $sizeName", [], __METHOD__, __LINE__);
@@ -205,7 +205,7 @@ class KrakenIODriver implements OptimizerInterface {
 	public function handleWebhook($data) {
 		$id = arrayPath($data, 'id', null);
 		if (empty($id)) {
-			Logger::info("Web hook data is missing id", [], __METHOD__, __LINE__);
+			Logger::error("Web hook data is missing id", [], __METHOD__, __LINE__);
 			return;
 		}
 
@@ -226,7 +226,7 @@ class KrakenIODriver implements OptimizerInterface {
 				$stats->saveResult($pending->wordpressSize, arrayPath($data, 'original_size', 0), arrayPath($data, 'kraked_size', 0));
 			}
 		} else {
-			Logger::info("Missing optimized url for {$pending->id()}", [], __METHOD__, __LINE__);
+			Logger::error("Missing optimized url for {$pending->id()}", [], __METHOD__, __LINE__);
 		}
 
 		$pending->delete();

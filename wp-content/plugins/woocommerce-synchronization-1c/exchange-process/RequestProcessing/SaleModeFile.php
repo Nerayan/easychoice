@@ -2,6 +2,7 @@
 namespace Itgalaxy\Wc\Exchange1c\ExchangeProcess\RequestProcessing;
 
 use Itgalaxy\Wc\Exchange1c\ExchangeProcess\ParserXmlOrders;
+use Itgalaxy\Wc\Exchange1c\ExchangeProcess\Responses\SuccessResponse;
 use Itgalaxy\Wc\Exchange1c\ExchangeProcess\RootProcessStarter;
 use Itgalaxy\Wc\Exchange1c\Includes\Bootstrap;
 use Itgalaxy\Wc\Exchange1c\Includes\Logger;
@@ -17,9 +18,6 @@ class SaleModeFile
             empty($settings['handle_get_order_status_change']) &&
             empty($settings['handle_get_order_product_set_change'])
         ) {
-            RootProcessStarter::successResponse();
-            Logger::logProtocol('success');
-
             if (empty($settings['handle_get_order_status_change'])) {
                 Logger::logProtocol('handle_get_order_status_change not enabled');
             }
@@ -28,9 +26,9 @@ class SaleModeFile
                 Logger::logProtocol('handle_get_order_product_set_change not enabled');
             }
 
-            Logger::endProcessingRequestLogProtocolEntry();
+            SuccessResponse::send();
 
-            exit();
+            return;
         }
 
         $data = false;
@@ -71,8 +69,7 @@ class SaleModeFile
             self::processingFile();
         }
 
-        RootProcessStarter::successResponse();
-        Logger::logProtocol('success');
+        SuccessResponse::send();
     }
 
     public static function processingFile()

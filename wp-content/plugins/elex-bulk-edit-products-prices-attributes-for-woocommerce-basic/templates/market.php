@@ -99,7 +99,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 		  <p>Note: Basic version only supports Simple Products.</p>
 		  <p style="color:red;"><strong>Your business is precious! Go Premium!</strong></p>
 		  <p style="text-align:left">
-			 - Bulk Edit WoCommerce Variable Products.<br>
+		  	 - Create WooCommerce Product Variations in Bulk.<br>
+			 - Bulk Edit WooCommerce Product Types.<br>
+			 - Bulk Edit WooCommerce Product Visibility.<br>
+			 - Bulk Edit WooCommerce Variable Products.<br>
 			 - Supports Bulk Edit Individual Variations of Variable Products. <br>
 			 - Bulk Edit WooCommerce External Products. <br>
 			 - Bulk Edit WooCommerce Product Attributes used for Creating Variation. <br>
@@ -108,7 +111,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 			 - Revert back the bulk update after a specified scheduled time. <br>
 			 - Bulk Edit Any Custom Product Fields.<br>
 			 - Option to immediately undo the last WooCommerce bulk update.<br>
-             - Support for more filter options. (Description, Short Description, ...)<br>
+             - Support for more filter options. (Description, Short Description, Stock Status, ...)<br>
 			 - Select / Unselect Products after filtering for Update.<br>
 			 - Timely compatibility updates and bug fixes.<br>
 			 - Premium Support!<br>

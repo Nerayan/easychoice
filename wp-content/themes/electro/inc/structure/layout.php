@@ -154,3 +154,12 @@ if ( ! function_exists( 'electro_is_wide_enabled' ) ) {
 		return apply_filters( 'electro_is_wide_enabled', true );
 	}
 }
+
+if ( ! function_exists( 'electro_is_dark_enabled' ) ) {
+	/**
+	 * Option to toggle dark
+	 */
+	function electro_is_dark_enabled() {
+		return apply_filters( 'electro_is_dark_enabled', true );
+	}
+}

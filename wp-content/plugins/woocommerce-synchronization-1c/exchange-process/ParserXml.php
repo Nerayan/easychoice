@@ -3,18 +3,21 @@ namespace Itgalaxy\Wc\Exchange1c\ExchangeProcess;
 
 use Itgalaxy\Wc\Exchange1c\ExchangeProcess\Base\Parser;
 use Itgalaxy\Wc\Exchange1c\ExchangeProcess\DataResolvers\NomenclatureCategories;
+use Itgalaxy\Wc\Exchange1c\ExchangeProcess\DataResolvers\OfferSimple;
 use Itgalaxy\Wc\Exchange1c\ExchangeProcess\DataResolvers\PriceTypes;
 use Itgalaxy\Wc\Exchange1c\ExchangeProcess\DataResolvers\ProductAndVariationPrices;
 use Itgalaxy\Wc\Exchange1c\ExchangeProcess\DataResolvers\ProductImages;
 use Itgalaxy\Wc\Exchange1c\ExchangeProcess\DataResolvers\ProductAndVariationStock;
 use Itgalaxy\Wc\Exchange1c\ExchangeProcess\DataResolvers\GlobalProductAttributes;
 use Itgalaxy\Wc\Exchange1c\ExchangeProcess\DataResolvers\Groups;
+use Itgalaxy\Wc\Exchange1c\ExchangeProcess\DataResolvers\ProductVariationAttributes;
 use Itgalaxy\Wc\Exchange1c\ExchangeProcess\DataResolvers\Stocks;
 
 use Itgalaxy\Wc\Exchange1c\ExchangeProcess\DataResolvers\Tags;
 use Itgalaxy\Wc\Exchange1c\ExchangeProcess\DataResolvers\Units;
-use Itgalaxy\Wc\Exchange1c\ExchangeProcess\DataResolvers\VariationCharacteristicsToGlobalProductAttributes;
 use Itgalaxy\Wc\Exchange1c\ExchangeProcess\Helpers\ProductUnvariable;
+use Itgalaxy\Wc\Exchange1c\ExchangeProcess\Helpers\ProductVariableSync;
+use Itgalaxy\Wc\Exchange1c\ExchangeProcess\Helpers\ProductVariation;
 use Itgalaxy\Wc\Exchange1c\ExchangeProcess\Helpers\SetVariationAttributeToProducts;
 use Itgalaxy\Wc\Exchange1c\ExchangeProcess\Helpers\HeartBeat;
 use Itgalaxy\Wc\Exchange1c\ExchangeProcess\Helpers\Term;
@@ -165,7 +168,7 @@ class ParserXml extends Parser
                                         version_compare($_SESSION['xmlVersion'], '2.04', '<=') &&
                                         $resolveOldVariation
                                     ) {
-                                        $this->resolveOldVariation($element);
+                                        ProductVariation::resolveOldVariant($element, $this->postAuthor);
                                     }
 
                                     continue;
@@ -256,7 +259,7 @@ class ParserXml extends Parser
                                 version_compare($_SESSION['xmlVersion'], '2.04', '<=') &&
                                 $resolveOldVariation
                             ) {
-                                $this->resolveOldVariation($element);
+                                ProductVariation::resolveOldVariant($element, $this->postAuthor);
                             }
 
                             // is new or not disabled image data processing
@@ -458,8 +461,7 @@ class ParserXml extends Parser
 
                                     // not empty variation hash
                                     if (!empty($parseID[1])) {
-                                        $productEntry['ID'] = Product::getProductIdByMeta((string) $element->Ид, '_id_1c', true);
-                                        $productEntry['post_parent'] = Product::getProductIdByMeta($parseID[0]);
+                                        $productEntry['post_parent'] = $this->getVariationParent($parseID[0]);
 
                                         // prevent search product if not exists
                                         if (!$productEntry['post_parent']) {
@@ -480,8 +482,15 @@ class ParserXml extends Parser
                                                 [(string) $element->Ид]
                                             );
 
+                                            $_SESSION['IMPORT_1C_PROCESS']['allCurrentOffers'][] = (string) $element->Ид;
+
+                                            unset($element);
                                             continue;
                                         }
+
+                                        $this->setHasVariationState($productEntry['post_parent']);
+
+                                        $productEntry['ID'] = ProductVariation::getIdByMeta((string) $element->Ид, '_id_1c');
 
                                         // maybe removed variation
                                         $removed = apply_filters(
@@ -494,7 +503,7 @@ class ParserXml extends Parser
 
                                         if ($removed) {
                                             if (!empty($productEntry['ID'])) {
-                                                Product::removeVariation($productEntry['ID'], $productEntry['post_parent']);
+                                                ProductVariation::remove($productEntry['ID'], $productEntry['post_parent']);
                                             }
 
                                             $_SESSION['IMPORT_1C_PROCESS']['allCurrentOffers'][] = (string) $element->Ид;
@@ -515,24 +524,26 @@ class ParserXml extends Parser
                                             continue;
                                         }
 
+                                        // prevent search variation if not exists
+                                        if (!$productEntry['ID']) {
+                                            $productEntry['ID'] = apply_filters(
+                                                'itglx_wc1c_find_product_variation_id',
+                                                $productEntry['ID'],
+                                                $productEntry['post_parent'],
+                                                $element
+                                            );
+
+                                            if ($productEntry['ID']) {
+                                                ProductVariation::saveMetaValue($productEntry['ID'], '_id_1c', (string) $element->Ид, $productEntry['post_parent']);
+                                            }
+                                        }
+
                                         // resolve main variation data
                                         if (
-                                            isset($element->ЗначенияСвойств) &&
-                                            isset($element->ЗначенияСвойств->ЗначенияСвойства)
+                                            ProductVariationAttributes::hasOptions($element) ||
+                                            ProductVariationAttributes::hasCharacteristics($element)
                                         ) {
-                                            $productEntry = Product::mainVariationData(
-                                                $element,
-                                                $productEntry,
-                                                $this->postAuthor
-                                            );
-                                            // simple variant without ids
-                                        } elseif (
-                                            isset($element->ХарактеристикиТовара) &&
-                                            isset($element->ХарактеристикиТовара->ХарактеристикаТовара)
-                                        ) {
-                                            VariationCharacteristicsToGlobalProductAttributes::process($element);
-
-                                            $productEntry = Product::mainVariationData(
+                                            $productEntry = ProductVariation::mainData(
                                                 $element,
                                                 $productEntry,
                                                 $this->postAuthor
@@ -545,7 +556,7 @@ class ParserXml extends Parser
                                                 [(string) $element->Ид]
                                             );
                                         } else {
-                                            if (isset($element->Цены)) {
+                                            if (ProductAndVariationPrices::offerHasPriceData($element)) {
                                                 ProductAndVariationPrices::setPrices(
                                                     ProductAndVariationPrices::resolvePrices(
                                                         $element,
@@ -554,17 +565,9 @@ class ParserXml extends Parser
                                                     $productEntry['ID'],
                                                     $productEntry['post_parent']
                                                 );
-
-                                                \WC_Product_Variable::sync($productEntry['post_parent']);
                                             }
 
-                                            if (
-                                                isset($element->Остатки) ||
-                                                isset($element->КоличествоНаСкладах) ||
-                                                isset($element->Количество) ||
-                                                // the old exchange may not contain a stock node when the value is 0
-                                                (!isset($_GET['version']) && isset($element->Наименование) && isset($element->Цены))
-                                            ) {
+                                            if (ProductAndVariationStock::offerHasStockData($element)) {
                                                 $ignoreSetStockData = apply_filters(
                                                     'itglx_wc1c_ignore_offer_set_stock_data',
                                                     false,
@@ -578,8 +581,6 @@ class ParserXml extends Parser
                                                         ProductAndVariationStock::resolve($element),
                                                         $productEntry['post_parent']
                                                     );
-
-                                                    \WC_Product_Variable::sync($productEntry['post_parent']);
                                                 } else {
                                                     Logger::logChanges(
                                                         '(variation) ignore set stock data by filter - itglx_wc1c_ignore_offer_set_stock_data',
@@ -596,70 +597,7 @@ class ParserXml extends Parser
                                             );
                                         }
                                     } else {
-                                        $productId = Product::getProductIdByMeta((string) $element->Ид);
-
-                                        // prevent search product if not exists
-                                        if (!$productId) {
-                                            $productId = apply_filters('itglx_wc1c_find_product_id', $productId, $element);
-
-                                            if ($productId) {
-                                                Product::saveMetaValue($productId, '_id_1c', (string) $element->Ид);
-                                            }
-                                        }
-
-                                        if (empty($productId)) {
-                                            Logger::logChanges(
-                                                '(product) Error! Not exists product by offer id',
-                                                [(string) $element->Ид]
-                                            );
-                                        }
-
-                                        if ($productId) {
-                                            if (!isset($_SESSION['IMPORT_1C_PROCESS']['allCurrentProductIdBySimpleOffers'])) {
-                                                $_SESSION['IMPORT_1C_PROCESS']['allCurrentProductIdBySimpleOffers'] = [];
-                                            }
-
-                                            $_SESSION['IMPORT_1C_PROCESS']['allCurrentProductIdBySimpleOffers'][] = $productId;
-
-                                            if (isset($element->Цены)) {
-                                                ProductAndVariationPrices::setPrices(
-                                                    ProductAndVariationPrices::resolvePrices(
-                                                        $element,
-                                                        $this->rate
-                                                    ),
-                                                    $productId
-                                                );
-                                            }
-
-                                            if (
-                                                isset($element->Остатки) ||
-                                                isset($element->КоличествоНаСкладах) ||
-                                                isset($element->Количество) ||
-                                                // the old exchange may not contain a stock node when the value is 0
-                                                (!isset($_GET['version']) && isset($element->Наименование) && isset($element->Цены))
-                                            ) {
-                                                $ignoreSetStockData = apply_filters(
-                                                    'itglx_wc1c_ignore_offer_set_stock_data',
-                                                    false,
-                                                    $productId,
-                                                    null
-                                                );
-
-                                                if (!$ignoreSetStockData) {
-                                                    ProductAndVariationStock::set(
-                                                        $productId,
-                                                        ProductAndVariationStock::resolve($element)
-                                                    );
-                                                } else {
-                                                    Logger::logChanges(
-                                                        '(product) ignore set stock data by filter - itglx_wc1c_ignore_offer_set_stock_data',
-                                                        [(string) $element->Ид]
-                                                    );
-                                                }
-                                            }
-
-                                            do_action('itglx_wc1c_after_product_offer_resolve', $productId, $element);
-                                        }
+                                        OfferSimple::process($element, $this->rate);
                                     }
 
                                     $_SESSION['IMPORT_1C_PROCESS']['allCurrentOffers'][] = (string) $element->Ид;
@@ -675,6 +613,12 @@ class ParserXml extends Parser
 
                 // maybe unvariable
                 $ready = ProductUnvariable::process();
+
+                if (!$ready) {
+                    return false;
+                }
+
+                $ready = ProductVariableSync::process();
 
                 if (!$ready) {
                     return false;
@@ -701,44 +645,5 @@ class ParserXml extends Parser
         \wp_defer_term_counting(false);
 
         return $valid;
-    }
-
-    // old format - resolve main variation data
-    private function resolveOldVariation($element)
-    {
-        $parseID = explode('#', (string) $element->Ид);
-
-        //empty variation hash
-        if (empty($parseID[1])) {
-            return;
-        }
-
-        if (!isset($element->ХарактеристикиТовара) || !isset($element->ХарактеристикиТовара->ХарактеристикаТовара)) {
-            return;
-        }
-
-        $variationEntry = [
-            'post_parent' => Product::getProductIdByMeta($parseID[0])
-        ];
-
-        if (empty($variationEntry['post_parent'])) {
-            Logger::logChanges(
-                '(variation) Error! Not exists parent product',
-                [(string) $element->Ид]
-            );
-
-            return;
-        }
-
-        VariationCharacteristicsToGlobalProductAttributes::process($element);
-
-        $variationEntry['ID'] = Product::getProductIdByMeta((string) $element->Ид, '_id_1c', true);
-
-        Product::mainVariationData(
-            $element,
-            $variationEntry,
-            $this->postAuthor,
-            true
-        );
     }
 }

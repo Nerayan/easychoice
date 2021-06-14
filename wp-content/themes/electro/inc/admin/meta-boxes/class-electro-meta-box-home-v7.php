@@ -624,7 +624,6 @@ class Electro_Meta_Box_Home_v7 {
                 ?>
                 </div>
 
-                <?php if ( electro_is_wide_enabled() ) : ?>
                 <div class="options_group">
                     <h5 class="options-group__title"><?php echo esc_html__( 'Wide Layout', 'electro' ); ?></h5>
                 <?php
@@ -645,7 +644,6 @@ class Electro_Meta_Box_Home_v7 {
                     ) );
                 ?>
                 </div>
-                <?php endif; ?>
 
                 <div class="options_group">
                 <?php
@@ -794,7 +792,6 @@ class Electro_Meta_Box_Home_v7 {
                 ?>
                 </div>
 
-                <?php if ( electro_is_wide_enabled() ) : ?>
                 <div class="options_group">
                     <h5 class="options-group__title"><?php echo esc_html__( 'Wide Layout', 'electro' ); ?></h5>
                 <?php
@@ -816,7 +813,6 @@ class Electro_Meta_Box_Home_v7 {
                     ) );
                 ?>
                 </div>
-                <?php endif; ?>
             </div><!-- /#products_with_image_1 -->
 
             <div id="products_with_image_2" class="panel electro_options_panel">
@@ -906,7 +902,6 @@ class Electro_Meta_Box_Home_v7 {
                 ?>
                 </div>
 
-                <?php if ( electro_is_wide_enabled() ) : ?>
                 <div class="options_group">
                     <h5 class="options-group__title"><?php echo esc_html__( 'Wide Layout', 'electro' ); ?></h5>
                 <?php
@@ -927,7 +922,6 @@ class Electro_Meta_Box_Home_v7 {
                     ) );
                 ?>
                 </div>
-                <?php endif; ?>
             </div><!-- /#products_with_image_2 -->
 
             <div id="electro_ads_with_banners" class="panel electro_options_panel">
@@ -1032,7 +1026,6 @@ class Electro_Meta_Box_Home_v7 {
                     ) );
                 ?>
                 </div>
-                <?php if ( electro_is_wide_enabled() ) : ?>
                 <div class="options_group">
                     <h5 class="options-group__title"><?php echo esc_html__( 'Wide Layout', 'electro' ); ?></h5>
                 <?php
@@ -1054,7 +1047,6 @@ class Electro_Meta_Box_Home_v7 {
                     ) );
                 ?>
                 </div>
-                <?php endif; ?>
             </div><!-- /#electro_two_row_products -->
 
         </div>

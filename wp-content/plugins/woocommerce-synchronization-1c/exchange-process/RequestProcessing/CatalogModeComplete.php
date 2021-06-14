@@ -1,9 +1,8 @@
 <?php
 namespace Itgalaxy\Wc\Exchange1c\ExchangeProcess\RequestProcessing;
 
-use Itgalaxy\Wc\Exchange1c\ExchangeProcess\RootProcessStarter;
+use Itgalaxy\Wc\Exchange1c\ExchangeProcess\Responses\SuccessResponse;
 use Itgalaxy\Wc\Exchange1c\Includes\Cron;
-use Itgalaxy\Wc\Exchange1c\Includes\Logger;
 
 class CatalogModeComplete
 {
@@ -25,7 +24,6 @@ class CatalogModeComplete
             update_option('not_clear_1c_complete', '');
         }
 
-        RootProcessStarter::successResponse(esc_html__('Package complete!', 'itgalaxy-woocommerce-1c'));
-        Logger::logProtocol('success - Package complete!');
+        SuccessResponse::send(esc_html__('Package complete!', 'itgalaxy-woocommerce-1c'));
     }
 }

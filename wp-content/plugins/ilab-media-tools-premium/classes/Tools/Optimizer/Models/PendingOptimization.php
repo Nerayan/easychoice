@@ -206,7 +206,7 @@ class PendingOptimization extends Model {
 				if (is_wp_error($downloadResult)) {
 					Logger::info("Error downloading $optimizedUrl to $tmpName: ".$downloadResult->get_error_message(), [], __METHOD__, __LINE__);
 				} else {
-					Logger::info("Finished downloading $optimizedUrl", [], __METHOD__, __LINE__);
+					Logger::error("Finished downloading $optimizedUrl", [], __METHOD__, __LINE__);
 					break;
 				}
 
@@ -232,7 +232,7 @@ class PendingOptimization extends Model {
 		if (!empty($this->postId)) {
 			$optimizeTool->processCloudMetadata($optimizedUrl, $this->postId, $this->wordpressSize, $this->s3Data);
 		} else {
-			Logger::info("Missing post id for pending.  Size {$this->wordpressSize}.", [], __METHOD__, __LINE__);
+			Logger::error("Missing post id for pending.  Size {$this->wordpressSize}.", [], __METHOD__, __LINE__);
 		}
 	}
 	//endregion

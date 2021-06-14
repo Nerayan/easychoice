@@ -21,15 +21,15 @@ if ( ! function_exists( 'electro_ads_block' ) ) {
 	 */
 	function electro_ads_block( $args = array() ) {
 		$cols = count( $args );?>
-		<div class="da-block columns-<?php echo esc_attr( $cols ); ?>">
+		<div class="da-block row row-cols-md-2 row-cols-xl-<?php echo esc_attr( $cols ); ?>">
 		<?php foreach( $args as $arg ) : ?>
 			<div class="da">
-				<div class="da-inner">
-					<a class="da-media" href="<?php echo esc_url( $arg['action_link'] ); ?>">
+				<div class="da-inner p-3 position-relative">
+					<a class="da-media d-flex stretched-link" href="<?php echo esc_url( $arg['action_link'] ); ?>">
 						<?php if ( ! empty( $arg['ad_image_attachment'] ) ) : ?>
-						<div class="da-media-left"><?php echo wp_kses_post( $arg['ad_image_attachment'] ); ?></div>
+						<div class="da-media-left me-3"><?php echo wp_kses_post( $arg['ad_image_attachment'] ); ?></div>
 						<?php elseif ( ! empty( $arg['ad_image'] ) ) : ?>
-						<div class="da-media-left"><img src="<?php echo esc_url( $arg['ad_image'] ); ?>" alt="" /></div>
+						<div class="da-media-left me-3"><img src="<?php echo esc_url( $arg['ad_image'] ); ?>" alt="" /></div>
 						<?php endif; ?>
 						<div class="da-media-body">
 							<div class="da-text">
@@ -271,7 +271,7 @@ if ( ! function_exists( 'electro_deal_and_tabs_block' ) ) {
 
 			extract( $args );
 
-			$section_class 	= empty ( $section_args['section_class'] ) ? 'deals-and-tabs' : $section_args['section_class'] . ' deals-and-tabs';
+			$section_class 	= empty ( $section_args['section_class'] ) ? 'deals-and-tabs row' : $section_args['section_class'] . ' deals-and-tabs row';
 			$animation 		= isset( $args['section_args']['animation'] ) ? $args['section_args']['animation'] : '';
 
 			if ( !empty( $animation ) ) {
@@ -1870,10 +1870,12 @@ if ( ! function_exists( 'electro_products_carousel_tabs_with_deal' ) ) {
 					'autoplay'		=> false,
 					'nav'			=> false,
 					'dots'			=> true,
+					'rtl'		    => is_rtl() ? true : false,
 				)
 			) );
 
 			$args = wp_parse_args( $args, $defaults );
+			$new_carousel_args = wp_parse_args( $args['carousel_args'], $defaults['carousel_args'] );
 
 			$section_class = empty( $section_class ) ? 'products-carousel-tabs-with-deal' : 'products-carousel-tabs-with-deal ' . $section_class;
 			$args['nav-align'] = empty ( $args['nav-align'] ) ? 'center' : $args['nav-align'];
@@ -1944,8 +1946,8 @@ if ( ! function_exists( 'electro_products_carousel_tabs_with_deal' ) ) {
 				                'show_custom_nav'   => false
 				            );
 
-				            if( ! isset( $carousel_args ) ) {
-				                $carousel_args = array(
+				            if( ! isset( $new_carousel_args ) ) {
+				                $new_carousel_args = array(
 				                    'items'         => intval( $args['columns'] ),
 				                    'responsive'    => array(
 				                        '0'     => array( 'items'   => 2 ),
@@ -1957,7 +1959,7 @@ if ( ! function_exists( 'electro_products_carousel_tabs_with_deal' ) ) {
 				                );
 				            }
 				        ?>
-			        	<div id="<?php echo esc_attr( $carousel_id );?>" data-ride="owl-carousel" data-replace-active-class="true" data-carousel-selector=".product-carousel-rows" data-carousel-options="<?php echo esc_attr( json_encode( $carousel_args ) ); ?>">
+			        	<div id="<?php echo esc_attr( $carousel_id );?>" data-ride="owl-carousel" data-replace-active-class="true" data-carousel-selector=".product-carousel-rows" data-carousel-options="<?php echo esc_attr( json_encode( $new_carousel_args ) ); ?>">
 			        		<?php echo apply_filters( 'electro_products_carousel_html', $products_html ); ?>
 						</div>
 			        </div>
@@ -2060,7 +2062,7 @@ if ( ! function_exists( 'products_carousel_banner_vertical_tabs' ) ) {
 	        )
 		) );
 
-
+		$new_carousel_args = wp_parse_args( $args['carousel_args'], $default_args['carousel_args'] );
 		$args 	= wp_parse_args( $args, $default_args );
 
 		extract( $args );
@@ -2132,7 +2134,7 @@ if ( ! function_exists( 'products_carousel_banner_vertical_tabs' ) ) {
 
 				<div class="<?php echo esc_attr( $section_class ); ?>" <?php if ( ! empty( $animation ) ) : ?>data-animation="<?php echo esc_attr( $animation ); ?>"<?php endif; ?>>
 
-					<div id="<?php echo esc_attr( $carousel_id );?>" data-ride="owl-carousel" data-replace-active-class="true" data-carousel-selector=".products-carousel" data-carousel-options="<?php echo esc_attr( json_encode( $carousel_args ) ); ?>">
+					<div id="<?php echo esc_attr( $carousel_id );?>" data-ride="owl-carousel" data-replace-active-class="true" data-carousel-selector=".products-carousel" data-carousel-options="<?php echo esc_attr( json_encode( $new_carousel_args ) ); ?>">
 					<?php
 						$search 		= array( '<ul', '<li', '</li>', '</ul>', 'class="products' );
 						$replace 		= array( '<div', '<div', '</div>', '</div>', 'class="products owl-carousel products-carousel' );
@@ -2419,7 +2421,7 @@ if ( ! function_exists( 'electro_home_products_categories_1_6' ) ) {
 			<section class="<?php echo esc_attr( $section_class ); ?>" <?php if ( ! empty( $animation ) ) : ?>data-animation="<?php echo esc_attr( $animation ); ?>"<?php endif; ?>>
 				<div class="product-categories-1-6__inner">
 					<?php if( ! empty( $featured_cat ) ) :
-						$featured_cat_thumbnail_id = get_term_meta( $featured_cat->term_id, 'thumbnail_id', true ); 
+						$featured_cat_thumbnail_id = get_term_meta( $featured_cat->term_id, 'thumbnail_id', true );
 						if ( $featured_cat_thumbnail_id ) {
 							$featured_cat_image = wp_get_attachment_image_url( $featured_cat_thumbnail_id, array( '543', '272' ) );
 						} else {
@@ -2442,7 +2444,7 @@ if ( ! function_exists( 'electro_home_products_categories_1_6' ) ) {
 						<div class="categories-list">
 							<div class="categories-list__inner columns-3">
 								<?php foreach( $categories as $category ) :
-									$thumbnail_id = get_term_meta( $category->term_id, 'thumbnail_id', true ); 
+									$thumbnail_id = get_term_meta( $category->term_id, 'thumbnail_id', true );
 									$image_class = 'category-img';
 									if ( $thumbnail_id ) {
 										$image = wp_get_attachment_image_url( $thumbnail_id, array( '100', '100' ) );

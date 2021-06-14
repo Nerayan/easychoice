@@ -208,32 +208,20 @@ function elex_bep_update_product_callback() {
 
 			switch ( $title_select ) {
 				case 'set_new':
-					$my_post = array(
-						'ID'         => $pid,
-						'post_title' => $title_text,
-					);
-					wp_update_post( $my_post );
+					$temp->set_name( $title_text );
+					$temp->save();
 					break;
 				case 'append':
-					$my_post = array(
-						'ID'         => $pid,
-						'post_title' => $product_data['title'] . $title_text,
-					);
-					wp_update_post( $my_post );
+					$temp->set_name( $product_data['title'] . $title_text );
+					$temp->save();
 					break;
 				case 'prepand':
-					$my_post = array(
-						'ID'         => $pid,
-						'post_title' => $title_text . $product_data['title'],
-					);
-					wp_update_post( $my_post );
+					$temp->set_name( $title_text . $product_data['title'] );
+					$temp->save();
 					break;
 				case 'replace':
-					$my_post = array(
-						'ID'         => $pid,
-						'post_title' => str_replace( $replace_title_text, $title_text, $product_data['title'] ),
-					);
-					wp_update_post( $my_post );
+					$temp->set_name( str_replace( $replace_title_text, $title_text, $product_data['title'] ) );
+					$temp->save();
 					break;
 				case 'regex_replace':
 					if ( @preg_replace( '/' . $regex_replace_title_text . '/', $title_text, $product_data['title'] ) != false ) {
@@ -243,11 +231,8 @@ function elex_bep_update_product_callback() {
 								$regex_flags .= sanitize_text_field( $reg_val );
 							}
 						}
-						$my_post = array(
-							'ID'         => $pid,
-							'post_title' => preg_replace( '/' . $regex_replace_title_text . '/' . $regex_flags, $title_text, $product_data['title'] ),
-						);
-						wp_update_post( $my_post );
+						$temp->set_name( preg_replace( '/' . $regex_replace_title_text . '/' . $regex_flags, $title_text, $product_data['title'] ) );
+						$temp->save();
 					}
 					break;
 			}

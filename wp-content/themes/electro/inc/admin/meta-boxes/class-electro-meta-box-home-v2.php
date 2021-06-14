@@ -177,13 +177,6 @@ class Electro_Meta_Box_Home_v2 {
 						</thead>
 						<tbody>
 							<?php foreach( $home_v2_blocks as $key => $home_v2_block ) : ?>
-							
-							<?php 
-								if ( ! electro_is_wide_enabled() && ( $key == 'pcwi1' || $key == 'pcwi2' || $key == 'tbrs' ) ) {
-									continue;
-								}
-							?>
-
 							<tr>
 								<td><?php echo esc_html( $home_v2_block ); ?></td>
 								<td><?php electro_wp_animation_dropdown( array(  'id' => '_home_v2_' . $key . '_animation', 'label'=> '', 'name' => '_home_v2[' . $key . '][animation]', 'value' => isset( $home_v2['' . $key . '']['animation'] ) ? $home_v2['' . $key . '']['animation'] : '', )); ?></td>
@@ -296,8 +289,6 @@ class Electro_Meta_Box_Home_v2 {
 				?>
 				</div>
 
-				<?php if ( electro_is_wide_enabled() ) : ?>
-
 				<?php electro_wp_legend( esc_html__( 'Ads Block 3', 'electro' ) ); ?>
 
 				<h5 class="options-group__title"><?php echo esc_html__( 'Appears only in Wide view', 'electro' ); ?></h5>
@@ -342,8 +333,6 @@ class Electro_Meta_Box_Home_v2 {
 				?>
 				</div>
 
-				<?php endif; ?>
-
 			</div><!-- /#ads_block -->
 
 			<div id="tabs_carousel" class="panel electro_options_panel">
@@ -367,6 +356,8 @@ class Electro_Meta_Box_Home_v2 {
 							'2'	=> '2',
 							'3'	=> '3',
 							'4'	=> '4',
+							'5' => '5',
+							'6' => '6'
 						),
 						'class'			=> 'columns_select',
 						'default'		=> '3',
@@ -375,28 +366,6 @@ class Electro_Meta_Box_Home_v2 {
 					) );
 				?>
 				</div>
-
-				<?php if ( electro_is_wide_enabled() ) : ?>
-				<div class="options_group">
-					<h5 class="options-group__title"><?php echo esc_html__( 'Wide Layout', 'electro' ); ?></h5>
-				<?php
-					electro_wp_select( array( 
-						'id'			=> '_home_v2_pct_product_columns_wide', 
-						'label' 		=>  esc_html__( 'Columns', 'electro' ),
-						'options'		=> array(
-							'2'	=> '2',
-							'3'	=> '3',
-							'4'	=> '4',
-							'5' => '5',
-						),
-						'class'			=> 'columns_select',
-						'default'		=> '5',
-						'name'			=> '_home_v2[pct][product_columns_wide]',
-						'value'			=> isset( $home_v2['pct']['product_columns_wide'] ) ? $home_v2['pct']['product_columns_wide'] : 5,
-					) );
-				?>
-				</div>
-				<?php endif; ?>
 
 				<div class="options_group">
 				<?php	
@@ -558,7 +527,6 @@ class Electro_Meta_Box_Home_v2 {
 					) );
 				?>
 				</div>
-				<?php if ( electro_is_wide_enabled() ) : ?>
 				<h5 class="options-group__title"><?php echo esc_html__( 'Wide Layout', 'electro' ); ?></h5>
 				<div class="options_group">
 				<?php
@@ -570,7 +538,6 @@ class Electro_Meta_Box_Home_v2 {
 					) ); 
 				?>
 				</div>
-				<?php endif; ?>
 				<div class="options_group"><?php
 					electro_wp_wc_shortcode( array( 
 						'id' 			=> '_home_v2_pcc_content',
@@ -632,8 +599,6 @@ class Electro_Meta_Box_Home_v2 {
 				?>
 				</div>
 			</div><!-- /#banner_data -->
-
-			<?php if ( electro_is_wide_enabled() ) : ?>
 
 			<div id="products_with_image_1" class="panel electro_options_panel">
                 
@@ -919,8 +884,6 @@ class Electro_Meta_Box_Home_v2 {
                 ?>
                 </div>
             </div><!-- /#two_banners -->
-
-            <?php endif; ?>
 			
 			<div id="products_carousel" class="panel electro_options_panel">
 				<div class="options_group">
@@ -943,9 +906,9 @@ class Electro_Meta_Box_Home_v2 {
 						'label'			=> esc_html__( 'Columns', 'electro' ),
 						'name'			=> '_home_v2[pc][product_columns]',
 						'value'			=> isset( $home_v2['pc']['product_columns'] ) ? $home_v2['pc']['product_columns'] : 4,
-					) );
+					) ); 
 
-					if ( electro_is_wide_enabled() ) : ?>
+					?>
 					<h5 class="options-group__title"><?php echo esc_html__( 'Wide Layout', 'electro' ); ?></h5>
 					<?php
 						electro_wp_text_input( array(
@@ -954,8 +917,7 @@ class Electro_Meta_Box_Home_v2 {
 							'name'			=> '_home_v2[pc][product_columns_wide]',
 							'value'			=> isset( $home_v2['pc']['product_columns_wide'] ) ? $home_v2['pc']['product_columns_wide'] : 5,
 						) ); 
-					
-					endif; ?>
+					?>
 				</div>
 				<div class="options_group"><?php
 
@@ -1000,7 +962,7 @@ class Electro_Meta_Box_Home_v2 {
 						'value'			=> isset( $home_v2['pc2']['product_columns'] ) ? $home_v2['pc2']['product_columns'] : 4,
 					) );
 
-					if ( electro_is_wide_enabled() ) : ?>
+					?>
 					<h5 class="options-group__title"><?php echo esc_html__( 'Wide Layout', 'electro' ); ?></h5>
 					<?php
 						electro_wp_text_input( array(
@@ -1010,7 +972,7 @@ class Electro_Meta_Box_Home_v2 {
 							'value'			=> isset( $home_v2['pc2']['product_columns_wide'] ) ? $home_v2['pc2']['product_columns_wide'] : 5,
 						) ); 
 					
-					endif; ?>
+					?>
 				</div>
 				<div class="options_group"><?php
 

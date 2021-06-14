@@ -13,6 +13,8 @@
 
 namespace MediaCloud\Plugin\Tools\ImageSizes;
 
+use MediaCloud\Plugin\Tasks\TaskManager;
+use MediaCloud\Plugin\Tools\ImageSizes\Tasks\UpdateImagePrivacyTask;
 use MediaCloud\Plugin\Tools\Tool;
 use MediaCloud\Plugin\Tools\ToolsManager;
 use MediaCloud\Plugin\Utilities\NoticeManager;
@@ -42,6 +44,7 @@ class ImageSizeTool extends Tool {
 
 		add_action('wp_ajax_ilab_new_image_size_page', [$this, 'displayAddImageSizePage']);
 		add_action('wp_ajax_ilab_update_image_size', [$this, 'updateImageSize']);
+		add_action('wp_ajax_ilab_update_image_privacy', [$this, 'updateImagePrivacy']);
 		add_action('wp_ajax_ilab_delete_image_size', [$this, 'deleteImageSize']);
 		add_action('admin_enqueue_scripts', function(){
 			wp_enqueue_media();
@@ -60,14 +63,14 @@ class ImageSizeTool extends Tool {
 		});
 	}
 
-	public function registerMenu($top_menu_slug, $networkMode = false, $networkAdminMenu = false) {
+	public function registerMenu($top_menu_slug, $networkMode = false, $networkAdminMenu = false, $tool_menu_slug = null) {
 		parent::registerMenu($top_menu_slug, $networkMode, $networkAdminMenu);
 
 		if (!$networkAdminMenu) {
 			ToolsManager::instance()->insertToolSeparator();
 			ToolsManager::instance()->addMultisiteTool($this);
 			$this->options_page = 'media-tools-image-sizes';
-			add_submenu_page($top_menu_slug, 'Media Cloud Image Size Manager', 'Image Sizes', 'manage_options', 'media-tools-image-sizes', [
+			add_submenu_page(!empty($tool_menu_slug) ? $tool_menu_slug : $top_menu_slug, 'Media Cloud Image Size Manager', 'Image Sizes', 'manage_options', 'media-tools-image-sizes', [
 				$this,
 				'renderImageSizes'
 			]);
@@ -78,6 +81,12 @@ class ImageSizeTool extends Tool {
 		return true;
 	}
 
+	public function setup() {
+		TaskManager::registerTask(UpdateImagePrivacyTask::class);
+
+		parent::setup();
+	}
+
 	public function renderImageSizes() {
 		global $_wp_additional_image_sizes;
 
@@ -86,6 +95,8 @@ class ImageSizeTool extends Tool {
 		$sizes = [];
 
 		$get_intermediate_image_sizes = get_intermediate_image_sizes();
+
+		$preflightSizes = get_option('preflight-image-sizes', []);
 
 		// Create the full array with sizes and crop info
 		foreach($get_intermediate_image_sizes as $_size) {
@@ -98,6 +109,7 @@ class ImageSizeTool extends Tool {
 					'width' => get_option($_size.'_size_w'),
 					'height' => get_option($_size.'_size_h'),
 					'crop' => !empty($crop),
+					'privacy' => ImageSizePrivacy::privacyForSize($_size),
 					'x-axis' => (!empty($crop) && is_array($crop) && (count($crop) == 2)) ? $crop[0] : null,
 					'y-axis' => (!empty($crop) && is_array($crop) && (count($crop) == 2)) ? $crop[1] : null,
 				];
@@ -110,18 +122,20 @@ class ImageSizeTool extends Tool {
 					'width' => $this->customSizes[$_size]['width'],
 					'height' => $this->customSizes[$_size]['height'],
 					'crop' => !empty($crop),
+					'privacy' => ImageSizePrivacy::privacyForSize($_size),
 					'x-axis' => (!empty($crop) && is_array($crop) && (count($crop) == 2)) ? $crop[0] : null,
 					'y-axis' => (!empty($crop) && is_array($crop) && (count($crop) == 2)) ? $crop[1] : null,
 				];
 			} else if(isset($_wp_additional_image_sizes[$_size])) {
 				$crop = $_wp_additional_image_sizes[$_size]['crop'];
 				$themeSizes[] = [
-					'type' => 'Theme',
+					'type' => isset($preflightSizes[$_size]) ? 'Preflight' : 'Theme',
 					'size' => $_size,
 					'title' => ucwords(preg_replace('/[-_]/',' ', $_size)),
 					'width' => $_wp_additional_image_sizes[$_size]['width'],
 					'height' => $_wp_additional_image_sizes[$_size]['height'],
 					'crop' => !empty($crop),
+					'privacy' => ImageSizePrivacy::privacyForSize($_size),
 					'x-axis' => (!empty($crop) && is_array($crop) && (count($crop) == 2)) ? $crop[0] : null,
 					'y-axis' => (!empty($crop) && is_array($crop) && (count($crop) == 2)) ? $crop[1] : null,
 				];
@@ -168,6 +182,8 @@ class ImageSizeTool extends Tool {
 		$crop = (!empty($_POST['_crop'])) ? true : false;
 		$cropX = (!empty($_POST['x-axis'])) ? $_POST['x-axis'] : null;
 		$cropY = (!empty($_POST['y-axis'])) ? $_POST['y-axis'] : null;
+		$privacy = (!empty($_POST['privacy'])) ? $_POST['privacy'] : 'inherit';
+		$privacy = empty($privacy) ? 'inherit' : $privacy;
 
 		if (empty($name) || (($width == 0) && ($height == 0))) {
 			NoticeManager::instance()->displayAdminNotice('error', 'Invalid attributes for new image size.');
@@ -186,9 +202,36 @@ class ImageSizeTool extends Tool {
 
 		update_option('ilab-custom-image-sizes', $this->customSizes);
 
+		ImageSizePrivacy::updatePrivacyForSize($name, $privacy);
+
 		Tracker::trackView("Image Sizes - Create New Size", "/image-sizes/create");
 
 		wp_redirect(admin_url('admin.php?page=media-tools-image-sizes'));
+	}
+
+	public function updateImagePrivacy() {
+		$nonce = (!empty($_POST['nonce'])) ? $_POST['nonce'] : null;
+
+		if (empty($nonce)) {
+			json_response(['status' => 'error', 'error' => 'Missing nonce.']);
+		}
+
+		if (!wp_verify_nonce($nonce, 'custom-size')) {
+			json_response(['status' => 'error', 'error' => 'Invalid nonce.']);
+		}
+
+		if (empty($_POST['size']) || empty($_POST['privacy'])) {
+			json_response(['status' => 'error', 'error' => 'Missing required parameter.']);
+		}
+
+		$size = $_POST['size'];
+		$privacy = $_POST['privacy'];
+
+		ImageSizePrivacy::updatePrivacyForSize($size, $privacy);
+
+		Tracker::trackView("Image Sizes - Update Privacy", "/image-sizes/update-privacy");
+
+		json_response(['status' => 'ok']);
 	}
 
 	public function updateImageSize() {
@@ -218,11 +261,11 @@ class ImageSizeTool extends Tool {
 		$crop = ($_POST['crop'] == "true");
 		$cropX = (!empty($_POST['xAxis'])) ? $_POST['xAxis'] : null;
 		$cropY = (!empty($_POST['yAxis'])) ? $_POST['yAxis'] : null;
+		$privacy = (!empty($_POST['privacy'])) ? $_POST['privacy'] : null;
 
 		if (!empty($crop) && (!empty($cropX)) && !empty($cropY)) {
 			$crop = [$cropX, $cropY];
 		}
-
 
 		$this->customSizes[$size] = [
 			'width' => $width,
@@ -231,6 +274,8 @@ class ImageSizeTool extends Tool {
 		];
 
 		update_option('ilab-custom-image-sizes', $this->customSizes);
+
+		ImageSizePrivacy::updatePrivacyForSize($size, $privacy);
 
 		Tracker::trackView("Image Sizes - Update Size", "/image-sizes/update");
 

@@ -1,0 +1,112 @@
+.features-list {
+	@include clearfix();
+	border: 1px solid $border-color;
+	border-radius: 8px;
+	margin-bottom: 1.643em;
+	margin-left: 0;
+	margin-right: 0;
+
+	.media {
+		width: 150px;
+		margin: 0 auto;
+		display: flex;
+		align-items: center;
+	}
+
+	.media-left,
+	.feature-icon {
+		padding-right: 10px;
+
+		i {
+			font-size: 2.571em;
+		}
+
+		i.ec-customers {
+			font-size: 3.386em;
+		}
+	}
+
+	.media-body {
+		text-align: center;
+		font-size: 1em;
+        line-height: 1.25;
+		flex-grow: 1;
+	}
+
+	.feature {
+		padding-top: 1.357em;
+        padding-bottom: 0.929em;
+	}
+
+	.feature + .feature {
+		border-left: 1px solid $border-color;
+	}
+
+	.feature-text {
+		strong {
+			display: block;
+		}
+	}
+}
+
+.features-list {
+    @include make-row();
+    margin-left: 0;
+    margin-right: 0;
+    flex-wrap: nowrap;
+    overflow: auto;
+    justify-content: space-between;
+
+    .feature {
+        @include make-col-ready();
+        flex: 0 0 auto;
+        width: 180px;
+        border-bottom: none;
+        padding-right: 0;
+        display: flex;
+        margin: auto;
+
+        .media {
+            margin: auto;
+        }
+    }
+
+    @include media-breakpoint-up(lg) {
+        .feature {
+            padding-right: 15px;
+        }
+
+        &.columns-1 {
+            flex-direction: column;
+
+            .feature {
+                @include make-col(12);
+                border-bottom: 1px solid $border-color;
+
+                &:last-child {
+                    border-bottom-width: 0;
+                }
+            }
+        }
+
+        &.columns-2 .feature {
+            @include make-col(6);
+        }
+
+        &.columns-3 .feature {
+            @include make-col(4);
+        }
+
+        &.columns-4 .feature {
+            @include make-col(3);
+        }
+
+        &.columns-5 .feature {
+            @include make-col(2.4);
+        }
+    }
+
+    &.columns-6 .feature {
+        @include make-col(2);
+    }
+}

@@ -27,8 +27,8 @@ class ProductUnvariable
 
             // if product has variations in current exchange
             if (
-                isset($_SESSION['IMPORT_1C']['setTerms']) &&
-                isset($_SESSION['IMPORT_1C']['setTerms'][$productID])
+                isset($_SESSION['IMPORT_1C']['hasVariation']) &&
+                isset($_SESSION['IMPORT_1C']['hasVariation'][$productID])
             ) {
                 unset($_SESSION['IMPORT_1C_PROCESS']['allCurrentProductIdBySimpleOffers'][$key]);
 
@@ -80,18 +80,7 @@ class ProductUnvariable
 
         if (!empty($variationIds)) {
             foreach ($variationIds as $variationId) {
-                Logger::logChanges(
-                    '(variation) removed variation, ID - ' . $variationId,
-                    [get_post_meta($variationId, '_id_1c', true)]
-                );
-
-                // https://developer.wordpress.org/reference/functions/has_post_thumbnail/
-                if (has_post_thumbnail($variationId)) {
-                    Product::removeProductImages($variationId);
-                }
-
-                // https://developer.wordpress.org/reference/functions/wp_delete_post/
-                wp_delete_post($variationId, true);
+                ProductVariation::remove($variationId);
             }
         } else {
             Logger::logChanges(

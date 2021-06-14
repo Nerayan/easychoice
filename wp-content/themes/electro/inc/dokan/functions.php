@@ -18,7 +18,7 @@ if ( ! function_exists( 'electro_dokan_scripts' ) ) {
 		wp_enqueue_style( 'ec-fontawesome', get_template_directory_uri() . '/assets/vendor/fontawesome/css/all.min.css', '', $electro_version );
 		wp_enqueue_style( 'ec-fontawesome' );
 
-		wp_enqueue_style( 'electro-dokan-style', get_template_directory_uri() . '/assets/css/dokan.css', '', $electro_version );
+		//wp_enqueue_style( 'electro-dokan-style', get_template_directory_uri() . '/assets/css/dokan.css', '', $electro_version );
 		wp_style_add_data( 'electro-dokan-style', 'rtl', 'replace' );
 
 		if ( apply_filters( 'electro_use_predefined_colors', true ) ) {
@@ -316,7 +316,7 @@ if ( ! function_exists( 'electro_dokan_vendor_product_search' ) ) {
 		?>
 		<li class="dokan-vendor-products-search-wrap">
 			<form class="vendor-products-search" method="get" action="<?php echo dokan_get_store_url( $store_id ); ?>" autocomplete="off">
-				<label class="sr-only screen-reader-text" for="search">
+				<label class="sr-only screen-reader-text visually-hidden" for="search">
 					<?php echo esc_html__( 'Search for:', 'electro' );?>
 				</label>
 				<div class="dokan-vendor-product-search-fields">

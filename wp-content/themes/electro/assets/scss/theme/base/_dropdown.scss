@@ -1,0 +1,23 @@
+// The dropdown menu
+.dropdown.open:hover [data-hover="dropdown"] + .dropdown-menu,
+.dropdown.open:focus [data-hover="dropdown"] + .dropdown-menu {
+    display: block;
+}
+
+.dropdown-menu {
+    border-width: 2px 0 0 0;
+    @include border-top-radius(0);
+    transform: none !important;
+    //top: 100% !important;
+
+    > li > a {
+        @extend .dropdown-item;
+    }
+}
+
+.dropdown-toggle::after {
+    content: "\f107";
+    border-width: 0;
+    @include fa-icon();
+    @include fa-fas;
+}

@@ -66,8 +66,10 @@
     </div>
     <?php if(!$imgixEnabled && $enabled): ?>
     <div class="button-row">
-        <a data-post-id="<?php echo e($postId); ?>" data-imgix-enabled="<?php echo e(($imgixEnabled) ? 'true': 'false'); ?>" href="#" class="ilab-info-regenerate-thumbnails button button-warning button-small">Regenerate Image</a>
-        <div id="ilab-info-regenerate-status" style="display:none;"><div class="spinner is-active"></div>Regenerating ...</div>
+        <?php echo do_action('media-cloud/ui/info-panel/actions', $postId); ?>
+
+
+
     </div>
     <?php endif; ?>
 </div>

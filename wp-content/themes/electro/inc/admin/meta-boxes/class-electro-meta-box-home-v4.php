@@ -45,7 +45,7 @@ class Electro_Meta_Box_Home_v4 {
 			<?php
 				$product_data_tabs = apply_filters( 'electro_home_v4_data_tabs', array(
 					'general' => array(
-						'label'  => __( 'General', 'electro' ),
+						'label'  => esc_html__( 'General', 'electro' ),
 						'target' => 'general_block',
 						'class'  => array(),
 					),
@@ -55,57 +55,52 @@ class Electro_Meta_Box_Home_v4 {
 						'class'  => array(),
 					),
 					'tabs_carousel' => array(
-						'label'  => __( 'Tabs Carousel', 'electro' ),
+						'label'  => esc_html__( 'Tabs Carousel', 'electro' ),
 						'target' => 'tabs_carousel',
 						'class'  => array(),
 					),
 					'banner' => array(
-						'label'  => __( 'Banner', 'electro' ),
+						'label'  => esc_html__( 'Banner', 'electro' ),
 						'target' => 'banner_data',
 						'class'  => array(),
 					),
 					'deal_products_carousel' => array(
-						'label'  => __( 'Deal Products Carousel', 'electro' ),
+						'label'  => esc_html__( 'Deal Products Carousel', 'electro' ),
 						'target' => 'deal_products_carousel',
 						'class'  => array(),
 					),
 					'products_with_category_image_1' => array(
-						'label'  => __( 'Products with Category Image - 1', 'electro' ),
+						'label'  => esc_html__( 'Products with Category Image - 1', 'electro' ),
 						'target' => 'products_with_category_image_1',
 						'class'  => array(),
 					),
 					'products_with_category_image_2' => array(
-						'label'  => __( 'Products with Category Image - 2', 'electro' ),
+						'label'  => esc_html__( 'Products with Category Image - 2', 'electro' ),
 						'target' => 'products_with_category_image_2',
 						'class'  => array(),
 					),
 					'hcb_block' => array(
-						'label'  => __( 'Categories Block', 'electro' ),
+						'label'  => esc_html__( 'Categories Block', 'electro' ),
 						'target' => 'hcb_block',
 						'class'  => array(),
 					),
 					'products_6_1_with_categories_1' => array(
-						'label'  => __( '6-1 Products with Categories - 1', 'electro' ),
+						'label'  => esc_html__( '6-1 Products with Categories - 1', 'electro' ),
 						'target' => 'products_6_1_with_categories_1',
 						'class'  => array(),
 					),
 					'products_6_1_with_categories_2' => array(
-						'label'  => __( '6-1 Products with Categories - 2', 'electro' ),
+						'label'  => esc_html__( '6-1 Products with Categories - 2', 'electro' ),
 						'target' => 'products_6_1_with_categories_2',
 						'class'  => array(),
 					),
 					'recently_viewed_carousel' => array(
-                        'label'  => __( 'Recently Viewed Carousel', 'electro' ),
+                        'label'  => esc_html__( 'Recently Viewed Carousel', 'electro' ),
                         'target' => 'recently_viewed_carousel',
                         'class'  => array(),
-                        'is_wide_only' => true,
                     )
 				) );
 				foreach ( $product_data_tabs as $key => $tab ) {
-					if ( isset( $tab['is_wide_only'] ) && $tab['is_wide_only'] && ! electro_is_wide_enabled() ) {
-						continue;
-					}
-
 					?><li class="<?php echo esc_attr( $key ); ?>_options <?php echo esc_attr( $key ); ?>_tab <?php echo implode( ' ' , $tab['class'] ); ?>">
 						<a href="#<?php echo esc_attr( $tab['target'] ); ?>"><?php echo esc_html( $tab['label'] ); ?></a>
 					</li><?php
@@ -162,12 +157,6 @@ class Electro_Meta_Box_Home_v4 {
 						</thead>
 						<tbody>
 							<?php foreach( $home_v4_blocks as $key => $home_v4_block ) : ?>
-
-							<?php 
-								if ( ! electro_is_wide_enabled() && ( $key == 'rvp' ) ) {
-									continue;
-								}
-							?>
 							<tr>
 								<td><?php echo esc_html( $home_v4_block ); ?></td>
 								<td><?php electro_wp_animation_dropdown( array(  'id' => '_home_v4_' . $key . '_animation', 'label'=> '', 'name' => '_home_v4[' . $key . '][animation]', 'value' => isset( $home_v4['' . $key . '']['animation'] ) ? $home_v4['' . $key . '']['animation'] : '', )); ?></td>
@@ -356,7 +345,6 @@ class Electro_Meta_Box_Home_v4 {
 				?>
 				</div>
 
-				<?php if ( electro_is_wide_enabled() ) : ?>
 				<div class="options_group">
 					<h5 class="options-group__title"><?php echo esc_html__( 'Wide Layout', 'electro' ); ?></h5>
 				<?php
@@ -378,7 +366,6 @@ class Electro_Meta_Box_Home_v4 {
 					) );
 				?>
 				</div>
-				<?php endif; ?>
 
 				<div class="options_group">
 				<?php	
@@ -534,7 +521,6 @@ class Electro_Meta_Box_Home_v4 {
 					?>
 				</div>
 
-				<?php if ( electro_is_wide_enabled() ) : ?>
 				<div class="options_group">
 					<h5 class="options-group__title"><?php echo esc_html__( 'Wide Layout', 'electro' ); ?></h5>
 				<?php
@@ -555,7 +541,7 @@ class Electro_Meta_Box_Home_v4 {
 					) );
 				?>
 				</div>
-				<?php endif; ?>
+
 				<div class="options_group">
 				<?php
 					electro_wp_wc_shortcode( array( 
@@ -686,7 +672,6 @@ class Electro_Meta_Box_Home_v4 {
 				?>
 				</div>
 
-				<?php if ( electro_is_wide_enabled() ) : ?>
 				<div class="options_group">
 					<h5 class="options-group__title"><?php echo esc_html__( 'Wide Layout', 'electro' ); ?></h5>
 				<?php
@@ -707,7 +692,6 @@ class Electro_Meta_Box_Home_v4 {
 					) );
 				?>
 				</div>
-				<?php endif; ?>
 
 				<div class="options_group">
 				<?php
@@ -835,7 +819,6 @@ class Electro_Meta_Box_Home_v4 {
 				?>
 				</div>
 
-				<?php if ( electro_is_wide_enabled() ) : ?>
 				<div class="options_group">
 					<h5 class="options-group__title"><?php echo esc_html__( 'Wide Layout', 'electro' ); ?></h5>
 				<?php
@@ -856,7 +839,6 @@ class Electro_Meta_Box_Home_v4 {
 					) );
 				?>
 				</div>
-				<?php endif; ?>
 
 				<div class="options_group">
 				<?php
@@ -1185,8 +1167,6 @@ class Electro_Meta_Box_Home_v4 {
 				</div>
 			</div><!-- /#products_6_1_with_categories_2 -->
 
-			<?php if ( electro_is_wide_enabled() ) : ?>
-
 			<div id="recently_viewed_carousel" class="panel electro_options_panel">
 
                 <div class="options_group">
@@ -1230,8 +1210,6 @@ class Electro_Meta_Box_Home_v4 {
                 ?>
                 </div>
             </div><!-- /#recently_viewed_carousel -->
-
-            <?php endif; ?>
 
 		</div>
 		<?php

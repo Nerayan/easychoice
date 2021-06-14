@@ -325,14 +325,18 @@ class AssetsTool extends Tool {
 				}
 
 				if (!empty($key)) {
-					if(!empty($this->settings->cdnBase)) {
-						$parsedUrl = parse_url($entry['url']);
-						$assets->registered[$key]->src = $this->settings->cdnBase . ltrim($parsedUrl['path']);
+					if (!isset($entry['url'])) {
+						Logger::warning("Missing url in entry", $entry, __METHOD__, __LINE__);
 					} else {
-						$assets->registered[$key]->src = $entry['url'];
-					}
+						if(!empty($this->settings->cdnBase)) {
+							$parsedUrl = parse_url($entry['url']);
+							$assets->registered[$key]->src = $this->settings->cdnBase . ltrim($parsedUrl['path']);
+						} else {
+							$assets->registered[$key]->src = $entry['url'];
+						}
 
-					$assets->registered[$key]->ver = $entry['ver'];
+						$assets->registered[$key]->ver = $entry['ver'];
+					}
 				}
 
 
@@ -531,11 +535,17 @@ class AssetsTool extends Tool {
 	}
 
 	private function prepareGzippedFile($srcFile, $proposedContentType, &$contentType, &$contentEncoding, &$contentLength) {
+		if (is_dir($srcFile)) {
+			Logger::warning("srcFile is directory: $srcFile", [], __METHOD__, __LINE__);
+			return $srcFile;
+		}
+
 		if (!function_exists('wp_tempnam')) {
 			require_once(ABSPATH . 'wp-admin/includes/file.php');
 		}
 
 		$tmpFile = wp_tempnam();
+
 		$contents = file_get_contents($srcFile);
 		$compressedContents = gzcompress($contents, 6, ZLIB_ENCODING_GZIP);
 
@@ -583,6 +593,7 @@ class AssetsTool extends Tool {
 				$contentEncoding = null;
 
 				if ($this->settings->gzip && extension_loaded('zlib')) {
+					Logger::info("Gzipping RTL: $rtlFile", [], __METHOD__, __LINE__);
 					$rtlFile = $this->prepareGzippedFile($rtlFile, 'text/css', $contentType, $contentEncoding, $contentLength);
 				}
 
@@ -597,6 +608,7 @@ class AssetsTool extends Tool {
 		$contentEncoding = null;
 
 		if ($this->settings->gzip && extension_loaded('zlib')) {
+			Logger::info("Gzipping CSS File: $rtlFile", [], __METHOD__, __LINE__);
 			$srcFile = $this->prepareGzippedFile($srcFile, 'text/css', $contentType, $contentEncoding, $contentLength);
 		}
 
@@ -618,6 +630,7 @@ class AssetsTool extends Tool {
 					$extension = strtolower(pathinfo($image, PATHINFO_EXTENSION));
 					if (in_array($extension, ['ttf', 'otf', 'woff', 'woff2', 'eot', 'svg']) && $this->settings->gzip && extension_loaded('zlib')) {
 						$mimeType = $mimey->getMimeType($extension);
+						Logger::info("Gzipping CSS reference: $image", [], __METHOD__, __LINE__);
 						$image = $this->prepareGzippedFile($image, $mimeType, $contentType, $contentEncoding, $contentLength);
 					}
 
@@ -645,11 +658,16 @@ class AssetsTool extends Tool {
 		$key = ltrim($key, '/');
 
 		$srcFile = $jsEntry['src'];
+		if (is_dir($srcFile)) {
+			Logger::warning("Invalid srcFile: $srcFile", $jsEntry, __METHOD__, __LINE__);
+			return $jsEntry;
+		}
 
 		$contentType = null;
 		$contentLength = null;
 		$contentEncoding = null;
 		if ($this->settings->gzip && extension_loaded('zlib')) {
+			Logger::info("Gzipping JS File: $srcFile", [], __METHOD__, __LINE__);
 			$srcFile = $this->prepareGzippedFile($srcFile, 'application/javascript', $contentType, $contentEncoding, $contentLength);
 		}
 

@@ -1,0 +1,23 @@
+[2021-06-05 15:51:05 | 60bb9d692050b.60bb9d6920518] wc1c.INFO: START PROCESSING REQUEST {"Query":"type=sale&mode=checkauth","Usage, mb":"24.46","Peak, mb":"24.5","Ip":"134.249.146.137","Method":"GET","User":"exchanger","Site":"https://easychoice.com.ua"}
+[2021-06-05 15:51:05 | 60bb9d692050b.60bb9d6920518] wc1c.INFO: success - PHPSESSID 6a8e591dc1d0e704423d87ce213980a3  []
+[2021-06-05 15:51:05 | 60bb9d692050b.60bb9d6920518] wc1c.INFO: END PROCESSING REQUEST {"Query":"type=sale&mode=checkauth","Usage, mb":"24.62","Peak, mb":"24.77","Ip":"134.249.146.137","Method":"GET","User":"exchanger","Site":"https://easychoice.com.ua"}
+[2021-06-05 15:51:05 | 60bb9d692050b.60bb9d694aed7] wc1c.INFO: START PROCESSING REQUEST {"Query":"type=sale&mode=init&&version=3.1","Usage, mb":"24.46","Peak, mb":"24.5","Ip":"134.249.146.137","Method":"GET","User":"exchanger","Site":"https://easychoice.com.ua"}
+[2021-06-05 15:51:05 | 60bb9d692050b.60bb9d694aed7] wc1c.INFO: zip=no, file_limit=10000000 []
+[2021-06-05 15:51:05 | 60bb9d692050b.60bb9d694aed7] wc1c.INFO: END PROCESSING REQUEST {"Query":"type=sale&mode=init&&version=3.1","Usage, mb":"24.62","Peak, mb":"24.77","Ip":"134.249.146.137","Method":"GET","User":"exchanger","Site":"https://easychoice.com.ua"}
+[2021-06-05 15:51:05 | 60bb9d692050b.60bb9d6976357] wc1c.INFO: START PROCESSING REQUEST {"Query":"type=sale&mode=query&&version=3.1","Usage, mb":"24.46","Peak, mb":"24.5","Ip":"134.249.146.137","Method":"GET","User":"exchanger","Site":"https://easychoice.com.ua"}
+[2021-06-05 15:51:05 | 60bb9d692050b.60bb9d6976357] wc1c.INFO: response scheme version - 2.08 []
+[2021-06-05 15:51:05 | 60bb9d692050b.60bb9d6976357] wc1c.INFO: start orders modified date ["2021-05-17 12:54:00"]
+[2021-06-05 15:51:05 | 60bb9d692050b.60bb9d6976357] wc1c.INFO: setting - send_orders_date_create_start [""]
+[2021-06-05 15:51:05 | 60bb9d692050b.60bb9d6976357] wc1c.INFO: count orders [11]
+[2021-06-05 15:51:05 | 60bb9d692050b.60bb9d6976357] wc1c.INFO: list order ids ["149617","149523","150160","146711","149322","149689","150229","150332","150668","150897","150896"]
+[2021-06-05 15:51:05 | 60bb9d692050b.60bb9d6976357] wc1c.INFO: generate product without node "Ид" [0,149617]
+[2021-06-05 15:51:05 | 60bb9d692050b.60bb9d6976357] wc1c.INFO: no 1C guid and empty sku, "Артикул" no added [0,149617]
+[2021-06-05 15:51:05 | 60bb9d692050b.60bb9d6976357] wc1c.INFO: generate product without node "Ид" [0,149523]
+[2021-06-05 15:51:05 | 60bb9d692050b.60bb9d6976357] wc1c.INFO: no 1C guid and empty sku, "Артикул" no added [0,149523]
+[2021-06-05 15:51:05 | 60bb9d692050b.60bb9d6976357] wc1c.INFO: used encoding ["utf-8"]
+[2021-06-05 15:51:05 | 60bb9d692050b.60bb9d6976357] wc1c.INFO: order query send result []
+[2021-06-05 15:51:05 | 60bb9d692050b.60bb9d6976357] wc1c.INFO: END PROCESSING REQUEST {"Query":"type=sale&mode=query&&version=3.1","Usage, mb":"25.86","Peak, mb":"25.97","Ip":"134.249.146.137","Method":"GET","User":"exchanger","Site":"https://easychoice.com.ua"}
+[2021-06-05 15:51:05 | 60bb9d692050b.60bb9d69edd57] wc1c.INFO: START PROCESSING REQUEST {"Query":"type=sale&mode=success&&version=3.1","Usage, mb":"24.46","Peak, mb":"24.5","Ip":"134.249.146.137","Method":"GET","User":"exchanger","Site":"https://easychoice.com.ua"}
+[2021-06-05 15:51:05 | 60bb9d692050b.60bb9d69edd57] wc1c.INFO: 1c send success, setting `send_orders_last_success_export` set ["2021-06-05 18:51"]
+[2021-06-05 15:51:05 | 60bb9d692050b.60bb9d69edd57] wc1c.INFO: success []
+[2021-06-05 15:51:05 | 60bb9d692050b.60bb9d69edd57] wc1c.INFO: END PROCESSING REQUEST {"Query":"type=sale&mode=success&&version=3.1","Usage, mb":"24.62","Peak, mb":"24.77","Ip":"134.249.146.137","Method":"GET","User":"exchanger","Site":"https://easychoice.com.ua"}

@@ -92,7 +92,7 @@ class Groups
         self::$processData['numberOfCategories']++;
 
         // ignore invalid
-        if (!isset($element->Ид)) {
+        if (!isset($element->Ид) || !isset($element->Наименование)) {
             unset($element);
 
             return true;
@@ -107,6 +107,20 @@ class Groups
 
         // already processed
         if (in_array((string) $element->Ид, $_SESSION['IMPORT_1C_PROCESS']['currentCategories1c'], true)) {
+            unset($element);
+
+            return true;
+        }
+
+        /**
+         * Filters the sign to ignore the processing of the node `Группа`.
+         *
+         * @since 1.88.2
+         *
+         * @param bool $ignore
+         * @param \SimpleXMLElement $element 'Группа' node object
+         */
+        if (apply_filters('itglx_wc1c_skip_group_by_xml', false, $element)) {
             unset($element);
 
             return true;
@@ -166,18 +180,17 @@ class Groups
         }
 
         if (isset($categoryEntry['term_id'])) {
-            Term::updateProductCat($categoryEntry);
-            Logger::logChanges(
-                '(product_cat) Updated term `term_id` - ' . $categoryEntry['term_id'],
-                [(string) $element->Ид]
-            );
+            Term::updateProductCat($categoryEntry, $element);
         } else {
-            $categoryEntry['term_id'] = Term::insertProductCat($categoryEntry);
+            $categoryEntry['term_id'] = Term::insertProductCat($categoryEntry, $element);
+
+            if (!$categoryEntry['term_id']) {
+                unset($element);
+
+                return true;
+            }
+
             Term::update1cId($categoryEntry['term_id'], (string) $element->Ид);
-            Logger::logChanges(
-                '(product_cat) Added term `term_id` - ' . $categoryEntry['term_id'],
-                [(string) $element->Ид]
-            );
         }
 
         self::$processData['currentCategoryId'] = $categoryEntry['term_id'];
@@ -191,6 +204,17 @@ class Groups
 
         $_SESSION['IMPORT_1C']['currentCategoryId'] = self::$processData['currentCategoryId'];
         $_SESSION['IMPORT_1C']['numberOfCategories'] = self::$processData['numberOfCategories'];
+
+        /**
+         * Fires after `group` processing when a product category has already been added / updated.
+         *
+         * @since 1.92.0
+         *
+         * @param int $termID Product category id.
+         * @param \SimpleXMLElement $element 'Группа' node object.
+         * @param array $categoryEntry
+         */
+        do_action('itglx_wc1c_after_group_resolve', $categoryEntry['term_id'], $element, $categoryEntry);
 
         unset($element, $categoryEntry);
 

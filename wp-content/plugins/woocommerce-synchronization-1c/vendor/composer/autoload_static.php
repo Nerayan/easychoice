@@ -8,12 +8,17 @@ class ComposerStaticInitb87fa8086653efac66ff6dcb9469fe96
 {
     public static $files = array (
         '000b9c308d8cc91c2ae4225e62ac30d6' => __DIR__ . '/..' . '/it-for-free/array_column/src/array_column.php',
+        '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
         '7b88577ab913611f157876f23c7145ff' => __DIR__ . '/../..' . '/admin/loader.php',
         '1c75689e7d49c89cac73a52e7a404c52' => __DIR__ . '/../..' . '/includes/filters.php',
         'b685c35ced57cea211546d0568040fc3' => __DIR__ . '/../..' . '/includes/actions.php',
     );
 
     public static $prefixLengthsPsr4 = array (
+        'S' => 
+        array (
+            'Symfony\\Polyfill\\Mbstring\\' => 26,
+        ),
         'P' => 
         array (
             'Psr\\Log\\' => 8,
@@ -31,6 +36,10 @@ class ComposerStaticInitb87fa8086653efac66ff6dcb9469fe96
     );
 
     public static $prefixDirsPsr4 = array (
+        'Symfony\\Polyfill\\Mbstring\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/polyfill-mbstring',
+        ),
         'Psr\\Log\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/log/Psr/Log',
@@ -92,9 +101,11 @@ class ComposerStaticInitb87fa8086653efac66ff6dcb9469fe96
         'Itgalaxy\\Wc\\Exchange1c\\Admin\\TableColumns\\TableColumnProductAttribute' => __DIR__ . '/../..' . '/admin/TableColumns/TableColumnProductAttribute.php',
         'Itgalaxy\\Wc\\Exchange1c\\Admin\\TableColumns\\TableColumnProductCat' => __DIR__ . '/../..' . '/admin/TableColumns/TableColumnProductCat.php',
         'Itgalaxy\\Wc\\Exchange1c\\ExchangeProcess\\Base\\Parser' => __DIR__ . '/../..' . '/exchange-process/Base/Parser.php',
+        'Itgalaxy\\Wc\\Exchange1c\\ExchangeProcess\\Base\\Response' => __DIR__ . '/../..' . '/exchange-process/Base/Response.php',
         'Itgalaxy\\Wc\\Exchange1c\\ExchangeProcess\\DataResolvers\\GlobalProductAttributes' => __DIR__ . '/../..' . '/exchange-process/DataResolvers/GlobalProductAttributes.php',
         'Itgalaxy\\Wc\\Exchange1c\\ExchangeProcess\\DataResolvers\\Groups' => __DIR__ . '/../..' . '/exchange-process/DataResolvers/Groups.php',
         'Itgalaxy\\Wc\\Exchange1c\\ExchangeProcess\\DataResolvers\\NomenclatureCategories' => __DIR__ . '/../..' . '/exchange-process/DataResolvers/NomenclatureCategories.php',
+        'Itgalaxy\\Wc\\Exchange1c\\ExchangeProcess\\DataResolvers\\OfferSimple' => __DIR__ . '/../..' . '/exchange-process/DataResolvers/OfferSimple.php',
         'Itgalaxy\\Wc\\Exchange1c\\ExchangeProcess\\DataResolvers\\PriceTypes' => __DIR__ . '/../..' . '/exchange-process/DataResolvers/PriceTypes.php',
         'Itgalaxy\\Wc\\Exchange1c\\ExchangeProcess\\DataResolvers\\ProductAndVariationPrices' => __DIR__ . '/../..' . '/exchange-process/DataResolvers/ProductAndVariationPrices.php',
         'Itgalaxy\\Wc\\Exchange1c\\ExchangeProcess\\DataResolvers\\ProductAndVariationStock' => __DIR__ . '/../..' . '/exchange-process/DataResolvers/ProductAndVariationStock.php',
@@ -103,6 +114,7 @@ class ComposerStaticInitb87fa8086653efac66ff6dcb9469fe96
         'Itgalaxy\\Wc\\Exchange1c\\ExchangeProcess\\DataResolvers\\ProductManufacturer' => __DIR__ . '/../..' . '/exchange-process/DataResolvers/ProductManufacturer.php',
         'Itgalaxy\\Wc\\Exchange1c\\ExchangeProcess\\DataResolvers\\ProductRequisites' => __DIR__ . '/../..' . '/exchange-process/DataResolvers/ProductRequisites.php',
         'Itgalaxy\\Wc\\Exchange1c\\ExchangeProcess\\DataResolvers\\ProductUnit' => __DIR__ . '/../..' . '/exchange-process/DataResolvers/ProductUnit.php',
+        'Itgalaxy\\Wc\\Exchange1c\\ExchangeProcess\\DataResolvers\\ProductVariationAttributes' => __DIR__ . '/../..' . '/exchange-process/DataResolvers/ProductVariationAttributes.php',
         'Itgalaxy\\Wc\\Exchange1c\\ExchangeProcess\\DataResolvers\\Stocks' => __DIR__ . '/../..' . '/exchange-process/DataResolvers/Stocks.php',
         'Itgalaxy\\Wc\\Exchange1c\\ExchangeProcess\\DataResolvers\\Tags' => __DIR__ . '/../..' . '/exchange-process/DataResolvers/Tags.php',
         'Itgalaxy\\Wc\\Exchange1c\\ExchangeProcess\\DataResolvers\\Units' => __DIR__ . '/../..' . '/exchange-process/DataResolvers/Units.php',
@@ -121,6 +133,8 @@ class ComposerStaticInitb87fa8086653efac66ff6dcb9469fe96
         'Itgalaxy\\Wc\\Exchange1c\\ExchangeProcess\\Helpers\\Product' => __DIR__ . '/../..' . '/exchange-process/Helpers/Product.php',
         'Itgalaxy\\Wc\\Exchange1c\\ExchangeProcess\\Helpers\\ProductAttributeHelper' => __DIR__ . '/../..' . '/exchange-process/Helpers/ProductAttributeHelper.php',
         'Itgalaxy\\Wc\\Exchange1c\\ExchangeProcess\\Helpers\\ProductUnvariable' => __DIR__ . '/../..' . '/exchange-process/Helpers/ProductUnvariable.php',
+        'Itgalaxy\\Wc\\Exchange1c\\ExchangeProcess\\Helpers\\ProductVariableSync' => __DIR__ . '/../..' . '/exchange-process/Helpers/ProductVariableSync.php',
+        'Itgalaxy\\Wc\\Exchange1c\\ExchangeProcess\\Helpers\\ProductVariation' => __DIR__ . '/../..' . '/exchange-process/Helpers/ProductVariation.php',
         'Itgalaxy\\Wc\\Exchange1c\\ExchangeProcess\\Helpers\\SetVariationAttributeToProducts' => __DIR__ . '/../..' . '/exchange-process/Helpers/SetVariationAttributeToProducts.php',
         'Itgalaxy\\Wc\\Exchange1c\\ExchangeProcess\\Helpers\\Term' => __DIR__ . '/../..' . '/exchange-process/Helpers/Term.php',
         'Itgalaxy\\Wc\\Exchange1c\\ExchangeProcess\\ParserXml' => __DIR__ . '/../..' . '/exchange-process/ParserXml.php',
@@ -142,10 +156,14 @@ class ComposerStaticInitb87fa8086653efac66ff6dcb9469fe96
         'Itgalaxy\\Wc\\Exchange1c\\ExchangeProcess\\RequestProcessing\\SaleModeInit' => __DIR__ . '/../..' . '/exchange-process/RequestProcessing/SaleModeInit.php',
         'Itgalaxy\\Wc\\Exchange1c\\ExchangeProcess\\RequestProcessing\\SaleModeQuery' => __DIR__ . '/../..' . '/exchange-process/RequestProcessing/SaleModeQuery.php',
         'Itgalaxy\\Wc\\Exchange1c\\ExchangeProcess\\RequestProcessing\\SaleModeSuccess' => __DIR__ . '/../..' . '/exchange-process/RequestProcessing/SaleModeSuccess.php',
+        'Itgalaxy\\Wc\\Exchange1c\\ExchangeProcess\\Responses\\FailureResponse' => __DIR__ . '/../..' . '/exchange-process/Responses/FailureResponse.php',
+        'Itgalaxy\\Wc\\Exchange1c\\ExchangeProcess\\Responses\\ProgressResponse' => __DIR__ . '/../..' . '/exchange-process/Responses/ProgressResponse.php',
+        'Itgalaxy\\Wc\\Exchange1c\\ExchangeProcess\\Responses\\SuccessResponse' => __DIR__ . '/../..' . '/exchange-process/Responses/SuccessResponse.php',
         'Itgalaxy\\Wc\\Exchange1c\\ExchangeProcess\\RootProcessStarter' => __DIR__ . '/../..' . '/exchange-process/RootProcessStarter.php',
         'Itgalaxy\\Wc\\Exchange1c\\Includes\\Actions\\DeleteAttachment' => __DIR__ . '/../..' . '/includes/Actions/DeleteAttachment.php',
         'Itgalaxy\\Wc\\Exchange1c\\Includes\\Actions\\PreDeleteTerm' => __DIR__ . '/../..' . '/includes/Actions/PreDeleteTerm.php',
         'Itgalaxy\\Wc\\Exchange1c\\Includes\\Actions\\WcBeforeCalculateTotalsSetCartItemPrices' => __DIR__ . '/../..' . '/includes/Actions/WcBeforeCalculateTotalsSetCartItemPrices.php',
+        'Itgalaxy\\Wc\\Exchange1c\\Includes\\Actions\\WooCommerceAttributeDeleted' => __DIR__ . '/../..' . '/includes/Actions/WooCommerceAttributeDeleted.php',
         'Itgalaxy\\Wc\\Exchange1c\\Includes\\AssetsHelper' => __DIR__ . '/../..' . '/includes/AssetsHelper.php',
         'Itgalaxy\\Wc\\Exchange1c\\Includes\\Bootstrap' => __DIR__ . '/../..' . '/includes/Bootstrap.php',
         'Itgalaxy\\Wc\\Exchange1c\\Includes\\Cron' => __DIR__ . '/../..' . '/includes/Cron.php',
@@ -262,6 +280,7 @@ class ComposerStaticInitb87fa8086653efac66ff6dcb9469fe96
         'Psr\\Log\\Test\\DummyTest' => __DIR__ . '/..' . '/psr/log/Psr/Log/Test/DummyTest.php',
         'Psr\\Log\\Test\\LoggerInterfaceTest' => __DIR__ . '/..' . '/psr/log/Psr/Log/Test/LoggerInterfaceTest.php',
         'Psr\\Log\\Test\\TestLogger' => __DIR__ . '/..' . '/psr/log/Psr/Log/Test/TestLogger.php',
+        'Symfony\\Polyfill\\Mbstring\\Mbstring' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/Mbstring.php',
     );
 
     public static function getInitializer(ClassLoader $loader)

@@ -188,14 +188,14 @@ class MigrateToMuxTask extends AttachmentTask {
 				$type = arrayPath($meta, 's3/mime-type', null);
 
 				if (empty($type)) {
-					Logger::info("No mime type found for attachment.", [], __METHOD__, __LINE__);
+					Logger::warning("No mime type found for attachment.", [], __METHOD__, __LINE__);
 					return true;
 				}
 			}
 		}
 
 		if (strpos($type, 'video') !== 0) {
-			Logger::info("The mime type '$type' is not a video.", [], __METHOD__, __LINE__);
+			Logger::error("The mime type '$type' is not a video.", [], __METHOD__, __LINE__);
 			return true;
 		}
 

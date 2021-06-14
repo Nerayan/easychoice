@@ -9,15 +9,15 @@ if ( ! function_exists( 'electro_footer_widgets_v2' ) ) {
      */
     function electro_footer_widgets_v2() {
         if( apply_filters( 'electro_footer_widgets_v2', true  ) ) {
-            $footer_widgets_columns = apply_filters( 'electro_footer_widgets_v2_columns', 3 );
+            $footer_widgets_columns = apply_filters( 'electro_footer_widgets_v2_columns', 4 );
             ?>
-            <div class="footer-widgets columns-<?php echo esc_attr( $footer_widgets_columns ); ?>">
+            <div class="footer-widgets row row-cols-lg-2 row-cols-xl-<?php echo esc_attr( $footer_widgets_columns ); ?>">
                 <?php
                     if ( is_active_sidebar( 'footer-widgets' ) ) {
                         dynamic_sidebar( 'footer-widgets' );
                     } else {
                         $footer_widget_args = apply_filters( 'electro_footer_widget_args', array(
-                            'before_widget' => '<div class="widget-column"><aside class="widget clearfix"><div class="body">',
+                            'before_widget' => '<div class="widget-column col mb-lg-5 mb-xl-0"><aside class="widget clearfix"><div class="body">',
                             'after_widget'  => '</div></aside></div>',
                             'before_title'  => '<h4 class="widget-title">',
                             'after_title'   => '</h4>',
@@ -46,8 +46,8 @@ if ( ! function_exists( 'electro_footer_newsletter_v2' ) ) {
             ?>
             <div class="footer-newsletter">
                 <div class="container">
-                    <div class="footer-newsletter-inner">
-                        <div class="newsletter-content">
+                    <div class="footer-newsletter-inner row">
+                        <div class="newsletter-content col-lg-7">
 
                             <h5 class="newsletter-title"><?php echo esc_html( $footer_newsletter_title ); ?></h5>
 
@@ -58,7 +58,7 @@ if ( ! function_exists( 'electro_footer_newsletter_v2' ) ) {
                             <?php endif; ?>
 
                         </div>
-                        <div class="newsletter-form">
+                        <div class="newsletter-form col-lg-5 align-self-center">
 
                             <?php footer_newsletter_form(); ?>
 
@@ -84,15 +84,15 @@ if ( ! function_exists( 'electro_footer_bottom_widgets_v2' ) ) {
 
         <div class="footer-bottom-widgets">
             <div class="container">
-                <div class="footer-bottom-widgets-inner">
+                <div class="footer-bottom-widgets-inner row">
                     <?php if ( $show_footer_contact_block ) : ?>
-                        <div class="footer-contact">
+                        <div class="footer-contact col-md-5">
                             <?php electro_footer_contact(); ?>
                         </div>
                     <?php endif; ?>
                     <?php if ( $show_footer_bottom_widgets ) : ?>
-                        <div class="footer-bottom-widgets-menu">
-                            <div class="footer-bottom-widgets-menu-inner <?php echo esc_attr( 'columns-' . $footer_bottom_widgets_columns ); ?>">
+                        <div class="footer-bottom-widgets-menu col-md-7">
+                            <div class="footer-bottom-widgets-menu-inner row g-0 <?php echo esc_attr( 'row-cols-xl-' . $footer_bottom_widgets_columns ); ?>">
                                 <?php electro_display_footer_bottom_widgets(); ?>
                             </div>
                         </div>
@@ -119,8 +119,8 @@ if ( ! function_exists( 'electro_copyright_bar_v2' ) ) {
 
         <div class="copyright-bar">
             <div class="container">
-                <div class="copyright"><?php echo wp_kses_post( $footer_copyright_text ); ?></div>
-                <div class="payment"><?php echo wp_kses_post( $credit_card_icons ); ?></div>
+                <div class="float-start copyright"><?php echo wp_kses_post( $footer_copyright_text ); ?></div>
+                <div class="float-end payment"><?php echo wp_kses_post( $credit_card_icons ); ?></div>
             </div>
         </div><?php
 
@@ -145,7 +145,7 @@ if ( ! function_exists( 'electro_footer_v2_desktop_wrap_open' ) ) {
      * Displays the copyright bar
      */
     function electro_footer_v2_desktop_wrap_open() {
-        ?><div class="desktop-footer container">
+        ?><div class="desktop-footer d-none d-lg-block container">
             <?php
     }
 }
@@ -172,7 +172,7 @@ if ( ! function_exists( 'electro_mobile_footer_v1_wrap_open' ) ) {
         if( apply_filters( 'electro_mobile_footer_v1_light_bg', false ) ) {
             $classes = 'light';
         }
-        ?><div class="handheld-footer v1 <?php echo esc_attr( $classes ); ?>"><?php
+        ?><div class="handheld-footer d-lg-none v1 <?php echo esc_attr( $classes ); ?>"><?php
     }
 }
 
@@ -185,7 +185,7 @@ if ( ! function_exists( 'electro_mobile_footer_v2_wrap_open' ) ) {
         if( apply_filters( 'electro_mobile_footer_v2_light_bg', false ) ) {
             $classes = 'light';
         }
-        ?><div class=" handheld-footer v2 <?php echo esc_attr( $classes ); ?>"><?php
+        ?><div class=" handheld-footer d-lg-none v2 <?php echo esc_attr( $classes ); ?>"><?php
     }
 }
 
@@ -357,7 +357,7 @@ if ( ! function_exists( 'electro_footer_social_icons_hh' ) ) {
             ob_start();
             ?>
             <div class="footer-social-icons">
-                <ul class="social-icons-color">
+                <ul class="social-icons-color nav align-items-center">
                     <?php echo wp_kses( $social_links_output, 'post', $allowed_protocols ); ?>
                 </ul>
             </div>

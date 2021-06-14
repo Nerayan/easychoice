@@ -86,7 +86,7 @@ class SectionLogging
                     <?php echo esc_html__('Download in zip archive', 'itgalaxy-woocommerce-1c'); ?>
                 </a>
             <?php } ?>
-            <button class="btn btn-info btn-sm" type="button" data-ui-component="itglx-wc1c-ajax-clear-logs">
+            <button class="btn btn-outline-danger btn-sm" type="button" data-ui-component="itglx-wc1c-ajax-clear-logs">
                 <span class="text">
                     <?php echo esc_html__('Clear logs', 'itgalaxy-woocommerce-1c'); ?>
                     <span data-ui-component="itglx-wc1c-logs-count-and-size-text"></span>

@@ -6,12 +6,12 @@ if ( ! function_exists( 'electro_navigation_v7' ) ) {
     function electro_navigation_v7() {
         ?><div class="electro-navigation-v7">
             <div class="container">
-                <div class="electro-navigation">
+                <div class="electro-navigation row">
                     <?php
                         /**
                         * @hooked electro_primary_nav_menu  - 10
                         */
-                    do_action( 'electro_navigation_v7' ); ?>  
+                    do_action( 'electro_navigation_v7' ); ?>
                 </div>
             </div>
         </div><?php
@@ -23,7 +23,7 @@ if ( ! function_exists( 'electro_masthead_v3' ) ) {
      * @since 2.0
      */
     function electro_masthead_v3() {
-        ?><div class="masthead"><?php
+        ?><div class="masthead row align-items-center"><?php
         /**
         * @hooked electro_header_support_menu   - 10
         * @hooked electro_header_logo           - 20
@@ -35,7 +35,7 @@ if ( ! function_exists( 'electro_masthead_v3' ) ) {
 }
 
 if ( ! function_exists( 'electro_header_support_menu' ) ) {
-    /** 
+    /**
      * Displays Support menu
      */
     function electro_header_support_menu() {

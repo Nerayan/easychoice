@@ -81,10 +81,10 @@ class UploadTool extends Tool {
                     $this->hookupUploadUI();
 
                     add_filter('plupload_default_settings', function($defaults) {
-                        if($this->settings->uploadImages && $this->settings->uploadAudio && $this->settings->uploadVideo && $this->settings->uploadDocuments) {
-                            unset($defaults['filters']['max_file_size']);
-                        } else if($this->settings->maxUploadsize > 0) {
-                            $defaults['filters']['max_file_size'] = ($this->settings->maxUploadsize * 1024 * 1024) . 'b';
+                        if($this->settings->uploadImages || $this->settings->uploadAudio || $this->settings->uploadVideo || $this->settings->uploadDocuments) {
+	                        if($this->settings->maxUploadSize > 0) {
+		                        $defaults['filters']['max_file_size'] = ($this->settings->maxUploadSize * 1024 * 1024) . 'b';
+	                        }
                         }
 
                         return $defaults;
@@ -123,14 +123,14 @@ class UploadTool extends Tool {
      * Register Menus
      * @param $top_menu_slug
      */
-    public function registerMenu($top_menu_slug, $networkMode = false, $networkAdminMenu = false) {
+    public function registerMenu($top_menu_slug, $networkMode = false, $networkAdminMenu = false, $tool_menu_slug = null) {
         parent::registerMenu($top_menu_slug);
 
         if($this->enabled() && ((!$networkMode && !$networkAdminMenu) || ($networkMode && !$networkAdminMenu)) && (!$this->settings->integrationMode)) {
             ToolsManager::instance()->insertToolSeparator();
             ToolsManager::instance()->addMultisiteTool($this);
             $this->options_page = 'media-cloud-upload-admin';
-            add_submenu_page($top_menu_slug, 'Media Cloud Upload', 'Cloud Upload', 'upload_files', 'media-cloud-upload-admin', [
+            add_submenu_page(!empty($tool_menu_slug) ? $tool_menu_slug : $top_menu_slug, 'Media Cloud Upload', 'Cloud Upload', 'upload_files', 'media-cloud-upload-admin', [
                 $this,
                 'renderSettings'
             ]);
@@ -356,125 +356,152 @@ class UploadTool extends Tool {
 		$key = $_POST['key'];
 		$faces = arrayPath($_POST, 'faces', null);
 
-		$info = $this->storageTool->client()->info($key);
-
-		$unknownMimes = [
-			'application/octet-stream',
-			'application/binary',
-			'unknown/unknown'
-		];
-
 		/** @var StorageTool $storageTool */
 		$storageTool = ToolsManager::instance()->tools['storage'];
 		if (!$storageTool->enabled()) {
 			json_response(['status' => 'error', 'message' => 'Storage not enabled.']);
         }
 
-		if(!empty($info->mimeType()) && !in_array($info->mimeType(), $unknownMimes)) {
-			$result = $storageTool->importAttachmentFromStorage($info);
-			if($result) {
-				$doUpdateMeta = false;
-				$meta = wp_get_attachment_metadata($result['id']);
+		$info = $this->storageTool->client()->info($key);
 
-			    if (isset($_POST['metadata'])) {
-			        $uploadMeta = arrayPath($_POST, 'metadata', []);
+		if (empty($info->mimeType())) {
+			json_response(['status' => 'error', 'message' => 'Unknown type.', 'type' => $info->mimeType()]);
+			return;
+		}
 
-			        if (!empty($uploadMeta)) {
-				        $thumbMeta = arrayPath($uploadMeta, 'thumbnail', null);
-				        if (!empty($thumbMeta)) {
-					        unset($uploadMeta['thumbnail']);
+		$scrutinizedMimes = [
+			'application/octet-stream',
+			'application/binary',
+			'unknown/unknown'
+		];
 
-					        $mime = strtolower($thumbMeta['mimeType']);
-					        $mimeParts = explode('/', $mime);
+		if (in_array($info->mimeType(), $scrutinizedMimes)) {
+			$ext = strtolower(pathinfo($key, PATHINFO_EXTENSION));
+			$allowedMimes = get_allowed_mime_types();
 
-					        if (in_array($mimeParts[1], ['jpeg', 'jpg', 'png'])) {
-					            $basename = basename($meta['file']);
-					            $filename = pathinfo($basename, PATHINFO_FILENAME);
-						        $ext = in_array($mimeParts[1], ['jpeg', 'jpg']) ? 'jpg' : 'png';
-						        $subdir = str_replace($basename, '', $meta['file']);
+			$isAllowed = false;
+			if (!isset($allowedMimes[$ext])) {
+			    $allowedExts = array_keys($allowedMimes);
+			    foreach($allowedExts as $allowedExt) {
+			        if (strpos(strtolower($allowedExt), $ext) !== -1) {
+			            $isAllowed = $allowedMimes[$allowedExt] === $info->mimeType();
 
-						        $uploadDir = trailingslashit(WP_CONTENT_DIR).'uploads/'.trailingslashit($subdir);
-						        @mkdir($uploadDir, 0777, true);
+			            if ($isAllowed) {
+				            break;
+			            }
+			        }
+			    }
+		    } else {
+				$isAllowed = $allowedMimes[$ext] === $info->mimeType();
+			}
 
-						        $filePath = $uploadDir.$filename.'.'.$ext;
-						        file_put_contents($filePath, base64_decode($thumbMeta['data']));
+			if (!$isAllowed) {
+				json_response(['status' => 'error', 'message' => 'Upload not allowed.', 'type' => $info->mimeType()]);
+				return;
+			}
+		}
 
-						        $thumbId = wp_insert_attachment([
-                                    'post_mime_type' => $thumbMeta['mimeType'],
-                                    'post_title' => $filename. ' Thumb',
-                                    'post_content' => '',
-                                    'post_status' => 'inherit'
-                                ]);
+		$result = $storageTool->importAttachmentFromStorage($info);
+		if($result) {
+			$doUpdateMeta = false;
+			$meta = wp_get_attachment_metadata($result['id']);
 
-						        require_once( ABSPATH . 'wp-admin/includes/image.php' );
-						        $thumbAttachmentMeta = wp_generate_attachment_metadata($thumbId, $filePath);
-						        wp_update_attachment_metadata($thumbId, $thumbAttachmentMeta);
+			if (isset($_POST['metadata'])) {
+				$uploadMeta = arrayPath($_POST, 'metadata', []);
 
-						        update_post_meta($result['id'], '_thumbnail_id', $thumbId);
-					        }
-				        }
+				if (!empty($uploadMeta)) {
+					$thumbMeta = arrayPath($uploadMeta, 'thumbnail', null);
+					if (!empty($thumbMeta)) {
+						unset($uploadMeta['thumbnail']);
 
-				        $meta = array_merge($meta, $uploadMeta);
-				        $doUpdateMeta = true;
-                    }
-                }
+						$mime = strtolower($thumbMeta['mimeType']);
+						$mimeParts = explode('/', $mime);
 
-			    if (strpos($info->mimeType(), 'video') === 0) {
-                    if ($this->settings->useFFProbe && VideoProbe::instance()->enabled()) {
-                        $probeResult = VideoProbe::instance()->probe($info->signedUrl());
-                        if (!empty($result)) {
-                            $meta = array_merge($meta, $probeResult);
+						if (in_array($mimeParts[1], ['jpeg', 'jpg', 'png'])) {
+							$basename = basename($meta['file']);
+							$filename = pathinfo($basename, PATHINFO_FILENAME);
+							$ext = in_array($mimeParts[1], ['jpeg', 'jpg']) ? 'jpg' : 'png';
+							$subdir = str_replace($basename, '', $meta['file']);
 
-                            $doUpdateMeta = true;
-                        }
-                    }
-                } else if (!empty($faces)) {
-					$meta['faces'] = $faces;
+							$uploadDir = trailingslashit(WP_CONTENT_DIR).'uploads/'.trailingslashit($subdir);
+							@mkdir($uploadDir, 0777, true);
 
+							$filePath = $uploadDir.$filename.'.'.$ext;
+							file_put_contents($filePath, base64_decode($thumbMeta['data']));
+
+							$thumbId = wp_insert_attachment([
+								'post_mime_type' => $thumbMeta['mimeType'],
+								'post_title' => $filename. ' Thumb',
+								'post_content' => '',
+								'post_status' => 'inherit'
+							]);
+
+							require_once( ABSPATH . 'wp-admin/includes/image.php' );
+							$thumbAttachmentMeta = wp_generate_attachment_metadata($thumbId, $filePath);
+							wp_update_attachment_metadata($thumbId, $thumbAttachmentMeta);
+
+							update_post_meta($result['id'], '_thumbnail_id', $thumbId);
+						}
+					}
+
+					$meta = array_merge($meta, $uploadMeta);
 					$doUpdateMeta = true;
 				}
-
-			    $otherSizes = arrayPath($_POST, 'other_sizes', []);
-			    if (isset($meta['s3']) && is_array($otherSizes) && (count($otherSizes) > 0)) {
-				    $doUpdateMeta = true;
-
-			    	$s3 = $meta['s3'];
-
-			    	$encKey = str_replace('%2F', '/', urlencode($s3['key']));
-			    	$urlBase = trailingslashit(str_replace($encKey, '', $s3['url']));
-
-			    	foreach($otherSizes as $otherSize) {
-			    		$sizeS3 = $s3;
-			    		$sizeS3['url'] = $urlBase.$otherSize['key'];
-					    $sizeS3['key'] = $otherSize['key'];
-					    $sizeS3['mime-type'] = $otherSize['mime'];
-
-			    		$meta['sizes'][$otherSize['size']] = [
-						    'width' => $otherSize['width'],
-						    'height' => $otherSize['width'],
-						    'mime-type' => $otherSize['mime'],
-						    'file' => pathinfo($otherSize['key'], PATHINFO_BASENAME),
-						    's3' => $sizeS3
-					    ];
-
-					    $this->storageTool->client()->insureACL($otherSize['key'], StorageToolSettings::privacy($otherSize['mime']));
-				    }
-			    }
-
-			    if ($doUpdateMeta) {
-				    add_filter('media-cloud/storage/ignore-metadata-update', [$this, 'ignoreMetadataUpdate'], 10, 2);
-				    wp_update_attachment_metadata($result['id'], $meta);
-				    remove_filter('media-cloud/storage/ignore-metadata-update', [$this, 'ignoreMetadataUpdate'], 10);
-			    }
-
-			    do_action('media-cloud/storage/direct-uploaded-attachment', $result['id'], $meta);
-
-				json_response(['status' => 'success', 'data' => $result, 'attachment' => wp_prepare_attachment_for_js($result['id'])]);
-			} else {
-				json_response(['status' => 'error', 'message' => 'Error importing S3 file into WordPress.']);
 			}
+
+			if (strpos($info->mimeType(), 'video') === 0) {
+				if ($this->settings->useFFProbe && VideoProbe::instance()->enabled()) {
+					$probeResult = VideoProbe::instance()->probe($info->signedUrl());
+					if (!empty($result)) {
+						$meta = array_merge($meta, $probeResult);
+
+						$doUpdateMeta = true;
+					}
+				}
+			} else if (!empty($faces)) {
+				$meta['faces'] = $faces;
+
+				$doUpdateMeta = true;
+			}
+
+			$otherSizes = arrayPath($_POST, 'other_sizes', []);
+			if (isset($meta['s3']) && is_array($otherSizes) && (count($otherSizes) > 0)) {
+				$doUpdateMeta = true;
+
+				$s3 = $meta['s3'];
+
+				$encKey = str_replace('%2F', '/', urlencode($s3['key']));
+				$urlBase = trailingslashit(str_replace($encKey, '', $s3['url']));
+
+				foreach($otherSizes as $otherSize) {
+					$sizeS3 = $s3;
+					$sizeS3['url'] = $urlBase.$otherSize['key'];
+					$sizeS3['key'] = $otherSize['key'];
+					$sizeS3['mime-type'] = $otherSize['mime'];
+
+					$meta['sizes'][$otherSize['size']] = [
+						'width' => $otherSize['width'],
+						'height' => $otherSize['width'],
+						'mime-type' => $otherSize['mime'],
+						'file' => pathinfo($otherSize['key'], PATHINFO_BASENAME),
+						's3' => $sizeS3
+					];
+
+					$this->storageTool->client()->insureACL($otherSize['key'], StorageToolSettings::privacy($otherSize['mime']));
+				}
+			}
+
+			if ($doUpdateMeta) {
+				add_filter('media-cloud/storage/ignore-metadata-update', [$this, 'ignoreMetadataUpdate'], 10, 2);
+				wp_update_attachment_metadata($result['id'], $meta);
+				remove_filter('media-cloud/storage/ignore-metadata-update', [$this, 'ignoreMetadataUpdate'], 10);
+			}
+
+			do_action('media-cloud/storage/direct-uploaded-attachment', $result['id'], $meta);
+
+			json_response(['status' => 'success', 'data' => $result, 'attachment' => wp_prepare_attachment_for_js($result['id'])]);
 		} else {
-			json_response(['status' => 'error', 'message' => 'Unknown type.', 'type' => $info->mimeType()]);
+			json_response(['status' => 'error', 'message' => 'Error importing S3 file into WordPress.']);
 		}
 	}
 

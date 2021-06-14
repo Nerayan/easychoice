@@ -1,11 +1,66 @@
-= 1.84.4 =
+= 1.92.1 =
+Fixed: do not update `lookup` during data processing, update `lookup` only within the final `cron` task.
+
+= 1.92.0 =
+Chore: optimization of work with variations and variable products.
+Feature: added new filter `itglx_wc1c_insert_product_cat_params`.
+Feature: added new filter `itglx_wc1c_update_product_cat_params`.
+Feature: added new action `itglx_wc1c_after_group_resolve`.
+
+= 1.91.1 =
+Chore: compatibility check with WC 5.2
+
+= 1.91.0 =
+Chore: adding fieldset`s and descriptions to improve the interface and additional grouping of settings.
+Fixed: control of the state of variation not only when the management of stock is on.
+Feature: status behavior when there are `Дата оплаты по 1С` and `Дата отгрузки по 1С` (uploading orders).
+
+= 1.90.0 =
+Fixed: trigger the action `itglx_wc1c_after_set_product_price` even if the regular price is empty.
+Chore: new parameter in filter `itglx_wc1c_xml_product_info_custom`, which contains all main item information.
+Feature: optional ability to add information about a discount for each item of the order, if there is a discount (unloading orders).
+
+= 1.89.0 =
+Feature: optional ability to merge properties with the same name.
+
+= 1.88.2 =
+Chore: added new action `itglx_wc1c_offer_option_custom_processing_{option guid}`.
+Chore: added new filter `itglx_wc1c_skip_group_by_xml`.
+
+= 1.88.1 =
+Fixed: compatibility with `WooCommerce Wholesale Prices Premium` (product visibility behavior).
+Chore: added new filter `itglx_wc1c_set_product_variation_attribute_values_append`.
+Feature: separate status behavior for props `Дата оплаты по 1С` and `Дата отгрузки по 1С`.
+
+= 1.87.3 =
+Chore: compatibility check with WC 5.1 / WP 5.7
+Chore: ignoring duplicates in information about product images (a set of images cannot contain multiple files with the same name).
+Fixed: possible loss of html tags in the category description (standard cleaning filters work, although they should not).
+Feature: optional ability to include tax value accounting in the value of order items (unloading orders).
+
+= 1.86.2 =
+Fixed: processing and saving variant `Остатки->Остаток->Склад` of information on dividing the stock by warehouses.
+Chore: added new action `itglx_wc1c_product_option_custom_processing_{option guid}`.
+Chore: added new action `itglx_wc1c_global_product_option_custom_processing_{option guid}`.
+Feature: real authorization of the selected user for execution with his permission.
+
+= 1.85.1 =
+Fixed: checking for an active buffer.
+Feature: implemented control of the used memory during processing, for the purpose of interrupting a processing step in case of approaching memory overflow.
+
+= 1.84.9 =
+Chore: added new action `itglx_wc1c_exchange_catalog_import_file_processing_completed`.
+Fixed: consider setting `Do not update product images` when working with a variation image.
+Chore: added new filter `itglx_wc1c_find_product_variation_id`.
+Chore: compatibility check with WC 5.0
+Fixed: using billing address instead of shipping address as contragent registration address.
 Fixed: compatibility with `Rank Math SEO`.
 Chore: added new filter `itglx_wc1c_xml_order_product_row_params`.
 Chore: added new filter `itglx_wc1c_xml_order_product_rows`.
 Chore: compatibility check with WC 4.9
 Chore: added new filter `itglx_wc1c_exchange_request_type_handlers`.
-Feature: ability to search for an existing values for basic (for products) attributes by name, before creating a new one.
-Feature: ability to search for an existing basic (for products) attributes by name, before creating a new one.
+Feature: ability to search for an existing values for basic (generated from properties) attributes by name, before creating a new one.
+Feature: ability to search for an existing basic (generated from properties) attributes by name, before creating a new one.
 
 = 1.83.1 =
 Fixed: ignoring empty nodes in a set of product property values.

@@ -163,12 +163,19 @@ class Cron
             wp_cache_clear_cache();
         }
 
-        Logger::logProtocol('termsRecount1cSynchronization - end');
-
         // fixed compatibility with `Rank Math SEO`
         if (class_exists('\\RankMath')) {
             flush_rewrite_rules(true);
         }
+
+        // fixed compatibility with `WooCommerce Wholesale Prices Premium`
+        if (defined('WWPP_CRON_INITIALIZE_PRODUCT_WHOLESALE_VISIBILITY_FILTER')) {
+            Logger::logProtocol('register task - ' . WWPP_CRON_INITIALIZE_PRODUCT_WHOLESALE_VISIBILITY_FILTER);
+
+            wp_schedule_single_event(time(), WWPP_CRON_INITIALIZE_PRODUCT_WHOLESALE_VISIBILITY_FILTER);
+        }
+
+        Logger::logProtocol('termsRecount1cSynchronization - end');
 
         Logger::endProcessingRequestLogProtocolEntry();
     }

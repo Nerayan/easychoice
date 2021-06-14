@@ -9,6 +9,8 @@ class CatalogModeInit
 {
     public static function process()
     {
+        Logger::logProtocol('php `memory_limit` string - ' . ini_get('memory_limit'));
+
         $settings = get_option(Bootstrap::OPTIONS_KEY);
 
         if (!is_dir(Helper::getTempPath())) {
@@ -26,6 +28,8 @@ class CatalogModeInit
         }
 
         $zip = Helper::isUseZip() ? 'yes' : 'no';
+
+        Helper::clearBuffer();
 
         echo "zip={$zip}\n" . 'file_limit=' . (int) Helper::getFileSizeLimit();
         // 1c response does not require escape

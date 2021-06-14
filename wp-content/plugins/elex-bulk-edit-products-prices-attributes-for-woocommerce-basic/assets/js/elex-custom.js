@@ -1664,11 +1664,11 @@ jQuery(document).ready(function () {
         var tableObj = jQuery(this),
                 inputObj = jQuery('#search_id-search-input');
         inputObj.off('keyup').on('keyup', function () {
-            var searchFieldVal = jQuery(this).val();
+            var searchFieldVal = jQuery(this).val().toLowerCase();
             tableObj.find('tbody tr').hide().each(function () {
                 var currentRow = jQuery(this);
                 currentRow.find('td').each(function () {
-                    if (jQuery(this).html().indexOf(searchFieldVal) > -1) {
+                    if (jQuery(this).html().toLowerCase().indexOf(searchFieldVal) > -1) {
                         currentRow.show();
                         return false;
                     }

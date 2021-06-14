@@ -18,7 +18,6 @@ if ( ! function_exists( 'electro_home_mobile_v1_slider' ) ) {
         }
 
         $animation = isset( $sdr['animation'] ) ? $sdr['animation'] : '';
-        echo print_r($animation,1);
         $shortcode = !empty( $sdr['shortcode'] ) ? $sdr['shortcode'] : '[rev_slider alias="home-v1-slider"]';
 
         $section_class = 'home-v1-slider';

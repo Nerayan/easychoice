@@ -5,11 +5,11 @@ Plugin Name: Media Cloud (Premium)
 Plugin URI: https://github.com/interfacelab/ilab-media-tools
 Description: Automatically upload media to Amazon S3 and integrate with Imgix, a real-time image processing CDN.  Boosts site performance and simplifies workflows.
 Author: interfacelab
-Version: 4.2.6
+Version: 4.2.20
 Author URI: http://interfacelab.io
 
 @fs_ignore /lib/, /vendor/, /public/, /external/
-@fs_premium_only /classes/Tools/Assets, /classes/Tools/Optimizer, /classes/Tools/Browser, /classes/Tools/Storage/Tasks/MigrateTask.php, /classes/Tools/Storage/Tasks/UpdateGutenbergTask.php, /classes/Tools/Storage/Tasks/RegenerateThumbnailTask.php, /classes/Tools/Integrations, /classes/Tools/ImageSizes, /classes/Tools/MediaUpload, /classes/Tools/Network, /classes/Tools/Video/Driver/Mux/MuxToolProSettings.php, /classes/Tools/Video/Driver/Mux/Tasks/MigrateToMuxTask.php, /classes/Tools/Vision/Driver/GoogleCloudVision, /config/optimizer, /config/assets.config.php, /config/integrations.config.php, /config/browser.config.php, /config/optimizer.config.php, /config/glide.config.php, /config/image-sizes.config.php, /config/media-upload.config.php, /config/video-encoding.pro.config.php, /config/network.config.php, /config/vision/google.config.php, /views/upload, /views/storage/browser.blade.php, /views/storage/browser-header.blade.php, /views/storage/browser-table.blade.php, /views/integrations, /views/image-sizes, /views/base/multisite-landing.blade.php
+@fs_premium_only /classes/Tools/Assets, /classes/Tools/Optimizer, /classes/Tools/Browser, /classes/Tools/Storage/Tasks/MigrateTask.php, /classes/Tools/Storage/Tasks/UpdateGutenbergTask.php, /classes/Tools/Storage/Tasks/RegenerateThumbnailTask.php, /classes/Tools/Integrations, /classes/Tools/ImageSizes/CLI, /classes/Tools/ImageSizes/Tasks, /classes/Tools/ImageSizes/ImageSizeTool.php, /classes/Tools/MediaUpload, /classes/Tools/Network, /classes/Tools/Video/Driver/Mux/MuxToolProSettings.php, /classes/Tools/Video/Driver/Mux/Tasks/MigrateToMuxTask.php, /classes/Tools/Vision/Driver/GoogleCloudVision, /config/optimizer, /config/assets.config.php, /config/integrations.config.php, /config/browser.config.php, /config/optimizer.config.php, /config/glide.config.php, /config/image-sizes.config.php, /config/media-upload.config.php, /config/video-encoding.pro.config.php, /config/network.config.php, /config/vision/google.config.php, /views/upload, /views/storage/browser.blade.php, /views/storage/browser-header.blade.php, /views/storage/browser-table.blade.php, /views/integrations, /views/image-sizes
 */
 // Copyright (c) 2016 Interfacelab LLC. All rights reserved.
 //
@@ -97,7 +97,7 @@ if ( defined( 'MEDIA_CLOUD_VERSION' ) ) {
 }
 
 // Version Defines
-define( 'MEDIA_CLOUD_VERSION', '4.2.6' );
+define( 'MEDIA_CLOUD_VERSION', '4.2.20' );
 define( 'MEDIA_CLOUD_INFO_VERSION', '4.0.2' );
 define( 'MCLOUD_IS_BETA', false );
 // Directory defines

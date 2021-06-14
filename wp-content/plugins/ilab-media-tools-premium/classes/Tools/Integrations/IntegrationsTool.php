@@ -75,7 +75,7 @@ class IntegrationsTool extends Tool {
 		}
 	}
 
-	public function registerMenu($top_menu_slug, $networkMode = false, $networkAdminMenu = false) {
+	public function registerMenu($top_menu_slug, $networkMode = false, $networkAdminMenu = false, $tool_menu_slug = null) {
 		parent::registerMenu($top_menu_slug);
 	}
 

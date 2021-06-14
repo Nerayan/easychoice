@@ -2,10 +2,10 @@
 Contributors: mediacloud, interfacelab, freemius
 Tags: offload, amazon, s3, imgix, uploads, video, video encoding, google cloud storage, digital ocean spaces, wasabi, media, cdn, rekognition, cloudfront, images, crop, image editing, image editor, optimize, image optimization, media library, offload, offload s3, filepicker, smush, imagify, shortpixel
 Requires at least: 4.9
-Tested up to: 5.6.1
+Tested up to: 5.7
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
-Stable tag: 4.2.6
+Stable tag: 4.2.20
 Requires PHP: 7.1
 
 Automatically store media on Amazon S3, Google Cloud Storage, DigitalOcean Spaces + others. Serve CSS/JS assets through CDNs.  Integrate with Imgix.
@@ -104,6 +104,61 @@ Imgix is a content delivery network with a twist.  In addition to distributing y
 
 
 == Changelog ==
+
+= 4.2.20 =
+
+* Added SFO3 region to DigitalOcean setup wizard
+* Added a new top level menu item to WordPress admin called *Cloud Tools* that contains all of Media Cloud's tools and tasks.  The main Media Cloud menu was getting way too large.  This only affects non-multisite WordPress sites.
+* You can turn off the *Cloud Tools* menu, reverting to previous behavior, in *Cloud Storage Settings* in the *Display Settings* section.
+
+= 4.2.18 =
+
+* New feature allows you to upload a new image file to replace an existing one. (Premium Only)
+* Added buttons to various media screens to regenerate thumbnails for the media being viewed. (Premium only)
+* Added a metadata panel to the attachment edit page that allows you to view and edit the cloud storage metadata for images, as well as attempt to automatically fix any issues.
+* Additionally, the metadata panel will "audit" the attachment and show you any potential issues (missing local file, etc).
+* Added a **Fix Metadata** task that will attempt to fix any cloud storage metadata issues with items in your media library.
+* Added `media-cloud/storage/prefix` filter for adding your own custom tokens to the upload path.  See an example here: https://gist.github.com/jawngee/f01c74f781b4e8cd4a6d40983e626b99
+* Added a regex filter to debug logging to skip logging any unwanted messages.
+* Fixed placement of Storage Info popup in the Media Library grid mode.
+* Fixed a visual feedback bug where Direct Uploads appeared to not have finished uploading even though they had.
+
+= 4.2.11 =
+
+* Fix for Elementor Update task on unicode/utf-8 pages.
+* Debug log can now be filtered and searched
+* Insure logging is using appropriate logging levels
+
+= 4.2.10 =
+
+* Added test to system check to insure that required database tables are installed.
+
+= 4.2.9 =
+
+* Fix for potential performance issue on the front end for busy sites.
+* Fix for audio and video shortcodes for signed video URLs.
+* Fix for error when pushing js/css assets to cloud storage.
+
+= 4.2.8 =
+
+* **Critical Fix** - Fixes missing class file for the free version that was accidentally excluded by our build system.
+  If you updated to 4.2.7, you must update to 4.2.8, otherwise uploads will fail.  If you are using the premium version,
+  this does not affect you.
+
+= 4.2.7 =
+
+* You can specify different privacy levels to different image sizes defined in your theme using the Image Size Manager.
+  This is useful if you are selling stock photos and want to make high-res variations private until sale.
+* Added a new setting for Imgix, **Serve Private Images**.  When enabled, private images, or image sizes that have had
+  their privacy level set to private, will be rendered through imgix.  When disabled, any private images or private
+  image sizes will be served from cloud storage using signed URLs, if that's enabled.
+* If you change the privacy for an image size, make sure to run the **Update Image Privacy** task that can be found in
+  the **Task Manager**.
+* Fix for direct uploads when the upload doesn't have a mime type, for example .R3D files.  You may need to add
+  these mime types to WordPress to allow uploads though.
+* Fix for direct uploads with DigitalOcean
+* Added `media-cloud/storage/sign-url` filter to disable pre-signing image URLs in the WordPress admin.  This is very edge
+  case, so you should only use this if support directs you to, or you know what you are doing.
 
 = 4.2.6 =
 

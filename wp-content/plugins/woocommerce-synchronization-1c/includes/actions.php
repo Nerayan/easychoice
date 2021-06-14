@@ -2,6 +2,7 @@
 use Itgalaxy\Wc\Exchange1c\Includes\Actions\DeleteAttachment;
 use Itgalaxy\Wc\Exchange1c\Includes\Actions\PreDeleteTerm;
 use Itgalaxy\Wc\Exchange1c\Includes\Actions\WcBeforeCalculateTotalsSetCartItemPrices;
+use Itgalaxy\Wc\Exchange1c\Includes\Actions\WooCommerceAttributeDeleted;
 
 if (!defined('ABSPATH')) {
     exit();
@@ -11,3 +12,4 @@ if (!defined('ABSPATH')) {
 DeleteAttachment::getInstance();
 PreDeleteTerm::getInstance();
 WcBeforeCalculateTotalsSetCartItemPrices::getInstance();
+WooCommerceAttributeDeleted::getInstance();

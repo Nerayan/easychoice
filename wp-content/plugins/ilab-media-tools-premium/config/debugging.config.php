@@ -50,7 +50,7 @@ return [
 						"type" => "number",
 						"step" => 1,
 						"min" => 100,
-						"max" => 10000,
+						"max" => 1000000,
                         "default" => 1000
 					],
 					"mcloud-debug-remote-url" => [
@@ -62,6 +62,11 @@ return [
 						"title" => "Log Target Port",
 						"description" => "The port number for the remote log target to send logs to, this will be supplied by Media Cloud support.",
 						"type" => "text-field",
+					],
+					"mcloud-debug-ignored-regex" => [
+						"title" => "Ignored Regex Filters",
+						"description" => "One regex per line that will filter out debug messages.",
+						"type" => "text-area",
 					],
 				]
 			]

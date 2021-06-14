@@ -511,21 +511,11 @@ class Electro_WC_Helper {
         $columns            = intval( $columns ) ? intval( $columns ) : 5;
         $columns_wide       = intval( $columns_wide ) ? intval( $columns_wide ) : 3;
         $rows               = intval( $rows ) ? intval( $rows ) : 2;
-        $products_per_view  = $rows * $columns;
+        $products_per_view  = $rows * $columns_wide;
         $products_count     = 0;
 
-        if ( electro_is_wide_enabled() ) {
-            $products_per_view = $rows * $columns_wide;
-        }
-
-        if ( defined( 'WC_VERSION' ) && version_compare( WC_VERSION, '3.3', '<' ) ) {
-            global $woocommerce_loop;
-            $woocommerce_loop['columns'] = $columns;
-            $woocommerce_loop['columns_wide'] = $columns_wide;
-        } else {
-            wc_set_loop_prop( 'columns', $columns );
-            wc_set_loop_prop( 'columns_wide', $columns_wide );
-        }
+        wc_set_loop_prop( 'columns', $columns );
+        wc_set_loop_prop( 'columns_wide', $columns_wide );
 
         ob_start();
 

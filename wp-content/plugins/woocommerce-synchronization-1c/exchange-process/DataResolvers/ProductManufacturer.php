@@ -148,12 +148,13 @@ class ProductManufacturer
 
         $attributeCreate = ProductAttributeHelper::insert('Изготовитель', $attributeName, $attributeTaxName);
         Logger::logChanges('(attribute) Create attribute `Изготовитель`', $attributeCreate);
+        $_SESSION['IMPORT_1C']['brand_taxonomy']['createdTaxName'] = $attributeTaxName;
+
         $attributeTaxName = 'pa_' . $attributeCreate['attribute_name'];
 
-        \register_taxonomy($attributeTaxName, null);
-
         $_SESSION['IMPORT_1C']['brand_taxonomy']['name'] = $attributeTaxName;
-        $_SESSION['IMPORT_1C']['brand_taxonomy']['createdTaxName'] = $attributeTaxName;
+
+        \register_taxonomy($attributeTaxName, null);
 
         return $attributeTaxName;
     }

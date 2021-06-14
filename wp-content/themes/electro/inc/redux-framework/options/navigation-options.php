@@ -132,5 +132,30 @@ $navigation_options 	= apply_filters( 'electro_navigation_options_args', array(
 			'type'      => 'section',
 			'indent'    => false,
 		),
+
+		array(
+			'id'        => 'header-v9-navbar-navigation-start',
+			'type'      => 'section',
+			'title'     => esc_html__( 'Header v9 Navbar', 'electro' ),
+			'subtitle'  => esc_html__( 'Options for Header v9 Navbar navigation of the theme', 'electro' ),
+			'indent'    => false,
+		),
+
+		array(
+			'title'     => esc_html__( 'Dropdown Trigger', 'electro' ),
+			'id'        => 'header-v9-navbar_dropdown_trigger',
+			'type'      => 'select',
+			'options'   => array(
+			    'click'     => esc_html__( 'Click', 'electro' ),
+			    'hover'     => esc_html__( 'Hover', 'electro' ),
+			),
+			'default'   => 'click',
+		),
+
+		array(
+			'id'        => 'header-v9-navbar-navigation-end',
+			'type'      => 'section',
+			'indent'    => false,
+		),
 	)
 ) );

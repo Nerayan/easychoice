@@ -347,6 +347,7 @@ if ( ! function_exists( 'electro_home_v5_product_carousel_v5_1' ) ) {
                 'section_class'     => 'section-products-carousel ',
                 'limit'             => 20,
                 'columns'           => isset( $pc1_options['product_columns'] ) ? intval( $pc1_options['product_columns'] ) : 7,
+                'columns_wide'      => isset( $pc1_options['product_columns'] ) ? intval( $pc1_options['product_columns'] ) : 7,
                 'category_args'     => array(
                     'orderby'           => isset( $pc1_options['category_args']['orderby'] ) ? $pc1_options['category_args']['orderby'] : 'name',
                     'order'             => isset( $pc1_options['category_args']['order'] ) ? $pc1_options['category_args']['order'] : 'ASC',
@@ -371,7 +372,7 @@ if ( ! function_exists( 'electro_home_v5_product_carousel_v5_1' ) ) {
                         '768'   => array( 'items' => 4 ),
                         '992'   => array( 'items' => 5 ),
                         '1200'  => array( 'items' => 6 ),
-                        '1430'  => array( 'items' => isset( $pc_options['product_columns'] ) ? intval( $pc_options['product_columns'] ) : 7 )
+                        '1430'  => array( 'items' => isset( $pc1_options['product_columns'] ) ? intval( $pc1_options['product_columns'] ) : 7 )
                     )
                 )
             ) );
@@ -390,7 +391,7 @@ if ( ! function_exists( 'electro_home_v5_product_carousel_v5_1' ) ) {
                 $args['carousel_args']['responsive'] = $responsive_args;
             }
 
-            $default_atts   = array( 'per_page' => intval( $args['limit'] ), 'columns' => intval( $args['columns'] ) );
+            $default_atts   = array( 'per_page' => intval( $args['limit'] ), 'columns' => intval( $args['columns'] ), 'columns_wide' => intval( $args['columns_wide' ] ) );
             $atts           = electro_get_atts_for_shortcode( $pc1_options['content'] );
             $atts           = wp_parse_args( $atts, $default_atts );
             $products       = electro_do_shortcode( $pc1_options['content']['shortcode'], $atts );
@@ -472,6 +473,7 @@ if ( ! function_exists( 'electro_home_v5_product_carousel_v5_2' ) ) {
                 'section_class'     => 'section-products-carousel ',
                 'limit'             => 20,
                 'columns'           => isset( $pc2_options['product_columns'] ) ? intval( $pc2_options['product_columns'] ) : 7,
+                'columns_wide'      => isset( $pc2_options['product_columns'] ) ? intval( $pc2_options['product_columns'] ) : 7,
                 'category_args'     => array(
                     'orderby'           => isset( $pc2_options['category_args']['orderby'] ) ? $pc2_options['category_args']['orderby'] : 'name',
                     'order'             => isset( $pc2_options['category_args']['order'] ) ? $pc2_options['category_args']['order'] : 'ASC',
@@ -496,7 +498,7 @@ if ( ! function_exists( 'electro_home_v5_product_carousel_v5_2' ) ) {
                         '768'   => array( 'items' => 4 ),
                         '992'   => array( 'items' => 5 ),
                         '1200'  => array( 'items' => 6 ),
-                        '1430'  => array( 'items' => isset( $pc_options['product_columns'] ) ? intval( $pc_options['product_columns'] ) : 7 )
+                        '1430'  => array( 'items' => isset( $pc2_options['product_columns'] ) ? intval( $pc2_options['product_columns'] ) : 7 )
                     )
                 )
             ) );

@@ -3,7 +3,7 @@
 
 <?php
         /** @var \MediaCloud\Plugin\Tools\Network\NetworkSettings $settings */
-        $settings = \MediaCloud\Plugin\Tools\Network\NetworkSettings::instance();
+        $settings = class_exists('\\MediaCloud\\Plugin\\Tools\\Network\\NetworkSettings') ? \MediaCloud\Plugin\Tools\Network\NetworkSettings::instance() : null;
 
         /** @var \MediaCloud\Plugin\Tasks\Task[] $tasks */
         $tasks = \MediaCloud\Plugin\Tasks\TaskManager::registeredTasks();
@@ -20,7 +20,7 @@
         </div>
         @endforeach
     @endif
-    @if(empty($settings->hideBatchTools) && !empty($tasks))
+    @if((empty($settings) || empty($settings->hideBatchTools)) && !empty($tasks))
         <h2>Batch Tools</h2>
         @foreach($tasks as $taskId => $taskClass)
             @continue(empty($taskClass::userTask()))

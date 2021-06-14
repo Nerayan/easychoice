@@ -29,8 +29,8 @@ if ( ! empty( $animation ) ) {
                 endif; ?>
             </ul>
         </header>
-        <div class="columns-8-1 row no-gutters">
-            <div class="products-8"><ul class="products exclude-auto-height columns-4">
+        <div class="columns-8-1 row g-0">
+            <div class="products-8 col-lg-7 col-xxl-8"><ul class="products exclude-auto-height row g-0 row-cols-2 row-cols-lg-3 row-cols-xxl-4">
             <?php
                 $products_count = 0;
 
@@ -42,7 +42,7 @@ if ( ! empty( $animation ) ) {
 
                         if ( $products_count == 8 ) {
                             echo '</ul></div>';
-                            echo '<div class="product-main-8-1"><ul class="products exclude-auto-height columns-1">';
+                            echo '<div class="product-main-8-1 col-lg-5 col-xxl-4"><ul class="products exclude-auto-height row g-0">';
                             electro_add_6_1_main_product_hooks();
                         }
 

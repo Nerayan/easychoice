@@ -24,6 +24,7 @@
                 <th>Crop</th>
                 <th>Crop X Axis</th>
                 <th>Crop Y Axis</th>
+                <th>Privacy</th>
                 <th></th>
             </thead>
             <tbody>
@@ -49,6 +50,13 @@
                             <option {{($size['y-axis'] == 'top') ? 'selected' : ''}} value="top">Top</option>
                             <option {{(empty($size['y-axis']) || ($size['y-axis'] == 'center')) ? 'selected' : ''}} value="center">Center</option>
                             <option {{($size['y-axis'] == 'bottom') ? 'selected' : ''}} value="bottom">Bottom</option>
+                        </select>
+                    </td>
+                    <td class="center">
+                        <select name="privacy">
+                            <option value="inherit">Inherit</option>
+                            <option {{($size['privacy'] == 'public-read') ? 'selected' : ''}} value="public-read">Public</option>
+                            <option {{($size['privacy'] == 'private') ? 'selected' : ''}} value="private">Private</option>
                         </select>
                     </td>
                     <td class="center">
@@ -81,6 +89,13 @@
                             <option {{($size['y-axis'] == 'top') ? 'selected' : ''}} value="top">Top</option>
                             <option {{(empty($size['y-axis']) || ($size['y-axis'] == 'center')) ? 'selected' : ''}} value="center">Center</option>
                             <option {{($size['y-axis'] == 'bottom') ? 'selected' : ''}} value="bottom">Bottom</option>
+                        </select>
+                    </td>
+                    <td class="center">
+                        <select name="privacy">
+                            <option value="inherit">Inherit</option>
+                            <option {{($size['privacy'] == 'public-read') ? 'selected' : ''}} value="public-read">Public</option>
+                            <option {{($size['privacy'] == 'private') ? 'selected' : ''}} value="private">Private</option>
                         </select>
                     </td>
                     <td class="center">

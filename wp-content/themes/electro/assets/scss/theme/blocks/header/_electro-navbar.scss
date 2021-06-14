@@ -1,0 +1,35 @@
+.electro-navbar-inner {
+    @include make-row();
+    height: 50px;
+    align-items: center;
+
+    .departments-menu-v2,
+    .navbar-search,
+    .header-icons {
+        @include make-col-ready();
+    }
+
+    .departments-menu-v2 {
+        @include make-col(3);
+        align-self: stretch;
+    }
+
+    .navbar-search {
+        flex-basis: 0;
+        flex-grow: 1;
+        padding-right: 0;
+    }
+
+    .header-icons {
+        @include make-auto-width-col();
+        padding-left: 0;
+    }
+
+    .departments-menu-v2-icon {
+        margin-left: 1em;
+    }
+}
+
+.electro-navbar {
+    @include stretch-full-width();
+}

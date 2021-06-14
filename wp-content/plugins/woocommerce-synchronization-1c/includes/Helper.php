@@ -172,4 +172,34 @@ class Helper
 
         return false;
     }
+
+    public static function clearBuffer()
+    {
+        /*
+         * clearing the buffer from possible garbage before displaying a response for 1C, otherwise 1C will not be
+         * able to parse the response
+         */
+        if (!apply_filters('itglx_wc1c_clear_buffer_before_print_response_for_1C', true)) {
+            return;
+        }
+
+        $bufferStatus = ob_get_status();
+
+        // checking for an active buffer
+        if (empty($bufferStatus)) {
+            unset($bufferStatus);
+
+            return;
+        }
+
+        $content = ob_get_contents();
+
+        if ($content !== '') {
+            ob_clean();
+
+            Logger::logProtocol('output buffer cleared, content - ', [$content]);
+        }
+
+        unset($content, $bufferStatus);
+    }
 }

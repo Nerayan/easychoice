@@ -81,6 +81,18 @@ class ProductAttributeHelper
         );
     }
 
+    public static function getByLabel($value)
+    {
+        global $wpdb;
+
+        return $wpdb->get_row(
+            $wpdb->prepare(
+                "SELECT * FROM `{$wpdb->prefix}woocommerce_attribute_taxonomies` WHERE `attribute_label` = %s",
+                (string) $value
+            )
+        );
+    }
+
     public static function getByLabelWithOut1cGuid($value)
     {
         global $wpdb;

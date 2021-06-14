@@ -1,7 +1,9 @@
 <?php
 namespace Itgalaxy\Wc\Exchange1c\ExchangeProcess\DataResolvers;
 
+use Itgalaxy\Wc\Exchange1c\Includes\Bootstrap;
 use Itgalaxy\Wc\Exchange1c\Includes\Helper;
+use Itgalaxy\Wc\Exchange1c\Includes\Logger;
 
 class VariationImages
 {
@@ -46,6 +48,11 @@ class VariationImages
                     }
 
                     wp_delete_attachment($attachID, true);
+
+                    Logger::logChanges(
+                        '(image variation) Removed (is changed) image for ID - ' . $variationID,
+                        [$attachID]
+                    );
                 }
             }
 
@@ -64,6 +71,8 @@ class VariationImages
 
                         if ($attachID) {
                             $attachmentIds[] = $attachID;
+
+                            Logger::logChanges('(image variation) Added image for ID - ' . $variationID, [$attachID]);
                         }
                     }
                 }
@@ -73,18 +82,34 @@ class VariationImages
             if (!empty($attachmentIds)) {
                 foreach ($attachmentIds as $attachID) {
                     update_post_meta($variationID, '_thumbnail_id', $attachID);
+                    Logger::logChanges('(image variation) Set thumbnail image for ID - ' . $variationID, [$attachID]);
                 }
             }
         // the current data does not contain information about the image, but it was before, so it should be deleted
         } elseif ($oldImages) {
+            Logger::logChanges(
+                '(image variation) Removed images (the current data does not contain information) for ID - '
+                . $variationID,
+                [get_post_meta($variationID, '_id_1c', true)]
+            );
+
             self::removeImages($oldImages, $variationID);
         }
     }
 
     private static function resolveImage($image, $imageSrcPath, $variationID, $postAuthor = 0)
     {
+        $settings = get_option(Bootstrap::OPTIONS_KEY, []);
         $imageSha = sha1_file($imageSrcPath);
         $wpFileType = wp_check_filetype(basename($imageSrcPath), null);
+
+        $postData = [
+            'post_author' => $postAuthor
+        ];
+
+        if (!empty($settings['write_product_name_to_attachment_title'])) {
+            $postData['post_title'] = get_post_field('post_title', $variationID);
+        }
 
         $attachID = media_handle_sideload(
             [
@@ -96,13 +121,15 @@ class VariationImages
             ],
             $variationID,
             null,
-            [
-                'post_author' => $postAuthor
-            ]
+            $postData
         );
 
         if (!$attachID || is_wp_error($attachID)) {
             return false;
+        }
+
+        if (!empty($settings['write_product_name_to_attachment_attribute_alt'])) {
+            update_post_meta($attachID, '_wp_attachment_image_alt', get_post_field('post_title', $variationID));
         }
 
         update_post_meta($attachID, '_1c_image_path', $image);

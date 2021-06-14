@@ -34,7 +34,7 @@
 
 	<header id="masthead" class="site-header">
 		<div class="container">
-			<div class="mobile-header-v1 handheld-stick-this">
+			<div class="mobile-header-v1 row align-items-center handheld-stick-this">
 				<?php
 				/**
 				 * @hooked electro_row_wrap_start - 0

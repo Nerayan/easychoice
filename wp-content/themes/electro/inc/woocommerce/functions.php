@@ -125,32 +125,26 @@ if ( ! function_exists( 'woocommerce_product_loop_start' ) ) {
     /**
      * Output the start of a product loop. By default this is a UL.
      *
-     * @param bool $echo
+     * @param bool $echo Should echo?.
      * @return string
      */
+
     function woocommerce_product_loop_start( $echo = true ) {
         ob_start();
 
         $loop_classes = '';
-        $product_loop_classes_arr = apply_filters( 'electro_product_loop_additional_classes', array() );
+        $product_loop_classes_arr = apply_filters( 'electro_product_loop_additional_classes', array( 'products', 'list-unstyled', 'row', 'g-0', 'row-cols-2', 'row-cols-md-3' ) );
 
         $columns      = apply_filters( 'loop_shop_columns', 3 );
         $columns_wide = apply_filters( 'loop_shop_columns_wide', 5 );
         
-        if ( defined( 'WC_VERSION' ) && version_compare( WC_VERSION, '3.3', '<' ) ) {
-            global $woocommerce_loop;
-            $woocommerce_loop['loop'] = 0;
-            if( isset( $woocommerce_loop['columns'] ) && intval( $woocommerce_loop['columns'] ) ) {
-                $columns = $woocommerce_loop['columns'];
-            }
-        } else {
-            wc_set_loop_prop( 'loop', 0 );
-            $columns      = wc_get_loop_prop( 'columns', $columns );
-            $columns_wide = wc_get_loop_prop( 'columns_wide', $columns_wide );
-        }
+        wc_set_loop_prop( 'loop', 0 );
+        $columns      = wc_get_loop_prop( 'columns', $columns );
+        $columns_wide = wc_get_loop_prop( 'columns_wide', $columns_wide );
         
-        $product_loop_classes_arr[] = 'columns-' . $columns;
-        $product_loop_classes_arr[] = 'columns__wide--' . $columns_wide;
+        $product_loop_classes_arr[] = 'row-cols-lg-' . $columns;
+        $product_loop_classes_arr[] = 'row-cols-xl-' . $columns;
+        $product_loop_classes_arr[] = 'row-cols-xxl-' . $columns_wide;
 
         $data_attr = 'regular-products';
         $data_view = 'grid';

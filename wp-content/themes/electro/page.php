@@ -23,9 +23,9 @@ electro_get_header( $header_style ); ?>
 <div id="primary" class="content-area">
 	<main id="main" class="site-main">
 
-	<?php 
+	<?php
 
-	while ( have_posts() ) : the_post(); 
+	while ( have_posts() ) : the_post();
 
 		do_action( 'electro_page_before' );
 

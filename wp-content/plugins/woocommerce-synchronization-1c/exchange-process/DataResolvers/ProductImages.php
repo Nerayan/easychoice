@@ -33,6 +33,14 @@ class ProductImages
             $countNew = 0;
 
             foreach ($element->Картинка as $image) {
+                /**
+                 * Ignore duplicates, since in some configurations erroneous behavior is encountered with the fact
+                 * that the content includes several nodes with the same file, although there should be one.
+                 */
+                if (in_array((string) $image, $images, true)) {
+                    continue;
+                }
+
                 $images[] = (string) $image;
             }
 

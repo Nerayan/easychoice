@@ -111,7 +111,9 @@ class VisionTool extends Tool {
 
             if (VisionManager::driver() == 'rekognition') {
                 add_filter('media-cloud/storage/after-upload', function($data, $id) {
-                	if ($this->alwaysBackground) {
+                	$allowBackground = apply_filters('media-cloud/vision/allow-background', true);
+
+                	if ($this->alwaysBackground && !empty($allowBackground)) {
                 		$this->addToBackgroundTask($id);
 						return $data;
 	                } else {
@@ -120,7 +122,9 @@ class VisionTool extends Tool {
                 }, 1000, 2);
             } else {
                 add_filter('wp_update_attachment_metadata', function($data, $id) {
-	                if ($this->alwaysBackground) {
+	                $allowBackground = apply_filters('media-cloud/vision/allow-background', true);
+
+	                if ($this->alwaysBackground && !empty($allowBackground)) {
 		                $this->addToBackgroundTask($id);
 		                return $data;
 	                } else {
@@ -129,7 +133,9 @@ class VisionTool extends Tool {
                 }, 1000, 2);
 
 	            add_filter('media-cloud/vision/process-meta', function($data, $id) {
-		            if ($this->alwaysBackground) {
+		            $allowBackground = apply_filters('media-cloud/vision/allow-background', true);
+
+		            if ($this->alwaysBackground && !empty($allowBackground)) {
 			            $this->addToBackgroundTask($id);
 			            return $data;
 		            } else {
@@ -139,7 +145,9 @@ class VisionTool extends Tool {
             }
 
 	        add_filter('media-cloud/direct-uploads/max-uploads', function($maxUploads) {
-	        	if ($this->alwaysBackground) {
+		        $allowBackground = apply_filters('media-cloud/vision/allow-background', true);
+
+		        if ($this->alwaysBackground && !empty($allowBackground)) {
 	        		return $maxUploads;
 		        } else {
 			        return min($maxUploads, 2);
@@ -147,7 +155,9 @@ class VisionTool extends Tool {
 	        }, 10000, 1);
 
 	        add_action('media-cloud/direct-uploads/process-batch', function($postIds) {
-		        if ($this->alwaysBackground) {
+		        $allowBackground = apply_filters('media-cloud/vision/allow-background', true);
+
+		        if ($this->alwaysBackground && !empty($allowBackground)) {
 		        	$task = new ProcessVisionTask();
 		        	$task->prepare([], $postIds);
 		        	TaskManager::instance()->queueTask($task);

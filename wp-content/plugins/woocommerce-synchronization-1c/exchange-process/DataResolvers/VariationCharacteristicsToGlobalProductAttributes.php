@@ -8,14 +8,11 @@ class VariationCharacteristicsToGlobalProductAttributes
 {
     public static function process($element)
     {
-        $options = get_option('all_product_options', []);
-
-        if (
-            !isset($element->ХарактеристикиТовара) ||
-            !isset($element->ХарактеристикиТовара->ХарактеристикаТовара)
-        ) {
+        if (!ProductVariationAttributes::hasCharacteristics($element)) {
             return;
         }
+
+        $options = get_option('all_product_options', []);
 
         foreach ($element->ХарактеристикиТовара->ХарактеристикаТовара as $property) {
             $label = (string) $property->Наименование;

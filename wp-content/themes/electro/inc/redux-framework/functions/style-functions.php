@@ -161,6 +161,7 @@ if ( ! function_exists( 'redux_get_custom_color_css' ) ) {
         .header-v3 .navbar-search .input-group .btn,
         .header-v6 .navbar-search .input-group .btn,
         .header-v8 .navbar-search .input-group .btn,
+        .header-v9 .navbar-search .input-group .btn,
         .vertical-menu > li:first-child,
         .widget.widget_tag_cloud .tagcloud a:hover,
         .widget.widget_tag_cloud .tagcloud a:focus,
@@ -189,6 +190,7 @@ if ( ! function_exists( 'redux_get_custom_color_css' ) ) {
         .full-color-background .header-v3,
         .full-color-background .header-v4,
         .full-color-background .top-bar,
+        .top-bar-v3,
         .pace .pace-progress,
         .electro-handheld-footer-bar ul li a .count,
         .handheld-navigation-wrapper .stuck .navbar-toggler,
@@ -236,6 +238,7 @@ if ( ! function_exists( 'redux_get_custom_color_css' ) ) {
         ul.products[data-view=list-view].columns-6>li.product .product-loop-footer .button,
         ul.products[data-view=list-view].columns-7>li.product .product-loop-footer .button,
         ul.products[data-view=list-view].columns-8>li.product .product-loop-footer .button,
+        ul.products[data-view=list-view]>li.product .product-item__footer .add-to-cart-wrap a,
         .products.show-btn>li.product .added_to_cart,
         .products.show-btn>li.product .button,
         .yith-wcqv-button,
@@ -250,7 +253,10 @@ if ( ! function_exists( 'redux_get_custom_color_css' ) ) {
         .aws-container .aws-search-form .aws-search-clear,
         div.wpforms-container-full .wpforms-form input[type=submit],
         div.wpforms-container-full .wpforms-form button[type=submit],
-        div.wpforms-container-full .wpforms-form .wpforms-page-button {
+        div.wpforms-container-full .wpforms-form .wpforms-page-button,
+        .electro-dark .full-color-background .masthead .navbar-search .input-group .btn,
+        .electro-dark .electro-navbar-primary .nav>.menu-item:hover>a,
+        .electro-dark .masthead .navbar-search .input-group .btn {
             background-color: ' . $primary_color . ';
         }
 
@@ -268,7 +274,9 @@ if ( ! function_exists( 'redux_get_custom_color_css' ) ) {
         .custom .tp-bullet.selected,
         .home-v1-slider .btn-primary,
         .home-v2-slider .btn-primary,
-        .home-v3-slider .btn-primary {
+        .home-v3-slider .btn-primary,
+        .electro-dark .show-nav .nav .active .nav-link,
+        .electro-dark .full-color-background .masthead .header-icon-counter {
             background-color: ' . $primary_color . ' !important;
         }
 
@@ -296,6 +304,9 @@ if ( ! function_exists( 'redux_get_custom_color_css' ) ) {
         .header-v8 .navbar-search .input-group .form-control,
         .header-v8 .navbar-search .input-group .input-group-addon,
         .header-v8 .navbar-search .input-group .btn,
+        .header-v9 .navbar-search .input-group .form-control,
+        .header-v9 .navbar-search .input-group .input-group-addon,
+        .header-v9 .navbar-search .input-group .btn,
         .widget.widget_tag_cloud .tagcloud a:hover,
         .widget.widget_tag_cloud .tagcloud a:focus,
         .navbar-primary .navbar-mini-cart .dropdown-menu-mini-cart,
@@ -357,8 +368,16 @@ if ( ! function_exists( 'redux_get_custom_color_css' ) ) {
         .header-v8 .aws-container .aws-search-field,
         div.wpforms-container-full .wpforms-form input[type=submit],
         div.wpforms-container-full .wpforms-form button[type=submit],
-        div.wpforms-container-full .wpforms-form .wpforms-page-button {
+        div.wpforms-container-full .wpforms-form .wpforms-page-button,
+        .electro-dark .electro-navbar .navbar-search .input-group .btn,
+        .electro-dark .masthead .navbar-search .input-group .btn {
             border-color: ' . $primary_color . ';
+        }
+
+        @media (min-width: 1480px) {
+            .onsale-product-carousel .onsale-product__inner {
+        		border-color: ' . $primary_color . ';
+        	}
         }
 
         .widget_price_filter .price_slider_amount .button,
@@ -667,6 +686,7 @@ if ( ! function_exists( 'redux_get_custom_color_css' ) ) {
         .header-v3 .navbar-search .input-group .hero-action-btn,
         .header-v6 .navbar-search .input-group .btn,
         .header-v8 .navbar-search .input-group .btn,
+        .header-v9 .navbar-search .input-group .btn,
         .navbar-mini-cart .cart-items-count,
         .navbar-compare .count,
         .navbar-wishlist .count,
@@ -689,6 +709,9 @@ if ( ! function_exists( 'redux_get_custom_color_css' ) ) {
         .footer-newsletter .newsletter-title::before,
         .footer-newsletter .newsletter-marketing-text,
         .footer-newsletter .newsletter-title,
+        .top-bar-v3 .nav-inline .menu-item>a,
+        .top-bar-v3 .menu-item.customer-support.menu-item>a i,
+        .top-bar-v3 .additional-links-label,
         .full-color-background .top-bar .nav-inline .menu-item>a,
         .full-color-background .top-bar .nav-inline .menu-item+.menu-item:before,
         .full-color-background .header-v1 .navbar-nav .nav-link,
@@ -791,7 +814,9 @@ if ( ! function_exists( 'redux_get_custom_color_css' ) ) {
         .header-v4 .off-canvas-navigation-wrapper .navbar-toggler,
         .header-v4 .off-canvas-navigation-wrapper button,
         .header-v4 .off-canvas-navigation-wrapper.toggled .navbar-toggler,
-        .header-v4 .off-canvas-navigation-wrapper.toggled button {
+        .header-v4 .off-canvas-navigation-wrapper.toggled button,
+        .products-carousel-tabs-v5 header .nav-link.active,
+        .products-carousel-tabs-with-deal header .nav-link.active {
             color: ' . $primary_text_color . ' !important;
         }
 

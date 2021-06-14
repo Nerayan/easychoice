@@ -22,9 +22,11 @@ class Electro_Brands {
 			add_action( 'create_term',							array( $this, 'save_brand_fields' ), 	10, 3 );
 			add_action( 'edit_term',							array( $this, 'save_brand_fields' ), 	10, 3 );
 
-			// Add columns
-			add_filter( "manage_edit-{$brand_taxonomy}_columns",	array( $this, 'product_brand_columns' ) );
-			add_filter( "manage_{$brand_taxonomy}_custom_column",	array( $this, 'product_brand_column' ), 10, 3 );
+			if ( ! class_exists( 'Mas_WC_Brands' ) ) {
+				// Add columns
+				add_filter( "manage_edit-{$brand_taxonomy}_columns",	array( $this, 'product_brand_columns' ) );
+				add_filter( "manage_{$brand_taxonomy}_custom_column",	array( $this, 'product_brand_column' ), 10, 3 );
+			}
 		}
 	}
 
@@ -69,6 +71,7 @@ class Electro_Brands {
 			</div>
 			<div class="clear"></div>
 		</div>
+		<?php if ( ! class_exists( 'Mas_WC_Brands' ) ) : ?>
 		<div class="form-field">
 			<label><?php esc_html_e( 'Thumbnail', 'electro' ); ?></label>
 			<div id="product_brand_thumbnail" style="float:left;margin-right:10px;"><img src="<?php echo wc_placeholder_img_src(); ?>" width="60px" height="60px" alt="" /></div>
@@ -129,6 +132,7 @@ class Electro_Brands {
 			<div class="clear"></div>
 		</div>
 		<?php
+		endif;
 	}
 
 	/**
@@ -177,6 +181,7 @@ class Electro_Brands {
 				<div class="clear"></div>
 			</td>
 		</tr>
+        <?php if ( ! class_exists( 'Mas_WC_Brands' ) ): ?>
 		<tr class="form-field">
 			<th scope="row" valign="top"><label><?php esc_html_e( 'Thumbnail', 'electro' ); ?></label></th>
 			<td>
@@ -235,6 +240,7 @@ class Electro_Brands {
 			</td>
 		</tr>
 		<?php
+		endif;
 	}
 
 	/**
@@ -248,7 +254,10 @@ class Electro_Brands {
 	public function save_brand_fields( $term_id, $tt_id, $taxonomy ) {
 
 		if ( isset( $_POST['product_brand_thumbnail_id'] ) ) {
-			update_woocommerce_term_meta( $term_id, 'thumbnail_id', absint( $_POST['product_brand_thumbnail_id'] ) );
+			if ( ! class_exists( 'Mas_WC_Brands' ) ) {
+				update_woocommerce_term_meta( $term_id, 'thumbnail_id', absint( $_POST['product_brand_thumbnail_id'] ) );	
+			}
+
 			update_woocommerce_term_meta( $term_id, 'static_block_id', absint( $_POST['product_brand_static_block_id'] ) );
 		}
 

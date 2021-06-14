@@ -245,8 +245,9 @@ if ( ! function_exists( 'electro_home_v8_product_category_tags' ) ) {
                 return;
             }
 
-            $animation  = isset( $home_v8['pct']['animation'] ) ? $home_v8['pct']['animation'] : '';
-            $cat_args   = isset( $home_v8['pct']['cat_args'] ) ? $home_v8['pct']['cat_args'] : array( 'number' => 10 );
+            $animation     = isset( $home_v8['pct']['animation'] ) ? $home_v8['pct']['animation'] : '';
+            $cat_args      = isset( $home_v8['pct']['cat_args'] ) ? $home_v8['pct']['cat_args'] : array( 'number' => 10 );
+            $section_title = isset( $home_v8['pct']['section_title'] ) ? $home_v8['pct']['section_title'] : esc_html__( 'Popular Search', 'electro' );
 
             if ( ! empty( $home_v8['pct']['cat_slugs'] ) ) {
                 $cat_slugs = explode( ',', $home_v8['pct']['cat_slugs'] );
@@ -269,7 +270,7 @@ if ( ! function_exists( 'electro_home_v8_product_category_tags' ) ) {
             $args = apply_filters( 'electro_home_v8_product_category_tags_args', array(
                 'animation'             => $animation,
                 'section_class'         => '',
-                'section_title'         => esc_html__( 'Popular Search', 'electro' ),
+                'section_title'         => $section_title,
                 'category_args'         => $cat_args,
             ) );
 

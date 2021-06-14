@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Themes - Twenty Seventeen package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2020-03-31 20:44:55+0000\n"
+"PO-Revision-Date: 2020-12-10 15:17:13+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -16,18 +16,114 @@ msgid "Twenty Seventeen brings your site to life with header video and immersive
 msgstr "Тема Twenty Seventeen оживит ваш сайт благодаря видеофайлам в заголовке и захватывающим изображениям. Предназначенная для деловых сайтов, она включает в себя главную страницу с несколькими разделами, а также виджеты, навигацию, социальное меню, логотип и многое другое. Настройте её асимметричную разметку с помощью произвольной цветовой схемы и используйте форматы записей для создания галереи медиафайлов. В 2017 году наша тема отлично подходит для многих языков и любых устройств."
 
 #. Theme Name of the theme
+#: inc/block-patterns.php:17
 msgid "Twenty Seventeen"
 msgstr "Twenty Seventeen"
+
+#: inc/block-patterns.php:193
+msgid "Contact us"
+msgstr "Связаться с нами"
+
+#: inc/block-patterns.php:188
+msgid "We are proud to serve outstanding clients."
+msgstr "Мы гордимся работой с выдающимися компаниями."
+
+#: inc/block-patterns.php:184
+msgid "Contact Us"
+msgstr "Обратная связь"
+
+#: inc/block-patterns.php:170
+msgid "Video Production"
+msgstr "Видеосъемка"
+
+#: inc/block-patterns.php:170
+msgid "Marketing &amp; SEO"
+msgstr "Маркетинг и SEO"
+
+#: inc/block-patterns.php:170
+msgid "Content Strategy"
+msgstr "Контентная стратегия"
+
+#: inc/block-patterns.php:162
+msgid "Web Development"
+msgstr "Веб-разработка"
+
+#: inc/block-patterns.php:148
+msgid "Services"
+msgstr "Услуги"
+
+#: inc/block-patterns.php:131
+msgid "Strategy"
+msgstr "Стратегия"
+
+#: inc/block-patterns.php:128
+msgid "Direct Light"
+msgstr "Прямой свет"
+
+#: inc/block-patterns.php:117
+msgid "Design"
+msgstr "Дизайн"
+
+#: inc/block-patterns.php:90
+msgid "Images with Link"
+msgstr "Изображения со ссылкой"
+
+#: inc/block-patterns.php:77
+msgid "Need a website? We&#39;ve got you covered. Our design team will create a stunning design to transform your brand."
+msgstr "Нужен сайт? Мы знаем решение. Наши дизайнеры создадут потрясающее визуальное представление для трансформации вашего бренда."
+
+#: inc/block-patterns.php:74 inc/block-patterns.php:162
+msgid "Web Design"
+msgstr "Веб-дизайн"
+
+#: inc/block-patterns.php:71 inc/block-patterns.php:114
+msgid "White border"
+msgstr "Белая граница"
+
+#: inc/block-patterns.php:63 inc/block-patterns.php:80
+#: inc/block-patterns.php:106 inc/block-patterns.php:120
+#: inc/block-patterns.php:134
+msgid "See Case Study"
+msgstr "Посмотреть примеры"
+
+#: inc/block-patterns.php:60
+msgid "Communicate your purpose and goals with a beautiful logo that encapsulates your business."
+msgstr "Донесите свои цели и задачи с помощью яркого логотипа, отражающего ваш бизнес."
+
+#: inc/block-patterns.php:57 inc/block-patterns.php:103
+#: inc/block-patterns.php:162
+msgid "Branding"
+msgstr "Брендинг"
+
+#: inc/block-patterns.php:54 inc/block-patterns.php:100
+msgid "Black Stripes"
+msgstr "Черные полосы"
+
+#: inc/block-patterns.php:45
+msgid "Images with Text and Link"
+msgstr "Изображения с текстом и ссылкой"
+
+#: inc/block-patterns.php:36 inc/block-patterns.php:155
+msgid "Our Services"
+msgstr "Наши услуги"
+
+#: inc/block-patterns.php:31
+msgid "Attract Leads with Marketing Campaigns that Work"
+msgstr "Привлекайте потенциальных клиентов с помощью эффективных маркетинговых кампаний"
+
+#: inc/block-patterns.php:28
+msgid "Large Heading with Button"
+msgstr "Большой заголовок с кнопкой"
 
 #: template-parts/footer/footer-widgets.php:18
 msgid "Footer"
 msgstr "Подвал"
 
-#: functions.php:340
+#: functions.php:346
 msgid "Add widgets here to appear in your sidebar on blog posts and archive pages."
 msgstr "Добавить виджеты, которые появятся на боковой панели в записях блога и страницах архива."
 
-#: functions.php:338 sidebar.php:18
+#: sidebar.php:18 functions.php:344
 msgid "Blog Sidebar"
 msgstr "Боковая панель блога"
 
@@ -36,17 +132,17 @@ msgstr "Боковая панель блога"
 msgid "Scroll down to content"
 msgstr "Перейти к содержимому"
 
-#: functions.php:181
+#: functions.php:187
 msgctxt "Theme starter content"
 msgid "Coffee"
 msgstr "Кофе"
 
-#: functions.php:177
+#: functions.php:183
 msgctxt "Theme starter content"
 msgid "Sandwich"
 msgstr "Сэндвич"
 
-#: functions.php:173
+#: functions.php:179
 msgctxt "Theme starter content"
 msgid "Espresso"
 msgstr "Эспрессо"
@@ -148,24 +244,24 @@ msgstr "Цветовая схема"
 msgid "Default Header Image"
 msgstr "Изображение заголовка по умолчанию"
 
-#: functions.php:362
+#: functions.php:368
 msgid "Footer 2"
 msgstr "Подвал 2"
 
-#: functions.php:352 functions.php:364
+#: functions.php:358 functions.php:370
 msgid "Add widgets here to appear in your footer."
 msgstr "Добавьте сюда виджеты для отображения в подвале сайта."
 
-#: functions.php:350
+#: functions.php:356
 msgid "Footer 1"
 msgstr "Подвал 1"
 
-#: functions.php:290
+#: functions.php:296
 msgctxt "Libre Franklin font: on or off"
 msgid "on"
 msgstr "on"
 
-#: functions.php:64 functions.php:205
+#: functions.php:69 functions.php:211
 #: template-parts/navigation/navigation-top.php:12
 msgid "Top Menu"
 msgstr "Верхнее меню"
@@ -187,7 +283,7 @@ msgstr "Извините, по вашему запросу ничего не н�
 msgid "Ready to publish your first post? <a href=\"%s\">Get started here</a>."
 msgstr "Готовы опубликовать свою первую запись? <a href=\"%s\">Начните отсюда</a>."
 
-#: template-parts/post/content-none.php:17 search.php:26
+#: search.php:26 template-parts/post/content-none.php:17
 msgid "Nothing Found"
 msgstr "Не найдено"
 
@@ -195,11 +291,11 @@ msgstr "Не найдено"
 msgid "Previous Post"
 msgstr "Предыдущая запись:"
 
-#: comments.php:71 single.php:33
+#: single.php:33 comments.php:71
 msgid "Previous"
 msgstr "Назад"
 
-#: comments.php:72 single.php:34
+#: single.php:34 comments.php:72
 msgid "Next"
 msgstr "Далее"
 
@@ -224,12 +320,12 @@ msgid "Search Results for: %s"
 msgstr "Результаты поиска для: %s"
 
 #. translators: %s: Post title.
-#: functions.php:392 template-parts/post/content-gallery.php:71
+#: functions.php:398 template-parts/post/content-gallery.php:71
+#: template-parts/post/content.php:57 template-parts/post/content-image.php:61
+#: template-parts/post/content-audio.php:84
 #: template-parts/post/content-video.php:83
-#: template-parts/post/content-image.php:61
-#: template-parts/post/content-audio.php:84 template-parts/post/content.php:57
-#: template-parts/page/content-front-page-panels.php:45
 #: template-parts/page/content-front-page.php:42
+#: template-parts/page/content-front-page-panels.php:45
 msgid "Continue reading<span class=\"screen-reader-text\"> \"%s\"</span>"
 msgstr "Читать далее<span class=\"screen-reader-text\"> «%s»</span>"
 
@@ -248,11 +344,11 @@ msgid "Edit<span class=\"screen-reader-text\"> \"%s\"</span>"
 msgstr "Изменить<span class=\"screen-reader-text\"> «%s»</span>"
 
 #: template-parts/post/content-gallery.php:78
+#: template-parts/post/content.php:64 template-parts/post/content-image.php:68
+#: template-parts/post/content-audio.php:91
 #: template-parts/post/content-video.php:90
-#: template-parts/post/content-image.php:68
-#: template-parts/post/content-audio.php:91 template-parts/post/content.php:64
-#: template-parts/page/content-page.php:26
 #: template-parts/page/content-front-page.php:48
+#: template-parts/page/content-page.php:26
 msgid "Pages:"
 msgstr "Страницы:"
 
@@ -264,15 +360,15 @@ msgstr "Меню"
 msgid "Skip to content"
 msgstr "Перейти к содержимому"
 
-#: functions.php:484
+#: functions.php:490
 msgid "Collapse child menu"
 msgstr "Свернуть дочернее меню"
 
-#: functions.php:483
+#: functions.php:489
 msgid "Expand child menu"
 msgstr "Раскрыть дочернее меню"
 
-#: functions.php:65 functions.php:216
+#: functions.php:70 functions.php:222
 msgid "Social Links Menu"
 msgstr "Меню социальных ссылок"
 
@@ -304,15 +400,15 @@ msgctxt "comments title"
 msgid "One Reply to &ldquo;%s&rdquo;"
 msgstr "%s: 1 комментарий"
 
-#: archive.php:51 index.php:55 search.php:52
+#: index.php:55 archive.php:51 search.php:52
 msgid "Page"
 msgstr "Страница"
 
-#: archive.php:50 index.php:54 search.php:51
+#: index.php:54 archive.php:50 search.php:51
 msgid "Next page"
 msgstr "Следующая страница"
 
-#: archive.php:49 index.php:53 search.php:50
+#: index.php:53 archive.php:49 search.php:50
 msgid "Previous page"
 msgstr "Предыдущая страница"
 

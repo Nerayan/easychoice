@@ -5,7 +5,6 @@ use Itgalaxy\Wc\Exchange1c\ExchangeProcess\DataResolvers\ProductAttributes;
 use Itgalaxy\Wc\Exchange1c\ExchangeProcess\DataResolvers\ProductManufacturer;
 use Itgalaxy\Wc\Exchange1c\ExchangeProcess\DataResolvers\ProductRequisites;
 use Itgalaxy\Wc\Exchange1c\ExchangeProcess\DataResolvers\ProductUnit;
-use Itgalaxy\Wc\Exchange1c\ExchangeProcess\DataResolvers\VariationImages;
 use Itgalaxy\Wc\Exchange1c\Includes\Bootstrap;
 use Itgalaxy\Wc\Exchange1c\Includes\Logger;
 
@@ -193,7 +192,6 @@ class Product
             self::hide($productEntry['ID'], true);
         }
 
-
         /*
          * Example xml structure
          * position - Товар -> Метки
@@ -230,239 +228,6 @@ class Product
         }
 
         return $productEntry;
-    }
-
-    public static function mainVariationData($element, $productEntry, $postAuthor, $onlyCharacteristics = false)
-    {
-        global $wpdb;
-
-        if (!isset($_SESSION['IMPORT_1C']['setTerms'])) {
-            $_SESSION['IMPORT_1C']['setTerms'] = [];
-        }
-
-        if (!isset($_SESSION['IMPORT_1C']['productVariations'])) {
-            $_SESSION['IMPORT_1C']['productVariations'] = [];
-        }
-
-        if (!get_post_meta($productEntry['post_parent'], '_is_set_variable', true)) {
-            Term::setObjectTerms(
-                $productEntry['post_parent'],
-                'variable',
-                'product_type'
-            );
-
-            self::saveMetaValue($productEntry['post_parent'], '_manage_stock', 'no');
-            self::saveMetaValue($productEntry['post_parent'], '_is_set_variable', true);
-        }
-
-        // create variation
-        if (!empty($productEntry['ID'])) {
-            $wpdb->update(
-                $wpdb->posts,
-                [
-                    'post_title' => (string) $element->Наименование,
-                    'post_name' => sanitize_title((string) $element->Наименование),
-                    'post_parent' => $productEntry['post_parent']
-                ],
-                ['ID' => $productEntry['ID']]
-            );
-
-            Logger::logChanges(
-                '(variation) Updated, ID - '
-                . $productEntry['ID']
-                . ', parent ID - '
-                . $productEntry['post_parent'],
-                [(string) $element->Ид]
-            );
-        } else {
-            // https://developer.wordpress.org/reference/functions/wp_insert_post/
-            $productEntry['ID'] = wp_insert_post(
-                [
-                    'post_title' => (string) $element->Наименование,
-                    'post_type' => 'product_variation',
-                    'post_name' => sanitize_title((string) $element->Наименование),
-                    'post_author' => $postAuthor,
-                    'post_parent' => $productEntry['post_parent'],
-                    // enabled or disabled by default based on the setting WooCommerce
-                    'post_status' => get_option('woocommerce_manage_stock') === 'yes'
-                        ? 'private'
-                        : 'publish'
-                ]
-            );
-
-            self::saveMetaValue($productEntry['ID'], '_id_1c', (string) $element->Ид, $productEntry['post_parent']);
-
-            Logger::logChanges(
-                '(variation) Added, ID - '
-                . $productEntry['ID']
-                . ', parent ID - '
-                . $productEntry['post_parent'],
-                [(string) $element->Ид]
-            );
-        }
-
-        // processing and recording the sku for variable offers.
-        if (isset($element->Артикул)) {
-            $parentSku = get_post_meta($productEntry['post_parent'], '_sku', true);
-            $offerSku = trim((string) $element->Артикул);
-
-            if ($offerSku !== $parentSku) {
-                self::saveMetaValue($productEntry['ID'], '_sku', $offerSku, $productEntry['post_parent']);
-            }
-        }
-
-        $_SESSION['IMPORT_1C']['productVariations'][$productEntry['post_parent']][] = $productEntry['ID'];
-
-        if (
-            !$onlyCharacteristics &&
-            isset($element->ЗначенияСвойств) &&
-            isset($element->ЗначенияСвойств->ЗначенияСвойства)
-        ) {
-            self::resolveVariationOptionsWithId($element, $productEntry);
-            // simple variant without ids
-        } elseif (
-            isset($element->ХарактеристикиТовара) &&
-            isset($element->ХарактеристикиТовара->ХарактеристикаТовара)
-        ) {
-            self::resolveVariationOptionsWithoutId($element, $productEntry);
-        }
-
-        // variation image processing
-        VariationImages::process($element, $productEntry['ID'], $postAuthor);
-
-        return $productEntry;
-    }
-
-    public static function resolveVariationOptionsWithoutId($element, $productEntry)
-    {
-        $productOptions = get_option('all_product_options');
-
-        foreach ($element->ХарактеристикиТовара->ХарактеристикаТовара as $property) {
-            if (
-                empty($property->Значение) ||
-                empty($property->Наименование)
-            ) {
-                continue;
-            }
-
-            $label = (string) $property->Наименование;
-            $taxByLabel = trim(strtolower($label));
-            $taxByLabel = hash('crc32', $taxByLabel);
-
-            $attributeName = 'simple_' . $taxByLabel;
-
-            if (empty($productOptions[$attributeName])) {
-                continue;
-            }
-
-            $attribute = $productOptions[$attributeName];
-            $uniqId1c = md5($attribute['createdTaxName'] . (string) $property->Значение);
-            $optionTermID = Term::getTermIdByMeta($uniqId1c);
-
-            if (!$optionTermID) {
-                $optionTermID = get_term_by('name', (string) $property->Значение, $attribute['taxName']);
-
-                if ($optionTermID) {
-                    $optionTermID = $optionTermID->term_id;
-
-                    Term::update1cId($optionTermID, $uniqId1c);
-                }
-            }
-
-            if (!$optionTermID) {
-                $term = ProductAttributeHelper::insertValue(
-                    (string) $property->Значение,
-                    $attribute['taxName'],
-                    $uniqId1c
-                );
-
-                $optionTermID = $term['term_id'];
-
-                // default meta value by ordering
-                update_term_meta($optionTermID, 'order_' . $attribute['taxName'], 0);
-
-                Term::update1cId($optionTermID, $uniqId1c);
-            }
-
-            if ($optionTermID) {
-                self::saveMetaValue(
-                    $productEntry['ID'],
-                    'attribute_' . $attribute['taxName'],
-                    get_term_by('id', $optionTermID, $attribute['taxName'])->slug,
-                    $productEntry['post_parent']
-                );
-
-                $_SESSION['IMPORT_1C']['setTerms'][$productEntry['post_parent']][$attribute['taxName']][] =
-                    $optionTermID;
-            }
-        }
-    }
-
-    public static function resolveVariationOptionsWithId($element, $productEntry)
-    {
-        $productOptions = get_option('all_product_options');
-        $ignoreAttributeProcessing = apply_filters('itglx_wc1c_attribute_ignore_guid_array', []);
-
-        foreach ($element->ЗначенияСвойств->ЗначенияСвойства as $property) {
-            if (
-                empty($property->Значение) ||
-                empty($productOptions[(string) $property->Ид])
-            ) {
-                continue;
-            }
-
-            if (in_array((string) $property->Ид, $ignoreAttributeProcessing, true)) {
-                continue;
-            }
-
-            $attribute = $productOptions[(string) $property->Ид];
-
-            if ($attribute['type'] === 'Справочник') {
-                $optionTermID = isset($attribute['values'][(string) $property->Значение])
-                    ? $attribute['values'][(string) $property->Значение]
-                    : false;
-            } else {
-                $uniqId1c = md5($attribute['createdTaxName'] . (string) $property->Значение);
-                $optionTermID = Term::getTermIdByMeta($uniqId1c);
-
-                if (!$optionTermID) {
-                    $optionTermID = get_term_by('name', (string) $property->Значение, $attribute['taxName']);
-
-                    if ($optionTermID) {
-                        $optionTermID = $optionTermID->term_id;
-
-                        Term::update1cId($optionTermID, $uniqId1c);
-                    }
-                }
-
-                if (!$optionTermID) {
-                    $term = ProductAttributeHelper::insertValue(
-                        (string) $property->Значение,
-                        $attribute['taxName'],
-                        $uniqId1c
-                    );
-
-                    $optionTermID = $term['term_id'];
-
-                    // default meta value by ordering
-                    update_term_meta($optionTermID, 'order_' . $attribute['taxName'], 0);
-
-                    Term::update1cId($optionTermID, $uniqId1c);
-                }
-            }
-
-            if ($optionTermID) {
-                self::saveMetaValue(
-                    $productEntry['ID'],
-                    'attribute_' . $attribute['taxName'],
-                    get_term_by('id', $optionTermID, $attribute['taxName'])->slug,
-                    $productEntry['post_parent']
-                );
-
-                $_SESSION['IMPORT_1C']['setTerms'][$productEntry['post_parent']][$attribute['taxName']][] =
-                    $optionTermID;
-            }
-        }
     }
 
     public static function setCategory($productID, $categoryIds)
@@ -506,7 +271,6 @@ class Product
     {
         if ($withSetStatus) {
             update_post_meta($productID, '_stock_status', $statusValue);
-            self::updateLookupTable((int) $productID, $statusValue);
         }
 
         $setTerms = [];
@@ -526,7 +290,6 @@ class Product
 
         if ($withSetStatus) {
             \update_post_meta($productID, '_stock_status', 'outofstock');
-            self::updateLookupTable((int) $productID, 'outofstock');
         }
 
         $setTerms = [
@@ -556,20 +319,20 @@ class Product
 
     public static function saveMetaValue($productID, $metaKey, $metaValue, $parentProductID = null)
     {
-        if (!$parentProductID) {
-            $filter = 'itglx_wc1c_product_meta_' . $metaKey . '_value';
-        } else {
-            $filter = 'itglx_wc1c_variation_meta_' . $metaKey . '_value';
+        if ($parentProductID) {
+            ProductVariation::saveMetaValue($productID, $metaKey, $metaValue, $parentProductID);
+
+            return;
         }
 
         update_post_meta(
             $productID,
             $metaKey,
-            apply_filters($filter, $metaValue, $productID, $parentProductID)
+            apply_filters('itglx_wc1c_product_meta_' . $metaKey . '_value', $metaValue, $productID, $parentProductID)
         );
     }
 
-    public static function getProductIdByMeta($value, $metaKey = '_id_1c', $isVariation = false)
+    public static function getProductIdByMeta($value, $metaKey = '_id_1c')
     {
         global $wpdb;
 
@@ -585,10 +348,6 @@ class Product
 
         if (!isset($product->post_type)) {
             return null;
-        }
-
-        if ($isVariation) {
-            return $product->post_type === 'product_variation' ? $product->post_id : null;
         }
 
         return $product->post_type === 'product' ? $product->post_id : null;
@@ -656,7 +415,7 @@ class Product
 
         if (!empty($variationIds)) {
             foreach ($variationIds as $variationId) {
-                self::removeVariation($variationId, $productId);
+                ProductVariation::remove($variationId, $productId);
             }
         }
 
@@ -664,31 +423,6 @@ class Product
             '(product) Removed product variations, ID - ' . $productId,
             [get_post_meta($productId, '_id_1c', true)]
         );
-    }
-
-    public static function removeVariation($variationId, $productId = 0)
-    {
-        // https://developer.wordpress.org/reference/functions/has_post_thumbnail/
-        if (has_post_thumbnail($variationId)) {
-            // https://developer.wordpress.org/reference/functions/wp_delete_attachment/
-            // https://developer.wordpress.org/reference/functions/get_post_thumbnail_id/
-            wp_delete_attachment(get_post_thumbnail_id($variationId), true);
-
-            // https://developer.wordpress.org/reference/functions/delete_post_thumbnail/
-            delete_post_thumbnail($variationId);
-
-            Logger::logChanges(
-                '(image) Removed thumbnail for variation ID - ' . $variationId,
-                [get_post_meta($variationId, '_id_1c', true)]
-            );
-        }
-
-        // https://developer.wordpress.org/reference/functions/wp_delete_post/
-        wp_delete_post($variationId, true);
-
-        if ($productId) {
-            delete_transient('wc_product_children_' . $productId);
-        }
     }
 
     public static function removeProduct($productId)
@@ -734,22 +468,5 @@ class Product
         }
 
         return false;
-    }
-
-    private static function updateLookupTable($id, $stockStatus)
-    {
-        global $wpdb;
-
-        if (!function_exists('wc_update_product_lookup_tables_column')) {
-            return;
-        }
-
-        $wpdb->replace(
-            $wpdb->wc_product_meta_lookup,
-            [
-                'product_id' => $id,
-                'stock_status' => $stockStatus
-            ]
-        );
     }
 }

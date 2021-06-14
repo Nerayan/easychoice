@@ -213,9 +213,9 @@ add_action( 'electro_default_footer_bottom_widgets', 		'electro_default_wc_fb_wi
  */
 add_filter( 'woocommerce_enqueue_styles', 					'__return_empty_array' );
 add_filter( 'woocommerce_breadcrumb_defaults', 				'electro_change_breadcrumb_delimiter' );
-add_filter( 'loop_shop_columns',							'electro_set_loop_shop_columns', 				10 );
+add_filter( 'loop_shop_columns',                            'electro_set_loop_shop_columns',                10 );
 add_filter( 'loop_shop_columns_wide',                       'electro_set_loop_shop_columns_wide',           10 );
-add_filter( 'loop_shop_per_page', 							'electro_set_loop_shop_per_page', 				20 );
+add_filter( 'loop_shop_per_page',                           'electro_set_loop_shop_per_page',               20 );
 add_filter( 'woocommerce_pagination_args',					'electro_set_pagination_args',					10 );
 add_filter( 'woocommerce_get_price_html',					'electro_wrap_price_html',						90 );
 add_filter( 'woocommerce_add_to_cart_fragments',			'electro_mini_cart_fragment' );

@@ -40,7 +40,7 @@ if ( ! function_exists( 'electro_secondary_nav_v6' ) ) {
                         'menu'              => $args['menu'],
                         'theme_location'    => 'secondary-nav',
                         'container'         => false,
-                        'menu_class'        => 'secondary-nav yamm',
+                        'menu_class'        => 'secondary-nav d-none d-xl-block yamm',
                         'fallback_cb'       => 'wp_bootstrap_navwalker::fallback',
                         'walker'            => new wp_bootstrap_navwalker(),
                     ) );
