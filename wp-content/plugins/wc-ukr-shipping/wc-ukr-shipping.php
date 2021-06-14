@@ -3,10 +3,12 @@
  * Plugin Name: WC Ukr Shipping
  * Plugin URI: https://kirillbdev.pro/plugins/wc-ukr-shipping/?ref=repository
  * Description: Плагин доставки Украинской службой Нова Пошта для WooCommerce
- * Version: 1.7.4
+ * Version: 1.7.7
  * Author: kirillbdev
  * License URI: license.txt
- * Tested up to: 5.6
+ * Requires PHP: 7.0
+ * Tested up to: 5.7
+ * WC tested up to: 5.2
 */
 
 if ( ! defined('ABSPATH')) {
@@ -25,9 +27,9 @@ define('WCUS_TRANSLATE_TYPE_PLUGIN', 0);
 define('WCUS_TRANSLATE_TYPE_MO_FILE', 1);
 
 define('WC_UKR_SHIPPING_NP_SHIPPING_NAME', 'nova_poshta_shipping');
-define('WC_UKR_SHIPPING_NP_SHIPPING_TITLE', 'Доставка службой "Новая почта"');
+define('WC_UKR_SHIPPING_NP_SHIPPING_TITLE', 'Новая почта');
 
-include_once 'autoload.php';
-include_once 'globals.php';
+include_once __DIR__ . '/vendor/autoload.php';
+include_once __DIR__ . '/globals.php';
 
-\kirillbdev\WCUkrShipping\Classes\WCUkrShipping::instance()->init();
+kirillbdev\WCUkrShipping\Foundation\WCUkrShipping::instance()->init();

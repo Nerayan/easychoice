@@ -3,9 +3,9 @@ Contributors: kirillbdev
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl.html
 Tags: novaposhta, nova poshta, новая почта, нова пошта, delivery, доставка, shipping, woocommerce
-Requires PHP: 5.6
-Tested up to: 5.6
-Stable tag: 1.7.4
+Requires PHP: 7.0
+Tested up to: 5.7
+Stable tag: 1.7.7
 
 Простой и удобный плагин для подключения доставки популярной службой "Нова Пошта" на ваш сайт WooCommerce.
 
@@ -17,7 +17,6 @@ Stable tag: 1.7.4
 
 [Документация](https://kirillbdev.pro/docs/wcus-base-setup/)
 [PRO версия](https://kirillbdev.pro/wc-ukr-shipping-pro/?ref=repository)
-[Telegram канал](https://t.me/kirillbdev_pro)
 
 == Видео установки и настройки ==
 
@@ -48,7 +47,7 @@ WC Ukr Shipping PRO содержит еще больше возможносте�
 
 [Купить Premium версию](https://kirillbdev.pro/wc-ukr-shipping-pro/?ref=repository)
 
-https://www.youtube.com/watch?v=tsDmJEskkjE
+https://www.youtube.com/watch?v=i7KNKrRhNvI
 
 == Известные вопросы ==
 
@@ -58,7 +57,7 @@ https://www.youtube.com/watch?v=tsDmJEskkjE
 
 = Minimum Requirements =
 
-* PHP 7.2 or greater is recommended
+* PHP 7.0 or greater is recommended
 * MySQL 5.6 or greater is recommended
 
 = Automatic installation =
@@ -76,6 +75,19 @@ The manual installation method involves downloading this plugin and uploading it
 Automatic updates should work like a charm; as always though, ensure you backup your site just in case.
 
 == Changelog ==
+
+= Version 1.7.7 / (17.05.2021) =
+* Исправлена ошибка при загрузке областей на странице оформления заказа.
+
+= Version 1.7.6 / (16.05.2021) =
+* Core update.
+
+= Version 1.7.5 / (07.05.2021) =
+* Основная логика была вынесена в отдельное ядро (которое также используется для PRO версии).
+* Добавлен фильтр wcus_checkout_validation_active. С помощью него можно отключить валидацию полей плагина на странице оформления заказа.
+* Добавлен фильтр wcus_dynamic_shipping_label (будет описан в документации).
+* Теперь для корректной работы плагина требуется PHP не ниже версии 7.0.
+* Улучшения безопасности и производительности.
 
 = Version 1.7.4 / (05.02.2021) =
 * Исправлена ошибка сохранения адреса доставки на украинском языке, даже если в настройках выбран русский.

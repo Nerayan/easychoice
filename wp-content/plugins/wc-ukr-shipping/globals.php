@@ -4,15 +4,6 @@ if ( ! defined('ABSPATH')) {
     exit;
 }
 
-if ( ! function_exists('wc_ukr_shipping')) {
-
-    function wc_ukr_shipping()
-    {
-        return \kirillbdev\WCUkrShipping\Classes\WCUkrShipping::instance();
-    }
-
-}
-
 if ( ! function_exists('wc_ukr_shipping_import_svg')) {
 
     function wc_ukr_shipping_import_svg($image)
@@ -36,15 +27,6 @@ if ( ! function_exists('wc_ukr_shipping_is_checkout')) {
     function wc_ukr_shipping_is_checkout()
     {
         return function_exists('is_checkout') && is_checkout();
-    }
-
-}
-
-if ( ! function_exists('wcus_container_singleton')) {
-
-    function wcus_container_singleton($abstract)
-    {
-        return \kirillbdev\WCUkrShipping\Classes\WCUkrShipping::instance()->singleton($abstract);
     }
 
 }

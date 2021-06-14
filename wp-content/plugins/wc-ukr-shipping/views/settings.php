@@ -4,7 +4,7 @@
   }
 ?>
 
-<?= \kirillbdev\WCUkrShipping\Classes\View::render('partial/top_links'); ?>
+<?= \kirillbdev\WCUSCore\Foundation\View::render('partial/top_links'); ?>
 
 <div id="wc-ukr-shipping-settings" class="wcus-settings">
   <div class="wcus-settings__header">
