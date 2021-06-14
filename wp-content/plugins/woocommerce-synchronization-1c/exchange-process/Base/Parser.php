@@ -54,42 +54,6 @@ abstract class Parser
     public function parse($filename) {}
 
     /**
-     * @param string $guid
-     *
-     * @return int|null Product ID or null if there is no product.
-     */
-    protected function getVariationParent($guid)
-    {
-        if (!isset($_SESSION['IMPORT_1C']['productParent'])) {
-            $_SESSION['IMPORT_1C']['productParent'] = [];
-        }
-
-        if (isset($_SESSION['IMPORT_1C']['productParent'][$guid])) {
-            return $_SESSION['IMPORT_1C']['productParent'][$guid];
-        }
-
-        $productID = Product::getProductIdByMeta($guid);
-
-        $_SESSION['IMPORT_1C']['productParent'][$guid] = $productID;
-
-        return $productID;
-    }
-
-    /**
-     * @param int $productID
-     *
-     * @return void
-     */
-    protected function setHasVariationState($productID)
-    {
-        if (!isset($_SESSION['IMPORT_1C']['hasVariation'])) {
-            $_SESSION['IMPORT_1C']['hasVariation'] = [];
-        }
-
-        $_SESSION['IMPORT_1C']['hasVariation'][$productID] = true;
-    }
-
-    /**
      * @param \XMLReader $reader
      * @param string $node Node name.
      *

@@ -33,7 +33,10 @@ class SaleModeInfo
             if (isset($gateway->enabled) && 'yes' === $gateway->enabled) {
                 $paymentMethodElement = $paymentMethodList->addChild('Элемент');
                 $paymentMethodElement->addChild('Ид', $id);
-                $paymentMethodElement->addChild('Название', $gateway->title);
+                $paymentMethodElement->addChild(
+                    'Название',
+                    !empty($gateway->title) ? $gateway->title : $gateway->method_title
+                );
                 $paymentMethodElement->addChild('ТипОплаты', '');
             }
         }

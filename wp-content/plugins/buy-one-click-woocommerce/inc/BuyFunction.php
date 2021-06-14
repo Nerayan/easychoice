@@ -3,6 +3,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+use Coderun\BuyOneClick\Core;
 use Coderun\BuyOneClick\Help;
 
 /**
@@ -78,8 +79,7 @@ class BuyFunction {
      */
     static function viewBuyButton($short_code = false, $params = []) {
         $page = '';
-        $options = Help::getInstance()->get_options();
-        if (!empty($options['buyoptions']['positionbutton'])) {
+        if (Core::getInstance()->getOption('positionbutton','buyoptions')) {
             $name = self::get_button_name();
             $productId = self::getProductId();
             if (isset($params['id']) && !empty($params['id'])) {
@@ -88,9 +88,28 @@ class BuyFunction {
             if (empty($productId)) { // ИД текущего товара не удалось узнать, покупать нечего
                 return;
             }
+            $scripts = '';
+            $style = '';
+            if (Core::getInstance()->getOption('style_insert_html','buyoptions')) {
+                $scripts .= \file_get_contents(sprintf('%s/js/form.js',CODERUN_ONECLICKWOO_PLUGIN_DIR));
+                $scripts .= \file_get_contents(sprintf('%s/js/jquery.maskedinput.min.js',CODERUN_ONECLICKWOO_PLUGIN_DIR));
+                foreach (Core::getInstance()->getStylesFront() as $styleName => $styleParam) {
+                    if (!empty($styleParam['path']) && \file_exists($styleParam['path'])) {
+                        $style .= \file_get_contents($styleParam['path']);
+                    }
+                }
+            }
+            if ($scripts) {
+                $scripts = sprintf('<script>%s</script>', $scripts);
+            }
+            if ($style) {
+                $style = sprintf('<style>%s</style>', $style);
+            }
             ob_start();
             ?>
             <?php if(strlen($name) > 0) { ?>
+                <?php echo $scripts; ?>
+                <?php echo $style; ?>
                 <button
                         class="single_add_to_cart_button clickBuyButton button21 button alt ld-ext-left"
                         data-variation_id="0"

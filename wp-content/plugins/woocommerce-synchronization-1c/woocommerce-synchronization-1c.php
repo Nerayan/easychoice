@@ -3,12 +3,12 @@
  * Plugin Name: WooCommerce - 1C - Data Exchange
  * Plugin URI: https://codecanyon.net/item/woocommerce-1c-data-exchange/24768513
  * Description: Data exchange with 1C according to the protocol developed for 1C Bitrix. Import of the nomenclature, prices and stocks, unloading orders in 1C.
- * Version: 1.92.1
+ * Version: 1.96.0
  * Author: itgalaxycompany
  * Author URI: https://codecanyon.net/user/itgalaxycompany
  * License: GPLv3
  * Tested up to: 5.7
- * WC tested up to: 5.2
+ * WC tested up to: 5.4
  * Text Domain: itgalaxy-woocommerce-1c
  * Domain Path: /languages/
 */
@@ -19,35 +19,17 @@ if (!defined('ABSPATH')) {
     exit();
 }
 
-define('ITGALAXY_WC_1C_PLUGIN_URL', plugin_dir_url(__FILE__));
-define('ITGALAXY_WC_1C_PLUGIN_VERSION', '1.92.1');
-define('ITGALAXY_WC_1C_PLUGIN_DIR', plugin_dir_path(__FILE__));
-
-/**
- * Require for `is_plugin_active` function.
- */
-require_once ABSPATH . 'wp-admin/includes/plugin.php';
-
-/**
- * Not execute if WooCommerce not exists.
- *
- * @link https://developer.wordpress.org/reference/functions/is_plugin_active/
- */
-if (!is_plugin_active('woocommerce/woocommerce.php')) {
-    return;
-}
-
 /**
  * Use composer autoloader.
  */
-require ITGALAXY_WC_1C_PLUGIN_DIR . 'vendor/autoload.php';
+require plugin_dir_path(__FILE__) . 'vendor/autoload.php';
 
 /**
  * Registration and load of translations.
  *
  * @link https://developer.wordpress.org/reference/functions/load_theme_textdomain/
  */
-load_theme_textdomain('itgalaxy-woocommerce-1c', ITGALAXY_WC_1C_PLUGIN_DIR . 'languages');
+load_theme_textdomain('itgalaxy-woocommerce-1c', plugin_dir_path(__FILE__) . 'languages');
 
 /**
  * Register plugin uninstall hook.

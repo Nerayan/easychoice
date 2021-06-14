@@ -29,6 +29,11 @@ class Service
     public function modificationOrderTemplateWooCommerce($order, $sent_to_admin, $plain_text = false)
     {
         
+        if (Core::getInstance()->getOption('modificationOrderTemplate', Core::OPTIONS_NOTIFICATIONS, '') !== 'on') {
+            return;
+        }
+        
+        
         $pluginOrder = Order::getInstance()->get_wc_order($order->get_id());
         // $metaData = $order->get_meta_data();
         if (empty($pluginOrder)) {
@@ -43,7 +48,7 @@ class Service
         }
         $htmlItems = '';
         
-        $htmlItems .= '<h2>In one click</h2>';
+        $htmlItems .= '<h2>'.__('In one click','coderun-oneclickwoo').'</h2>';
         
         if (!empty($form['user_name'])) {
             $htmlItems .= sprintf('<p>%s: %s</p>', __('Name','coderun-oneclickwoo'), $form['user_name']);
@@ -71,5 +76,39 @@ class Service
         }
         $html = sprintf('<table><tr><td>%s</td></tr></table>', $htmlItems);
         echo $html;
+    }
+    
+    public function getUniqueStringToday()
+    {
+        $optionsName = 'coderun_unique_string_today';
+        $value = \get_option($optionsName, []);
+        if (!is_array($value)
+            || !isset($value['dateTime'])
+            || !isset($value['string'])
+            || !$value['dateTime'] instanceof \DateTime) {
+            $value = [
+                'dateTime' => new \DateTime('now'),
+                'string' => $this->getUuidv4(),
+            ];
+            update_option($optionsName, $value);
+            return $value['string'];
+        }
+        $dateTime = new \DateTime('now');
+        $interval = $dateTime->diff($value['dateTime']);
+        if (intval($interval->format('%d')) > 0) {
+            delete_option($optionsName);
+            return $this->getUniqueStringToday();
+        }
+        return $value['string'];
+    }
+    
+    public function getUuidv4() {
+        return sprintf('%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
+            mt_rand(0, 0xffff), mt_rand(0, 0xffff),
+            mt_rand(0, 0xffff),
+            mt_rand(0, 0x0fff) | 0x4000,
+            mt_rand(0, 0x3fff) | 0x8000,
+            mt_rand(0, 0xffff), mt_rand(0, 0xffff), mt_rand(0, 0xffff)
+        );
     }
 }

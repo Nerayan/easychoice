@@ -108,6 +108,8 @@ class Term
      */
     public static function insertProductCat($categoryEntry, $element)
     {
+        Logger::logChanges('(product_cat) insert start', [(string) $element->Ид]);
+
         $params = [
             'slug' => \wp_unique_term_slug(
                 \sanitize_title($categoryEntry['name']),
@@ -141,6 +143,8 @@ class Term
 
         // default meta value by ordering
         \update_term_meta($result['term_id'], 'order', 0);
+
+        Logger::logChanges('(product_cat) insert end', [(string) $element->Ид]);
 
         return $result['term_id'];
     }

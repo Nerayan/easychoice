@@ -32,7 +32,7 @@ class ProductVariableSync
 
             $numberOfSyncProducts++;
 
-            if ($numberOfSyncProducts < $_SESSION['IMPORT_1C']['numberOfSyncProducts']) {
+            if ($numberOfSyncProducts <= $_SESSION['IMPORT_1C']['numberOfSyncProducts']) {
                 continue;
             }
 

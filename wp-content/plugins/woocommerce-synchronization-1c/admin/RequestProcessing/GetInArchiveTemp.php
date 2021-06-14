@@ -1,6 +1,7 @@
 <?php
 namespace Itgalaxy\Wc\Exchange1c\Admin\RequestProcessing;
 
+use Itgalaxy\Wc\Exchange1c\Includes\Bootstrap;
 use Itgalaxy\Wc\Exchange1c\Includes\Helper;
 
 /**
@@ -70,7 +71,7 @@ class GetInArchiveTemp
             exit();
         }
 
-        $file = ITGALAXY_WC_1C_PLUGIN_DIR . 'files/site' . get_current_blog_id() . '/' . uniqid() . '.zip';
+        $file = Bootstrap::$pluginDir . 'files/site' . get_current_blog_id() . '/' . uniqid() . '.zip';
 
         $this->createArchive(Helper::getTempPath(), $file);
 
@@ -78,7 +79,7 @@ class GetInArchiveTemp
         header(
             'Content-Disposition: attachment; filename="'
             . 'temp_('
-            . ITGALAXY_WC_1C_PLUGIN_VERSION
+            . Bootstrap::PLUGIN_VERSION
             . ')_'
             . ($this->onlyXML ? 'only_xml_' : '')
             . date('Y-m-d_H:i:s')

@@ -44,10 +44,10 @@ function justin_formlinkbox($id){//display top link box
       echo '';
     }
 
-  echo '<div id="message" class="sucsess ml0"style="margin:10px 0"><p style="color:#000">Функціонал буде доступний в майбутніх версіях
-        </div>';
 
 echo '</div>';
 }
+
+
 
 ?>

@@ -199,7 +199,20 @@ class SectionForExchangeOrders
                                 'If enabled, then data on the contragent, that is "Контрагенты->Контрагент", is not'
                                 . 'added to the order.',
                                 'itgalaxy-woocommerce-1c'
-                            )
+                            ),
+                            'fieldsetStart' => true,
+                            'legend' => esc_html__('Contragent', 'itgalaxy-woocommerce-1c')
+                        ],
+                        'send_orders_division_contragent_into_ind_and_legal' => [
+                            'type' => 'checkbox',
+                            'title' => esc_html__('Division of contragents into individuals and legal', 'itgalaxy-woocommerce-1c'),
+                            'description' => esc_html__(
+                                'If enabled, then when company field is filled in the order, the contragent will be'
+                                . 'unloaded as a legal, otherwise, as individual. By default, the contragent is '
+                                . 'always unloaded as individual.',
+                                'itgalaxy-woocommerce-1c'
+                            ),
+                            'fieldsetEnd' => true
                         ],
                         'send_orders_status_is_paid' => [
                             'title' => esc_html__(

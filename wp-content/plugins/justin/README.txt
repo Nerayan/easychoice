@@ -2,14 +2,10 @@
 Contributors: bandido
 Tags: woocommerce, justin,ecommerce
 Requires at least: 4.4
-Tested up to: 5.4
+Tested up to: 5.7
 Stable tag: 1.0.2
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
-WC requires at least: 3.0
-WC tested up to: 3.7
-WooComerce requires at least: 3.0
-WooComerce tested up to: 3.7
 
 Плагін: спосіб доставки Justin та генерація накладних Justin.
 
@@ -26,7 +22,19 @@ WooComerce tested up to: 3.7
 Вкажіть фіксовану вартість доставки (наприклад "0" для безкоштовної доставки).
 Збережіть налаштування.
 
+== Що нового? ==
 
+= 1.4.3 =
+* [fix] виправлені помічені помилки
+
+= 1.4.2 =
+* [new] покращений механізм отримання міст та відділень з API Justin
+
+= 1.4 =
+* Перевірено на WordPress 5.7
+* Перевірено на WooCommerce 5.3
+* Оновлено метод отримання Міст та Відділень з АРІ Justin
+* Виправлені помилки сумісності
 
 == Підтримка ==
 

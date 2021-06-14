@@ -85,6 +85,7 @@ class Help {
 
     /**
      * Вернут настройки плагина
+     * @deprecated
      * @return array
      */
     public function get_options($name = null) {
@@ -146,11 +147,10 @@ class Help {
 
     protected function __construct() {
 
+        // todo - убрать
         $this->options_plugin = array(
-            'buyoptions' => get_option('buyoptions', array()),
-            //'buyzakaz' => get_option('buyzakaz', array()),
-            'buynotification' => get_option('buynotification', array()),
-            'buysmscoptions' => get_option('buysmscoptions', array()),
+            'buyoptions' => \get_option('buyoptions', []),
+            'buynotification' => \get_option('buynotification', [])
         );
     }
 

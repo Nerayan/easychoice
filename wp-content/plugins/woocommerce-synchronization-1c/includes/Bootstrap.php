@@ -1,6 +1,8 @@
 <?php
 namespace Itgalaxy\Wc\Exchange1c\Includes;
 
+use Itgalaxy\PluginCommon\DependencyPluginChecker;
+use Itgalaxy\PluginCommon\MainHelperLoader;
 use Itgalaxy\Wc\Exchange1c\ExchangeProcess\Filters\CreateProductInDraft;
 use Itgalaxy\Wc\Exchange1c\ExchangeProcess\Filters\FindAttribute;
 use Itgalaxy\Wc\Exchange1c\ExchangeProcess\Filters\FindAttributeValueTermId;
@@ -15,25 +17,57 @@ use Itgalaxy\Wc\Exchange1c\ExchangeProcess\RootProcessStarter;
 
 class Bootstrap
 {
+    const PLUGIN_ID = '24768513';
+    const PLUGIN_VERSION = '1.96.0';
+
     const OPTIONS_KEY = 'wc-itgalaxy-1c-exchange-settings';
     const OPTION_INFO_KEY = 'wc-itgalaxy-1c-exchange-additional-info';
     const OPTION_UNITS_KEY = 'itglx_wc1c_nomenclature_units';
     const PURCHASE_CODE_OPTIONS_KEY = 'wc-itgalaxy-1c-exchange-purchase-code';
     const CRON = 'wc-itgalaxy-1c-exchange-cron';
 
+    const DEPENDENCY_PLUGIN_LIST = ['woocommerce/woocommerce.php'];
+
     public static $plugin = '';
+
+    /**
+     * @var string Absolute path (with a trailing slash) to the plugin directory.
+     */
+    public static $pluginDir;
+
+    /**
+     * @var string URL to the plugin directory (with a trailing slash).
+     */
+    public static $pluginUrl;
+
+    /**
+     * @var MainHelperLoader
+     */
+    public static $common;
 
     private static $instance = false;
 
     protected function __construct($file)
     {
         self::$plugin = $file;
+        self::$pluginDir = \plugin_dir_path($file);
+        self::$pluginUrl = \plugin_dir_url($file);
+        self::$common = new MainHelperLoader($this, false);
 
         self::pluginLifeCycleActionsRegister();
 
+        if (!DependencyPluginChecker::isActivated(self::DEPENDENCY_PLUGIN_LIST)) {
+            DependencyPluginChecker::showRequirementPluginsNotice(
+                esc_html__('1C Data Exchange', 'itgalaxy-woocommerce-1c'),
+                self::DEPENDENCY_PLUGIN_LIST
+            );
+
+            return;
+        }
+
         if (
             get_option('ITGALAXY_WC_1C_PLUGIN_VERSION') !== false &&
-            get_option('ITGALAXY_WC_1C_PLUGIN_VERSION') !== ITGALAXY_WC_1C_PLUGIN_VERSION
+            get_option('ITGALAXY_WC_1C_PLUGIN_VERSION') !== self::PLUGIN_VERSION
         ) {
             self::updateSettings();
         }
@@ -120,30 +154,18 @@ class Bootstrap
             update_option(self::OPTIONS_KEY, $settings);
         }
 
-        update_option('ITGALAXY_WC_1C_PLUGIN_VERSION', ITGALAXY_WC_1C_PLUGIN_VERSION);
+        update_option('ITGALAXY_WC_1C_PLUGIN_VERSION', self::PLUGIN_VERSION);
     }
 
     public static function pluginActivation()
     {
-        PluginRequest::call('plugin_activate');
+        self::$common->requester->call('plugin_activate');
 
-        // https://developer.wordpress.org/reference/functions/is_plugin_active/
-        if (!is_plugin_active('woocommerce/woocommerce.php')) {
-            wp_die(
-                esc_html__(
-                    'To run the plug-in, you must first install and activate the WooCommerce plugin.',
-                    'itgalaxy-woocommerce-1c'
-                ),
-                esc_html__(
-                    'Error while activating the WooCommerce - 1C:Enterprise - Data Exchange',
-                    'itgalaxy-woocommerce-1c'
-                ),
-                [
-                    'back_link' => true
-                ]
-            );
-            // Escape ok
-        }
+        DependencyPluginChecker::activateHelper(
+            self::$plugin,
+            self::DEPENDENCY_PLUGIN_LIST,
+            esc_html__('1C Data Exchange', 'itgalaxy-woocommerce-1c')
+        );
 
         self::setRoleCapabilities();
         self::addWcAttributesTableColumn();
@@ -188,24 +210,24 @@ class Bootstrap
         }
 
         if (get_option('ITGALAXY_WC_1C_PLUGIN_VERSION') === false) {
-            add_option('ITGALAXY_WC_1C_PLUGIN_VERSION', ITGALAXY_WC_1C_PLUGIN_VERSION, '', 'no');
+            add_option('ITGALAXY_WC_1C_PLUGIN_VERSION', self::PLUGIN_VERSION, '', 'no');
         }
     }
 
     public static function pluginDeactivation()
     {
-        PluginRequest::call('plugin_deactivate');
+        self::$common->requester->call('plugin_deactivate');
         \wp_clear_scheduled_hook(self::CRON);
     }
 
     public static function pluginUninstall()
     {
-        PluginRequest::call('plugin_uninstall');
+        self::$common->requester->call('plugin_uninstall');
     }
 
     private static function copyRootEntryImportFile()
     {
-        if (!file_exists(ITGALAXY_WC_1C_PLUGIN_DIR . 'import-1c.php')) {
+        if (!file_exists(self::$pluginDir . 'import-1c.php')) {
             return;
         }
 
@@ -213,7 +235,7 @@ class Bootstrap
             return;
         }
 
-        copy(ITGALAXY_WC_1C_PLUGIN_DIR . 'import-1c.php', ABSPATH . 'import-1c.php');
+        copy(self::$pluginDir . 'import-1c.php', ABSPATH . 'import-1c.php');
     }
 
     private static function addWcAttributesTableColumn()

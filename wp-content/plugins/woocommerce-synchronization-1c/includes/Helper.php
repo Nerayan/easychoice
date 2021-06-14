@@ -26,7 +26,7 @@ class Helper
 
     public static function getTempPath()
     {
-        return ITGALAXY_WC_1C_PLUGIN_DIR . 'files/site' . get_current_blog_id() . '/temp';
+        return Bootstrap::$pluginDir . 'files/site' . get_current_blog_id() . '/temp';
     }
 
     public static function getFileSizeLimit()

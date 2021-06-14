@@ -90,7 +90,7 @@ class GlobalProductAttributes
 
             $numberOfOptions++;
 
-            if ($numberOfOptions < $_SESSION['IMPORT_1C']['numberOfOptions']) {
+            if ($numberOfOptions <= $_SESSION['IMPORT_1C']['numberOfOptions']) {
                 continue;
             }
 
@@ -226,7 +226,7 @@ class GlobalProductAttributes
 
                     $numberOfOptionValues++;
 
-                    if ($numberOfOptionValues < $_SESSION['IMPORT_1C']['numberOfOptionValues']) {
+                    if ($numberOfOptionValues <= $_SESSION['IMPORT_1C']['numberOfOptionValues']) {
                         continue;
                     }
 

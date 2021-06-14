@@ -1,6 +1,7 @@
 <?php
 namespace Itgalaxy\Wc\Exchange1c\Admin\RequestProcessing;
 
+use Itgalaxy\Wc\Exchange1c\Includes\Bootstrap;
 use Itgalaxy\Wc\Exchange1c\Includes\Helper;
 use Itgalaxy\Wc\Exchange1c\Includes\Logger;
 
@@ -38,7 +39,7 @@ class GetInArchiveLogs
             exit();
         }
 
-        $file = ITGALAXY_WC_1C_PLUGIN_DIR . 'files/site' . get_current_blog_id() . '/' . uniqid() . '.zip';
+        $file = Bootstrap::$pluginDir . 'files/site' . get_current_blog_id() . '/' . uniqid() . '.zip';
 
         $this->createArchive(Logger::getLogPath(), $file);
 
@@ -46,7 +47,7 @@ class GetInArchiveLogs
         header(
             'Content-Disposition: attachment; filename="'
             . 'logs_('
-            . ITGALAXY_WC_1C_PLUGIN_VERSION
+            . Bootstrap::PLUGIN_VERSION
             . ')_'
             . date('Y-m-d_H:i:s')
             . '.zip"'

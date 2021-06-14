@@ -16,6 +16,8 @@ class VariationImages
             $oldImages = [];
         }
 
+        $attachmentIds = [];
+
         if (isset($element->Картинка) && (string) $element->Картинка) {
             $images = [];
 
@@ -56,8 +58,6 @@ class VariationImages
                 }
             }
 
-            $attachmentIds = [];
-
             foreach ($images as $image) {
                 $attachID = self::findImageByMeta($image);
 
@@ -80,10 +80,13 @@ class VariationImages
 
             // distribution of the current set of images
             if (!empty($attachmentIds)) {
-                foreach ($attachmentIds as $attachID) {
-                    update_post_meta($variationID, '_thumbnail_id', $attachID);
-                    Logger::logChanges('(image variation) Set thumbnail image for ID - ' . $variationID, [$attachID]);
-                }
+                /**
+                 * Take the first ID to set it as a variation thumbnail.
+                 */
+                $attachID = reset($attachmentIds);
+
+                update_post_meta($variationID, '_thumbnail_id', $attachID);
+                Logger::logChanges('(image variation) Set thumbnail image for ID - ' . $variationID, [$attachID]);
             }
         // the current data does not contain information about the image, but it was before, so it should be deleted
         } elseif ($oldImages) {
@@ -95,6 +98,22 @@ class VariationImages
 
             self::removeImages($oldImages, $variationID);
         }
+
+        /**
+         * Fires after image processing for variation.
+         *
+         * Fires in any case, even if the resulting image set is empty as a result of processing. If the set was
+         * not empty earlier, then based on the empty data, it is possible to make decisions about the necessary
+         * cleaning actions.
+         *
+         * @since 1.93.0
+         *
+         * @param int $variationID Product variation id.
+         * @param int[] $attachmentIds The array contains the IDs of all images. If the set is not empty, then the
+         *                              first element is already set as a variation image.
+         * @param \SimpleXMLElement $element 'Предложение' node object.
+         */
+        do_action('itglx_wc1c_product_variation_images', $variationID, $attachmentIds, $element);
     }
 
     private static function resolveImage($image, $imageSrcPath, $variationID, $postAuthor = 0)

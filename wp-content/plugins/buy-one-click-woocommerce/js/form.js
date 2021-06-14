@@ -34,9 +34,9 @@ function getAjaxUrl() {
 
 function buyone_click_body_scroll() {
 
-    var formVisible=jQuery('#formOrderOneClick .popup').css('visibility')
+    var formVisible = jQuery('#formOrderOneClick .popup').css('visibility')
 
-    if(formVisible==='visible'){
+    if(formVisible === 'visible'){
         jQuery('body').css('overflow','hidden')
     }else {
         jQuery('body').css('overflow','');
@@ -94,11 +94,15 @@ jQuery(document).ready(function () {
             } else if (buyone_ajax.success_action === 4) { // Сделать редирект action
                 jQuery("#buyoneclick_form_order .form-message-result").html(buyone_ajax.after_message_form)
                 window.location.href = buyone_ajax.after_submit_form;
-            } else if (buyone_ajax.success_action === 5) { // Сделать редирект WooCommerce
+            } else if (buyone_ajax.success_action === 5 || buyone_ajax.success_action === 6) { // Сделать редирект WooCommerce
                 if (response.success && response.data && response.data.redirectUrl) {
                     jQuery("#buyoneclick_form_order .form-message-result").html(buyone_ajax.after_message_form)
                     window.location.href = response.data.redirectUrl;
                 }
+            }
+            if (typeof buyone_ajax.callback_successful_form_submission !== 'undefined') {
+                var callback = new Function(buyone_ajax.callback_successful_form_submission);
+                callback();
             }
         }).fail(function (response) {
             console.log(response);
@@ -113,6 +117,7 @@ jQuery(document).ready(function () {
     });
 
     /**
+     * Кнопка "Заказать в один клик"
      * Нарисует форму
      */
     jQuery(document).on('click', 'button.clickBuyButton', function (e) {
@@ -123,6 +128,7 @@ jQuery(document).ready(function () {
         }
         var zixnAjaxUrl = getAjaxUrl();
         var butObj = 'body';
+        // var butObj = self.parent();
 
         var button = jQuery(this);
 
@@ -154,24 +160,24 @@ jQuery(document).ready(function () {
                 variation_attr: variation_attr,
             },
             success: function (response) {
-
-                if (action == 'add_to_cart') {
+                if (action === 'add_to_cart') {
                     window.location.href = response;
                     return true;
                 }
-
                 jQuery('#formOrderOneClick').remove();
-                jQuery(butObj).after(response);
+                jQuery(butObj).append(response);
                 jQuery('.popup, .overlay').css('opacity', '1');
                 jQuery('.popup, .overlay').css('visibility', 'visible');
 
                 if (typeof buyone_ajax.tel_mask != 'undefined') {
                     jQuery('#buyoneclick_form_order [name="txtphone"]').mask(buyone_ajax.tel_mask);
                 }
-
                 jQuery(button).removeClass('running');
-
                 buyone_click_body_scroll();
+                if (typeof buyone_ajax.callback_after_clicking_on_button !== 'undefined') {
+                    var callback = new Function(buyone_ajax.callback_after_clicking_on_button);
+                    callback();
+                }
             }
         });
     });
@@ -204,7 +210,10 @@ jQuery(document).ready(function () {
                 jQuery('.popup, .overlay').css('opacity', '1');
                 jQuery('.popup, .overlay').css('visibility', 'visible');
                 buyone_click_body_scroll();
-
+                if (typeof buyone_ajax.callback_after_clicking_on_button !== 'undefined') {
+                    var callback = new Function(buyone_ajax.callback_after_clicking_on_button);
+                    callback();
+                }
             }
         });
     });

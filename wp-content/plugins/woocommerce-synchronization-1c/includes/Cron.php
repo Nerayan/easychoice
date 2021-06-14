@@ -62,7 +62,7 @@ class Cron
 
     public function cronAction()
     {
-        $response = PluginRequest::call('cron_code_check');
+        $response = Bootstrap::$common->requester->call('cron_code_check');
 
         if (is_wp_error($response)) {
             return;

@@ -12,7 +12,6 @@ use Itgalaxy\Wc\Exchange1c\Admin\PageParts\SectionLicense;
 use Itgalaxy\Wc\Exchange1c\Admin\PageParts\SectionLogging;
 use Itgalaxy\Wc\Exchange1c\Admin\PageParts\SectionNomenclatureExchangeConfigure;
 use Itgalaxy\Wc\Exchange1c\Admin\PageParts\SectionTempCatalogInfo;
-use Itgalaxy\Wc\Exchange1c\Includes\AssetsHelper;
 use Itgalaxy\Wc\Exchange1c\Includes\Bootstrap;
 
 class SettingsPage
@@ -39,7 +38,7 @@ class SettingsPage
                 // https://developer.wordpress.org/reference/functions/wp_enqueue_style/
                 wp_enqueue_style(
                     'itgalaxy-woocommerce-1c-page-css',
-                    AssetsHelper::getPathAssetFile('/admin/css/app.css'),
+                    Bootstrap::$common->assetsHelper->getPathAssetFile('/admin/css/app.css'),
                     false,
                     null
                 );
@@ -47,7 +46,7 @@ class SettingsPage
                 // https://developer.wordpress.org/reference/functions/wp_enqueue_script/
                 wp_enqueue_script(
                     'itgalaxy-woocommerce-1c-page-js',
-                    AssetsHelper::getPathAssetFile('/admin/js/app.js'),
+                    Bootstrap::$common->assetsHelper->getPathAssetFile('/admin/js/app.js'),
                     false,
                     false
                 );

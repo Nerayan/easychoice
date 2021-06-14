@@ -113,8 +113,44 @@ class Tags
             unset($element, $tagEntry);
         }
 
-        $_SESSION['IMPORT_1C']['tagsIsParse'] = true;
+        self::setParsed();
 
         return true;
+    }
+
+    /**
+     * Checking if the reader is in the position with tag node.
+     *
+     * @param \XMLReader $reader
+     *
+     * @return bool
+     */
+    public static function isTagNode(\XMLReader $reader)
+    {
+        return in_array($reader->name, ['Метки', 'Метка'], true);
+    }
+
+    /**
+     * Allows you to check if tags have already been processed or not.
+     *
+     * @return bool
+     */
+    public static function isParsed()
+    {
+        if (isset($_SESSION['IMPORT_1C']['tagsIsParse'])) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Sets the flag that tags have been processed.
+     *
+     * @return void
+     */
+    public static function setParsed()
+    {
+        $_SESSION['IMPORT_1C']['tagsIsParse'] = true;
     }
 }

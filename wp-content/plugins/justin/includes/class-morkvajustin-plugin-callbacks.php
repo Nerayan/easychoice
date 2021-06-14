@@ -36,6 +36,20 @@ class MJS_Plugin_Callbacks
         echo '<p>Якщо у вас немає API ключа, його можна отримати у регіональному представництві justin</p>';
     }
 
+    public function morkvajustingetlogin()
+    {
+        $value = esc_attr(get_option('morkvajustin_login'));
+        echo '<input type="text"  id="morkvajustin_login" class="regular-text" name="morkvajustin_login" value="' . $value . '" placeholder="Введіть Ваш логін">';
+        // echo '<p>Якщо у вас немає API ключа, його можна отримати у регіональному представництві justin</p>';
+    }
+
+    public function morkvajustingetpassword()
+    {
+        $value = esc_attr(get_option('morkvajustin_password'));
+        echo '<input type="password"  id="morkvajustin_password" class="regular-text" name="morkvajustin_password" value="' . $value . '" placeholder="Введіть Ваш пароль">';
+        // echo '<p>Якщо у вас немає API ключа, його можна отримати у регіональному представництві justin</p>';
+    }
+
     public function morkvajustinSelectCity()
     {
         $value1 = esc_attr(get_option('city'));

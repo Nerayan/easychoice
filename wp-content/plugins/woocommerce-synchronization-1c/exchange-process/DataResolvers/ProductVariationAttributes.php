@@ -4,6 +4,7 @@ namespace Itgalaxy\Wc\Exchange1c\ExchangeProcess\DataResolvers;
 use Itgalaxy\Wc\Exchange1c\ExchangeProcess\Helpers\ProductAttributeHelper;
 use Itgalaxy\Wc\Exchange1c\ExchangeProcess\Helpers\ProductVariation;
 use Itgalaxy\Wc\Exchange1c\ExchangeProcess\Helpers\Term;
+use Itgalaxy\Wc\Exchange1c\Includes\Logger;
 
 /**
  * Parsing and saving data on the attributes of a specific variation.
@@ -144,6 +145,14 @@ class ProductVariationAttributes
                 $optionTermID = isset($attribute['values'][$propertyValue])
                     ? $attribute['values'][$propertyValue]
                     : false;
+
+                // If the specified value does not exist
+                if ($optionTermID === false) {
+                    Logger::logChanges(
+                        "(variation - e) no value for property, value - $propertyValue , property - $propertyGuid",
+                        [(string) $element->Ид]
+                    );
+                }
             } else {
                 $uniqId1c = md5($attribute['createdTaxName'] . $propertyValue);
                 $optionTermID = Term::getTermIdByMeta($uniqId1c);

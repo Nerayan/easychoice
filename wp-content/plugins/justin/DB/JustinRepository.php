@@ -2,34 +2,36 @@
 
 namespace morkva\JustinShip\DB;
 
+use morkva\JustinShip\classes\JustinApiNew;
+
 class JustinRepository
 {
   public function getAreas()
   {
-    global $wpdb;
+    // global $wpdb;
 
-    return $wpdb->get_results("SELECT * FROM woo_justin_np_areas", ARRAY_A);
+    // return $wpdb->get_results("SELECT * FROM woo_justin_np_areas", ARRAY_A);
   }
 
   public function getCities($areaRef)
   {
 
 
-    $str = file_get_contents(JUSTIN_PLUGURL.'/classes/json/branches.json');
-    $json = json_decode($str, true);
-  //  print_r($json['result']);
-    $options = [
-    ];
+  //   $str = file_get_contents(JUSTIN_PLUGURL.'/classes/json/branches.json');
+  //   $json = json_decode($str, true);
+  // //  print_r($json['result']);
+  //   $options = [
+  //   ];
 
-      $repository = new JustinRepository();
-      $cities = $json;
-      //print_r($cities);
-      foreach ($cities as $city) {
-        //echo $city['title_ua'];
-        $options[$city['title_ua']] = $city['title_ua'];
-      }
+  //     $repository = new JustinRepository();
+  //     $cities = $json;
+  //     //print_r($cities);
+  //     foreach ($cities as $city) {
+  //       //echo $city['title_ua'];
+  //       $options[$city['title_ua']] = $city['title_ua'];
+  //     }
 
-      return $options;
+  //     return $options;
 
     //
     // global $wpdb;
@@ -44,68 +46,77 @@ class JustinRepository
 
   public function getWarehouses($cityRef)
   {
+    $justinApiNew = new JustinApiNew();
+    $apiWarehousesJson = $justinApiNew->getWarehouses(null);
+    $apiWarehouses = json_decode($apiWarehousesJson, true );
 
-    $str = file_get_contents(JUSTIN_PLUGURL.'/classes/json/branches.json');
-    $json = json_decode($str, true);
-
-
-      return $json['result'];
-
- 
+    $warehouses = isset( $apiWarehouses['data'] ) ? $apiWarehouses['data'] : false;
+    foreach ( $warehouses as $key => $value) {
+      $arr_result['result'][] = array(
+        // "number" => $value['fields']['departNumber'],
+        "adress" => $value['fields']['address'],
+        "locality" => $value['fields']['city']['descr'],
+        /*"type" => $value['fields']['TypeDepart']['enum'],
+        "format" => $value['fields']['branchType']['descr'],
+        "delivery_branch_id" => $value['fields']['branch'],*/
+        "description" => $value['fields']['descr']
+      );
+    }
+    return $arr_result['result'];
   }
 
   public function saveAreas($areas)
   {
-    global $wpdb;
+    // global $wpdb;
 
-    $wpdb->query("TRUNCATE woo_justin_np_areas");
+    // $wpdb->query("TRUNCATE woo_justin_np_areas");
 
-    foreach ($areas as $area) {
-      $wpdb->query("
-        INSERT INTO woo_justin_np_areas (ref, description)
-        VALUES ('{$area['Ref']}', '" . esc_attr($area['Description']) . "')
-      ");
-    }
+    // foreach ($areas as $area) {
+    //   $wpdb->query("
+    //     INSERT INTO woo_justin_np_areas (ref, description)
+    //     VALUES ('{$area['Ref']}', '" . esc_attr($area['Description']) . "')
+    //   ");
+    // }
   }
 
   public function saveCities($cities, $page)
   {
-    global $wpdb;
+    // global $wpdb;
 
-    if ($page === 1) {
-      $wpdb->query("TRUNCATE woo_justin_np_cities");
-    }
+    // if ($page === 1) {
+    //   $wpdb->query("TRUNCATE woo_justin_np_cities");
+    // }
 
-    foreach ($cities as $city) {
-      $wpdb->query("
-        INSERT INTO woo_justin_np_cities (ref, description, description_ru, area_ref)
-        VALUES ('{$city['Ref']}', '" . esc_attr($city['Description']) . "', '" . esc_attr($city['DescriptionRu']) . "', '{$city['Area']}')
-      ");
-    }
+    // foreach ($cities as $city) {
+    //   $wpdb->query("
+    //     INSERT INTO woo_justin_np_cities (ref, description, description_ru, area_ref)
+    //     VALUES ('{$city['Ref']}', '" . esc_attr($city['Description']) . "', '" . esc_attr($city['DescriptionRu']) . "', '{$city['Area']}')
+    //   ");
+    // }
   }
 
   public function saveWarehouses($warehouses, $page)
   {
-    global $wpdb;
+    // global $wpdb;
 
-    if ($page === 1) {
-      $wpdb->query("TRUNCATE woo_justin_np_warehouses");
-    }
+    // if ($page === 1) {
+    //   $wpdb->query("TRUNCATE woo_justin_np_warehouses");
+    // }
 
-    foreach ($warehouses as $warehouse) {
-      $wpdb->query("
-        INSERT INTO woo_justin_np_warehouses (ref, description, description_ru, city_ref, number)
-        VALUES ('{$warehouse['Ref']}', '" . esc_attr($warehouse['Description']) . "', '" . esc_attr($warehouse['DescriptionRu']) . "', '{$warehouse['CityRef']}', '" . (int)$warehouse['Number'] . "')
-      ");
-    }
+    // foreach ($warehouses as $warehouse) {
+    //   $wpdb->query("
+    //     INSERT INTO woo_justin_np_warehouses (ref, description, description_ru, city_ref, number)
+    //     VALUES ('{$warehouse['Ref']}', '" . esc_attr($warehouse['Description']) . "', '" . esc_attr($warehouse['DescriptionRu']) . "', '{$warehouse['CityRef']}', '" . (int)$warehouse['Number'] . "')
+    //   ");
+    // }
   }
 
   public function dropTables()
   {
-  	global $wpdb;
+  	// global $wpdb;
 
-  	$wpdb->query("DROP TABLE IF EXISTS woo_justin_np_areas");
-	  $wpdb->query("DROP TABLE IF EXISTS woo_justin_np_cities");
-	  $wpdb->query("DROP TABLE IF EXISTS woo_justin_np_warehouses");
+  	// $wpdb->query("DROP TABLE IF EXISTS woo_justin_np_areas");
+	  // $wpdb->query("DROP TABLE IF EXISTS woo_justin_np_cities");
+	  // $wpdb->query("DROP TABLE IF EXISTS woo_justin_np_warehouses");
   }
 }

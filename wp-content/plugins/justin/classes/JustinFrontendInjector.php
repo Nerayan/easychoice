@@ -2,7 +2,8 @@
 
 namespace morkva\JustinShip\classes;
 
-use morkva\JustinShip\Api\JustinApi;
+// use morkva\JustinShip\classes\JustinApi;
+// use morkva\JustinShip\classes\JustinApiNew;
 use morkva\JustinShip\DB\JustinRepository;
 
 if ( ! defined('ABSPATH')) {
@@ -15,10 +16,12 @@ class JustinFrontendInjector
    * @var NPTranslator
    */
   private $translator;
+  private $justinApiNew;
 
   public function __construct()
   {
     $this->translator = new NPTranslator();
+    $this->justinApiNew = new JustinApiNew();
 
     add_action('wp_head', [ $this, 'injectGlobals' ]);
     add_action('wp_enqueue_scripts', [ $this, 'injectScripts' ]);
@@ -42,12 +45,12 @@ class JustinFrontendInjector
 
     ?>
     <style>
-      .wc-ukr-shipping-np-fields {
+      .justin_shipping_method_fields {
         padding: 1px 0;
       }
 
-      .wcus-state-loading:after {
-        border-color: <?= get_option('woo_justin_spinner_color', '#dddddd'); ?>;
+      .justin-state-loading:after {
+        border-color: <?php echo get_option('woo_justin_spinner_color', '#dddddd'); ?>;
         border-left-color: #fff;
       }
     </style>
@@ -62,7 +65,7 @@ class JustinFrontendInjector
 
     wp_enqueue_style(
       'woo_justin_css',
-      JUSTIN_PLUGURL . 'assets/css/style.min.css'
+      JUSTIN_PLUGURL . 'assets/css/admin.min.css'
     );
 
     wp_enqueue_script(
@@ -84,10 +87,9 @@ class JustinFrontendInjector
 	  $areaAttributes = $this->getAreaSelectAttributes($translates['placeholder_area']);
 	  $cityAttributes = $this->getCitySelectAttributes($translates['placeholder_city']);
 	  $warehouseAttributes = $this->getWarehouseSelectAttributes($translates['placeholder_warehouse']);
-
     ?>
-      <div id="<?= JUSTIN_METHOD_NAME; ?>_fields" class="wc-ukr-shipping-np-fields">
-        <div id="nova-poshta-shipping-info">
+      <div id="<?php echo JUSTIN_METHOD_NAME; ?>_fields" class="justin_shipping_method_fields">
+        <div id="justin-shipping-info">
           <?php
           //City
           woocommerce_form_field(JUSTIN_METHOD_NAME . '_city', [
@@ -136,32 +138,35 @@ class JustinFrontendInjector
 
   private function getCitySelectAttributes($placeholder)
   {
+      $cities = array();
+      $options = array( '' => '' );
 
-    $str = file_get_contents(JUSTIN_PLUGFOLDER.'classes/json/localities.json');
-    $json = json_decode($str, true); 
-    $options = [""=>""];
-
-    if (true) {
-      $repository = new JustinRepository();
-      $cities = $json['result'];
-
-      foreach ($cities as $city) {
-        $options[$city['title_ua']] =  $city['title_ua'];
+      $apiCitiesJson = $this->justinApiNew->getCity();
+      $apiCities = json_decode($apiCitiesJson, true );
+      $cities = isset( $apiCities['data'] ) ? $apiCities['data'] : false;
+      if ( ! $cities ) {
+          wc_add_notice( '<b>Помилка API Justin (Cities):</b><i> Не можливо отримати дані про населені пункти.</i>', 'error' );
       }
-    }
+      if ( null !== $apiCities['response']['message'] && ! empty( $apiCities['response']['message'] ) && 'ОК' != $apiCities['response']['message'] ) {
+          wc_add_notice( '<b>Помилка API Justin (Cities):</b><i> ' . $apiCities['response']['message'] . '</i>', 'error' );
+      }
 
+      if ( is_array( $cities ) && ! empty( $cities ) ) {
+          foreach ($cities as $city) {
+            $options[$city['fields']['descr']] = $city['fields']['descr'];
+          }
+      }
 
-    return [
-      'options' => $options,
-      'default' => ''
-    ];
+      return array(
+              'options' => $options,
+              'default' => ''
+             );
   }
 
   private function getWarehouseSelectAttributes($placeholder)
   {
-    $options = [
-      '' => ''
-    ];
+
+    $options = array( '' => '' );
 
     return [
       'options' => $options,

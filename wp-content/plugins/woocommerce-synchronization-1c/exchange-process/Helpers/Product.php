@@ -139,10 +139,12 @@ class Product
             self::setCategory($productEntry['ID'], $productEntry['categoryID']);
 
             Logger::logChanges(
-                '(product) Updated product, ID - ' . $productEntry['ID'],
+                '(product) Updated product, ID - ' . $productEntry['ID'] . ', status - ' . self::getStatus($productEntry['ID']),
                 [get_post_meta($productEntry['ID'], '_id_1c', true)]
             );
         } else {
+            Logger::logChanges('(product) insert start', [(string) $element->Ид]);
+
             $params = [
                 'post_title' => $productEntry['title'],
                 'post_author' => $postAuthor,
@@ -184,12 +186,14 @@ class Product
             }
 
             Logger::logChanges(
-                '(product) Added product, ID - ' . $productEntry['ID'],
+                '(product) added product, ID - ' . $productEntry['ID'],
                 [$productMeta['_id_1c']]
             );
 
             self::setCategory($productEntry['ID'], $productEntry['categoryID']);
             self::hide($productEntry['ID'], true);
+
+            Logger::logChanges('(product) insert end', [$productMeta['_id_1c']]);
         }
 
         /*
@@ -270,7 +274,12 @@ class Product
     public static function show($productID, $withSetStatus = false, $statusValue = 'instock')
     {
         if ($withSetStatus) {
-            update_post_meta($productID, '_stock_status', $statusValue);
+            $oldStatus = get_post_meta($productID, '_stock_status', true);
+
+            if ($oldStatus !== $statusValue) {
+                \update_post_meta($productID, '_stock_status', $statusValue);
+                self::triggerWooCommerceChangeStockStatusHook($productID, $oldStatus, $statusValue);
+            }
         }
 
         $setTerms = [];
@@ -289,7 +298,12 @@ class Product
         }
 
         if ($withSetStatus) {
-            \update_post_meta($productID, '_stock_status', 'outofstock');
+            $oldStatus = get_post_meta($productID, '_stock_status', true);
+
+            if ($oldStatus !== 'outofstock') {
+                \update_post_meta($productID, '_stock_status', 'outofstock');
+                self::triggerWooCommerceChangeStockStatusHook($productID, $oldStatus, 'outofstock');
+            }
         }
 
         $setTerms = [
@@ -468,5 +482,54 @@ class Product
         }
 
         return false;
+    }
+
+    /**
+     * Calling standard hooks when changing the stock status of a product / variation.
+     *
+     * @param int $productID Product or Variation ID.
+     * @param string $oldStatus Current status of the stock.
+     * @param string $newStatus New status of the stock.
+     *
+     * @return void
+     */
+    private static function triggerWooCommerceChangeStockStatusHook($productID, $oldStatus, $newStatus)
+    {
+        $product = \wc_get_product($productID);
+
+        if (
+            !$product ||
+            is_wp_error($product) ||
+            !method_exists($product, 'is_type')
+        ) {
+            return;
+        }
+
+        if ($product->is_type('variation') ) {
+            do_action('woocommerce_variation_set_stock_status', $productID, $newStatus, $product);
+
+            return;
+        }
+
+        do_action('woocommerce_product_set_stock_status', $productID, $newStatus, $product);
+    }
+
+    /**
+     * Getting status value by ID.
+     *
+     * @param int $productID
+     *
+     * @return string|null
+     */
+    private static function getStatus($productID)
+    {
+        global $wpdb;
+
+        return $wpdb->get_var(
+            $wpdb->prepare(
+                "SELECT `post_status` FROM `{$wpdb->posts}` WHERE `ID` = %d",
+                $productID
+            )
+        );
     }
 }

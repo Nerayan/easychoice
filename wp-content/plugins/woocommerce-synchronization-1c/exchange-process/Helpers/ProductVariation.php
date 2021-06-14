@@ -14,11 +14,12 @@ class ProductVariation
      * @param array $variationEntry
      * @param int $postAuthor
      * @param bool $onlyCharacteristics
+     * @param bool $ignoreImage
      *
      * @return array
      * @throws \Exception
      */
-    public static function mainData($element, $variationEntry, $postAuthor, $onlyCharacteristics = false)
+    public static function mainData($element, $variationEntry, $postAuthor, $onlyCharacteristics = false, $ignoreImage = false)
     {
         $settings = get_option(Bootstrap::OPTIONS_KEY, []);
         $isNewVariation = empty($variationEntry['ID']);
@@ -86,7 +87,10 @@ class ProductVariation
         self::saveMetaValue($variationEntry['ID'], '_md5_offer', $offerHash, $variationEntry['post_parent']);
 
         // variation image processing
-        if ($isNewVariation || empty($settings['skip_post_images'])) {
+        if (
+            !$ignoreImage &&
+            ($isNewVariation || empty($settings['skip_post_images']))
+        ) {
             VariationImages::process($element, $variationEntry['ID'], $postAuthor);
         }
 
@@ -109,15 +113,25 @@ class ProductVariation
 
         // update variation
         if (!$isNewVariation) {
-            $wpdb->update(
-                $wpdb->posts,
+            /**
+             * Filters the set of values for the product variation being updated.
+             *
+             * @since 1.93.0
+             *
+             * @param array $params Array a set of values for the product variation post.
+             * @param \SimpleXMLElement $element 'Предложение' (or `Товар` for old format {@see resolveOldVariant()}) node object.
+             */
+            $params = apply_filters(
+                'itglx_wc1c_update_post_variation_params',
                 [
                     'post_title' => (string) $element->Наименование,
                     'post_name' => sanitize_title((string) $element->Наименование),
                     'post_parent' => $variationEntry['post_parent']
                 ],
-                ['ID' => $variationEntry['ID']]
+                $element
             );
+
+            $wpdb->update($wpdb->posts, $params, ['ID' => $variationEntry['ID']]);
 
             Logger::logChanges(
                 '(variation) Updated, ID - '
@@ -129,8 +143,16 @@ class ProductVariation
         }
         // create variation
         else {
-            // https://developer.wordpress.org/reference/functions/wp_insert_post/
-            $variationEntry['ID'] = wp_insert_post(
+            /**
+             * Filters the set of values for the product variation being created.
+             *
+             * @since 1.93.0
+             *
+             * @param array $params Array a set of values for the product variation post.
+             * @param \SimpleXMLElement $element 'Предложение' (or `Товар` for old format {@see resolveOldVariant()}) node object.
+             */
+            $params = apply_filters(
+                'itglx_wc1c_insert_post_variation_params',
                 [
                     'post_title' => (string) $element->Наименование,
                     'post_type' => 'product_variation',
@@ -142,8 +164,14 @@ class ProductVariation
                      * processing the stock.
                      */
                     'post_status' => 'private'
-                ]
+                ],
+                $element
             );
+
+            /**
+             * @link https://developer.wordpress.org/reference/functions/wp_insert_post/
+             */
+            $variationEntry['ID'] = \wp_insert_post($params);
 
             self::saveMetaValue($variationEntry['ID'], '_id_1c', (string) $element->Ид, $variationEntry['post_parent']);
 
@@ -205,7 +233,7 @@ class ProductVariation
 
         $variationEntry['ID'] = self::getIdByMeta((string) $element->Ид, '_id_1c');
 
-        self::mainData($element, $variationEntry, $postAuthor, true);
+        self::mainData($element, $variationEntry, $postAuthor, true, true);
     }
 
     /**

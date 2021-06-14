@@ -222,6 +222,18 @@ class Groups
     }
 
     /**
+     * Checking if the reader is in the position with group node.
+     *
+     * @param \XMLReader $reader
+     *
+     * @return bool
+     */
+    public static function isGroupNode(\XMLReader $reader)
+    {
+        return in_array($reader->name, ['Группы', 'Группа'], true);
+    }
+
+    /**
      * Checking whether the processing of product categories is disabled in the settings.
      *
      * @return bool

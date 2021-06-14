@@ -107,7 +107,7 @@ class ParserXmlOrders
 
             update_post_meta($order->get_id(), '_itgxl_wc1c_order_requisites', $requisites);
 
-            $resultStatus = $this->resolveResultStatus($requisites, $element);
+            $resultStatus = $this->resolveResultStatus($requisites, $element, $order);
 
             if (empty($resultStatus)) {
                 Logger::logProtocol('empty result status - ignore', [(string) $element->Ид]);
@@ -223,7 +223,7 @@ class ParserXmlOrders
         $order->save();
     }
 
-    private function resolveResultStatus($requisites, $element)
+    private function resolveResultStatus($requisites, $element, $order)
     {
         $settings = get_option(Bootstrap::OPTIONS_KEY, []);
 
@@ -264,7 +264,19 @@ class ParserXmlOrders
             $resultStatus = $settings['handle_get_order_status_change_if_deleted'];
         }
 
-        return $resultStatus;
+        /**
+         * Filters the status value to be set for the order.
+         *
+         * It is used when processing data on orders that come back to the site.
+         *
+         * @since 1.94.0
+         *
+         * @param string $resultStatus Current order status based on settings and data. Default: ''.
+         * @param string[] $requisites A set of names and values of order details, in the form key => value.
+         * @param \SimpleXmlElement $element Node object `Документ`.
+         * @param \WC_Order $order
+         */
+        return \apply_filters('itglx_wc1c_handle_order_result_status', $resultStatus, $requisites, $element, $order);
     }
 
     private function fixEmptyDateRequisites($requisites)

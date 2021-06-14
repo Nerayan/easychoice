@@ -502,6 +502,16 @@ class MJS_Plugin_Loader
 
             array(
                 'option_group' => 'morkvajustin_options_group',
+                'option_name' => 'morkvajustin_login'
+            ) ,
+
+            array(
+                'option_group' => 'morkvajustin_options_group',
+                'option_name' => 'morkvajustin_password'
+            ) ,
+
+            array(
+                'option_group' => 'morkvajustin_options_group',
                 'option_name' => 'zone_example'
             ) ,
 
@@ -640,6 +650,34 @@ class MJS_Plugin_Loader
                 'section' => 'morkvajustin_admin_index',
                 'args' => array(
                     'label_for' => 'morkvajustin_apikey',
+                    'class' => 'basesettings allsettings show'
+                )
+            ) ,
+            array(
+                'id' => 'morkvajustin_login',
+                'title' => 'Login',
+                'callback' => array(
+                    $this->callbacks,
+                    'morkvajustingetlogin'
+                ) ,
+                'page' => 'morkvajustin_plugin',
+                'section' => 'morkvajustin_admin_index',
+                'args' => array(
+                    'label_for' => 'morkvajustin_login',
+                    'class' => 'basesettings allsettings show'
+                )
+            ) ,
+            array(
+                'id' => 'morkvajustin_password',
+                'title' => 'Password',
+                'callback' => array(
+                    $this->callbacks,
+                    'morkvajustingetpassword'
+                ) ,
+                'page' => 'morkvajustin_plugin',
+                'section' => 'morkvajustin_admin_index',
+                'args' => array(
+                    'label_for' => 'morkvajustin_password',
                     'class' => 'basesettings allsettings show'
                 )
             ) ,

@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: WooCommerce 1C\n"
-"POT-Creation-Date: 2021-04-13 21:36+0300\n"
+"POT-Creation-Date: 2021-05-27 21:43+0300\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -52,8 +52,8 @@ msgstr "Ответа пока не отправлялось"
 msgid "(no files)"
 msgstr "(нет файлов)"
 
-#: admin/AjaxActions/LogsCountAndSizeAjaxAction.php:88
-#: admin/AjaxActions/TempCountAndSizeAjaxAction.php:88
+#: admin/AjaxActions/LogsCountAndSizeAjaxAction.php:89
+#: admin/AjaxActions/TempCountAndSizeAjaxAction.php:89
 #, php-format
 msgid "(files - %d, size - %s MB)"
 msgstr "(файлов - %d, размер - %s MB)"
@@ -83,8 +83,9 @@ msgstr "нет данных"
 #: admin/PageParts/CheckExistsWooCommerceAttributesTableColumn.php:22
 #: admin/PageParts/CheckPhpExtensionNotice.php:12
 #: admin/PageParts/CheckPhpExtensionNotice.php:28
-#: admin/PageParts/CheckPhpExtensionNotice.php:44 admin/SettingsPage.php:63
-#: admin/SettingsPage.php:64
+#: admin/PageParts/CheckPhpExtensionNotice.php:44 admin/SettingsPage.php:62
+#: admin/SettingsPage.php:63 includes/Bootstrap.php:61
+#: includes/Bootstrap.php:167
 msgid "1C Data Exchange"
 msgstr "1C Обмен данными"
 
@@ -101,7 +102,7 @@ msgid "Please verify the purchase code on the plugin settings page - "
 msgstr "Пожалуйста, укажите код покупки на странице настроек плагина - "
 
 #: admin/Other/AdminNoticeIfNotVerified.php:38
-#: admin/PageParts/SectionForExchangeOrders.php:359 admin/SettingsPage.php:128
+#: admin/PageParts/SectionForExchangeOrders.php:372 admin/SettingsPage.php:127
 msgid "open"
 msgstr "открыть"
 
@@ -323,7 +324,7 @@ msgid "Date / time of order creation no earlier:"
 msgstr "Дата/время создания заказа не ранее:"
 
 #: admin/PageParts/SectionForExchangeOrders.php:96
-#: admin/PageParts/SectionForExchangeOrders.php:237
+#: admin/PageParts/SectionForExchangeOrders.php:250
 msgid ""
 "Use this setting if you want to set a lower bound for the date of creation "
 "of the order that can be unloaded. If the order is created earlier than this "
@@ -445,11 +446,29 @@ msgstr ""
 "Если включено, то данные по контрагенту, то есть \"Контрагенты->Контрагент"
 "\", не добавляются в заказ."
 
-#: admin/PageParts/SectionForExchangeOrders.php:206
+#: admin/PageParts/SectionForExchangeOrders.php:204
+msgid "Contragent"
+msgstr "Контрагент"
+
+#: admin/PageParts/SectionForExchangeOrders.php:208
+msgid "Division of contragents into individuals and legal"
+msgstr "Деление контрагентов на физ. и юр. лица"
+
+#: admin/PageParts/SectionForExchangeOrders.php:210
+msgid ""
+"If enabled, then when company field is filled in the order, the contragent "
+"will beunloaded as a legal, otherwise, as individual. By default, the "
+"contragent is always unloaded as individual."
+msgstr ""
+"Если включено, то при заполненном поле компании у заказа, контрагент будет "
+"выгружен, как юр. лицо, иначе, как физ. лицо. По умолчанию, контрагент "
+"всегда выгружается как физ. лицо."
+
+#: admin/PageParts/SectionForExchangeOrders.php:219
 msgid "Order statuses for prop `Заказ оплачен` = `true`:"
 msgstr "Статусы заказа для реквизита `Заказ оплачен` = `true`:"
 
-#: admin/PageParts/SectionForExchangeOrders.php:212
+#: admin/PageParts/SectionForExchangeOrders.php:225
 msgid ""
 "Select the order statuses at which you want to transfer the requisite in the "
 "value `true`, if the order status is not one of the selected, `false` will "
@@ -459,15 +478,15 @@ msgstr ""
 "`true`, если статус заказа не из выбранных, то будет передано `false`. Если "
 "заполнена настройка со способами оплаты, то учитываются оба условия."
 
-#: admin/PageParts/SectionForExchangeOrders.php:217
+#: admin/PageParts/SectionForExchangeOrders.php:230
 msgid "Requisite `Заказ оплачен`"
 msgstr "Реквизит `Заказ оплачен`"
 
-#: admin/PageParts/SectionForExchangeOrders.php:221
+#: admin/PageParts/SectionForExchangeOrders.php:234
 msgid "Payment methods for prop `Заказ оплачен` = `true`:"
 msgstr "Способы оплаты для реквизита `Заказ оплачен` = `true`:"
 
-#: admin/PageParts/SectionForExchangeOrders.php:227
+#: admin/PageParts/SectionForExchangeOrders.php:240
 msgid ""
 "Select the payment methods at which you want to transfer the requisite in "
 "the value `true`, if the order status is not one of the selected, `false` "
@@ -477,19 +496,19 @@ msgstr ""
 "`true`, если способ оплаты не из выбранных, то будет передано `false`. Если "
 "заполнена настройка со статусами, то учитываются оба условия."
 
-#: admin/PageParts/SectionForExchangeOrders.php:234
+#: admin/PageParts/SectionForExchangeOrders.php:247
 msgid "Names of order statuses for 1C"
 msgstr "Названия статусов заказа для 1С (реквизит \"Статус заказа\")"
 
-#: admin/PageParts/SectionForExchangeOrders.php:247
+#: admin/PageParts/SectionForExchangeOrders.php:260
 msgid "Loading changes (for previously unloaded orders)"
 msgstr "Загрузка изменений (по ранее выгруженным заказам)"
 
-#: admin/PageParts/SectionForExchangeOrders.php:254
+#: admin/PageParts/SectionForExchangeOrders.php:267
 msgid "Handle status change"
 msgstr "Обрабатывать изменение статуса"
 
-#: admin/PageParts/SectionForExchangeOrders.php:256
+#: admin/PageParts/SectionForExchangeOrders.php:269
 msgid ""
 "If enabled, when exchanging with 1C, then the site will accept and process "
 "changes in the status of the order when 1C sends this data."
@@ -499,37 +518,37 @@ msgstr ""
 "проверяется последовательно, сверху — вниз, то есть итоговый статус будет по "
 "последнему выполненному условию."
 
-#: admin/PageParts/SectionForExchangeOrders.php:261
+#: admin/PageParts/SectionForExchangeOrders.php:274
 msgid "Change of status by requisites"
 msgstr "Изменение статуса по реквизитам"
 
-#: admin/PageParts/SectionForExchangeOrders.php:266
+#: admin/PageParts/SectionForExchangeOrders.php:279
 msgid "Order status, if there is \"Дата оплаты по 1С\":"
 msgstr "Статус заказа, если есть \"Дата оплаты по 1С\":"
 
-#: admin/PageParts/SectionForExchangeOrders.php:274
+#: admin/PageParts/SectionForExchangeOrders.php:287
 msgid "Order status, if there is \"Дата отгрузки по 1С\":"
 msgstr "Статус заказа, если есть \"Дата отгрузки по 1С\":"
 
-#: admin/PageParts/SectionForExchangeOrders.php:282
+#: admin/PageParts/SectionForExchangeOrders.php:295
 msgid ""
 "Order status, if there is \"Дата оплаты по 1С\" and \"Дата отгрузки по 1С\":"
 msgstr ""
 "Статус заказа, если есть \"Дата оплаты по 1С\" и \"Дата отгрузки по 1С\":"
 
-#: admin/PageParts/SectionForExchangeOrders.php:289
+#: admin/PageParts/SectionForExchangeOrders.php:302
 msgid "Order status if \"Проведен\" = \"true\":"
 msgstr "Статус заказа, если \"Проведен\" = \"true\":"
 
-#: admin/PageParts/SectionForExchangeOrders.php:295
+#: admin/PageParts/SectionForExchangeOrders.php:308
 msgid "Order status if \"ПометкаУдаления\" = \"true\":"
 msgstr "Статус заказа, если \"ПометкаУдаления\" = \"true\":"
 
-#: admin/PageParts/SectionForExchangeOrders.php:303
+#: admin/PageParts/SectionForExchangeOrders.php:316
 msgid "Handle changes in the set of products"
 msgstr "Обрабатывать изменения в составе товаров"
 
-#: admin/PageParts/SectionForExchangeOrders.php:305
+#: admin/PageParts/SectionForExchangeOrders.php:318
 msgid ""
 "If enabled, when exchanging with 1C, then the site will accept and process "
 "changes in the set of products of the order when 1C sends this data (Add, "
@@ -541,15 +560,15 @@ msgstr ""
 "удаление, количество, цена). Изменения применяются только в том случае, если "
 "у товара/вариации на сайте есть guid из 1С."
 
-#: admin/PageParts/SectionForExchangeOrders.php:340
+#: admin/PageParts/SectionForExchangeOrders.php:353
 msgid "At the next request, 1C will receive the following orders in response"
 msgstr "При следующем запросе, 1С получит в ответ следующие заказы"
 
-#: admin/PageParts/SectionForExchangeOrders.php:348
+#: admin/PageParts/SectionForExchangeOrders.php:361
 msgid "There are no orders to be unloaded at the next request."
 msgstr "Пока нет заказов, которые будут выгружены при следующем запросе."
 
-#: admin/PageParts/SectionForExchangeOrders.php:355
+#: admin/PageParts/SectionForExchangeOrders.php:368
 msgid ""
 "You can see the content that will receive 1C in response to the following "
 "request"
@@ -652,31 +671,31 @@ msgid ""
 "unloading."
 msgstr "Выбор появится, если в выгрузке будет больше 1 типа цен."
 
-#: admin/PageParts/SectionLicense.php:69
+#: admin/PageParts/SectionLicense.php:35
 msgid "License verification"
 msgstr "Проверка лицензии"
 
-#: admin/PageParts/SectionLicense.php:72
+#: admin/PageParts/SectionLicense.php:38
 msgid "verified"
 msgstr "проверен"
 
-#: admin/PageParts/SectionLicense.php:76
+#: admin/PageParts/SectionLicense.php:42
 msgid "please verify your purchase code"
 msgstr "пожалуйста, укажите код покупки"
 
-#: admin/PageParts/SectionLicense.php:85
+#: admin/PageParts/SectionLicense.php:51
 msgid "Purchase code"
 msgstr "Код покупки"
 
-#: admin/PageParts/SectionLicense.php:103
+#: admin/PageParts/SectionLicense.php:69
 msgid "Where Is My Purchase Code?"
 msgstr "Где найти код покупки?"
 
-#: admin/PageParts/SectionLicense.php:112
+#: admin/PageParts/SectionLicense.php:78
 msgid "Verify"
 msgstr "Активировать"
 
-#: admin/PageParts/SectionLicense.php:117
+#: admin/PageParts/SectionLicense.php:83
 msgid "Unverify"
 msgstr "Деактивировать"
 
@@ -1292,34 +1311,34 @@ msgstr ""
 msgid "Documentation"
 msgstr "Документация"
 
-#: admin/SettingsPage.php:100
+#: admin/SettingsPage.php:99
 msgid "Settings have been saved."
 msgstr "Настройки сохранены."
 
-#: admin/SettingsPage.php:117
+#: admin/SettingsPage.php:116
 msgid "Sync settings with 1C"
 msgstr "Настройки синхронизации с 1С"
 
-#: admin/SettingsPage.php:121
+#: admin/SettingsPage.php:120
 msgid "Plugin documentation:"
 msgstr "Документация плагина:"
 
-#: admin/SettingsPage.php:129
+#: admin/SettingsPage.php:128
 msgid "Or open the folder `documentation` in the plugin and open index.html"
 msgstr "Или откройте папку `documentation` в плагине и откройте index.html"
 
-#: admin/SettingsPage.php:137
+#: admin/SettingsPage.php:136
 msgid ""
 "You can also get additional information on various aspects of unloading:"
 msgstr ""
 "Также вы можете получить дополнительную информацию по различным аспектам "
 "выгрузки:"
 
-#: admin/SettingsPage.php:141
+#: admin/SettingsPage.php:140
 msgid "here"
 msgstr "здесь"
 
-#: admin/SettingsPage.php:160
+#: admin/SettingsPage.php:159
 msgid "Save settings"
 msgstr "Сохранить настройки"
 
@@ -1336,50 +1355,46 @@ msgstr ""
 msgid "Order status changed through 1C, order id - "
 msgstr "Статус заказа изменен через 1С, заказ - "
 
-#: exchange-process/RequestProcessing/CatalogModeComplete.php:28
+#: exchange-process/RequestProcessing/CatalogModeComplete.php:27
 msgid "Package complete!"
 msgstr "Пакет обработан!"
 
-#: exchange-process/RequestProcessing/CatalogModeDeactivate.php:22
+#: exchange-process/RequestProcessing/CatalogModeDeactivate.php:21
 msgid "Task deactivate registered!"
 msgstr "Задача на деактивацию зарегистрирована!"
 
 #: exchange-process/RequestProcessing/CatalogModeFile.php:21
-#: exchange-process/RequestProcessing/SaleModeFile.php:45
+#: exchange-process/RequestProcessing/SaleModeFile.php:43
 msgid "Error reading http stream!"
 msgstr "Ошибка чтения http потока!"
 
 #: exchange-process/RequestProcessing/CatalogModeFile.php:32
-#: exchange-process/RequestProcessing/SaleModeFile.php:56
+#: exchange-process/RequestProcessing/SaleModeFile.php:54
 msgid "The directory / file is not writable"
 msgstr "Каталог/файл недоступен для записи"
 
 #: exchange-process/RequestProcessing/CatalogModeFile.php:42
-#: exchange-process/RequestProcessing/SaleModeFile.php:66
+#: exchange-process/RequestProcessing/SaleModeFile.php:64
 msgid "Error writing file!"
 msgstr "Ошибка записи файла!"
 
-#: exchange-process/RequestProcessing/CatalogModeImport.php:33
+#: exchange-process/RequestProcessing/CatalogModeImport.php:34
 msgid "Archive unpacked"
 msgstr "Архив распакован"
 
-#: exchange-process/RequestProcessing/CatalogModeImport.php:113
-#: exchange-process/RequestProcessing/CatalogModeImport.php:117
+#: exchange-process/RequestProcessing/CatalogModeImport.php:111
 msgid "Processing groups"
 msgstr "Обработка групп"
 
-#: exchange-process/RequestProcessing/CatalogModeImport.php:144
-#: exchange-process/RequestProcessing/CatalogModeImport.php:147
+#: exchange-process/RequestProcessing/CatalogModeImport.php:130
 msgid "Reading file"
 msgstr "Чтение файла"
 
-#: exchange-process/RequestProcessing/CatalogModeImport.php:167
-#: exchange-process/RequestProcessing/CatalogModeImport.php:175
+#: exchange-process/RequestProcessing/CatalogModeImport.php:149
 msgid "Import file"
 msgstr "Импорт файла"
 
-#: exchange-process/RequestProcessing/CatalogModeImport.php:171
-#: exchange-process/RequestProcessing/CatalogModeImport.php:179
+#: exchange-process/RequestProcessing/CatalogModeImport.php:151
 msgid "completed!"
 msgstr "завершен!"
 
@@ -1388,35 +1403,23 @@ msgstr "завершен!"
 msgid "Initialization Error!"
 msgstr "Ошибка инициализации!"
 
-#: exchange-process/RootProcessStarter.php:182
+#: exchange-process/RootProcessStarter.php:161
 msgid "Error! Setting `Enable exchange` is not enabled."
 msgstr "Ошибка! Настройка `Включить обмен` не включена."
 
-#: exchange-process/RootProcessStarter.php:190
+#: exchange-process/RootProcessStarter.php:169
 msgid "Please verify the purchase code on the plugin settings page."
 msgstr "Пожалуйста, укажите код покупки на странице настроек плагина."
 
-#: exchange-process/RootProcessStarter.php:214
+#: exchange-process/RootProcessStarter.php:193
 msgid ""
 "Error! Empty login or password! Most likely your PHP is operating in "
 "cgi(fcgi) mode and processing of the authorization header is not configured."
 msgstr ""
 
-#: exchange-process/RootProcessStarter.php:231
+#: exchange-process/RootProcessStarter.php:210
 msgid "Error! Wrong login or password!"
 msgstr "Ошибка! Неверный логин или пароль!"
-
-#: includes/Bootstrap.php:134
-msgid ""
-"To run the plug-in, you must first install and activate the WooCommerce "
-"plugin."
-msgstr ""
-"Для работы плагина сначала необходимо установить и активировать плагин "
-"Woocommerce."
-
-#: includes/Bootstrap.php:138
-msgid "Error while activating the WooCommerce - 1C:Enterprise - Data Exchange"
-msgstr "Ошибка при активации WooCommerce - 1C: Предприятие - Обмен данными"
 
 #: includes/Helper.php:134
 msgid "Exists, but is not available for writing. Change permissions."
@@ -1442,6 +1445,17 @@ msgstr ""
 #: includes/Logger.php:135
 msgid "An error occurred while writing the log file."
 msgstr ""
+
+#~ msgid ""
+#~ "To run the plug-in, you must first install and activate the WooCommerce "
+#~ "plugin."
+#~ msgstr ""
+#~ "Для работы плагина сначала необходимо установить и активировать плагин "
+#~ "Woocommerce."
+
+#~ msgid ""
+#~ "Error while activating the WooCommerce - 1C:Enterprise - Data Exchange"
+#~ msgstr "Ошибка при активации WooCommerce - 1C: Предприятие - Обмен данными"
 
 #~ msgid "Price and stock"
 #~ msgstr "Цена и остаток"

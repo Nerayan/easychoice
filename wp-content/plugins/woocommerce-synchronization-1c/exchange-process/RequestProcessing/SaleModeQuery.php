@@ -6,6 +6,9 @@ use Itgalaxy\Wc\Exchange1c\Includes\Logger;
 
 class SaleModeQuery
 {
+    /**
+     * @return void
+     */
     public static function process()
     {
         $version = self::resolveVersion();
@@ -95,11 +98,19 @@ class SaleModeQuery
         }
     }
 
+    /**
+     * @return bool
+     */
     public static function hasNewOrders()
     {
         return !empty(self::getOrders(false));
     }
 
+    /**
+     * @param bool $withLog
+     *
+     * @return array
+     */
     public static function getOrders($withLog = true)
     {
         global $wpdb;
@@ -175,9 +186,51 @@ class SaleModeQuery
             );
         }
 
-        return $orders;
+        // if the request is not from 1C or the set is empty, then we will return it immediately
+        if (is_admin() || isset($_GET['manual-1c-import']) || empty($orders)) {
+            return $orders;
+        }
+
+        /**
+         * The following logic is needed to prevent the process of receiving orders from hanging in the new protocol.
+         *
+         * After receiving orders, according to the new protocol, requests for receiving are repeated as long
+         * as there was at least one order in the previous response, and only when there are no orders,
+         * requests for receiving are terminated and a request for successful processing is received.
+         *
+         * For this reason, it is necessary to remember and exclude orders that have already been sent
+         * in this exchange session.
+         */
+
+        $alreadySent = !empty($_SESSION['sentOrderList']) ? $_SESSION['sentOrderList'] : [];
+
+        // if the set has already been sent is empty, then we will remember and return everything
+        if (empty($alreadySent)) {
+            $_SESSION['sentOrderList'] = $orders;
+
+            return $orders;
+        }
+
+        $filteredOrderList = [];
+
+        foreach ($orders as $orderID) {
+            // if the order has already been sent, then we ignore
+            if (in_array($orderID, $alreadySent)) {
+                continue;
+            }
+
+            $alreadySent[] = $orderID;
+            $filteredOrderList[] = $orderID;
+        }
+
+        $_SESSION['sentOrderList'] = $alreadySent;
+
+        return $filteredOrderList;
     }
 
+    /**
+     * @return string
+     */
     private static function resolveVersion()
     {
         $settings = get_option(Bootstrap::OPTIONS_KEY);
@@ -195,7 +248,12 @@ class SaleModeQuery
         return $version;
     }
 
-    private static function getCurrency($order)
+    /**
+     * @param \WC_Order $order
+     *
+     * @return string
+     */
+    private static function getCurrency(\WC_Order $order)
     {
         $settings = get_option(Bootstrap::OPTIONS_KEY);
 
@@ -221,7 +279,12 @@ class SaleModeQuery
         return $currency;
     }
 
-    private static function sendResponse($xml)
+    /**
+     * @param \SimpleXMLElement $xml
+     *
+     * @return void
+     */
+    private static function sendResponse(\SimpleXMLElement $xml)
     {
         $settings = get_option(Bootstrap::OPTIONS_KEY);
         $resultEncoding = 'windows-1251';
@@ -254,6 +317,9 @@ class SaleModeQuery
         }
     }
 
+    /**
+     * @param string $version
+     */
     private static function notEnabled($version)
     {
         self::sendResponse(self::getStartedXmlObject($version));
@@ -265,6 +331,11 @@ class SaleModeQuery
         exit();
     }
 
+    /**
+     * @param string $version
+     *
+     * @return \SimpleXMLElement
+     */
     private static function getStartedXmlObject($version)
     {
         $dom = new \DOMDocument();
@@ -282,7 +353,13 @@ class SaleModeQuery
         return $xml;
     }
 
-    private static function generateOrderContragent($document, $order)
+    /**
+     * @param \SimpleXMLElement $document
+     * @param \WC_Order $order
+     *
+     * @return void
+     */
+    private static function generateOrderContragent(\SimpleXMLElement $document, \WC_Order $order)
     {
         $settings = get_option(Bootstrap::OPTIONS_KEY);
 
@@ -300,48 +377,77 @@ class SaleModeQuery
             return;
         }
 
-        $contactData = [];
+        $contragentData = [
+            'Ид' => $order->get_customer_id(),
+            'Роль' => 'Покупатель'
+        ];
+
+        // if division is enabled, and the company is indicated in the order
+        if (
+            !empty($settings['send_orders_division_contragent_into_ind_and_legal']) &&
+            !empty($order->get_billing_company())
+        ) {
+            $contragentData['Наименование'] = htmlspecialchars($order->get_billing_company());
+
+            /**
+             * Based on the presence of this node, the contact will be identified as a legal.
+             * Attention! The contragent must not contain node `ПолноеНаименование`, otherwise it will be identified
+             * as an individual.
+             */
+            $contragentData['ОфициальноеНаименование'] = $contragentData['Наименование'];
+            $contragentData['Адрес'] = [
+                'Представление' => htmlspecialchars(self::resolveAddress('billing', $order)),
+                'АдресноеПоле' => self::resolveContragentAddressRegistration($order)
+            ];
+
+            $name = $order->get_billing_last_name() . ' ' . $order->get_billing_first_name();
+
+            $contragentData['Представители'] = [
+                'Представитель' => [
+                    [
+                        'Контрагент' => [
+                            'Отношение' => 'Контактное лицо',
+                            'Ид' => md5($name),
+                            'Наименование' => htmlspecialchars($name)
+                        ],
+                        // for compatibility
+                        'Отношение' => 'Контактное лицо',
+                        'Ид' => md5($name),
+                        'Наименование' => htmlspecialchars($name)
+                    ]
+                ]
+            ];
+        } else {
+            $contragentData['Наименование'] = htmlspecialchars(
+                $order->get_billing_last_name() . ' ' . $order->get_billing_first_name()
+            );
+            $contragentData['ПолноеНаименование'] = $contragentData['Наименование'];
+            $contragentData['Фамилия'] = htmlspecialchars($order->get_billing_last_name());
+            $contragentData['Имя'] = htmlspecialchars($order->get_billing_first_name());
+            $contragentData['АдресРегистрации'] = [
+                'Представление' => htmlspecialchars(self::resolveAddress('billing', $order)),
+                'АдресноеПоле' => self::resolveContragentAddressRegistration($order)
+            ];
+        }
+
+        $contragentData['Контакты'] = ['Контакт' => []];
 
         if ($order->get_billing_email()) {
-            $contactData[] = [
+            $contragentData['Контакты']['Контакт'][] = [
                 'Тип' => 'Почта',
                 'Значение' => $order->get_billing_email()
             ];
         }
 
         if ($order->get_billing_phone()) {
-            $contactData[] = [
+            $contragentData['Контакты']['Контакт'][] = [
                 'Тип' => 'ТелефонРабочий',
                 'Значение' => htmlspecialchars($order->get_billing_phone()),
                 'Представление' => htmlspecialchars($order->get_billing_phone())
             ];
         }
 
-        $contragentData = [
-            'Ид' => $order->get_customer_id(),
-            'Роль' => 'Покупатель',
-            'Наименование' => htmlspecialchars(
-                $order->get_billing_last_name() . ' ' . $order->get_billing_first_name()
-            ),
-            'ПолноеНаименование' => htmlspecialchars(
-                $order->get_billing_last_name() . ' ' . $order->get_billing_first_name()
-            ),
-            'Фамилия' => htmlspecialchars($order->get_billing_last_name()),
-            'Имя' => htmlspecialchars($order->get_billing_first_name()),
-            'АдресРегистрации' => [
-                'Представление' => htmlspecialchars(self::resolveAddress('billing', $order)),
-                'АдресноеПоле' => self::resolveContragentAddressRegistration($order)
-            ],
-            'Контакты' => [
-                'Контакт' => $contactData
-            ]
-        ];
-
-        $contragentData = apply_filters(
-            'itglx_wc1c_order_xml_contragent_data_array',
-            $contragentData,
-            $order
-        );
+        $contragentData = apply_filters('itglx_wc1c_order_xml_contragent_data_array', $contragentData, $order);
 
         if (empty($contragentData)) {
             return;
@@ -370,7 +476,15 @@ class SaleModeQuery
                                 $level3 = $level2->addChild(!is_numeric($level3name) ? $level3name : $level2name);
 
                                 foreach ($level3value as $level4name => $level4value) {
-                                    $level3->addChild($level4name, $level4value);
+                                    if (!is_array($level4value)) {
+                                        $level3->addChild($level4name, $level4value);
+                                    } else {
+                                        $level4 = $level3->addChild(!is_numeric($level4name) ? $level4name : $level3name);
+
+                                        foreach ($level4value as $level5name => $level5value) {
+                                            $level4->addChild($level5name, $level5value);
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -380,7 +494,13 @@ class SaleModeQuery
         }
     }
 
-    private static function generateOrderDiscount($document, $order)
+    /**
+     * @param \SimpleXMLElement $document
+     * @param \WC_Order $order
+     *
+     * @return void
+     */
+    private static function generateOrderDiscount(\SimpleXMLElement $document, \WC_Order $order)
     {
         if ($order->get_discount_total() <= 0) {
             return;
@@ -393,7 +513,13 @@ class SaleModeQuery
         $discount->addChild('УчтеноВСумме', 'true');
     }
 
-    private static function generateOrderProducts($document, $order)
+    /**
+     * @param \SimpleXMLElement $document
+     * @param \WC_Order $order
+     *
+     * @return void
+     */
+    private static function generateOrderProducts(\SimpleXMLElement $document, \WC_Order $order)
     {
         $settings = get_option(Bootstrap::OPTIONS_KEY);
         $includeTax = !empty($settings['send_orders_include_tax_to_price_item_and_shipping']);
@@ -477,7 +603,7 @@ class SaleModeQuery
                     }
                 }
 
-                $products[$item['variation_id'] ? $item['variation_id'] : $item['product_id']] = $exportProduct;
+                $products[] = $exportProduct;
             }
         }
 
@@ -629,7 +755,13 @@ class SaleModeQuery
         }
     }
 
-    private static function generateOrderRequisites($document, $order)
+    /**
+     * @param \SimpleXMLElement $document
+     * @param \WC_Order $order
+     *
+     * @return void
+     */
+    private static function generateOrderRequisites(\SimpleXMLElement $document, \WC_Order $order)
     {
         $settings = get_option(Bootstrap::OPTIONS_KEY);
         $shippingAddress = self::resolveAddress('shipping', $order);
@@ -638,8 +770,12 @@ class SaleModeQuery
         $requisitesArray = [];
         $paymentGateway = wc_get_payment_gateway_by_order($order);
 
-        if ($paymentGateway && isset($paymentGateway->title)) {
-            $requisitesArray['Способ оплаты'] = wp_strip_all_tags(html_entity_decode($paymentGateway->title));
+        if ($paymentGateway) {
+            $requisitesArray['Способ оплаты'] = wp_strip_all_tags(
+                html_entity_decode(
+                    !empty($paymentGateway->title) ? $paymentGateway->title : $paymentGateway->method_title
+                )
+            );
             $requisitesArray['Метод оплаты'] = $requisitesArray['Способ оплаты'];
 
             if (self::resolveVersion() === '3.1') {
@@ -693,6 +829,7 @@ class SaleModeQuery
         $requisitesArray['ПометкаУдаления'] = $order->get_status() === 'cancelled' ? 'true' : 'false';
         $requisitesArray['Отменен'] = $order->get_status() === 'cancelled' ? 'true' : 'false';
         $requisitesArray['Заказ оплачен'] = self::resolveIsPaidRequisiteValue($order);
+        $requisitesArray['Сайт'] = \site_url();
 
         $requisitesArray = (array) apply_filters(
             'itglx_wc1c_order_xml_requisites_data_array',
@@ -717,7 +854,12 @@ class SaleModeQuery
         }
     }
 
-    private static function resolveIsPaidRequisiteValue($order)
+    /**
+     * @param \WC_Order $order
+     *
+     * @return string
+     */
+    private static function resolveIsPaidRequisiteValue(\WC_Order $order)
     {
         $settings = get_option(Bootstrap::OPTIONS_KEY);
 
@@ -753,7 +895,12 @@ class SaleModeQuery
             : 'false';
     }
 
-    private static function resolveContragentAddressRegistration($order)
+    /**
+     * @param \WC_Order $order
+     *
+     * @return array
+     */
+    private static function resolveContragentAddressRegistration(\WC_Order $order)
     {
         $contragentAddressRegistration = [];
 
@@ -795,7 +942,13 @@ class SaleModeQuery
         return $contragentAddressRegistration;
     }
 
-    private static function resolveAddress($type, $order)
+    /**
+     * @param string $type
+     * @param \WC_Order $order
+     *
+     * @return string
+     */
+    private static function resolveAddress($type, \WC_Order $order)
     {
         $addressArray = $order->get_address($type);
         $combineItems = ['postcode', 'country', 'state', 'city', 'address_1', 'address_2'];

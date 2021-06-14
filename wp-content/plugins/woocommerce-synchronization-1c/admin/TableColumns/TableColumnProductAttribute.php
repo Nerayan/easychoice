@@ -15,12 +15,15 @@ class TableColumnProductAttribute
 
     private function __construct()
     {
-        // https://developer.wordpress.org/reference/hooks/init/
-        add_action('init', [$this, 'init']);
+        add_action('woocommerce_init', [$this, 'init']);
     }
 
     public function init()
     {
+        if (!is_admin() || !function_exists('wc_get_attribute_taxonomies')) {
+            return;
+        }
+
         $taxonomies = \wc_get_attribute_taxonomies();
 
         foreach ($taxonomies as $taxonomy) {

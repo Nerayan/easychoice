@@ -6,19 +6,19 @@
     'aliases' => 
     array (
     ),
-    'reference' => '2d57841992b6376c683a2defe0832d13b6ca2b07',
+    'reference' => '794873bd63259f12e30ee541509ea87b4c3c38a7',
     'name' => 'itgalaxy/woocommerce-synchronization-1c',
   ),
   'versions' => 
   array (
-    'it-for-free/array_column' => 
+    'itgalaxy/plugin-common' => 
     array (
-      'pretty_version' => 'v1.1.4',
-      'version' => '1.1.4.0',
+      'pretty_version' => 'v1.6.0',
+      'version' => '1.6.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => '39bea7424d7ca846d094aa6811d8156bf807263e',
+      'reference' => '4856c2df00cfcdc09d094620c0d76c44f52a551b',
     ),
     'itgalaxy/woocommerce-synchronization-1c' => 
     array (
@@ -27,25 +27,25 @@
       'aliases' => 
       array (
       ),
-      'reference' => '2d57841992b6376c683a2defe0832d13b6ca2b07',
+      'reference' => '794873bd63259f12e30ee541509ea87b4c3c38a7',
     ),
     'monolog/monolog' => 
     array (
-      'pretty_version' => '1.25.5',
-      'version' => '1.25.5.0',
+      'pretty_version' => '1.26.1',
+      'version' => '1.26.1.0',
       'aliases' => 
       array (
       ),
-      'reference' => '1817faadd1846cd08be9a49e905dc68823bc38c0',
+      'reference' => 'c6b00f05152ae2c9b04a448f99c7590beb6042f5',
     ),
     'psr/log' => 
     array (
-      'pretty_version' => '1.1.3',
-      'version' => '1.1.3.0',
+      'pretty_version' => '1.1.4',
+      'version' => '1.1.4.0',
       'aliases' => 
       array (
       ),
-      'reference' => '0f73288fd15629204f9d42b7055f72dacbe811fc',
+      'reference' => 'd49695b909c3b7628b6289db5479a1c204601f11',
     ),
     'psr/log-implementation' => 
     array (
@@ -56,12 +56,12 @@
     ),
     'symfony/polyfill-mbstring' => 
     array (
-      'pretty_version' => 'v1.19.0',
-      'version' => '1.19.0.0',
+      'pretty_version' => 'v1.23.0',
+      'version' => '1.23.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'b5f7b932ee6fa802fc792eabd77c4c88084517ce',
+      'reference' => '2df51500adbaebdc4c38dea4c89a2e131c45c8a1',
     ),
   ),
 );

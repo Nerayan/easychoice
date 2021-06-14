@@ -1,9 +1,9 @@
 <?php
 /**
  * Plugin Name: Justin for Woocommerce
- * Plugin URI: https://morkva.co.ua/plugins/wc-ukr-shipping/?ref=repository
+ * Plugin URI: https://morkva.co.ua
  * Description: Плагін доставки Justin для WooCommerce
- * Version: 1.3
+ * Version: 1.4.3
  * Author: Morkva
 */
 
@@ -158,3 +158,18 @@ function run_morkvajustin_plugin() {
     $plugin->run();
 }
 run_morkvajustin_plugin();
+
+
+require 'includes/update-check.php';
+
+$Checker = Checker::buildUpdateChecker('http://api.morkva.co.ua/api.json', __FILE__);
+
+//Here's how you can add query arguments to the URL.
+function justin_update_addoptions($query)
+{
+    $query['product'] = 'justin';
+    $query['secret'] = MJS_PLUGIN_VERSION;
+    $query['website'] = get_home_url();
+    return $query;
+}
+$Checker->addQueryArgFilter('justin_update_addoptions');

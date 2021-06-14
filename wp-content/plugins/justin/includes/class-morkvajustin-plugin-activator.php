@@ -34,10 +34,6 @@ class MJS_Plugin_Activator {
 					//deactivate_plugins( $plugins, $silent = false, $network_wide = null );
 			}
 
-
-
-
-
        global $wpdb;
 
        $table_name = $wpdb->prefix . 'justin_ttn_invoices';

@@ -4,19 +4,16 @@ namespace Itgalaxy\Wc\Exchange1c\ExchangeProcess;
 use Itgalaxy\Wc\Exchange1c\ExchangeProcess\Base\Parser;
 use Itgalaxy\Wc\Exchange1c\ExchangeProcess\DataResolvers\NomenclatureCategories;
 use Itgalaxy\Wc\Exchange1c\ExchangeProcess\DataResolvers\OfferSimple;
+use Itgalaxy\Wc\Exchange1c\ExchangeProcess\DataResolvers\OfferVariation;
 use Itgalaxy\Wc\Exchange1c\ExchangeProcess\DataResolvers\PriceTypes;
-use Itgalaxy\Wc\Exchange1c\ExchangeProcess\DataResolvers\ProductAndVariationPrices;
 use Itgalaxy\Wc\Exchange1c\ExchangeProcess\DataResolvers\ProductImages;
-use Itgalaxy\Wc\Exchange1c\ExchangeProcess\DataResolvers\ProductAndVariationStock;
 use Itgalaxy\Wc\Exchange1c\ExchangeProcess\DataResolvers\GlobalProductAttributes;
 use Itgalaxy\Wc\Exchange1c\ExchangeProcess\DataResolvers\Groups;
-use Itgalaxy\Wc\Exchange1c\ExchangeProcess\DataResolvers\ProductVariationAttributes;
 use Itgalaxy\Wc\Exchange1c\ExchangeProcess\DataResolvers\Stocks;
 
 use Itgalaxy\Wc\Exchange1c\ExchangeProcess\DataResolvers\Units;
 use Itgalaxy\Wc\Exchange1c\ExchangeProcess\Helpers\ProductUnvariable;
 use Itgalaxy\Wc\Exchange1c\ExchangeProcess\Helpers\ProductVariableSync;
-use Itgalaxy\Wc\Exchange1c\ExchangeProcess\Helpers\ProductVariation;
 use Itgalaxy\Wc\Exchange1c\ExchangeProcess\Helpers\SetVariationAttributeToProducts;
 use Itgalaxy\Wc\Exchange1c\ExchangeProcess\Helpers\HeartBeat;
 use Itgalaxy\Wc\Exchange1c\ExchangeProcess\Helpers\Term;
@@ -70,7 +67,7 @@ class ParserXml31 extends Parser
                     }
 
                     // resolve groups
-                    if (!Groups::isDisabled() && in_array($reader->name, ['Группы', 'Группа'])) {
+                    if (!Groups::isDisabled() && Groups::isGroupNode($reader)) {
                         // time limit check
                         if (!Groups::process($reader)) {
                             return false;
@@ -130,6 +127,23 @@ class ParserXml31 extends Parser
 
                         $element = $reader->readOuterXml();
                         $element = simplexml_load_string(trim($element));
+
+                        if (\has_action('itglx_wc1c_product_custom_processing')) {
+                            /**
+                             * The action allows to organize custom processing of the product.
+                             *
+                             * If an action is registered, then it is triggered for every product.
+                             *
+                             * @since 1.95.0
+                             *
+                             * @param \SimpleXMLElement $element 'Товар' node object.
+                             */
+                            \do_action('itglx_wc1c_product_custom_processing', $element);
+
+                            unset($element);
+                            continue;
+                        }
+
                         $element = apply_filters('itglx_wc1c_product_xml_data', $element);
 
                         if (apply_filters('itglx_wc1c_skip_product_by_xml', false, $element)) {
@@ -216,6 +230,11 @@ class ParserXml31 extends Parser
                                 }
                             }
 
+                            Logger::logChanges(
+                                '(product) Product not changed - skip, ID - ' . $productEntry['ID'],
+                                [get_post_meta($productEntry['ID'], '_id_1c', true)]
+                            );
+
                             unset($productEntry, $element);
 
                             continue;
@@ -283,6 +302,22 @@ class ParserXml31 extends Parser
                             $element = $reader->readOuterXml();
                             $element = simplexml_load_string(trim($element));
 
+                            if (\has_action('itglx_wc1c_offer_custom_processing')) {
+                                /**
+                                 * The action allows to organize custom processing of the offer.
+                                 *
+                                 * If an action is registered, then it is triggered for every offer.
+                                 *
+                                 * @since 1.95.0
+                                 *
+                                 * @param \SimpleXMLElement $element 'Предложение' node object.
+                                 */
+                                \do_action('itglx_wc1c_offer_custom_processing', $element);
+
+                                unset($element);
+                                continue;
+                            }
+
                             if (!isset($element->Ид)) {
                                 continue;
                             }
@@ -294,140 +329,18 @@ class ParserXml31 extends Parser
                                 continue;
                             }
 
-                            $productEntry = [];
                             $parseID = explode('#', (string) $element->Ид);
 
                             // not empty variation hash
                             if (!empty($parseID[1])) {
-                                $productEntry['post_parent'] = $this->getVariationParent($parseID[0]);
-
-                                // prevent search product if not exists
-                                if (!$productEntry['post_parent']) {
-                                    $productEntry['post_parent'] = apply_filters(
-                                        'itglx_wc1c_find_product_id',
-                                        $productEntry['post_parent'],
-                                        $element
-                                    );
-
-                                    if ($productEntry['post_parent']) {
-                                        Product::saveMetaValue($productEntry['post_parent'], '_id_1c', (string) $parseID[0]);
-                                    }
-                                }
-
-                                if (empty($productEntry['post_parent'])) {
-                                    Logger::logChanges(
-                                        '(variation) Error! Not exists parent product',
-                                        [(string) $element->Ид]
-                                    );
-
-                                    $_SESSION['IMPORT_1C_PROCESS']['allCurrentOffers'][] = (string) $element->Ид;
-
-                                    unset($element);
-                                    continue;
-                                }
-
-                                $this->setHasVariationState($productEntry['post_parent']);
-
-                                $productEntry['ID'] = ProductVariation::getIdByMeta((string) $element->Ид, '_id_1c');
-
-                                // maybe removed variation
-                                $removed = apply_filters(
-                                    'itglx_wc1c_variation_offer_is_removed',
-                                    false,
-                                    $element,
-                                    $productEntry['ID'],
-                                    $productEntry['post_parent']
-                                );
-
-                                if ($removed) {
-                                    if (!empty($productEntry['ID'])) {
-                                        ProductVariation::remove($productEntry['ID'], $productEntry['post_parent']);
-                                    }
-
-                                    $_SESSION['IMPORT_1C_PROCESS']['allCurrentOffers'][] = (string) $element->Ид;
-
-                                    unset($element);
-                                    continue;
-                                }
-
-                                // prevent search variation if not exists
-                                if (!$productEntry['ID']) {
-                                    $productEntry['ID'] = apply_filters(
-                                        'itglx_wc1c_find_product_variation_id',
-                                        $productEntry['ID'],
-                                        $element
-                                    );
-
-                                    if ($productEntry['ID']) {
-                                        ProductVariation::saveMetaValue($productEntry['ID'], '_id_1c', (string) $element->Ид, $productEntry['post_parent']);
-                                    }
-                                }
-
-                                // resolve main variation data
-                                if (
-                                    ProductVariationAttributes::hasOptions($element) ||
-                                    ProductVariationAttributes::hasCharacteristics($element)
-                                ) {
-                                    $productEntry = ProductVariation::mainData(
-                                        $element,
-                                        $productEntry,
-                                        $this->postAuthor
-                                    );
-                                }
-
-                                if (empty($productEntry['ID'])) {
-                                    Logger::logChanges(
-                                        '(variation) Error! Not exists variation by offer id',
-                                        [(string) $element->Ид]
-                                    );
-                                } else {
-                                    if (ProductAndVariationPrices::offerHasPriceData($element)) {
-                                        ProductAndVariationPrices::setPrices(
-                                            ProductAndVariationPrices::resolvePrices(
-                                                $element,
-                                                $this->rate
-                                            ),
-                                            $productEntry['ID'],
-                                            $productEntry['post_parent']
-                                        );
-                                    }
-
-                                    if (ProductAndVariationStock::offerHasStockData($element)) {
-                                        $ignoreSetStockData = apply_filters(
-                                            'itglx_wc1c_ignore_offer_set_stock_data',
-                                            false,
-                                            $productEntry['ID'],
-                                            $productEntry['post_parent']
-                                        );
-
-                                        if (!$ignoreSetStockData) {
-                                            ProductAndVariationStock::set(
-                                                $productEntry['ID'],
-                                                ProductAndVariationStock::resolve($element),
-                                                $productEntry['post_parent']
-                                            );
-                                        } else {
-                                            Logger::logChanges(
-                                                '(variation) ignore set stock data by filter - itglx_wc1c_ignore_offer_set_stock_data',
-                                                [(string) $element->Ид]
-                                            );
-                                        }
-                                    }
-
-                                    do_action(
-                                        'itglx_wc1c_after_variation_offer_resolve',
-                                        $productEntry['ID'],
-                                        $productEntry['post_parent'],
-                                        $element
-                                    );
-                                }
+                                OfferVariation::process($element, $parseID[0], $this->rate, $this->postAuthor);
                             } else {
                                 OfferSimple::process($element, $this->rate);
                             }
 
                             $_SESSION['IMPORT_1C_PROCESS']['allCurrentOffers'][] = (string) $element->Ид;
 
-                            unset($element, $productEntry);
+                            unset($element);
                         }
                     }
 

@@ -40,6 +40,10 @@ class ProductIsRemoved
      * Example xml structure (position Каталог -> Товары -> Товар)
      *
      * ```xml
+     * <Товар>
+     *    <Статус>Удален</Статус>
+     *    ...
+     * </Товар>
      * <Товар Статус="Удален">
      *    ...
      * </Товар>
@@ -61,6 +65,10 @@ class ProductIsRemoved
     {
         if ($isRemoved) {
             return $isRemoved;
+        }
+
+        if (isset($element->Статус) && (string) $element->Статус === 'Удален') {
+            return true;
         }
 
         if ((string) $element->ПометкаУдаления && in_array((string) $element->ПометкаУдаления, ['true', 'Да'], true)) {

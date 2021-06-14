@@ -13,7 +13,7 @@ class Logger
 
     public static function getLogPath()
     {
-        return ITGALAXY_WC_1C_PLUGIN_DIR . 'files/site' . get_current_blog_id() . '/logs';
+        return Bootstrap::$pluginDir . 'files/site' . get_current_blog_id() . '/logs';
     }
 
     public static function logProtocol($message, $data = [])

@@ -136,22 +136,28 @@ function relevanssi_search( $args ) {
 	 */
 	$remove_stopwords = apply_filters( 'relevanssi_remove_stopwords_in_titles', true );
 
-	$terms = relevanssi_tokenize( $q, $remove_stopwords, $min_length );
-	$terms = array_keys( $terms ); // Don't care about tf in query.
+	$terms['terms'] = array_keys( relevanssi_tokenize( $q, $remove_stopwords, $min_length ) );
 
-	$terms_without_synonyms = relevanssi_tokenize( $q_no_synonyms, $remove_stopwords, $min_length );
-	$terms_without_synonyms = array_keys( $terms_without_synonyms );
+	$terms['original_terms'] = $q_no_synonyms !== $q
+		? array_keys( relevanssi_tokenize( $q_no_synonyms, $remove_stopwords, $min_length ) )
+		: $terms['terms'];
+
+	if ( has_filter( 'relevanssi_stemmer' ) ) {
+		do_action( 'relevanssi_disable_stemmer' );
+		$terms['original_terms'] = array_keys( relevanssi_tokenize( $q_no_synonyms, $remove_stopwords, $min_length ) );
+		do_action( 'relevanssi_enable_stemmer' );
+	}
 
 	if ( function_exists( 'relevanssi_process_terms' ) ) {
-		$process_terms_results = relevanssi_process_terms( $terms, $q );
+		$process_terms_results = relevanssi_process_terms( $terms['terms'], $q );
 		$query_restrictions   .= $process_terms_results['query_restrictions'];
-		$terms                 = $process_terms_results['terms'];
+		$terms['terms']        = $process_terms_results['terms'];
 	}
 
 	$no_terms = false;
-	if ( count( $terms ) < 1 && empty( $q ) ) {
-		$no_terms = true;
-		$terms[]  = 'term';
+	if ( count( $terms['terms'] ) < 1 && empty( $q ) ) {
+		$no_terms       = true;
+		$terms['terms'] = array( 'term' );
 	}
 
 	/**
@@ -164,6 +170,9 @@ function relevanssi_search( $args ) {
 	 * @param string The MySQL code that restricts the query.
 	 */
 	$query_restrictions = apply_filters( 'relevanssi_where', $query_restrictions );
+	if ( ! $query_restrictions ) {
+		$query_restrictions = '';
+	}
 
 	/**
 	 * Filters the meta query JOIN for the Relevanssi search query.
@@ -197,7 +206,7 @@ function relevanssi_search( $args ) {
 
 	do {
 		$df_counts = relevanssi_generate_df_counts(
-			$terms,
+			$terms['terms'],
 			array(
 				'no_terms'           => $no_terms,
 				'operator'           => $operator,
@@ -346,23 +355,28 @@ function relevanssi_search( $args ) {
 		$no_matches   = $params['no_matches'];
 	} while ( $search_again );
 
-	$strip_stops              = true;
-	$temp_terms_without_stops = array_keys( relevanssi_tokenize( implode( ' ', $terms ), $strip_stops ) );
-	$terms_without_stops      = array();
-	foreach ( $temp_terms_without_stops as $temp_term ) {
-		if ( relevanssi_strlen( $temp_term ) >= $min_length ) {
-			array_push( $terms_without_stops, $temp_term );
-		}
-	}
-	$total_terms = count( $terms_without_stops );
+	if ( ! $remove_stopwords ) {
+		$strip_stops       = true;
+		$terms['no_stops'] = array_keys( relevanssi_tokenize( implode( ' ', $terms['terms'] ), $strip_stops, $min_length ) );
 
-	$temp_terms_without_stops_synonyms = array_keys( relevanssi_tokenize( implode( ' ', $terms_without_synonyms ), $strip_stops ) );
-	$terms_without_stops_synonyms      = array();
-	foreach ( $temp_terms_without_stops_synonyms as $temp_term ) {
-		if ( relevanssi_strlen( $temp_term ) >= $min_length ) {
-			array_push( $terms_without_stops_synonyms, $temp_term );
+		if ( $q !== $q_no_synonyms ) {
+			$terms['original_terms_no_stops'] = array_keys( relevanssi_tokenize( implode( ' ', $terms['original_terms'] ), $strip_stops, $min_length ) );
+		} else {
+			$terms['original_terms_no_stops'] = $terms['no_stops'];
 		}
+
+		if ( has_filter( 'relevanssi_stemmer' ) ) {
+			do_action( 'relevanssi_disable_stemmer' );
+			$terms['original_terms_no_stops'] = array_keys( relevanssi_tokenize( implode( ' ', $terms['original_terms'] ), $strip_stops, $min_length ) );
+			do_action( 'relevanssi_enable_stemmer' );
+		} else {
+			$terms['original_terms_no_stops'] = $terms['no_stops'];
+		}
+	} else {
+		$terms['no_stops']                = $terms['terms'];
+		$terms['original_terms_no_stops'] = $terms['original_terms'];
 	}
+	$total_terms = count( $terms['no_stops'] );
 
 	if ( isset( $doc_weight ) ) {
 		/**
@@ -387,15 +401,24 @@ function relevanssi_search( $args ) {
 				// doc didn't match all terms, so it's discarded.
 				continue;
 			}
+			$doc_terms_for_doc = array_keys( $doc_terms[ $doc ] );
+			$original_terms    = array_values( $terms['original_terms_no_stops'] );
 			if ( count( $doc_terms[ $doc ] ) < $total_terms ) {
-				$missing_terms[ $doc ] = array_diff(
-					array_values( $terms_without_stops_synonyms ),
-					array_keys( $doc_terms[ $doc ] )
-				);
-				if ( count( $missing_terms[ $doc ] ) === count( $terms_without_stops_synonyms ) ) {
+				if ( $q !== $q_no_synonyms ) {
 					$missing_terms[ $doc ] = array_diff(
-						array_values( $terms_without_stops_synonyms ),
-						relevanssi_replace_synonyms_in_terms( array_keys( $doc_terms[ $doc ] ) )
+						$original_terms,
+						relevanssi_replace_synonyms_in_terms( $doc_terms_for_doc )
+					);
+					if ( count( $missing_terms[ $doc ] ) + count( relevanssi_replace_stems_in_terms( $doc_terms_for_doc ) ) !== count( $terms['original_terms'] ) ) {
+						$missing_terms[ $doc ] = array_diff(
+							$original_terms,
+							$doc_terms_for_doc
+						);
+					}
+				} else {
+					$missing_terms[ $doc ] = array_diff(
+						$original_terms,
+						$doc_terms_for_doc
 					);
 				}
 			}
@@ -1396,10 +1419,10 @@ function relevanssi_update_term_hits( &$term_hits, &$match_arrays, $match, $term
  * Increases a value. If it's not set, sets it first to the default value.
  *
  * @param int $value    The value to increase (passed by reference).
- * @param int $increase The amount to increase the value.
+ * @param int $increase The amount to increase the value, default 1.
  * @param int $default  The default value, default 0.
  */
-function relevanssi_increase_value( &$value, $increase, $default = 0 ) {
+function relevanssi_increase_value( &$value, $increase = 1, $default = 0 ) {
 	if ( ! isset( $value ) ) {
 		$value = $default;
 	}
@@ -1577,13 +1600,13 @@ function relevanssi_adjust_match_doc( $match ) {
  * @param string $term               The search term.
  * @param bool   $search_again       If true, this is a repeat search (partial matching).
  * @param bool   $no_terms           If true, no search term is used.
- * @param string $query_join         The MySQL JOIN clause.
- * @param string $query_restrictions The MySQL query restrictions.
+ * @param string $query_join         The MySQL JOIN clause, default empty string.
+ * @param string $query_restrictions The MySQL query restrictions, default empty string.
  *
  * @return string The MySQL search query.
  */
 function relevanssi_generate_search_query( string $term, bool $search_again,
-bool $no_terms, string $query_join, string $query_restrictions ) : string {
+bool $no_terms, string $query_join = '', string $query_restrictions = '' ) : string {
 	global $relevanssi_variables;
 	$relevanssi_table = $relevanssi_variables['relevanssi_table'];
 
@@ -1653,6 +1676,9 @@ function relevanssi_compile_common_args( $query ) {
 	$date_query = relevanssi_wp_date_query_from_query_vars( $query );
 
 	$post_type = false;
+	if ( isset( $query->query_vars['post_type'] ) && is_array( $query->query_vars['post_type'] ) ) {
+		$query->query_vars['post_type'] = implode( ',', $query->query_vars['post_type'] );
+	}
 	if ( isset( $query->query_vars['post_type'] ) && 'any' !== $query->query_vars['post_type'] ) {
 		$post_type = $query->query_vars['post_type'];
 	}
@@ -1680,7 +1706,19 @@ function relevanssi_compile_common_args( $query ) {
 	);
 }
 
-function relevanssi_add_include_matches( &$matches, $include, $params ) {
+/**
+ * Adds posts to the matches list from the other term queries.
+ *
+ * Without this functionality, AND searches would not return all posts. If a
+ * post appears within the best results for one word, but not for another word
+ * even though the word appears in the post (because of throttling), the post
+ * would be excluded. This functionality makes sure it is included.
+ *
+ * @param array $matches The found posts array.
+ * @param array $include The posts to include.
+ * @param array $params  Search parameters.
+ */
+function relevanssi_add_include_matches( array &$matches, array $include, array $params ) {
 	if ( count( $include['posts'] ) < 1 && count( $include['items'] ) < 1 ) {
 		return;
 	}

@@ -2,7 +2,6 @@
 namespace Itgalaxy\Wc\Exchange1c\Admin\PageParts;
 
 use Itgalaxy\Wc\Exchange1c\Includes\Bootstrap;
-use Itgalaxy\Wc\Exchange1c\Includes\PluginRequest;
 
 class SectionLicense
 {
@@ -12,53 +11,20 @@ class SectionLicense
         <hr>
         <?php
         if (isset($_POST['purchase-code'])) {
-            $code = trim(wp_unslash($_POST['purchase-code']));
-
-            $response = PluginRequest::call(
+            $response = Bootstrap::$common->requester->code(
                 isset($_POST['verify']) ? 'code_activate' : 'code_deactivate',
-                $code
+                trim(wp_unslash($_POST['purchase-code']))
             );
 
-            if (is_wp_error($response)) {
-                // fix network connection problems
-                if ($response->get_error_code() === 'http_request_failed') {
-                    if (isset($_POST['verify'])) {
-                        $messageContent = 'Success verify.';
-                        update_site_option(Bootstrap::PURCHASE_CODE_OPTIONS_KEY, $code);
-                    } else {
-                        $messageContent = 'Success unverify.';
-                        update_site_option(Bootstrap::PURCHASE_CODE_OPTIONS_KEY, '');
-                    }
-
-                    $message = 'successCheck';
-                } else {
-                    $messageContent = '(Code - '
-                        . $response->get_error_code()
-                        . ') '
-                        . $response->get_error_message();
-
-                    $message = 'failedCheck';
-                }
-            } else {
-                if ($response->status === 'successCheck' && isset($_POST['verify'])) {
-                    update_site_option(Bootstrap::PURCHASE_CODE_OPTIONS_KEY, $code);
-                } else {
-                    update_site_option(Bootstrap::PURCHASE_CODE_OPTIONS_KEY, '');
-                }
-
-                $messageContent = $response->message;
-                $message = $response->status;
-            }
-
-            if ($message == 'successCheck') {
+            if ($response['state'] == 'successCheck') {
                 echo sprintf(
                     '<div class="updated notice notice-success is-dismissible"><p>%s</p></div>',
-                    esc_html($messageContent)
+                    esc_html($response['message'])
                 );
-            } elseif ($messageContent) {
+            } elseif ($response['message']) {
                 echo sprintf(
                     '<div class="error notice notice-error is-dismissible"><p>%s</p></div>',
-                    esc_html($messageContent)
+                    esc_html($response['message'])
                 );
             }
         }

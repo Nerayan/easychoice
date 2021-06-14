@@ -25,6 +25,8 @@ class CatalogModeInit
         } elseif (is_writable(Helper::getTempPath())) {
             Helper::removeDir(Helper::getTempPath());
             mkdir(Helper::getTempPath(), 0755, true);
+
+            Logger::logProtocol('data (files) from the previous exchange session is deleted');
         }
 
         $zip = Helper::isUseZip() ? 'yes' : 'no';

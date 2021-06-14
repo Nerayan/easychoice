@@ -11,7 +11,7 @@ class CheckoutValidator
   public function __construct()
   {
     add_action('woocommerce_checkout_process', [ $this, 'validateFields' ]);
-    add_filter('woocommerce_checkout_fields', [ $this, 'removeDefaultFieldsFromValidation' ]);
+    add_filter('woocommerce_checkout_fields', [ $this, 'removeDefaultFieldsFromValidation' ], 99);
     add_filter('woocommerce_checkout_posted_data', [ $this, 'processCheckoutPostedData' ]);
   }
 
@@ -66,8 +66,9 @@ class CheckoutValidator
 
   private function maybeDisableDefaultFields()
   {
-    return isset($_POST['shipping_method']) &&
-      preg_match('/^' . JUSTIN_METHOD_NAME . '.*/i', $_POST['shipping_method'][0]) &&
-      apply_filters('woo_justin_prevent_disable_default_fields', false) === false;
+    // return isset($_POST['shipping_method']) &&
+    //   preg_match('/^' . JUSTIN_METHOD_NAME . '.*/i', $_POST['shipping_method'][0]) &&
+    //   apply_filters('woo_justin_prevent_disable_default_fields', false) === false;
+    return apply_filters('woo_justin_prevent_disable_default_fields', false) === false;
   }
 }

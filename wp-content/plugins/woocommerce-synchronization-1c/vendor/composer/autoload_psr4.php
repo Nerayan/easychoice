@@ -12,4 +12,5 @@ return array(
     'Itgalaxy\\Wc\\Exchange1c\\Includes\\' => array($baseDir . '/includes'),
     'Itgalaxy\\Wc\\Exchange1c\\ExchangeProcess\\' => array($baseDir . '/exchange-process'),
     'Itgalaxy\\Wc\\Exchange1c\\Admin\\' => array($baseDir . '/admin'),
+    'Itgalaxy\\PluginCommon\\' => array($vendorDir . '/itgalaxy/plugin-common/src'),
 );

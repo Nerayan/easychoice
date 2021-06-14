@@ -4,11 +4,11 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitb87fa8086653efac66ff6dcb9469fe96
+class ComposerStaticInit4d11209d422d8a1af2f7bdc10153b2ad
 {
     public static $files = array (
-        '000b9c308d8cc91c2ae4225e62ac30d6' => __DIR__ . '/..' . '/it-for-free/array_column/src/array_column.php',
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
+        '7c9a351f533aed24255b42a91b4366a7' => __DIR__ . '/..' . '/itgalaxy/plugin-common/load.php',
         '7b88577ab913611f157876f23c7145ff' => __DIR__ . '/../..' . '/admin/loader.php',
         '1c75689e7d49c89cac73a52e7a404c52' => __DIR__ . '/../..' . '/includes/filters.php',
         'b685c35ced57cea211546d0568040fc3' => __DIR__ . '/../..' . '/includes/actions.php',
@@ -32,6 +32,7 @@ class ComposerStaticInitb87fa8086653efac66ff6dcb9469fe96
             'Itgalaxy\\Wc\\Exchange1c\\Includes\\' => 32,
             'Itgalaxy\\Wc\\Exchange1c\\ExchangeProcess\\' => 39,
             'Itgalaxy\\Wc\\Exchange1c\\Admin\\' => 29,
+            'Itgalaxy\\PluginCommon\\' => 22,
         ),
     );
 
@@ -60,10 +61,23 @@ class ComposerStaticInitb87fa8086653efac66ff6dcb9469fe96
         array (
             0 => __DIR__ . '/../..' . '/admin',
         ),
+        'Itgalaxy\\PluginCommon\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/itgalaxy/plugin-common/src',
+        ),
     );
 
     public static $classMap = array (
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
+        'Itgalaxy\\PluginCommon\\AdminNotice' => __DIR__ . '/..' . '/itgalaxy/plugin-common/src/AdminNotice.php',
+        'Itgalaxy\\PluginCommon\\AnalyticsHelper' => __DIR__ . '/..' . '/itgalaxy/plugin-common/src/AnalyticsHelper.php',
+        'Itgalaxy\\PluginCommon\\AssetsHelper' => __DIR__ . '/..' . '/itgalaxy/plugin-common/src/AssetsHelper.php',
+        'Itgalaxy\\PluginCommon\\CacheHelper' => __DIR__ . '/..' . '/itgalaxy/plugin-common/src/CacheHelper.php',
+        'Itgalaxy\\PluginCommon\\CronHelper' => __DIR__ . '/..' . '/itgalaxy/plugin-common/src/CronHelper.php',
+        'Itgalaxy\\PluginCommon\\DependencyPluginChecker' => __DIR__ . '/..' . '/itgalaxy/plugin-common/src/DependencyPluginChecker.php',
+        'Itgalaxy\\PluginCommon\\MainHelperLoader' => __DIR__ . '/..' . '/itgalaxy/plugin-common/src/MainHelperLoader.php',
+        'Itgalaxy\\PluginCommon\\PluginLogger' => __DIR__ . '/..' . '/itgalaxy/plugin-common/src/PluginLogger.php',
+        'Itgalaxy\\PluginCommon\\PluginRequest' => __DIR__ . '/..' . '/itgalaxy/plugin-common/src/PluginRequest.php',
         'Itgalaxy\\Wc\\Exchange1c\\Admin\\AjaxActions\\ClearLogsAjaxAction' => __DIR__ . '/../..' . '/admin/AjaxActions/ClearLogsAjaxAction.php',
         'Itgalaxy\\Wc\\Exchange1c\\Admin\\AjaxActions\\ClearTempAjaxAction' => __DIR__ . '/../..' . '/admin/AjaxActions/ClearTempAjaxAction.php',
         'Itgalaxy\\Wc\\Exchange1c\\Admin\\AjaxActions\\LastRequestResponseAjaxAction' => __DIR__ . '/../..' . '/admin/AjaxActions/LastRequestResponseAjaxAction.php',
@@ -106,6 +120,7 @@ class ComposerStaticInitb87fa8086653efac66ff6dcb9469fe96
         'Itgalaxy\\Wc\\Exchange1c\\ExchangeProcess\\DataResolvers\\Groups' => __DIR__ . '/../..' . '/exchange-process/DataResolvers/Groups.php',
         'Itgalaxy\\Wc\\Exchange1c\\ExchangeProcess\\DataResolvers\\NomenclatureCategories' => __DIR__ . '/../..' . '/exchange-process/DataResolvers/NomenclatureCategories.php',
         'Itgalaxy\\Wc\\Exchange1c\\ExchangeProcess\\DataResolvers\\OfferSimple' => __DIR__ . '/../..' . '/exchange-process/DataResolvers/OfferSimple.php',
+        'Itgalaxy\\Wc\\Exchange1c\\ExchangeProcess\\DataResolvers\\OfferVariation' => __DIR__ . '/../..' . '/exchange-process/DataResolvers/OfferVariation.php',
         'Itgalaxy\\Wc\\Exchange1c\\ExchangeProcess\\DataResolvers\\PriceTypes' => __DIR__ . '/../..' . '/exchange-process/DataResolvers/PriceTypes.php',
         'Itgalaxy\\Wc\\Exchange1c\\ExchangeProcess\\DataResolvers\\ProductAndVariationPrices' => __DIR__ . '/../..' . '/exchange-process/DataResolvers/ProductAndVariationPrices.php',
         'Itgalaxy\\Wc\\Exchange1c\\ExchangeProcess\\DataResolvers\\ProductAndVariationStock' => __DIR__ . '/../..' . '/exchange-process/DataResolvers/ProductAndVariationStock.php',
@@ -164,14 +179,12 @@ class ComposerStaticInitb87fa8086653efac66ff6dcb9469fe96
         'Itgalaxy\\Wc\\Exchange1c\\Includes\\Actions\\PreDeleteTerm' => __DIR__ . '/../..' . '/includes/Actions/PreDeleteTerm.php',
         'Itgalaxy\\Wc\\Exchange1c\\Includes\\Actions\\WcBeforeCalculateTotalsSetCartItemPrices' => __DIR__ . '/../..' . '/includes/Actions/WcBeforeCalculateTotalsSetCartItemPrices.php',
         'Itgalaxy\\Wc\\Exchange1c\\Includes\\Actions\\WooCommerceAttributeDeleted' => __DIR__ . '/../..' . '/includes/Actions/WooCommerceAttributeDeleted.php',
-        'Itgalaxy\\Wc\\Exchange1c\\Includes\\AssetsHelper' => __DIR__ . '/../..' . '/includes/AssetsHelper.php',
         'Itgalaxy\\Wc\\Exchange1c\\Includes\\Bootstrap' => __DIR__ . '/../..' . '/includes/Bootstrap.php',
         'Itgalaxy\\Wc\\Exchange1c\\Includes\\Cron' => __DIR__ . '/../..' . '/includes/Cron.php',
         'Itgalaxy\\Wc\\Exchange1c\\Includes\\Filters\\WcCartItemPriceShowSalePrice' => __DIR__ . '/../..' . '/includes/Filters/WcCartItemPriceShowSalePrice.php',
         'Itgalaxy\\Wc\\Exchange1c\\Includes\\Filters\\WcGetPriceHtmlShowPriceListDetailProductPage' => __DIR__ . '/../..' . '/includes/Filters/WcGetPriceHtmlShowPriceListDetailProductPage.php',
         'Itgalaxy\\Wc\\Exchange1c\\Includes\\Helper' => __DIR__ . '/../..' . '/includes/Helper.php',
         'Itgalaxy\\Wc\\Exchange1c\\Includes\\Logger' => __DIR__ . '/../..' . '/includes/Logger.php',
-        'Itgalaxy\\Wc\\Exchange1c\\Includes\\PluginRequest' => __DIR__ . '/../..' . '/includes/PluginRequest.php',
         'Monolog\\ErrorHandler' => __DIR__ . '/..' . '/monolog/monolog/src/Monolog/ErrorHandler.php',
         'Monolog\\Formatter\\ChromePHPFormatter' => __DIR__ . '/..' . '/monolog/monolog/src/Monolog/Formatter/ChromePHPFormatter.php',
         'Monolog\\Formatter\\ElasticaFormatter' => __DIR__ . '/..' . '/monolog/monolog/src/Monolog/Formatter/ElasticaFormatter.php',
@@ -286,9 +299,9 @@ class ComposerStaticInitb87fa8086653efac66ff6dcb9469fe96
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInitb87fa8086653efac66ff6dcb9469fe96::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInitb87fa8086653efac66ff6dcb9469fe96::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInitb87fa8086653efac66ff6dcb9469fe96::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit4d11209d422d8a1af2f7bdc10153b2ad::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit4d11209d422d8a1af2f7bdc10153b2ad::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit4d11209d422d8a1af2f7bdc10153b2ad::$classMap;
 
         }, null, ClassLoader::class);
     }
