@@ -91,7 +91,7 @@ if ( ! function_exists( 'electro_footer_bottom_widgets_v2' ) ) {
                         </div>
                     <?php endif; ?>
                     <?php if ( $show_footer_bottom_widgets ) : ?>
-                        <div class="footer-bottom-widgets-menu col-md-7">
+                        <div class="footer-bottom-widgets-menu col-md">
                             <div class="footer-bottom-widgets-menu-inner row g-0 <?php echo esc_attr( 'row-cols-xl-' . $footer_bottom_widgets_columns ); ?>">
                                 <?php electro_display_footer_bottom_widgets(); ?>
                             </div>

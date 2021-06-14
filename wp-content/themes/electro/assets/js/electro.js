@@ -305,7 +305,7 @@
 		}
 	});
 
-	$( window ).load( function() {
+	$( window ).on( 'load', function() {
 		columnConform();
 		columnConformV2();
 

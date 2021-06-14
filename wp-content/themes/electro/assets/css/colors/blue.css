@@ -877,7 +877,8 @@ p.no-comments button,
 .demo_store a,
 div.wpforms-container-full .wpforms-form input[type=submit],
 div.wpforms-container-full .wpforms-form button[type=submit],
-div.wpforms-container-full .wpforms-form .wpforms-page-button {
+div.wpforms-container-full .wpforms-form .wpforms-page-button,
+.aws-search-form:not(.aws-form-active):not(.aws-processing) .aws-search-clear::after {
   color: #fff; }
 
 .header-v7 .navbar-search > .input-group {

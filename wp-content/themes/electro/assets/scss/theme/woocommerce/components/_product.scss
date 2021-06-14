@@ -76,6 +76,7 @@
         margin: 0;
         bottom: 0;
         left: 0;
+        z-index: 1;
     }
 
     .wp-post-image, .product-thumbnail > img {
@@ -343,6 +344,14 @@ ul.products {
     &[data-view="list-view-small"] {
         .product-loop-body {
             display: block;
+        }
+    }
+
+    &[data-view="grid-extended"] {
+        .product-loop-header {
+            .woocommerce-loop-product__title {
+                display: none;
+            }
         }
     }
 

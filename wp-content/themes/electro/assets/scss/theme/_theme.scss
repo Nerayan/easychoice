@@ -30,6 +30,7 @@
 @import 'components/widget';
 @import 'components/typeahead';
 @import 'components/features-list';
+@import 'components/site-wide-notice';
 
 // Pages
 @import 'pages/electro-dark';
@@ -83,6 +84,8 @@
 @import 'integrations/wpforms';
 @import 'integrations/yith-compare';
 @import 'integrations/yith-wishlist';
+@import 'integrations/advanced-woo-search';
+@import 'integrations/yith-quick-view';
 
 //Blog
 @import 'blog/post-item';

@@ -1,4 +1,7 @@
 // Base
+*:focus {
+    outline: transparent;
+}
 
 img {
     @include img-fluid;

@@ -5,7 +5,7 @@ Theme URI:          https://themeforest.net/item/electro-electronics-store-wooco
 Author:             MadrasThemes
 Author URI:         https://madrasthemes.com/
 Description:        Electro is a robust and flexible WordPress theme, designed by Transvelo to help you make the most out of using WooCommerce to power your online store. The design is well suited for Electronics Store, Vendor based marketplaces, affiliate websites. It is built and comes bundled with most of the advanced features available in most popular eCommerce websites like amazon, flipkart, snapdeal, walmart, alibaba, aliexpress, etc.
-Version:            3.0.1
+Version:            3.0.3
 GitHub Theme URI:   https://github.com/Transvelo/electro
 GitHub Branch:      theme
 License:            GNU General Public License v2 or later
@@ -8921,6 +8921,9 @@ input.dokan-btn[type='submit'] {
   .d-print-none {
     display: none !important; } }
 
+*:focus {
+  outline: transparent; }
+
 img {
   max-width: 100%;
   height: auto; }
@@ -10842,6 +10845,8 @@ textarea.input-text {
       line-height: .49; }
   .secondary-nav > .dropdown.yamm-fw:last-child > .dropdown-menu, .secondary-nav > .dropdown.yamm-tfw:last-child > .dropdown-menu {
     left: 0; }
+  .secondary-nav > .dropdown.yamm-fw .dropdown-menu {
+    width: 100%; }
   .secondary-nav > .dropdown.yamm-fw .dropdown-menu,
   .secondary-nav > .dropdown.yamm-tfw .dropdown-menu {
     padding: 0; }
@@ -15183,6 +15188,49 @@ section.section-posts-carousel .likes a:before {
     flex: 0 0 auto;
     width: 16.6666666667%; }
 
+.demo_store {
+  position: fixed;
+  right: 0;
+  left: 0;
+  margin: 0;
+  padding: 12px 2.6180340252em;
+  z-index: 999;
+  text-align: center;
+  font-weight: bold;
+  top: 0; }
+  @media (min-width: 768px) {
+    .demo_store {
+      line-height: 2;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 2.6180340252em 0 0; } }
+  .demo_store a {
+    text-decoration: underline;
+    display: block; }
+    .demo_store a:hover {
+      text-decoration: none; }
+
+.admin-bar .demo_store {
+  top: 32px; }
+
+.woocommerce-demo-store:not(.admin-bar) #page {
+  margin-top: 47px; }
+
+.admin-bar.woocommerce-demo-store #page {
+  margin-top: 47px; }
+
+.woocommerce-store-notice-dismissed #page {
+  margin-top: 0 !important; }
+
+@media (min-width: 768px) {
+  .demo_store a {
+    background: rgba(0, 0, 0, 0.1);
+    float: left;
+    display: inline-block;
+    margin: 0;
+    padding: 12px 2.6180340252em; } }
+
 /*===================================================================================*/
 /*	ELECTRO-DARK
 /*===================================================================================*/
@@ -16569,6 +16617,10 @@ h3.faq-title, .faq-title.h3 {
     /* (line-height/2) */
     bottom: 0; }
 
+@media (max-width: 767.98px) {
+  .electro-store-directory .widget_product_categories .product-categories:not(.product-categories), .electro-store-directory .widget_product_categories > ul:not(.product-categories) {
+    width: 100%; } }
+
 .info-404 .search-field {
   width: 40%;
   display: inline-block; }
@@ -17423,7 +17475,8 @@ section.product-categories-menu-list {
     position: absolute;
     margin: 0;
     bottom: 0;
-    right: 0; }
+    right: 0;
+    z-index: 1; }
   .products > .product .wp-post-image, .products > .product .product-thumbnail > img,
   .owl-item > .product .wp-post-image,
   .owl-item > .product .product-thumbnail > img {
@@ -17655,6 +17708,8 @@ ul.products {
   list-style: none; }
   ul.products[data-view="grid-extended"] .product-loop-body, ul.products[data-view="list-view"] .product-loop-body, ul.products[data-view="list-view-small"] .product-loop-body {
     display: block; }
+  ul.products[data-view="grid-extended"] .product-loop-header .woocommerce-loop-product__title {
+    display: none; }
   ul.products > li.product {
     position: relative; }
     ul.products > li.product:nth-last-child(2), ul.products > li.product:last-child {
@@ -20531,7 +20586,8 @@ div.quantity > label {
   .single-product .electro-wc-product-gallery .woocommerce-product-gallery__trigger {
     position: absolute;
     top: 10px;
-    left: 10px; }
+    left: 10px;
+    z-index: 1; }
   .single-product .woocommerce-product-gallery .flex-viewport,
   .single-product .electro-wc-product-gallery .flex-viewport {
     margin-bottom: 0.857em; }
@@ -21277,6 +21333,10 @@ div.quantity > label {
 @media (min-width: 1200px) and (max-width: 1479.98px) {
   .home-v1-deals-and-tabs .tab-content ul.products > li.product:nth-child(1n+7) {
     display: none; } }
+
+.products-carousel-tabs-with-deal .deals-block .onsale,
+.home-v1-deals-and-tabs .deals-block .onsale {
+  display: none; }
 
 .deal-and-tabs {
   margin-bottom: 5em; }
@@ -24274,6 +24334,119 @@ div.wpforms-container-full.ec-newsletter-form .wpforms-form button[type=submit]:
     color: #333e48;
     font-family: 'Font Awesome 5 Free';
     font-weight: 900; }
+
+.aws-container .aws-search-form {
+  height: 41px;
+  background-color: transparent; }
+
+.aws-container .aws-search-form .aws-loader {
+  left: 20px; }
+
+.aws-container .aws-search-form .aws-search-clear span {
+  top: 0;
+  margin-top: 0; }
+
+.aws-search-result {
+  border-radius: 6px;
+  overflow: hidden;
+  margin-top: 0px; }
+
+.aws-container .aws-search-field {
+  border-width: 2px;
+  border-radius: 2.467em !important;
+  padding: .3em 2.134em;
+  height: 41px;
+  font-size: 15px;
+  background-color: #fff; }
+
+.aws-container .aws-search-form .aws-search-clear {
+  width: 60px;
+  border-top-left-radius: 2.467em !important;
+  border-bottom-left-radius: 2.467em !important;
+  color: #333e48;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  justify-content: center;
+  display: flex !important; }
+  .rtl .aws-container .aws-search-form .aws-search-clear {
+    border-top-right-radius: 2.467em !important;
+    border-bottom-right-radius: 2.467em !important;
+    border-top-left-radius: 0 !important;
+    border-bottom-left-radius: 0 !important; }
+
+.aws-search-form:not(.aws-form-active):not(.aws-processing) .aws-search-clear span,
+.aws-search-form.aws-processing .aws-search-clear span {
+  display: none; }
+
+.aws-search-form:not(.aws-form-active):not(.aws-processing) .aws-search-clear::after {
+  font-family: font-electro;
+  content: "\6d";
+  font-size: 1.714em; }
+
+.aws-container .aws-search-form.aws-show-clear.aws-form-active .aws-search-clear {
+  display: flex !important; }
+
+.header-v2 .aws-container .aws-search-form .aws-search-clear,
+.header-v4 .aws-container .aws-search-form .aws-search-clear,
+.header-v5 .aws-container .aws-search-form .aws-search-clear {
+  background-color: #333e48;
+  color: #fff; }
+
+.header-v2 .aws-container .aws-search-field,
+.header-v4 .aws-container .aws-search-field,
+.header-v5 .aws-container .aws-search-field {
+  border-color: #fff; }
+
+.header-v7 .aws-container .aws-search-form .aws-search-clear {
+  width: auto;
+  background-color: transparent;
+  font-size: 11px; }
+
+.header-v7 .aws-container .aws-search-field {
+  background-color: transparent;
+  border-radius: 0 !important;
+  border-top-width: 0;
+  border-left-width: 0;
+  border-right-width: 0;
+  padding: .3em 1.134em;
+  border-bottom: 1px solid rgba(51, 62, 72, 0.3); }
+
+@media (min-width: 1480px) {
+  .header-v7 .aws-container .aws-search-field {
+    min-width: 242px; } }
+
+.product-loop-header {
+  position: relative; }
+  .product-loop-header .yith-wcqv-button {
+    position: absolute;
+    top: 50%;
+    right: 50%;
+    transform: translate(50%, -15%);
+    white-space: nowrap;
+    display: none; }
+
+.product-card .yith-wcqv-button {
+  position: absolute;
+  display: none;
+  top: 100%;
+  right: -65%; }
+
+.columns-3 .product-card .yith-wcqv-button,
+.row-cols-lg-3 .product-card .yith-wcqv-button {
+  right: -85%; }
+
+.product-card:hover .yith-wcqv-button,
+.product-card:focus .yith-wcqv-button,
+.product:hover > .product-outer .yith-wcqv-button,
+.product:focus > .product-outer .yith-wcqv-button {
+  display: block; }
+
+#yith-quick-view-content form.cart {
+  margin-bottom: 25px; }
+
+.yith-wcqv-main {
+  padding: 30px; }
 
 article.post {
   margin-bottom: 6.786em;

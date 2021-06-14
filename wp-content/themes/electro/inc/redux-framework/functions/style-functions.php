@@ -203,6 +203,8 @@ if ( ! function_exists( 'redux_get_custom_color_css' ) ) {
         .handheld-header-v2,
         .handheld-header-v2.stuck,
         #payment .place-order button[type=submit],
+        .single-product .product-images-wrapper .woocommerce-product-gallery.electro-carousel-loaded .flex-control-nav li a.flex-active,
+        .single-product .product-images-wrapper .electro-wc-product-gallery .flex-control-nav li a.flex-active,
         .single-product .product-images-wrapper .flex-control-nav li a.flex-active,
         .section-onsale-product .savings,
         .section-onsale-product-carousel .savings,
@@ -276,7 +278,10 @@ if ( ! function_exists( 'redux_get_custom_color_css' ) ) {
         .home-v2-slider .btn-primary,
         .home-v3-slider .btn-primary,
         .electro-dark .show-nav .nav .active .nav-link,
-        .electro-dark .full-color-background .masthead .header-icon-counter {
+        .electro-dark .full-color-background .masthead .header-icon-counter,
+        .electro-dark .full-color-background .masthead .navbar-search .input-group .btn,
+        .electro-dark .electro-navbar-primary .nav>.menu-item:hover>a,
+        .electro-dark .masthead .navbar-search .input-group .btn {
             background-color: ' . $primary_color . ' !important;
         }
 
@@ -771,7 +776,8 @@ if ( ! function_exists( 'redux_get_custom_color_css' ) ) {
         .demo_store a,
         div.wpforms-container-full .wpforms-form input[type=submit],
         div.wpforms-container-full .wpforms-form button[type=submit],
-        div.wpforms-container-full .wpforms-form .wpforms-page-button {
+        div.wpforms-container-full .wpforms-form .wpforms-page-button,
+        .aws-search-form:not(.aws-form-active):not(.aws-processing) .aws-search-clear::after {
             color: ' . $primary_text_color . ';
         }
 
