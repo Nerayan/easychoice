@@ -194,6 +194,10 @@
 	pointer-events: none;
 }
 
+.single-product .entry-summary>div[itemprop=description], .single-product .woocommerce-product-details__short-description {
+	margin: 2.5em 0 0;
+}
+
 /* FOOTER */
 .header-logo-link img,
 .footer-logo img {
