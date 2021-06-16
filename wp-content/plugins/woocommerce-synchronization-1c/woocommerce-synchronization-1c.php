@@ -3,7 +3,7 @@
  * Plugin Name: WooCommerce - 1C - Data Exchange
  * Plugin URI: https://codecanyon.net/item/woocommerce-1c-data-exchange/24768513
  * Description: Data exchange with 1C according to the protocol developed for 1C Bitrix. Import of the nomenclature, prices and stocks, unloading orders in 1C.
- * Version: 1.96.0
+ * Version: 1.97.0
  * Author: itgalaxycompany
  * Author URI: https://codecanyon.net/user/itgalaxycompany
  * License: GPLv3

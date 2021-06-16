@@ -32,7 +32,7 @@ private static $installed = array (
     'aliases' => 
     array (
     ),
-    'reference' => '794873bd63259f12e30ee541509ea87b4c3c38a7',
+    'reference' => '14632c4f90d6988fdf655fe44f7291c694bb63f0',
     'name' => 'itgalaxy/woocommerce-synchronization-1c',
   ),
   'versions' => 
@@ -53,7 +53,7 @@ private static $installed = array (
       'aliases' => 
       array (
       ),
-      'reference' => '794873bd63259f12e30ee541509ea87b4c3c38a7',
+      'reference' => '14632c4f90d6988fdf655fe44f7291c694bb63f0',
     ),
     'monolog/monolog' => 
     array (

@@ -7,8 +7,8 @@ namespace Composer\Autoload;
 class ComposerStaticInit4d11209d422d8a1af2f7bdc10153b2ad
 {
     public static $files = array (
-        '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
         '7c9a351f533aed24255b42a91b4366a7' => __DIR__ . '/..' . '/itgalaxy/plugin-common/load.php',
+        '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
         '7b88577ab913611f157876f23c7145ff' => __DIR__ . '/../..' . '/admin/loader.php',
         '1c75689e7d49c89cac73a52e7a404c52' => __DIR__ . '/../..' . '/includes/filters.php',
         'b685c35ced57cea211546d0568040fc3' => __DIR__ . '/../..' . '/includes/actions.php',

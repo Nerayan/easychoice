@@ -18,7 +18,7 @@ use Itgalaxy\Wc\Exchange1c\ExchangeProcess\RootProcessStarter;
 class Bootstrap
 {
     const PLUGIN_ID = '24768513';
-    const PLUGIN_VERSION = '1.96.0';
+    const PLUGIN_VERSION = '1.97.0';
 
     const OPTIONS_KEY = 'wc-itgalaxy-1c-exchange-settings';
     const OPTION_INFO_KEY = 'wc-itgalaxy-1c-exchange-additional-info';

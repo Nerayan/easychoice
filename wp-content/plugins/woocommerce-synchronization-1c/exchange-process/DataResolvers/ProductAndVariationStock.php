@@ -197,15 +197,34 @@ class ProductAndVariationStock
                 )
             );
 
-            // set backorders value
-            if ($stockData['_stock'] > 0) {
-                update_post_meta(
-                    $productId,
-                    '_backorders',
+            $backorders = $stockData['_stock'] > 0
+                ? (
                     empty($settings['products_onbackorder_stock_positive_rule'])
                         ? 'no'
                         : $settings['products_onbackorder_stock_positive_rule']
-                );
+                ) : null;
+
+            /**
+             * Filters the value to allow backorders.
+             *
+             * @since 1.97.0
+             *
+             * @param string|null $backorders
+             * @param int $productId Product ID (if simple) or variation ID.
+             * @param false|int $parentProductID If a simple product, then false, otherwise the product ID of the parent of the variation.
+             * @param array $stockData {@see resolve()}
+             */
+            $backorders = \apply_filters(
+                'itglx_wc1c_stock_value_backorders',
+                $backorders,
+                $productId,
+                $parentProductID,
+                $stockData
+            );
+
+            // set backorders value
+            if ($backorders !== null) {
+                update_post_meta($productId, '_backorders', $backorders);
             }
 
             // set stock variation
